@@ -20,7 +20,6 @@ import java.util.function.Consumer;
 
 import org.springframework.javapoet.MethodSpec;
 import org.springframework.javapoet.MethodSpec.Builder;
-import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 
 /**
@@ -34,8 +33,7 @@ public final class GeneratedMethod {
 
 	private final String name;
 
-	@Nullable
-	private MethodSpec spec;
+	private final Consumer<Builder> method;
 
 
 	/**
@@ -43,9 +41,11 @@ public final class GeneratedMethod {
 	 * constructor is package-private since names should only be generated via a
 	 * {@link GeneratedMethods}.
 	 * @param name the generated name
+	 * @param method consumer to generate the method
 	 */
-	GeneratedMethod(String name, Consumer<MethodSpec.Builder> builder) {
+	GeneratedMethod(String name, Consumer<MethodSpec.Builder> method) {
 		this.name = name;
+		this.method = method;
 	}
 
 
@@ -63,36 +63,18 @@ public final class GeneratedMethod {
 	 * @throws IllegalStateException if one of the {@code generateBy(...)}
 	 * methods has not been called
 	 */
-	MethodSpec getSpec() {
-		Assert.state(this.spec != null,
-				() -> String.format("Method '%s' has no method spec defined", this.name));
-		return this.spec;
-	}
-
-	/**
-	 * Generate the method using the given consumer.
-	 * @param builder a consumer that will accept a method spec builder and
-	 * configure it as necessary
-	 * @return this instance
-	 */
-	@Deprecated
-	private GeneratedMethod using(Consumer<MethodSpec.Builder> builder) {
-		Builder builderToUse = MethodSpec.methodBuilder(this.name);
-		builder.accept(builderToUse);
-		MethodSpec spec = builderToUse.build();
-		assertNameHasNotBeenChanged(spec);
-		this.spec = spec;
-		return this;
-	}
-
-	private void assertNameHasNotBeenChanged(MethodSpec spec) {
-		Assert.isTrue(this.name.equals(spec.name), () -> String
-				.format("'spec' must use the generated name \"%s\"", this.name));
+	MethodSpec generateMethodSpec() {
+		MethodSpec.Builder builder = MethodSpec.methodBuilder(this.name);
+		this.method.accept(builder);
+		MethodSpec methodSpec = builder.build();
+		Assert.state(this.name.equals(methodSpec.name),
+				"'method' consumer must not change the generated method name");
+		return methodSpec;
 	}
 
 	@Override
 	public String toString() {
-		return (this.spec != null) ? this.spec.toString() : this.name.toString();
+		return this.name.toString();
 	}
 
 }

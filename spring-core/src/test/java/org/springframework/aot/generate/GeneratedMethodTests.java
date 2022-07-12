@@ -43,13 +43,13 @@ class GeneratedMethodTests {
 	void getSpecReturnsSpec() {
 		GeneratedMethod method = new GeneratedMethod(NAME);
 		method.using(builder -> builder.addJavadoc("Test"));
-		assertThat(method.getSpec().javadoc.toString()).contains("Test");
+		assertThat(method.generateMethodSpec().javadoc.toString()).contains("Test");
 	}
 
 	@Test
 	void getSpecReturnsSpecWhenNoSpecDefinedThrowsException() {
 		GeneratedMethod method = new GeneratedMethod(NAME);
-		assertThatIllegalStateException().isThrownBy(() -> method.getSpec())
+		assertThatIllegalStateException().isThrownBy(() -> method.generateMethodSpec())
 				.withMessage("Method 'spring' has no method spec defined");
 	}
 
@@ -57,7 +57,7 @@ class GeneratedMethodTests {
 	void usingAddsSpec() {
 		GeneratedMethod method = new GeneratedMethod(NAME);
 		method.using(builder -> builder.addModifiers(Modifier.PUBLIC));
-		assertThat(method.getSpec().toString())
+		assertThat(method.generateMethodSpec().toString())
 				.isEqualToIgnoringNewLines("public void spring() {}");
 	}
 

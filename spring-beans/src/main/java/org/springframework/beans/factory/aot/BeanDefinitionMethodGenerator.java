@@ -25,7 +25,7 @@ import org.springframework.aot.generate.GeneratedClass;
 import org.springframework.aot.generate.GeneratedMethod;
 import org.springframework.aot.generate.GeneratedMethods;
 import org.springframework.aot.generate.GenerationContext;
-import org.springframework.aot.generate.MethodNameGenerator;
+import org.springframework.aot.generate.MethodName;
 import org.springframework.aot.generate.MethodReference;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.RegisteredBean;
@@ -91,7 +91,7 @@ class BeanDefinitionMethodGenerator {
 				this.constructorOrFactoryMethod);
 		if (!target.getName().startsWith("java.")) {
 			GeneratedClass generatedClass = generationContext.getGeneratedClasses()
-					.add(FEATURE_NAME, target).using(type -> {
+					.getOrAdd(FEATURE_NAME, target, type -> {
 						type.addJavadoc("Bean definitions for {@link $T}", target);
 						type.addModifiers(Modifier.PUBLIC);
 					});
@@ -154,10 +154,10 @@ class BeanDefinitionMethodGenerator {
 		while (nonGeneratedParent != null && nonGeneratedParent.isGeneratedBeanName()) {
 			nonGeneratedParent = nonGeneratedParent.getParent();
 		}
-		return (nonGeneratedParent != null)
-				? MethodNameGenerator.join(
-						getSimpleBeanName(nonGeneratedParent.getBeanName()), "innerBean")
-				: "innerBean";
+		if (nonGeneratedParent != null) {
+			return MethodName.of(getSimpleBeanName(nonGeneratedParent.getBeanName()), "innerBean").toString();
+		}
+		return "innerBean";
 	}
 
 	private String getSimpleBeanName(String beanName) {

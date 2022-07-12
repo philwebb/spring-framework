@@ -24,7 +24,7 @@ import org.springframework.javapoet.TypeSpec;
 import org.springframework.util.Assert;
 
 /**
- * A generated class.
+ * A single generated class.
  *
  * @author Phillip Webb
  * @author Stephane Nicoll
@@ -37,7 +37,9 @@ public final class GeneratedClass {
 
 	private final GeneratedMethods methods;
 
-	private Consumer<TypeSpec.Builder> builder;
+	private final Consumer<TypeSpec.Builder> type;
+
+	private MethodNameGenerator methodNameGenerator;
 
 
 	/**
@@ -45,12 +47,28 @@ public final class GeneratedClass {
 	 * constructor is package-private since names should only be generated via a
 	 * {@link GeneratedClasses}.
 	 * @param name the generated name
+	 * @param type consumer to generate the type
 	 */
-	GeneratedClass(ClassName name) {
+	GeneratedClass(ClassName name, Consumer<TypeSpec.Builder> type) {
+		Assert.notNull(type, "'type' must not be null");
 		this.name = name;
-		this.methods = new GeneratedMethods(new MethodNameGenerator());
+		this.type = type;
+		this.methodNameGenerator = new MethodNameGenerator();
+		this.methods = new GeneratedMethods(this.methodNameGenerator);
 	}
 
+
+	/**
+	 * Update this instance with a set of reserved method names that should not
+	 * be used for generated methods. Reserved names are often needed when a
+	 * generated class implements a specific interface.
+	 * @param reservedMethodNames the reserved method names
+	 * @return this instance
+	 */
+	public GeneratedClass reserveMethodNames(String... reservedMethodNames) {
+		this.methodNameGenerator.reserveMethodNames(reservedMethodNames);
+		return this;
+	}
 
 	/**
 	 * Return the name of the generated class.
@@ -68,31 +86,21 @@ public final class GeneratedClass {
 		return this.methods;
 	}
 
-	public GeneratedClass using(Consumer<TypeSpec.Builder> builder) {
-		Assert.notNull(builder, "'builder' must not be null");
-		Assert.state(this.builder == null || buildsSameTypeSpec(this.builder, builder),
-				"GeneratedClass is already using a builder");
-		this.builder = builder;
-		return this;
-	}
-
-	private boolean buildsSameTypeSpec(Consumer<TypeSpec.Builder> existingBuilder, Consumer<TypeSpec.Builder> replacementBuilder) {
-		TypeSpec existing = classBuilder(existingBuilder).build();
-		TypeSpec replacement = classBuilder(replacementBuilder).build();
-		return existing.equals(replacement);
-	}
-
 	JavaFile generateJavaFile() {
-		TypeSpec.Builder builder = classBuilder(this.builder);
+		TypeSpec.Builder builder = getBuilder(this.type);
 		this.methods.doWithMethodSpecs(builder::addMethod);
-		return JavaFile.builder(this.name.packageName(), builder.build())
-				.build();
+		return JavaFile.builder(this.name.packageName(), builder.build()).build();
 	}
 
-	private TypeSpec.Builder classBuilder(Consumer<TypeSpec.Builder> consumer) {
+	private TypeSpec.Builder getBuilder(Consumer<TypeSpec.Builder> type) {
 		TypeSpec.Builder builder = TypeSpec.classBuilder(this.name);
-		consumer.accept(builder);
+		type.accept(builder);
 		return builder;
+	}
+
+	void assertSameType(Consumer<TypeSpec.Builder> type) {
+		Assert.state(type == this.type || getBuilder(this.type).build().equals(getBuilder(type).build()),
+				"'type' consumer generated different result");
 	}
 
 }

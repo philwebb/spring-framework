@@ -44,6 +44,8 @@ import org.springframework.javapoet.TypeSpec;
 class ApplicationContextInitializationCodeGenerator
 		implements BeanFactoryInitializationCode {
 
+	private static final String INITIALIZE_METHOD = "initialize";
+
 	private static final String APPLICATION_CONTEXT_VARIABLE = "applicationContext";
 
 	private final List<MethodReference> initializers = new ArrayList<>();
@@ -53,43 +55,30 @@ class ApplicationContextInitializationCodeGenerator
 
 	ApplicationContextInitializationCodeGenerator(GenerationContext generationContext) {
 		this.generatedClass = generationContext.getGeneratedClasses()
-				.add("ApplicationContextInitializer").using(this::build);
+				.add("ApplicationContextInitializer", this::generateType);
+		this.generatedClass.reserveMethodNames(INITIALIZE_METHOD);
 	}
 
 
-	GeneratedClass getGeneratedClass() {
-		return this.generatedClass;
-	}
-
-	@Override
-	public GeneratedMethods getMethods() {
-		return this.generatedClass.getMethods();
-	}
-
-	@Override
-	public void addInitializer(MethodReference methodReference) {
-		this.initializers.add(methodReference);
-	}
-
-	private void build(TypeSpec.Builder builder) {
-		builder.addJavadoc(
+	private void generateType(TypeSpec.Builder type) {
+		type.addJavadoc(
 				"{@link $T} to restore an application context based on previous AOT processing.",
 				ApplicationContextInitializer.class);
-		builder.addModifiers(Modifier.PUBLIC);
-		builder.addSuperinterface(ParameterizedTypeName.get(
+		type.addModifiers(Modifier.PUBLIC);
+		type.addSuperinterface(ParameterizedTypeName.get(
 				ApplicationContextInitializer.class, GenericApplicationContext.class));
-		builder.addMethod(generateInitializeMethod());
+		type.addMethod(generateInitializeMethod());
 	}
 
 
 	private MethodSpec generateInitializeMethod() {
-		MethodSpec.Builder builder = MethodSpec.methodBuilder("initialize");
-		builder.addAnnotation(Override.class);
-		builder.addModifiers(Modifier.PUBLIC);
-		builder.addParameter(GenericApplicationContext.class,
+		MethodSpec.Builder method = MethodSpec.methodBuilder(INITIALIZE_METHOD);
+		method.addAnnotation(Override.class);
+		method.addModifiers(Modifier.PUBLIC);
+		method.addParameter(GenericApplicationContext.class,
 				APPLICATION_CONTEXT_VARIABLE);
-		builder.addCode(generateInitializeCode());
-		return builder.build();
+		method.addCode(generateInitializeCode());
+		return method.build();
 	}
 
 	private CodeBlock generateInitializeCode() {
@@ -103,6 +92,20 @@ class ApplicationContextInitializationCodeGenerator
 			builder.addStatement(initializer.toInvokeCodeBlock(CodeBlock.of(BEAN_FACTORY_VARIABLE)));
 		}
 		return builder.build();
+	}
+
+	GeneratedClass getGeneratedClass() {
+		return this.generatedClass;
+	}
+
+	@Override
+	public GeneratedMethods getMethods() {
+		return this.generatedClass.getMethods();
+	}
+
+	@Override
+	public void addInitializer(MethodReference methodReference) {
+		this.initializers.add(methodReference);
 	}
 
 }

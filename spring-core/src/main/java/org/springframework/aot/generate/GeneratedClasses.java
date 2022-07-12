@@ -22,8 +22,10 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Consumer;
 
 import org.springframework.javapoet.ClassName;
+import org.springframework.javapoet.TypeSpec;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 
@@ -62,24 +64,66 @@ public class GeneratedClasses {
 	}
 
 
-	public GeneratedClass getOrAdd(String featureName) {
-		return getOrAdd(featureName, null);
+	/**
+	 * Get or add a generated class. If this method has previously been called
+	 * with the given {@code featureName} the existing class will be returned,
+	 * otherwise a new class will be generated.
+	 * @param featureName the name of the feature to associate with the
+	 * generated class
+	 * @param type consumer to generate the type
+	 * @return an existing or newly generated class
+	 */
+	public GeneratedClass getOrAdd(String featureName, Consumer<TypeSpec.Builder> type) {
+		return getOrAdd(featureName, null, type);
 	}
 
-	public GeneratedClass getOrAdd(String featureName, @Nullable Class<?> target) {
+	/**
+	 * Get or add a generated class. If this method has previously been called
+	 * with the given {@code featureName}/{@code target} the existing class will
+	 * be returned, otherwise a new class will be generated, otherwise a new
+	 * class will be generated.
+	 * @param featureName the name of the feature to associate with the
+	 * generated class
+	 * @param target the target component
+	 * @param type consumer to generate the type
+	 * @return an existing or newly generated class
+	 */
+	public GeneratedClass getOrAdd(String featureName, @Nullable Class<?> target,
+			Consumer<TypeSpec.Builder> type) {
 		Assert.hasLength(featureName, "'featureName' must not be empty");
+		Assert.notNull(type, "'type' must not be null");
 		Owner owner = new Owner(featureName, target);
-		return this.classesByOwner.computeIfAbsent(owner, key -> add(featureName, target));
+		GeneratedClass generatedClass = this.classesByOwner.computeIfAbsent(owner, key ->
+				add(featureName, target, type));
+		generatedClass.assertSameType(type);
+		return generatedClass;
 	}
 
-	public GeneratedClass add(String featureName) {
-		return add(featureName, null);
+	/**
+	 * Add a new generated class.
+	 * @param featureName the name of the feature to associate with the
+	 * generated class
+	 * @param type consumer to generate the type
+	 * @return the newly generated class
+	 */
+	public GeneratedClass add(String featureName, Consumer<TypeSpec.Builder> type) {
+		return add(featureName, null, type);
 	}
 
-	public GeneratedClass add(String featureName, @Nullable Class<?> target) {
+	/**
+	 * Add a new generated class.
+	 * @param featureName the name of the feature to associate with the
+	 * generated class
+	 * @param target the target component
+	 * @param type consumer to generate the type
+	 * @return the newly generated class
+	 */
+	public GeneratedClass add(String featureName, @Nullable Class<?> target,
+			Consumer<TypeSpec.Builder> type) {
 		Assert.hasLength(featureName, "'featureName' must not be empty");
+		Assert.notNull(type, "'type' must not be null");
 		ClassName className = this.classNameGenerator.generateClassName(featureName, target);
-		GeneratedClass generatedClass = new GeneratedClass(className);
+		GeneratedClass generatedClass = new GeneratedClass(className, type);
 		this.classes.add(generatedClass);
 		return generatedClass;
 	}
@@ -99,7 +143,7 @@ public class GeneratedClasses {
 		}
 	}
 
-	GeneratedClasses withName(String name) {
+	GeneratedClasses withFeatureNamePrefix(String name) {
 		return new GeneratedClasses(this.classNameGenerator.withFeatureNamePrefix(name),
 				this.classes, this.classesByOwner);
 	}

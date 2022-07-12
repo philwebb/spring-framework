@@ -140,7 +140,7 @@ class GeneratedClassesTests {
 	void withNameUpdatesNamingConventions() {
 		GeneratedClass generatedClass1 = this.generatedClasses
 				.generateClass("one", TestComponent.class).using(emptyTypeCustomizer);
-		GeneratedClass generatedClass2 = this.generatedClasses.withName("Another")
+		GeneratedClass generatedClass2 = this.generatedClasses.withFeatureNamePrefix("Another")
 				.generateClass("one", TestComponent.class).using(emptyTypeCustomizer);
 		assertThat(generatedClass1.getName().toString()).endsWith("TestComponent__One");
 		assertThat(generatedClass2.getName().toString()).endsWith("TestComponent__AnotherOne");

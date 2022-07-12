@@ -119,4 +119,10 @@ class MethodNameGenerator {
 		return name.toString();
 	}
 
+
+	void reserveMethodNames(String... reservedMethodNames) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Auto-generated method stub");
+	}
+
 }

@@ -159,18 +159,18 @@ class InstanceSupplierCodeGenerator {
 				getInstanceMethod.getName());
 	}
 
-	private void buildGetInstanceMethodForConstructor(MethodSpec.Builder builder,
+	private void buildGetInstanceMethodForConstructor(MethodSpec.Builder method,
 			String name, Constructor<?> constructor, Class<?> declaringClass,
 			boolean dependsOnBean, javax.lang.model.element.Modifier... modifiers) {
 
-		builder.addJavadoc("Create the bean instance for '$L'.", name);
-		builder.addModifiers(modifiers);
-		builder.returns(declaringClass);
-		builder.addParameter(RegisteredBean.class, REGISTERED_BEAN_PARAMETER_NAME);
+		method.addJavadoc("Create the bean instance for '$L'.", name);
+		method.addModifiers(modifiers);
+		method.returns(declaringClass);
+		method.addParameter(RegisteredBean.class, REGISTERED_BEAN_PARAMETER_NAME);
 		if (constructor.getParameterCount() == 0) {
 			CodeBlock instantiationCode = generateNewInstanceCodeForConstructor(
 					dependsOnBean, declaringClass, NO_ARGS);
-			builder.addCode(generateReturnStatement(instantiationCode));
+			method.addCode(generateReturnStatement(instantiationCode));
 		}
 		else {
 			int parameterOffset = (!dependsOnBean) ? 0 : 1;
@@ -184,7 +184,7 @@ class InstanceSupplierCodeGenerator {
 					declaringClass, arguments);
 			code.addStatement("return resolver.resolve($L, (args) -> $L)",
 					REGISTERED_BEAN_PARAMETER_NAME, newInstance);
-			builder.addCode(code.build());
+			method.addCode(code.build());
 		}
 	}
 
@@ -268,22 +268,22 @@ class InstanceSupplierCodeGenerator {
 				getInstanceMethod.getName());
 	}
 
-	private void buildGetInstanceMethodForFactoryMethod(MethodSpec.Builder builder,
+	private void buildGetInstanceMethodForFactoryMethod(MethodSpec.Builder method,
 			String name, Method factoryMethod, Class<?> declaringClass,
 			boolean dependsOnBean, javax.lang.model.element.Modifier... modifiers) {
 
 		String factoryMethodName = factoryMethod.getName();
-		builder.addJavadoc("Get the bean instance for '$L'.", name);
-		builder.addModifiers(modifiers);
-		builder.returns(factoryMethod.getReturnType());
+		method.addJavadoc("Get the bean instance for '$L'.", name);
+		method.addModifiers(modifiers);
+		method.returns(factoryMethod.getReturnType());
 		if (isThrowingCheckedException(factoryMethod)) {
-			builder.addException(Exception.class);
+			method.addException(Exception.class);
 		}
-		builder.addParameter(RegisteredBean.class, REGISTERED_BEAN_PARAMETER_NAME);
+		method.addParameter(RegisteredBean.class, REGISTERED_BEAN_PARAMETER_NAME);
 		if (factoryMethod.getParameterCount() == 0) {
 			CodeBlock instantiationCode = generateNewInstanceCodeForMethod(dependsOnBean,
 					declaringClass, factoryMethodName, NO_ARGS);
-			builder.addCode(generateReturnStatement(instantiationCode));
+			method.addCode(generateReturnStatement(instantiationCode));
 		}
 		else {
 			CodeBlock.Builder code = CodeBlock.builder();
@@ -295,7 +295,7 @@ class InstanceSupplierCodeGenerator {
 					declaringClass, factoryMethodName, arguments);
 			code.addStatement("return resolver.resolve($L, (args) -> $L)",
 					REGISTERED_BEAN_PARAMETER_NAME, newInstance);
-			builder.addCode(code.build());
+			method.addCode(code.build());
 		}
 	}
 

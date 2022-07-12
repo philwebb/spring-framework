@@ -19,6 +19,7 @@ package org.springframework.beans.testfixture.beans.factory.aot;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Consumer;
 
 import org.springframework.aot.generate.GeneratedClass;
 import org.springframework.aot.generate.GeneratedMethods;
@@ -26,6 +27,7 @@ import org.springframework.aot.generate.GenerationContext;
 import org.springframework.aot.generate.MethodReference;
 import org.springframework.beans.factory.aot.BeanRegistrationCode;
 import org.springframework.javapoet.ClassName;
+import org.springframework.javapoet.TypeSpec;
 
 /**
  * Mock {@link BeanRegistrationCode} implementation.
@@ -40,8 +42,8 @@ public class MockBeanRegistrationCode implements BeanRegistrationCode {
 	private final List<MethodReference> instancePostProcessors = new ArrayList<>();
 
 
-	public MockBeanRegistrationCode(GenerationContext generationContext) {
-		this.generatedClass = generationContext.getGeneratedClasses().add("TestCode");
+	public MockBeanRegistrationCode(GenerationContext generationContext, Consumer<TypeSpec.Builder> type) {
+		this.generatedClass = generationContext.getGeneratedClasses().add("TestCode", type);
 	}
 
 

@@ -907,18 +907,18 @@ public class AutowiredAnnotationBeanPostProcessor implements SmartInstantiationA
 		public void applyTo(GenerationContext generationContext,
 				BeanRegistrationCode beanRegistrationCode) {
 			GeneratedClass generatedClass = generationContext.getGeneratedClasses()
-					.add("Autowiring", this.target).using(type -> {
+					.add("Autowiring", this.target, type -> {
 						type.addJavadoc("Autowiring for {@link $T}.", this.target);
 						type.addModifiers(javax.lang.model.element.Modifier.PUBLIC);
 					});
-			GeneratedMethod generateMethod = generatedClass.getMethods().generateMethod("apply", builder -> {
-				builder.addJavadoc("Apply the autowiring.");
-				builder.addModifiers(javax.lang.model.element.Modifier.PUBLIC,
+			GeneratedMethod generateMethod = generatedClass.getMethods().generateMethod("apply", method -> {
+				method.addJavadoc("Apply the autowiring.");
+				method.addModifiers(javax.lang.model.element.Modifier.PUBLIC,
 						javax.lang.model.element.Modifier.STATIC);
-				builder.addParameter(RegisteredBean.class, REGISTERED_BEAN_PARAMETER);
-				builder.addParameter(this.target, INSTANCE_PARAMETER);
-				builder.returns(this.target);
-				builder.addCode(generateMethodCode(generationContext.getRuntimeHints()));
+				method.addParameter(RegisteredBean.class, REGISTERED_BEAN_PARAMETER);
+				method.addParameter(this.target, INSTANCE_PARAMETER);
+				method.returns(this.target);
+				method.addCode(generateMethodCode(generationContext.getRuntimeHints()));
 			});
 			beanRegistrationCode.addInstancePostProcessor(
 					MethodReference.ofStatic(generatedClass.getName(), generateMethod.getName()));

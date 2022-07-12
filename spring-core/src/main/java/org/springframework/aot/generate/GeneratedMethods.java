@@ -38,15 +38,6 @@ public class GeneratedMethods {
 
 	private final List<GeneratedMethod> generatedMethods = new ArrayList<>();
 
-
-	/**
-	 * Create a new {@link GeneratedMethods} instance backed by a new
-	 * {@link MethodNameGenerator}.
-	 */
-	GeneratedMethods() {
-		this(new MethodNameGenerator());
-	}
-
 	/**
 	 * Create a new {@link GeneratedMethods} instance backed by the given
 	 * {@link MethodNameGenerator}.
@@ -89,7 +80,7 @@ public class GeneratedMethods {
 	 * @param action the action to perform
 	 */
 	void doWithMethodSpecs(Consumer<MethodSpec> action) {
-		stream().map(GeneratedMethod::getSpec).forEach(action);
+		stream().map(GeneratedMethod::generateMethodSpec).forEach(action);
 	}
 
 	/**

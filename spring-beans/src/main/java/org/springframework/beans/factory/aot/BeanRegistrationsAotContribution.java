@@ -60,7 +60,7 @@ class BeanRegistrationsAotContribution
 			BeanFactoryInitializationCode beanFactoryInitializationCode) {
 
 		GeneratedClass generatedClass = generationContext.getGeneratedClasses()
-				.add("BeanFactoryRegistrations").using(type -> {
+				.add("BeanFactoryRegistrations", type -> {
 					type.addJavadoc("Register bean definitions for the bean factory.");
 					type.addModifiers(Modifier.PUBLIC);
 				});
@@ -73,13 +73,13 @@ class BeanRegistrationsAotContribution
 				.addInitializer(MethodReference.of(generatedClass.getName(), registerMethod.getName()));
 	}
 
-	private void generateRegisterMethod(MethodSpec.Builder builder,
+	private void generateRegisterMethod(MethodSpec.Builder method,
 			GenerationContext generationContext,
 			BeanRegistrationsCode beanRegistrationsCode) {
 
-		builder.addJavadoc("Register the bean definitions.");
-		builder.addModifiers(Modifier.PUBLIC);
-		builder.addParameter(DefaultListableBeanFactory.class,
+		method.addJavadoc("Register the bean definitions.");
+		method.addModifiers(Modifier.PUBLIC);
+		method.addParameter(DefaultListableBeanFactory.class,
 				BEAN_FACTORY_PARAMETER_NAME);
 		CodeBlock.Builder code = CodeBlock.builder();
 		this.registrations.forEach((beanName, beanDefinitionMethodGenerator) -> {
@@ -90,7 +90,7 @@ class BeanRegistrationsAotContribution
 					BEAN_FACTORY_PARAMETER_NAME, beanName,
 					beanDefinitionMethod.toInvokeCodeBlock());
 		});
-		builder.addCode(code.build());
+		method.addCode(code.build());
 	}
 
 
