@@ -76,7 +76,7 @@ public final class GeneratedMethod {
 	 * @return this instance
 	 */
 	@Deprecated
-	public GeneratedMethod using(Consumer<MethodSpec.Builder> builder) {
+	private GeneratedMethod using(Consumer<MethodSpec.Builder> builder) {
 		Builder builderToUse = MethodSpec.methodBuilder(this.name);
 		builder.accept(builderToUse);
 		MethodSpec spec = builderToUse.build();

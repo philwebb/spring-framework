@@ -63,7 +63,6 @@ public class GeneratedMethods {
 	}
 
 	public GeneratedMethod generateMethod(MethodName suggestedName, Consumer<Builder> builder) {
-		// FIXME
 		GeneratedMethod method = new GeneratedMethod("FIXME", builder);
 		this.generatedMethods.add(method);
 		return method;

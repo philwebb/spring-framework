@@ -36,7 +36,7 @@ import org.springframework.util.StringUtils;
  * @author Phillip Webb
  * @since 6.0
  */
-public class MethodNameGenerator {
+class MethodNameGenerator {
 
 	private final Map<String, AtomicInteger> sequenceGenerator = new ConcurrentHashMap<>();
 
@@ -45,7 +45,7 @@ public class MethodNameGenerator {
 	 * Create a new {@link MethodNameGenerator} instance without any reserved
 	 * names.
 	 */
-	public MethodNameGenerator() {
+	MethodNameGenerator() {
 	}
 
 	/**
@@ -53,9 +53,11 @@ public class MethodNameGenerator {
 	 * reserved names.
 	 * @param reservedNames the method names to reserve
 	 */
-	public MethodNameGenerator(String... reservedNames) {
+	MethodNameGenerator(String... reservedNames) {
 		this(List.of(reservedNames));
 	}
+
+	// FIXME reserved names not used but should be. Perhaps on generated class
 
 	/**
 	 * Create a new {@link MethodNameGenerator} instance with the specified
