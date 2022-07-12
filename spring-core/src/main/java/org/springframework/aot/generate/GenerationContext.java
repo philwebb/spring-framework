@@ -43,12 +43,11 @@ import org.springframework.aot.hint.SerializationHints;
 public interface GenerationContext {
 
 	/**
-	 * Return the {@link GeneratedClasses} being used by the context. Allows a
-	 * single generated class to be shared across multiple AOT processors. All
+	 * Return the {@link GeneratedClasses} being used by the context. All
 	 * generated classes are written at the end of AOT processing.
 	 * @return the generated classes
 	 */
-	ClassGenerator getClassGenerator();
+	GeneratedClasses getGeneratedClasses();
 
 	/**
 	 * Return the {@link GeneratedFiles} being used by the context. Used to

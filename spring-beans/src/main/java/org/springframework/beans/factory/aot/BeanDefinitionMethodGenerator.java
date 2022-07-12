@@ -90,8 +90,8 @@ class BeanDefinitionMethodGenerator {
 		Class<?> target = codeFragments.getTarget(this.registeredBean,
 				this.constructorOrFactoryMethod);
 		if (!target.getName().startsWith("java.")) {
-			GeneratedClass generatedClass = generationContext.getClassGenerator()
-					.getOrGenerateClass(FEATURE_NAME, target).using(type -> {
+			GeneratedClass generatedClass = generationContext.getGeneratedClasses()
+					.add(FEATURE_NAME, target).using(type -> {
 						type.addJavadoc("Bean definitions for {@link $T}", target);
 						type.addModifiers(Modifier.PUBLIC);
 					});

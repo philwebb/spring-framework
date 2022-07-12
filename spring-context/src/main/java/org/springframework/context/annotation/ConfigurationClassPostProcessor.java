@@ -535,9 +535,8 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 			if (!mappings.isEmpty()) {
 				GeneratedMethod generatedMethod = beanFactoryInitializationCode
 						.getMethods()
-						.generateMethod("addImportAwareBeanPostProcessors")
-						.using(builder -> generateAddPostProcessorMethod(builder,
-								mappings));
+						.generateMethod("addImportAwareBeanPostProcessors", builder ->
+								generateAddPostProcessorMethod(builder, mappings));
 				beanFactoryInitializationCode
 						.addInitializer(MethodReference.of(generatedMethod.getName()));
 				ResourceHints hints = generationContext.getRuntimeHints().resources();

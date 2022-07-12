@@ -52,8 +52,8 @@ class ApplicationContextInitializationCodeGenerator
 
 
 	ApplicationContextInitializationCodeGenerator(GenerationContext generationContext) {
-		this.generatedClass = generationContext.getClassGenerator()
-				.generateClass("ApplicationContextInitializer").using(this::build);
+		this.generatedClass = generationContext.getGeneratedClasses()
+				.add("ApplicationContextInitializer").using(this::build);
 	}
 
 

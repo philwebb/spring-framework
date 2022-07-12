@@ -41,7 +41,7 @@ public class MockBeanRegistrationCode implements BeanRegistrationCode {
 
 
 	public MockBeanRegistrationCode(GenerationContext generationContext) {
-		this.generatedClass = generationContext.getClassGenerator().generateClass("TestCode");
+		this.generatedClass = generationContext.getGeneratedClasses().add("TestCode");
 	}
 
 

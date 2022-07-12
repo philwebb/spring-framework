@@ -36,7 +36,7 @@ import org.springframework.util.Assert;
  * @since 6.0
  * @see GeneratedClass
  */
-public class GeneratedClasses implements ClassGenerator {
+public class GeneratedClasses {
 
 	private final ClassNameGenerator classNameGenerator;
 
@@ -49,7 +49,7 @@ public class GeneratedClasses implements ClassGenerator {
 	 * Create a new instance using the specified naming conventions.
 	 * @param classNameGenerator the class name generator to use
 	 */
-	public GeneratedClasses(ClassNameGenerator classNameGenerator) {
+	GeneratedClasses(ClassNameGenerator classNameGenerator) {
 		this(classNameGenerator, new ArrayList<>(), new ConcurrentHashMap<>());
 	}
 
@@ -62,21 +62,21 @@ public class GeneratedClasses implements ClassGenerator {
 	}
 
 
-	public GeneratedClass getOrGenerateClass(String featureName) {
-		return getOrGenerateClass(featureName, null);
+	public GeneratedClass getOrAdd(String featureName) {
+		return getOrAdd(featureName, null);
 	}
 
-	public GeneratedClass getOrGenerateClass(String featureName, Class<?> target) {
+	public GeneratedClass getOrAdd(String featureName, @Nullable Class<?> target) {
 		Assert.hasLength(featureName, "'featureName' must not be empty");
 		Owner owner = new Owner(featureName, target);
-		return this.classesByOwner.computeIfAbsent(owner, key -> generateClass(featureName, target));
+		return this.classesByOwner.computeIfAbsent(owner, key -> add(featureName, target));
 	}
 
-	public GeneratedClass generateClass(String featureName) {
-		return generateClass(featureName, null);
+	public GeneratedClass add(String featureName) {
+		return add(featureName, null);
 	}
 
-	public GeneratedClass generateClass(String featureName, @Nullable Class<?> target) {
+	public GeneratedClass add(String featureName, @Nullable Class<?> target) {
 		Assert.hasLength(featureName, "'featureName' must not be empty");
 		ClassName className = this.classNameGenerator.generateClassName(featureName, target);
 		GeneratedClass generatedClass = new GeneratedClass(className);

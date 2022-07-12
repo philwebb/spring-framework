@@ -153,7 +153,7 @@ class ScopedProxyBeanRegistrationAotProcessor
 				boolean allowDirectSupplierShortcut) {
 
 			GeneratedMethod method = beanRegistrationCode.getMethods()
-					.generateMethod("get", "scopedProxyInstance").using(builder -> {
+					.generateMethod("getScopedProxyInstance", builder -> {
 						Class<?> beanClass = this.targetBeanDefinition.getResolvableType()
 								.toClass();
 						builder.addJavadoc(

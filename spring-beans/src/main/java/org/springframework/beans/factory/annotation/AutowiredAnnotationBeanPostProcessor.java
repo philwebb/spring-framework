@@ -906,8 +906,8 @@ public class AutowiredAnnotationBeanPostProcessor implements SmartInstantiationA
 		@Override
 		public void applyTo(GenerationContext generationContext,
 				BeanRegistrationCode beanRegistrationCode) {
-			GeneratedClass generatedClass = generationContext.getClassGenerator()
-					.generateClass("Autowiring", this.target).using(type -> {
+			GeneratedClass generatedClass = generationContext.getGeneratedClasses()
+					.add("Autowiring", this.target).using(type -> {
 						type.addJavadoc("Autowiring for {@link $T}.", this.target);
 						type.addModifiers(javax.lang.model.element.Modifier.PUBLIC);
 					});

@@ -91,7 +91,7 @@ public class DefaultGenerationContext implements GenerationContext {
 	}
 
 	@Override
-	public ClassGenerator getClassGenerator() {
+	public GeneratedClasses getGeneratedClasses() {
 		return this.generatedClasses;
 	}
 

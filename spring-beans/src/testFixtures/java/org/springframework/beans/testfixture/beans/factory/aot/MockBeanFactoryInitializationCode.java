@@ -40,7 +40,7 @@ public class MockBeanFactoryInitializationCode implements BeanFactoryInitializat
 
 
 	public MockBeanFactoryInitializationCode(GenerationContext generationContext) {
-		this.generatedClass = generationContext.getClassGenerator().generateClass("TestCode");
+		this.generatedClass = generationContext.getGeneratedClasses().add("TestCode");
 	}
 
 
