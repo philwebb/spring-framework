@@ -32,28 +32,28 @@ class XMethodGeneratorWithNameTests {
 
 	@Test
 	void withNameWhenGeneratingGetMethod() {
-		GeneratedMethod generateMethod = generatedMethods.withName("my", "bean")
+		GeneratedMethod generateMethod = generatedMethods.withPrefix("my", "bean")
 				.generateMethod("get", "test");
 		assertThat(generateMethod.getName()).hasToString("getMyBeanTest");
 	}
 
 	@Test
 	void withNameWhenGeneratingSetMethod() {
-		GeneratedMethod generateMethod = generatedMethods.withName("my", "bean")
+		GeneratedMethod generateMethod = generatedMethods.withPrefix("my", "bean")
 				.generateMethod("set", "test");
 		assertThat(generateMethod.getName()).hasToString("setMyBeanTest");
 	}
 
 	@Test
 	void withNameWhenGeneratingIsMethod() {
-		GeneratedMethod generateMethod = generatedMethods.withName("my", "bean")
+		GeneratedMethod generateMethod = generatedMethods.withPrefix("my", "bean")
 				.generateMethod("is", "test");
 		assertThat(generateMethod.getName()).hasToString("isMyBeanTest");
 	}
 
 	@Test
 	void withNameWhenGeneratingOtherMethod() {
-		GeneratedMethod generateMethod = generatedMethods.withName("my", "bean")
+		GeneratedMethod generateMethod = generatedMethods.withPrefix("my", "bean")
 				.generateMethod("test");
 		assertThat(generateMethod.getName()).hasToString("myBeanTest");
 	}

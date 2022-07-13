@@ -47,7 +47,7 @@ public final class GeneratedClass {
 	 * constructor is package-private since names should only be generated via a
 	 * {@link GeneratedClasses}.
 	 * @param name the generated name
-	 * @param type consumer to generate the type
+	 * @param type a {@link Consumer} used to build the type
 	 */
 	GeneratedClass(ClassName name, Consumer<TypeSpec.Builder> type) {
 		Assert.notNull(type, "'type' must not be null");

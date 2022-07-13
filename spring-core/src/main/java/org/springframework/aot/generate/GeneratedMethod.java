@@ -31,7 +31,7 @@ import org.springframework.util.Assert;
  */
 public final class GeneratedMethod {
 
-	private final String name;
+	private final MethodName name;
 
 	private final Consumer<Builder> method;
 
@@ -43,7 +43,7 @@ public final class GeneratedMethod {
 	 * @param name the generated name
 	 * @param method consumer to generate the method
 	 */
-	GeneratedMethod(String name, Consumer<MethodSpec.Builder> method) {
+	GeneratedMethod(MethodName name, Consumer<MethodSpec.Builder> method) {
 		this.name = name;
 		this.method = method;
 	}
@@ -54,7 +54,7 @@ public final class GeneratedMethod {
 	 * @return the name of the generated method
 	 */
 	public String getName() {
-		return this.name;
+		return this.name.toString();
 	}
 
 	/**
@@ -64,7 +64,7 @@ public final class GeneratedMethod {
 	 * methods has not been called
 	 */
 	MethodSpec generateMethodSpec() {
-		MethodSpec.Builder builder = MethodSpec.methodBuilder(this.name);
+		MethodSpec.Builder builder = MethodSpec.methodBuilder(getName());
 		this.method.accept(builder);
 		MethodSpec methodSpec = builder.build();
 		Assert.state(this.name.equals(methodSpec.name),

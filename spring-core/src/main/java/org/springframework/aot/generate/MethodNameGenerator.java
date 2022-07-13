@@ -29,9 +29,9 @@ import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
 /**
- * Generates unique method names that can be used in ahead-of-time generated
- * source code. This class is stateful so one instance should be used per
- * generated type.
+ * Internal class used to generate unique method names that can be used in
+ * ahead-of-time generated source code. This class is stateful so one instance
+ * should be used per generated type.
  *
  * @author Phillip Webb
  * @since 6.0
@@ -88,36 +88,6 @@ class MethodNameGenerator {
 		return (sequence > 0) ? name + sequence : name;
 	}
 
-	/**
-	 * Join the specified parts to create a valid camel case method name.
-	 * @param parts the parts to join
-	 * @return a method name from the joined parts.
-	 */
-	public static String join(String... parts) {
-		Stream<String> capitalizedPartNames = Arrays.stream(parts)
-				.map(MethodNameGenerator::getPartName).map(StringUtils::capitalize);
-		return StringUtils
-				.uncapitalize(capitalizedPartNames.collect(Collectors.joining()));
-	}
-
-	private static String getPartName(@Nullable String part) {
-		if (part == null) {
-			return "";
-		}
-		return clean(part.toString());
-	}
-
-	private static String clean(String string) {
-		char[] chars = string.toCharArray();
-		StringBuilder name = new StringBuilder(chars.length);
-		boolean uppercase = false;
-		for (char ch : chars) {
-			char outputChar = (!uppercase) ? ch : Character.toUpperCase(ch);
-			name.append((!Character.isLetter(ch)) ? "" : outputChar);
-			uppercase = ch == '.';
-		}
-		return name.toString();
-	}
 
 
 	void reserveMethodNames(String... reservedMethodNames) {

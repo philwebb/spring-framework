@@ -484,23 +484,22 @@ class BeanDefinitionPropertyValueCodeGenerator {
 
 		private <K, V> CodeBlock generateLinkedHashMapCode(Map<K, V> map,
 				ResolvableType keyType, ResolvableType valueType) {
-			GeneratedMethod method = BeanDefinitionPropertyValueCodeGenerator.this.generatedMethods
-					.generateMethod("getMap", builder -> {
-						builder.addAnnotation(AnnotationSpec
+			GeneratedMethod generatedMethod = generatedMethods.add("getMap", method -> {
+						method.addAnnotation(AnnotationSpec
 								.builder(SuppressWarnings.class)
 								.addMember("value", "{\"rawtypes\", \"unchecked\"}")
 								.build());
-						builder.returns(Map.class);
-						builder.addStatement("$T map = new $T($L)", Map.class,
+						method.returns(Map.class);
+						method.addStatement("$T map = new $T($L)", Map.class,
 								LinkedHashMap.class, map.size());
-						map.forEach((key, value) -> builder.addStatement("map.put($L, $L)",
+						map.forEach((key, value) -> method.addStatement("map.put($L, $L)",
 								BeanDefinitionPropertyValueCodeGenerator.this
 										.generateCode(key, keyType),
 								BeanDefinitionPropertyValueCodeGenerator.this
 										.generateCode(value, valueType)));
-						builder.addStatement("return map");
+						method.addStatement("return map");
 					});
-			return CodeBlock.of("$L()", method.getName());
+			return CodeBlock.of("$L()", generatedMethod.getName());
 		}
 
 	}

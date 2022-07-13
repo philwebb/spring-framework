@@ -64,13 +64,11 @@ class BeanRegistrationsAotContribution
 					type.addJavadoc("Register bean definitions for the bean factory.");
 					type.addModifiers(Modifier.PUBLIC);
 				});
-		BeanRegistrationsCodeGenerator codeGenerator = new BeanRegistrationsCodeGenerator(
-				generatedClass);
-		GeneratedMethod registerMethod = codeGenerator.getMethods()
-				.generateMethod("registerBeanDefinitions", builder ->
-						generateRegisterMethod(builder, generationContext, codeGenerator));
-		beanFactoryInitializationCode
-				.addInitializer(MethodReference.of(generatedClass.getName(), registerMethod.getName()));
+		BeanRegistrationsCodeGenerator codeGenerator = new BeanRegistrationsCodeGenerator(generatedClass);
+		GeneratedMethod generatedMethod = codeGenerator.getMethods().add("registerBeanDefinitions", method ->
+				generateRegisterMethod(method, generationContext, codeGenerator));
+		beanFactoryInitializationCode.addInitializer(
+				MethodReference.of(generatedClass.getName(), generatedMethod.getName()));
 	}
 
 	private void generateRegisterMethod(MethodSpec.Builder method,

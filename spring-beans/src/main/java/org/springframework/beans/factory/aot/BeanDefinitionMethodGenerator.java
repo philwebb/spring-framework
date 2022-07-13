@@ -96,7 +96,7 @@ class BeanDefinitionMethodGenerator {
 						type.addModifiers(Modifier.PUBLIC);
 					});
 			GeneratedMethods generatedMethods = generatedClass.getMethods()
-					.withName(getName());
+					.withPrefix(getName());
 			GeneratedMethod generatedMethod = generateBeanDefinitionMethod(
 					generationContext, generatedClass.getName(), generatedMethods,
 					codeFragments, Modifier.PUBLIC);
@@ -104,7 +104,7 @@ class BeanDefinitionMethodGenerator {
 					generatedMethod.getName());
 		}
 		GeneratedMethods generatedMethods = beanRegistrationsCode.getMethods()
-				.withName(getName());
+				.withPrefix(getName());
 		GeneratedMethod generatedMethod = generateBeanDefinitionMethod(generationContext,
 				beanRegistrationsCode.getClassName(), generatedMethods, codeFragments,
 				Modifier.PRIVATE);
@@ -133,13 +133,13 @@ class BeanDefinitionMethodGenerator {
 				this.constructorOrFactoryMethod, codeFragments);
 		this.aotContributions.forEach(aotContribution -> aotContribution
 				.applyTo(generationContext, codeGenerator));
-		return generatedMethods.generateMethod("getBeanDefinition", builder -> {
-			builder.addJavadoc("Get the $L definition for '$L'",
+		return generatedMethods.add("getBeanDefinition", method -> {
+			method.addJavadoc("Get the $L definition for '$L'",
 					(!this.registeredBean.isInnerBean()) ? "bean" : "inner-bean",
 					getName());
-			builder.addModifiers(modifier, Modifier.STATIC);
-			builder.returns(BeanDefinition.class);
-			builder.addCode(codeGenerator.generateCode(generationContext));
+			method.addModifiers(modifier, Modifier.STATIC);
+			method.returns(BeanDefinition.class);
+			method.addCode(codeGenerator.generateCode(generationContext));
 		});
 	}
 

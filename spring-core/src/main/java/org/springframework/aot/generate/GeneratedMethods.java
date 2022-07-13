@@ -19,7 +19,6 @@ package org.springframework.aot.generate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
-import java.util.stream.Stream;
 
 import org.springframework.javapoet.MethodSpec;
 import org.springframework.javapoet.MethodSpec.Builder;
@@ -36,7 +35,9 @@ public class GeneratedMethods {
 
 	private final MethodNameGenerator methodNameGenerator;
 
-	private final List<GeneratedMethod> generatedMethods = new ArrayList<>();
+	private final MethodName prefix;
+
+	private final List<GeneratedMethod> generatedMethods;
 
 	/**
 	 * Create a new {@link GeneratedMethods} instance backed by the given
@@ -46,32 +47,45 @@ public class GeneratedMethods {
 	GeneratedMethods(MethodNameGenerator methodNameGenerator) {
 		Assert.notNull(methodNameGenerator, "'methodNameGenerator' must not be null");
 		this.methodNameGenerator = methodNameGenerator;
+		this.prefix = MethodName.NONE;
+		this.generatedMethods = new ArrayList<>();
 	}
 
-
-	public GeneratedMethod generateMethod(String suggestedName, Consumer<Builder> builder) {
-		return generateMethod(MethodName.of(suggestedName), builder);
-	}
-
-	public GeneratedMethod generateMethod(MethodName suggestedName, Consumer<Builder> builder) {
-		GeneratedMethod method = new GeneratedMethod("FIXME", builder);
-		this.generatedMethods.add(method);
-		return method;
+	private GeneratedMethods(MethodNameGenerator methodNameGenerator, MethodName prefix,
+			List<GeneratedMethod> generatedMethods) {
+		this.methodNameGenerator = methodNameGenerator;
+		this.prefix = prefix;
+		this.generatedMethods = generatedMethods;
 	}
 
 	/**
-	 * Add a new {@link GeneratedMethod}. The returned instance must define the
-	 * method spec by calling {@code using(builder -> ...)}.
-	 * @param methodNameParts the method name parts that should be used to
-	 * generate a unique method name
+	 * Add a new {@link GeneratedMethod}.
+	 * @param suggestedName the suggested name for the method
+	 * @param method a {@link Consumer} used to build method
 	 * @return the newly added {@link GeneratedMethod}
 	 */
-	private GeneratedMethod add(String... methodNameParts) {
-//		GeneratedMethod method = new GeneratedMethod(
-//				this.methodNameGenerator.generateMethodName(methodNameParts));
-//		this.generatedMethods.add(method);
-//		return method;
-		return null;
+	public GeneratedMethod add(String suggestedName, Consumer<Builder> method) {
+		Assert.notNull(suggestedName, "'suggestedName' must not be null");
+		return add(MethodName.of(suggestedName), method);
+	}
+
+	/**
+	 * Add a new {@link GeneratedMethod}.
+	 * @param suggestedName the suggested name for the method
+	 * @param method a {@link Consumer} used to build the method
+	 * @return the newly added {@link GeneratedMethod}
+	 */
+	public GeneratedMethod add(MethodName suggestedName, Consumer<Builder> method) {
+		Assert.notNull(suggestedName, "'suggestedName' must not be null");
+		Assert.notNull(method, "'method' must not be null");
+		GeneratedMethod generatedMethod = new GeneratedMethod(this.prefix.and(suggestedName), method);
+		this.generatedMethods.add(generatedMethod);
+		return generatedMethod;
+	}
+
+	public GeneratedMethods withPrefix(String prefix) {
+		Assert.notNull(prefix, "'prefix' must not be null");
+		return new GeneratedMethods(this.methodNameGenerator, this.prefix.and(prefix), this.generatedMethods);
 	}
 
 	/**
@@ -80,19 +94,7 @@ public class GeneratedMethods {
 	 * @param action the action to perform
 	 */
 	void doWithMethodSpecs(Consumer<MethodSpec> action) {
-		stream().map(GeneratedMethod::generateMethodSpec).forEach(action);
-	}
-
-	/**
-	 * Return a {@link Stream} of all the methods in this collection.
-	 * @return a stream of {@link GeneratedMethod} instances
-	 */
-	public Stream<GeneratedMethod> stream() {
-		return this.generatedMethods.stream();
-	}
-
-	public GeneratedMethods withName(String... parts) {
-		return null;
+		this.generatedMethods.stream().map(GeneratedMethod::generateMethodSpec).forEach(action);
 	}
 
 }

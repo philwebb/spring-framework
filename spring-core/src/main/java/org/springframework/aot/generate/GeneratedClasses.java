@@ -70,7 +70,7 @@ public class GeneratedClasses {
 	 * otherwise a new class will be generated.
 	 * @param featureName the name of the feature to associate with the
 	 * generated class
-	 * @param type consumer to generate the type
+	 * @param type a {@link Consumer} used to build the type
 	 * @return an existing or newly generated class
 	 */
 	public GeneratedClass getOrAdd(String featureName, Consumer<TypeSpec.Builder> type) {
@@ -85,7 +85,7 @@ public class GeneratedClasses {
 	 * @param featureName the name of the feature to associate with the
 	 * generated class
 	 * @param target the target component
-	 * @param type consumer to generate the type
+	 * @param type a {@link Consumer} used to build the type
 	 * @return an existing or newly generated class
 	 */
 	public GeneratedClass getOrAdd(String featureName, @Nullable Class<?> target,
@@ -103,7 +103,7 @@ public class GeneratedClasses {
 	 * Add a new generated class.
 	 * @param featureName the name of the feature to associate with the
 	 * generated class
-	 * @param type consumer to generate the type
+	 * @param type a {@link Consumer} used to build the type
 	 * @return the newly generated class
 	 */
 	public GeneratedClass add(String featureName, Consumer<TypeSpec.Builder> type) {
@@ -115,7 +115,7 @@ public class GeneratedClasses {
 	 * @param featureName the name of the feature to associate with the
 	 * generated class
 	 * @param target the target component
-	 * @param type consumer to generate the type
+	 * @param type a {@link Consumer} used to build the type
 	 * @return the newly generated class
 	 */
 	public GeneratedClass add(String featureName, @Nullable Class<?> target,
