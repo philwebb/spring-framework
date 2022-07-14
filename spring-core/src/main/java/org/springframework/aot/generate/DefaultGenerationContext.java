@@ -48,6 +48,7 @@ public class DefaultGenerationContext implements GenerationContext {
 	 * @param generatedFiles the generated files
 	 */
 	public DefaultGenerationContext(GeneratedFiles generatedFiles) {
+		// FIXME delete
 		this(new GeneratedClasses(new ClassNameGenerator(null)), generatedFiles, new RuntimeHints());
 	}
 

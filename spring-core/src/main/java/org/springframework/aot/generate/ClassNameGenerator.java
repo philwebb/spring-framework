@@ -57,6 +57,7 @@ public final class ClassNameGenerator {
 	 * @param defaultTarget the default target class to use
 	 */
 	public ClassNameGenerator(@Nullable Class<?> defaultTarget) {
+		// FIXME always have a target
 		this(defaultTarget, "");
 	}
 
