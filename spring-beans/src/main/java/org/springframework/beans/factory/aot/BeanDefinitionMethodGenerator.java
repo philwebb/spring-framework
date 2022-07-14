@@ -91,7 +91,7 @@ class BeanDefinitionMethodGenerator {
 				this.constructorOrFactoryMethod);
 		if (!target.getName().startsWith("java.")) {
 			GeneratedClass generatedClass = generationContext.getGeneratedClasses()
-					.getOrAdd(FEATURE_NAME, target, type -> {
+					.getOrAddForComponent(FEATURE_NAME, target, type -> {
 						type.addJavadoc("Bean definitions for {@link $T}", target);
 						type.addModifiers(Modifier.PUBLIC);
 					});
