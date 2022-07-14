@@ -19,6 +19,7 @@ package org.springframework.aot.generate;
 import java.io.IOException;
 import java.util.function.Consumer;
 
+import net.bytebuddy.TypeCache;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.aot.generate.GeneratedFiles.Kind;
@@ -89,11 +90,10 @@ class GeneratedClassesTests {
 
 	@Test
 	void addWithSameNameReturnsDifferentInstances() {
-		Consumer<Builder> typeCustomizer = mockTypeCustomizer();
 		GeneratedClass generatedClass1 = this.generatedClasses
-				.add("one", TestComponent.class, typeCustomizer);
+				.add("one", TestComponent.class, emptyTypeCustomizer);
 		GeneratedClass generatedClass2 = this.generatedClasses
-				.add("one", TestComponent.class, typeCustomizer);
+				.add("one", TestComponent.class, emptyTypeCustomizer);
 		assertThat(generatedClass1).isNotSameAs(generatedClass2);
 		assertThat(generatedClass1.getName().simpleName()).endsWith("__One");
 		assertThat(generatedClass2.getName().simpleName()).endsWith("__One1");
@@ -101,26 +101,35 @@ class GeneratedClassesTests {
 
 	@Test
 	void getOrAddWhenNewReturnsGeneratedMethod() {
-		Consumer<Builder> typeCustomizer = mockTypeCustomizer();
 		GeneratedClass generatedClass1 = this.generatedClasses
-				.getOrAdd("one", TestComponent.class, typeCustomizer);
+				.getOrAdd("one", TestComponent.class, emptyTypeCustomizer);
 		GeneratedClass generatedClass2 = this.generatedClasses
-				.getOrAdd("two", TestComponent.class, typeCustomizer);
+				.getOrAdd("two", TestComponent.class, emptyTypeCustomizer);
 		assertThat(generatedClass1).isNotNull().isNotEqualTo(generatedClass2);
 		assertThat(generatedClass2).isNotNull();
 	}
 
 	@Test
 	void getOrAddWhenRepeatReturnsSameGeneratedMethod() {
-		Consumer<Builder> typeCustomizer = mockTypeCustomizer();
 		GeneratedClass generatedClass1 = this.generatedClasses
-				.getOrAdd("one", TestComponent.class, typeCustomizer);
+				.getOrAdd("one", TestComponent.class, emptyTypeCustomizer);
 		GeneratedClass generatedClass2 = this.generatedClasses
-				.getOrAdd("one", TestComponent.class, typeCustomizer);
+				.getOrAdd("one", TestComponent.class, emptyTypeCustomizer);
 		GeneratedClass generatedClass3 = this.generatedClasses
-				.getOrAdd("one", TestComponent.class, typeCustomizer);
+				.getOrAdd("one", TestComponent.class, emptyTypeCustomizer);
 		assertThat(generatedClass1).isNotNull().isSameAs(generatedClass2)
 				.isSameAs(generatedClass3);
+	}
+
+	@Test
+	void getOrAddWhenHasFeatureNamePrefix() {
+		GeneratedClasses prefixed = this.generatedClasses.withFeatureNamePrefix("prefix");
+		GeneratedClass generatedClass1 = this.generatedClasses.getOrAdd("one", TestComponent.class, emptyTypeCustomizer);
+		GeneratedClass generatedClass2 = this.generatedClasses.getOrAdd("one", TestComponent.class, emptyTypeCustomizer);
+		GeneratedClass generatedClass3 = prefixed.getOrAdd("one", TestComponent.class, emptyTypeCustomizer);
+		GeneratedClass generatedClass4 = prefixed.getOrAdd("one", TestComponent.class, emptyTypeCustomizer);
+		assertThat(generatedClass1).isSameAs(generatedClass2).isNotSameAs(generatedClass3);
+		assertThat(generatedClass3).isSameAs(generatedClass4);
 	}
 
 	@Test
@@ -143,12 +152,6 @@ class GeneratedClassesTests {
 				.add("one", TestComponent.class, emptyTypeCustomizer);
 		assertThat(generatedClass1.getName().toString()).endsWith("TestComponent__One");
 		assertThat(generatedClass2.getName().toString()).endsWith("TestComponent__AnotherOne");
-	}
-
-
-	@SuppressWarnings("unchecked")
-	private Consumer<TypeSpec.Builder> mockTypeCustomizer() {
-		return mock(Consumer.class);
 	}
 
 

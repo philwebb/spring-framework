@@ -78,7 +78,10 @@ public final class ClassNameGenerator {
 		this.sequenceGenerator = sequenceGenerator;
 	}
 
-
+	String getFeatureNamePrefix() {
+		return this.featureNamePrefix;
+	}
+	
 	/**
 	 * Generate a unique {@link ClassName} based on the specified
 	 * {@code featureName} and {@code target}. If the {@code target} is

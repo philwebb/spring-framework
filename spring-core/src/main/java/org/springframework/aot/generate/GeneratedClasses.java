@@ -91,7 +91,7 @@ public class GeneratedClasses {
 	public GeneratedClass getOrAdd(String featureName, @Nullable Class<?> target, Consumer<TypeSpec.Builder> type) {
 		Assert.hasLength(featureName, "'featureName' must not be empty");
 		Assert.notNull(type, "'type' must not be null");
-		Owner owner = new Owner(featureName, target);
+		Owner owner = new Owner(this.classNameGenerator.getFeatureNamePrefix(), featureName, target);
 		GeneratedClass generatedClass = this.classesByOwner.computeIfAbsent(owner, key ->
 				add(featureName, target, type));
 		generatedClass.assertSameType(type);
@@ -147,7 +147,7 @@ public class GeneratedClasses {
 				this.classes, this.classesByOwner);
 	}
 
-	private record Owner(String featureName, @Nullable Class<?> target) {
+	private record Owner(String featureNamePrefix, String featureName, @Nullable Class<?> target) {
 
 	}
 
