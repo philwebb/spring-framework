@@ -37,6 +37,7 @@ import org.springframework.beans.testfixture.beans.factory.aot.MockBeanFactoryIn
 import org.springframework.beans.testfixture.beans.factory.generator.SimpleConfiguration;
 import org.springframework.context.testfixture.context.generator.annotation.ImportAwareConfiguration;
 import org.springframework.context.testfixture.context.generator.annotation.ImportConfiguration;
+import org.springframework.core.testfixture.aot.generate.TestGenerationContext;
 import org.springframework.javapoet.CodeBlock;
 import org.springframework.javapoet.MethodSpec;
 import org.springframework.javapoet.ParameterizedTypeName;
@@ -62,7 +63,7 @@ class ConfigurationClassPostProcessorAotContributionTests {
 
 	ConfigurationClassPostProcessorAotContributionTests() {
 		this.generatedFiles = new InMemoryGeneratedFiles();
-		this.generationContext = new DefaultGenerationContext(this.generatedFiles);
+		this.generationContext = new TestGenerationContext(this.generatedFiles);
 		this.beanFactoryInitializationCode = new MockBeanFactoryInitializationCode(this.generationContext);
 	}
 

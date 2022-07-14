@@ -42,6 +42,7 @@ import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.beans.testfixture.beans.TestBean;
 import org.springframework.beans.testfixture.beans.factory.aot.MockBeanFactoryInitializationCode;
 import org.springframework.core.mock.MockSpringFactoriesLoader;
+import org.springframework.core.testfixture.aot.generate.TestGenerationContext;
 import org.springframework.core.testfixture.aot.generate.TestTarget;
 import org.springframework.javapoet.CodeBlock;
 import org.springframework.javapoet.MethodSpec;
@@ -73,7 +74,7 @@ class BeanRegistrationsAotContributionTests {
 		this.springFactoriesLoader = new MockSpringFactoriesLoader();
 		this.beanFactory = new DefaultListableBeanFactory();
 		this.generatedFiles = new InMemoryGeneratedFiles();
-		this.generationContext = new DefaultGenerationContext(this.generatedFiles);
+		this.generationContext = new TestGenerationContext(this.generatedFiles);
 		this.methodGeneratorFactory = new BeanDefinitionMethodGeneratorFactory(
 				new AotFactoriesLoader(this.beanFactory, this.springFactoriesLoader));
 		this.beanFactoryInitializationCode = new MockBeanFactoryInitializationCode(this.generationContext);

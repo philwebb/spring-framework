@@ -49,6 +49,7 @@ import org.springframework.beans.testfixture.beans.TestBean;
 import org.springframework.beans.testfixture.beans.factory.aot.MockBeanRegistrationsCode;
 import org.springframework.core.ResolvableType;
 import org.springframework.core.mock.MockSpringFactoriesLoader;
+import org.springframework.core.testfixture.aot.generate.TestGenerationContext;
 import org.springframework.javapoet.CodeBlock;
 import org.springframework.javapoet.MethodSpec;
 import org.springframework.javapoet.ParameterizedTypeName;
@@ -76,7 +77,7 @@ class BeanDefinitionMethodGeneratorTests {
 
 	BeanDefinitionMethodGeneratorTests() {
 		this.generatedFiles = new InMemoryGeneratedFiles();
-		this.generationContext = new DefaultGenerationContext(this.generatedFiles);
+		this.generationContext = new TestGenerationContext(this.generatedFiles);
 		this.beanFactory = new DefaultListableBeanFactory();
 		this.methodGeneratorFactory = new BeanDefinitionMethodGeneratorFactory(
 				new AotFactoriesLoader(this.beanFactory, new MockSpringFactoriesLoader()));

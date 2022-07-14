@@ -45,6 +45,7 @@ import org.springframework.beans.factory.support.ManagedMap;
 import org.springframework.beans.factory.support.ManagedSet;
 import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.beans.testfixture.beans.factory.aot.DeferredTypeBuilder;
+import org.springframework.core.testfixture.aot.generate.TestGenerationContext;
 import org.springframework.javapoet.CodeBlock;
 import org.springframework.javapoet.MethodSpec;
 import org.springframework.javapoet.ParameterizedTypeName;
@@ -63,7 +64,7 @@ class BeanDefinitionPropertiesCodeGeneratorTests {
 
 	private final InMemoryGeneratedFiles generatedFiles = new InMemoryGeneratedFiles();
 
-	private final DefaultGenerationContext generationContext = new DefaultGenerationContext(this.generatedFiles);
+	private final DefaultGenerationContext generationContext = new TestGenerationContext(this.generatedFiles);
 
 	@Test
 	void setPrimaryWhenFalse() {

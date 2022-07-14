@@ -44,6 +44,7 @@ import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.context.testfixture.context.generator.SimpleComponent;
 import org.springframework.context.testfixture.context.generator.annotation.AutowiredComponent;
 import org.springframework.context.testfixture.context.generator.annotation.InitDestroyComponent;
+import org.springframework.core.testfixture.aot.generate.TestGenerationContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -187,7 +188,7 @@ class ApplicationContextAotGeneratorTests {
 			BiConsumer<ApplicationContextInitializer<GenericApplicationContext>, Compiled> result) {
 		ApplicationContextAotGenerator generator = new ApplicationContextAotGenerator();
 		InMemoryGeneratedFiles generatedFiles = new InMemoryGeneratedFiles();
-		DefaultGenerationContext generationContext = new DefaultGenerationContext(generatedFiles);
+		DefaultGenerationContext generationContext = new TestGenerationContext(generatedFiles);
 		generator.generateApplicationContext(applicationContext, generationContext);
 		generationContext.writeGeneratedContent();
 		TestCompiler.forSystem().withFiles(generatedFiles).compile(compiled ->

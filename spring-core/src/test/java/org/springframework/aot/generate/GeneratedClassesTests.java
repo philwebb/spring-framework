@@ -19,12 +19,10 @@ package org.springframework.aot.generate;
 import java.io.IOException;
 import java.util.function.Consumer;
 
-import net.bytebuddy.TypeCache;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.aot.generate.GeneratedFiles.Kind;
 import org.springframework.javapoet.TypeSpec;
-import org.springframework.javapoet.TypeSpec.Builder;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;

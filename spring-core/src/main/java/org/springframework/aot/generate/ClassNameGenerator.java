@@ -39,11 +39,8 @@ public final class ClassNameGenerator {
 
 	private static final String SEPARATOR = "__";
 
-	private static final String AOT_PACKAGE = "__.";
-
 	private static final String AOT_FEATURE = "Aot";
 
-	@Nullable
 	private final Class<?> defaultTarget;
 
 	private final String featureNamePrefix;
@@ -56,8 +53,7 @@ public final class ClassNameGenerator {
 	 * feature name prefix.
 	 * @param defaultTarget the default target class to use
 	 */
-	public ClassNameGenerator(@Nullable Class<?> defaultTarget) {
-		// FIXME always have a target
+	public ClassNameGenerator(Class<?> defaultTarget) {
 		this(defaultTarget, "");
 	}
 
@@ -67,12 +63,13 @@ public final class ClassNameGenerator {
 	 * @param defaultTarget the default target class to use
 	 * @param featureNamePrefix the prefix to use to qualify feature names
 	 */
-	public ClassNameGenerator(@Nullable Class<?> defaultTarget, String featureNamePrefix) {
+	public ClassNameGenerator(Class<?> defaultTarget, String featureNamePrefix) {
 		this(defaultTarget, featureNamePrefix, new ConcurrentHashMap<>());
 	}
 
-	private ClassNameGenerator(@Nullable Class<?> defaultTarget, String featureNamePrefix,
+	private ClassNameGenerator(Class<?> defaultTarget, String featureNamePrefix,
 			Map<String, AtomicInteger> sequenceGenerator) {
+		Assert.notNull(defaultTarget, "'defaultTarget' must not be null");
 		this.defaultTarget = defaultTarget;
 		this.featureNamePrefix = (!StringUtils.hasText(featureNamePrefix) ? "" : featureNamePrefix);
 		this.sequenceGenerator = sequenceGenerator;
@@ -81,7 +78,7 @@ public final class ClassNameGenerator {
 	String getFeatureNamePrefix() {
 		return this.featureNamePrefix;
 	}
-	
+
 	/**
 	 * Generate a unique {@link ClassName} based on the specified
 	 * {@code featureName} and {@code target}. If the {@code target} is
@@ -108,11 +105,7 @@ public final class ClassNameGenerator {
 		featureName = clean(featureName);
 		Class<?> targetToUse = (target != null ? target : this.defaultTarget);
 		String featureNameToUse = this.featureNamePrefix + featureName;
-		if(targetToUse != null) {
-			return targetToUse.getName().replace("$", "_")
-					+ SEPARATOR + StringUtils.capitalize(featureNameToUse);
-		}
-		return AOT_PACKAGE + featureNameToUse;
+		return targetToUse.getName().replace("$", "_") + SEPARATOR + StringUtils.capitalize(featureNameToUse);
 	}
 
 	private String clean(String name) {

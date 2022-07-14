@@ -45,6 +45,7 @@ import org.springframework.beans.factory.support.ManagedMap;
 import org.springframework.beans.factory.support.ManagedSet;
 import org.springframework.beans.testfixture.beans.factory.aot.DeferredTypeBuilder;
 import org.springframework.core.ResolvableType;
+import org.springframework.core.testfixture.aot.generate.TestGenerationContext;
 import org.springframework.javapoet.CodeBlock;
 import org.springframework.javapoet.MethodSpec;
 import org.springframework.javapoet.ParameterizedTypeName;
@@ -63,7 +64,7 @@ class BeanDefinitionPropertyValueCodeGeneratorTests {
 
 	private void compile(Object value, BiConsumer<Object, Compiled> result) {
 		InMemoryGeneratedFiles generatedFiles = new InMemoryGeneratedFiles();
-		DefaultGenerationContext generationContext = new DefaultGenerationContext(generatedFiles);
+		DefaultGenerationContext generationContext = new TestGenerationContext(generatedFiles);
 		DeferredTypeBuilder typeBuilder = new DeferredTypeBuilder();
 		GeneratedClass generatedClass = generationContext.getGeneratedClasses().add("TestCode", typeBuilder);
 		CodeBlock generatedCode = new BeanDefinitionPropertyValueCodeGenerator(
