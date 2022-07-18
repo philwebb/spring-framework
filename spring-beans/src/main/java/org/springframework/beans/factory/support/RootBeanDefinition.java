@@ -429,6 +429,17 @@ public class RootBeanDefinition extends AbstractBeanDefinition {
 		return this.factoryMethodToIntrospect;
 	}
 
+	@Override
+	public void setInstanceSupplier(@Nullable Supplier<?> instanceSupplier) {
+		super.setInstanceSupplier(instanceSupplier);
+		if (instanceSupplier instanceof InstanceSupplier<?> specificSupplier) {
+			Method factoryMethod = specificSupplier.getFactoryMethod();
+			if (factoryMethod != null) {
+				setResolvedFactoryMethod(factoryMethod);
+			}
+		}
+	}
+
 	/**
 	 * Register an externally managed configuration method or field.
 	 */
