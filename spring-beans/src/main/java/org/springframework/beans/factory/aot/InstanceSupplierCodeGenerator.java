@@ -35,6 +35,7 @@ import org.springframework.beans.factory.support.RegisteredBean;
 import org.springframework.core.ResolvableType;
 import org.springframework.javapoet.ClassName;
 import org.springframework.javapoet.CodeBlock;
+import org.springframework.javapoet.CodeBlock.Builder;
 import org.springframework.javapoet.MethodSpec;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.function.ThrowingSupplier;
@@ -148,7 +149,7 @@ class InstanceSupplierCodeGenerator {
 
 		this.generationContext.getRuntimeHints().reflection()
 				.registerConstructor(constructor);
- 		GeneratedMethod generatedMethod = generateGetInstanceSupplierMethod(method -> {
+		GeneratedMethod generatedMethod = generateGetInstanceSupplierMethod(method -> {
 			method.addJavadoc("Get the bean instance supplier for '$L'.", name);
 			method.addModifiers(PRIVATE_STATIC);
 			method.returns(BeanInstanceSupplier.class);
@@ -170,16 +171,14 @@ class InstanceSupplierCodeGenerator {
 		CodeBlock.Builder code = CodeBlock.builder();
 		code.add(generateResolverForConstructor(constructor, parameterOffset));
 		boolean hasArguments = constructor.getParameterCount() > 0;
-		CodeBlock arguments = (hasArguments ? new AutowiredArgumentsCodeGenerator(declaringClass,
-				constructor).generateCode(constructor.getParameterTypes(), parameterOffset)
-				: NO_ARGS);
+		CodeBlock arguments = hasArguments
+				? new AutowiredArgumentsCodeGenerator(declaringClass, constructor)
+						.generateCode(constructor.getParameterTypes(), parameterOffset)
+				: NO_ARGS;
 		CodeBlock newInstance = generateNewInstanceCodeForConstructor(dependsOnBean,
 				declaringClass, arguments);
-		CodeBlock lambda = generateGeneratorLambdaArguments(hasArguments);
-		code.add("\n").indent().indent()
-				.addStatement(".withGenerator($L -> $L)", lambda, newInstance)
-				.unindent().unindent();
-		method.addCode(code.build());
+		code.add(generateWithGeneratorCode(hasArguments, newInstance));
+		method.addStatement(code.build());
 	}
 
 	private CodeBlock generateResolverForConstructor(Constructor<?> constructor,
@@ -261,18 +260,15 @@ class InstanceSupplierCodeGenerator {
 		method.addModifiers(modifiers);
 		method.returns(BeanInstanceSupplier.class);
 		CodeBlock.Builder code = CodeBlock.builder();
+		code.add(generateInstanceSupplierForFactoryMethod(factoryMethod, declaringClass, factoryMethodName));
 		boolean hasArguments = factoryMethod.getParameterCount() > 0;
 		CodeBlock arguments = hasArguments
-				? new AutowiredArgumentsCodeGenerator(declaringClass,
-				factoryMethod).generateCode(factoryMethod.getParameterTypes()) : NO_ARGS;
+				? new AutowiredArgumentsCodeGenerator(declaringClass, factoryMethod)
+						.generateCode(factoryMethod.getParameterTypes())
+				: NO_ARGS;
 		CodeBlock newInstance = generateNewInstanceCodeForMethod(dependsOnBean,
 				declaringClass, factoryMethodName, arguments);
-		CodeBlock instanceSupplier = generateInstanceSupplierForFactoryMethod(factoryMethod,
-				declaringClass, factoryMethodName);
-		CodeBlock lambda = generateGeneratorLambdaArguments(hasArguments);
-		code.add(instanceSupplier).add("\n").indent().indent()
-				.add(".withGenerator($L -> $L)", lambda, newInstance)
-				.unindent().unindent();
+		code.add(generateWithGeneratorCode(hasArguments, newInstance));
 		method.addStatement(code.build());
 	}
 
@@ -305,10 +301,16 @@ class InstanceSupplierCodeGenerator {
 		return CodeBlock.of("$T.$L()", this.className, getInstanceMethod.getName());
 	}
 
-	private CodeBlock generateGeneratorLambdaArguments(boolean withArguments) {
-		return (withArguments
+	private CodeBlock generateWithGeneratorCode(boolean hasArguments, CodeBlock newInstance) {
+		CodeBlock lambdaArguments = (hasArguments
 				? CodeBlock.of("($L, $L)", REGISTERED_BEAN_PARAMETER_NAME, ARGS_PARAMETER_NAME)
 				: CodeBlock.of("($L)", REGISTERED_BEAN_PARAMETER_NAME));
+		Builder code = CodeBlock.builder();
+		code.add("\n");
+		code.indent().indent();
+		code.add(".withGenerator($L -> $L)", lambdaArguments, newInstance);
+		code.unindent().unindent();
+		return code.build();
 	}
 
 	protected AccessVisibility getAccessVisibility(RegisteredBean registeredBean,
