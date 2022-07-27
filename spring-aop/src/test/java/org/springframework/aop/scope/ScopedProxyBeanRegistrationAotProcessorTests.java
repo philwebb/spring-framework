@@ -31,7 +31,7 @@ import org.springframework.aot.generate.MethodReference;
 import org.springframework.aot.test.generator.compile.Compiled;
 import org.springframework.aot.test.generator.compile.TestCompiler;
 import org.springframework.beans.factory.BeanCreationException;
-import org.springframework.beans.factory.aot.AotFactoriesLoader;
+import org.springframework.beans.factory.aot.AotServices;
 import org.springframework.beans.factory.aot.BeanFactoryInitializationAotContribution;
 import org.springframework.beans.factory.aot.BeanRegistrationAotProcessor;
 import org.springframework.beans.factory.aot.TestBeanRegistrationsAotProcessor;
@@ -82,7 +82,7 @@ class ScopedProxyBeanRegistrationAotProcessorTests {
 
 	@Test
 	void scopedProxyBeanRegistrationAotProcessorIsRegistered() {
-		assertThat(new AotFactoriesLoader(this.beanFactory).load(BeanRegistrationAotProcessor.class))
+		assertThat(AotServices.factoriesAndBeans(this.beanFactory).load(BeanRegistrationAotProcessor.class))
 				.anyMatch(ScopedProxyBeanRegistrationAotProcessor.class::isInstance);
 	}
 

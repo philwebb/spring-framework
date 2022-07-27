@@ -38,7 +38,9 @@ import org.springframework.util.Assert;
  * @author Phillip Webb
  * @since 6.0
  * @see SpringFactoriesLoader
+ * @deprecated in favor of {@link AotServices}
  */
+@Deprecated
 public class AotFactoriesLoader {
 
 	/**

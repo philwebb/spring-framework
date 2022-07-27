@@ -33,6 +33,7 @@ import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException
  *
  * @author Phillip Webb
  */
+@Deprecated
 class AotFactoriesLoaderTests {
 
 	@Test

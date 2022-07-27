@@ -43,6 +43,11 @@ import org.springframework.aot.hint.SerializationHints;
 public interface GenerationContext {
 
 	/**
+	 * The location to look for AOT factories.
+	 */
+	public static final String AOT_FACTORIES_RESOURCE_LOCATION = "META-INF/spring/aot.factories";
+
+	/**
 	 * Return the {@link GeneratedClasses} being used by the context. All
 	 * generated classes are written at the end of AOT processing.
 	 * @return the generated classes

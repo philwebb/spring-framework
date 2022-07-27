@@ -76,7 +76,7 @@ class BeanRegistrationsAotContributionTests {
 		this.generatedFiles = new InMemoryGeneratedFiles();
 		this.generationContext = new TestGenerationContext(this.generatedFiles);
 		this.methodGeneratorFactory = new BeanDefinitionMethodGeneratorFactory(
-				new AotFactoriesLoader(this.beanFactory, this.springFactoriesLoader));
+				AotServices.factoriesAndBeans(this.springFactoriesLoader, this.beanFactory));
 		this.beanFactoryInitializationCode = new MockBeanFactoryInitializationCode(this.generationContext);
 	}
 
