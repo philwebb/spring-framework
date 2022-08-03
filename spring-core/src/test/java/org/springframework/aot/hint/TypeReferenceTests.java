@@ -18,6 +18,8 @@ package org.springframework.aot.hint;
 
 import org.junit.jupiter.api.Test;
 
+import org.springframework.aot.hint.TypeReference;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**

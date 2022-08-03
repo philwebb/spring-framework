@@ -28,10 +28,12 @@ final class ReflectionTypeReference extends AbstractTypeReference {
 
 	private final Class<?> type;
 
+
 	private ReflectionTypeReference(Class<?> type) {
 		super(type.getPackageName(), type.getSimpleName(), getEnclosingClass(type));
 		this.type = type;
 	}
+
 
 	@Nullable
 	private static TypeReference getEnclosingClass(Class<?> type) {

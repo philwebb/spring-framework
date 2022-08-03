@@ -35,6 +35,8 @@ import org.springframework.core.annotation.SynthesizedAnnotation;
  */
 public abstract class RuntimeHintsUtils {
 
+	// FIXME can we merge with new API
+
 	/**
 	 * A {@link TypeHint} customizer suitable for an annotation. Make sure
 	 * that its attributes are visible.

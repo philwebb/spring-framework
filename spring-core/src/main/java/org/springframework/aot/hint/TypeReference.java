@@ -16,6 +16,9 @@
 
 package org.springframework.aot.hint;
 
+import java.util.Arrays;
+import java.util.function.Function;
+
 import org.springframework.lang.Nullable;
 
 /**
@@ -54,8 +57,8 @@ public interface TypeReference {
 	String getSimpleName();
 
 	/**
-	 * Return the enclosing type reference, or {@code null} if this type reference
-	 * does not have an enclosing type.
+	 * Return the enclosing type reference, or {@code null} if this type
+	 * reference does not have an enclosing type.
 	 * @return the enclosing type, if any
 	 */
 	@Nullable
@@ -71,14 +74,44 @@ public interface TypeReference {
 	}
 
 	/**
-	 * Create an instance based on the specified class name.
-	 * The format of the class name must follow {@linkplain Class#getName()},
-	 * in particular inner classes should be separated by a {@code $}.
+	 * Create an instance based on the specified class name. The format of the
+	 * class name must follow {@linkplain Class#getName()}, in particular inner
+	 * classes should be separated by a {@code $}.
 	 * @param className the class name of the type to wrap
 	 * @return a type reference for the specified class name
 	 */
 	static TypeReference of(String className) {
 		return SimpleTypeReference.of(className);
+	}
+
+	/**
+	 * Create an array of instances based on the specified types.
+	 * @param types the types to wrap
+	 * @return an array of type references for the specified types
+	 */
+	static TypeReference[] arrayOf(Class<?>... types) {
+		return Arrays.stream(types).map(TypeReference::of).toArray(TypeReference[]::new);
+	}
+
+	/**
+	 * Create an array of instances based on the types extracted from the given array.
+	 * @param <T> the array element type
+	 * @param array the source array
+	 * @param extractor extractor used to obtain a class from an array element
+	 * @return an array of type references
+	 */
+	static <T> TypeReference[] arrayOf(T[] array, Function<T, Class<?>> extractor) {
+		return Arrays.stream(array).map(extractor).map(TypeReference::of).toArray(TypeReference[]::new);
+	}
+	/**
+	 * Create an array of instances based on the specified class names. The
+	 * format of the class name must follow {@linkplain Class#getName()}, in
+	 * particular inner classes should be separated by a {@code $}.
+	 * @param classNames the class names of the types to wrap
+	 * @return an array of type references for the specified class names
+	 */
+	static TypeReference[] arrayOf(String... classNames) {
+		return Arrays.stream(classNames).map(TypeReference::of).toArray(TypeReference[]::new);
 	}
 
 }

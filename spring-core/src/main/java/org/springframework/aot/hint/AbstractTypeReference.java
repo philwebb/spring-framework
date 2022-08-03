@@ -16,8 +16,6 @@
 
 package org.springframework.aot.hint;
 
-import java.util.Objects;
-
 import org.springframework.lang.Nullable;
 
 /**
@@ -28,7 +26,7 @@ import org.springframework.lang.Nullable;
  * @author Stephane Nicoll
  * @since 6.0
  */
-public abstract class AbstractTypeReference implements TypeReference {
+abstract class AbstractTypeReference implements TypeReference {
 
 	private final String packageName;
 
@@ -37,11 +35,13 @@ public abstract class AbstractTypeReference implements TypeReference {
 	@Nullable
 	private final TypeReference enclosingType;
 
+
 	protected AbstractTypeReference(String packageName, String simpleName, @Nullable TypeReference enclosingType) {
 		this.packageName = packageName;
 		this.simpleName = simpleName;
 		this.enclosingType = enclosingType;
 	}
+
 
 	@Override
 	public String getName() {
@@ -80,7 +80,7 @@ public abstract class AbstractTypeReference implements TypeReference {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(getCanonicalName());
+		return getCanonicalName().hashCode();
 	}
 
 	@Override

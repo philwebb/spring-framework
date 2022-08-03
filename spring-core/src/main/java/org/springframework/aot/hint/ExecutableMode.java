@@ -23,6 +23,7 @@ import java.lang.reflect.Executable;
  *
  * @author Stephane Nicoll
  * @since 6.0
+ * @see ReflectionHints
  */
 public enum ExecutableMode {
 

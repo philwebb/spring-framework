@@ -20,22 +20,34 @@ import java.net.URL;
 
 import org.junit.jupiter.api.Test;
 
+import org.springframework.aot.hint.JavaSerializationHint;
+import org.springframework.aot.hint.SerializationHints;
+import org.springframework.aot.hint.TypeReference;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Tests for {@link SerializationHints}.
  *
  * @author Stephane Nicoll
+ * @author Phillip Webb
  */
 class SerializationHintsTests {
 
-	private final SerializationHints serializationHints = new SerializationHints();
+	private final SerializationHints hints = new SerializationHints();
 
 	@Test
-	void registerTypeTwiceExposesOneHint() {
-		this.serializationHints.registerType(URL.class);
-		this.serializationHints.registerType(TypeReference.of(URL.class.getName()));
-		assertThat(this.serializationHints.javaSerialization()).singleElement()
+	void registerJavaSerializationForTypeRegistersHint() {
+		this.hints.registerJavaSerialization().forType(URL.class);
+		assertThat(this.hints.javaSerialization()).singleElement()
+				.extracting(JavaSerializationHint::getType).isEqualTo(TypeReference.of(URL.class));
+	}
+
+	@Test
+	void registerJavaSerializationForTypeWhenCalledSeveralTimesRegistersSingleHint() {
+		this.hints.registerJavaSerialization().forType(URL.class);
+		this.hints.registerJavaSerialization().forType(TypeReference.of(URL.class.getName()));
+		assertThat(this.hints.javaSerialization()).singleElement()
 				.extracting(JavaSerializationHint::getType).isEqualTo(TypeReference.of(URL.class));
 	}
 

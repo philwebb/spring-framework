@@ -18,41 +18,55 @@ package org.springframework.aot.hint;
 
 import org.junit.jupiter.api.Test;
 
+import org.springframework.aot.hint.ResourcePatternHint;
+import org.springframework.aot.hint.TypeReference;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Tests for {@link ResourcePatternHint}.
  *
  * @author Sebastien Deleuze
+ * @author Phillip Webb
  */
 public class ResourcePatternHintTests {
 
 	@Test
-	void fileAtRoot() {
+	void getPatternReturnsPattern() {
+		ResourcePatternHint hint = new ResourcePatternHint("test", null);
+		assertThat(hint.getPattern()).isEqualTo("test");
+	}
+
+	@Test
+	void getReachableTypeReturnsReachableType() {
+		TypeReference reachableType = TypeReference.of(String.class);
+		ResourcePatternHint hint = new ResourcePatternHint("test", reachableType);
+		assertThat(hint.getReachableType()).isEqualTo(reachableType);
+	}
+
+	@Test
+	void toRegexWhenFileAtRoot() {
 		ResourcePatternHint hint = new ResourcePatternHint("file.properties", null);
-		assertThat(hint.toRegex().asMatchPredicate())
-				.accepts("file.properties")
-				.rejects("com/example/file.properties", "file.prop", "another-file.properties");
+		assertThat(hint.toRegex().asMatchPredicate()).accepts("file.properties").rejects("com/example/file.properties",
+				"file.prop", "another-file.properties");
 	}
 
 	@Test
-	void fileInDirectory() {
+	void toRegexWhenFileInDirectory() {
 		ResourcePatternHint hint = new ResourcePatternHint("com/example/file.properties", null);
-		assertThat(hint.toRegex().asMatchPredicate())
-				.accepts("com/example/file.properties")
-				.rejects("file.properties", "com/file.properties", "com/example/another-file.properties");
+		assertThat(hint.toRegex().asMatchPredicate()).accepts("com/example/file.properties").rejects("file.properties",
+				"com/file.properties", "com/example/another-file.properties");
 	}
 
 	@Test
-	void extension() {
+	void toRegexWhenWildcardExtension() {
 		ResourcePatternHint hint = new ResourcePatternHint("*.properties", null);
-		assertThat(hint.toRegex().asMatchPredicate())
-				.accepts("file.properties", "com/example/file.properties")
+		assertThat(hint.toRegex().asMatchPredicate()).accepts("file.properties", "com/example/file.properties")
 				.rejects("file.prop", "com/example/file.prop");
 	}
 
 	@Test
-	void extensionInDirectoryAtAnyDepth() {
+	void toRegexWhenExtensionInDirectoryAtAnyDepth() {
 		ResourcePatternHint hint = new ResourcePatternHint("com/example/*.properties", null);
 		assertThat(hint.toRegex().asMatchPredicate())
 				.accepts("com/example/file.properties", "com/example/another/file.properties")
@@ -60,10 +74,20 @@ public class ResourcePatternHintTests {
 	}
 
 	@Test
-	void anyFileInDirectoryAtAnyDepth() {
+	void toRegexWhenAnyFileInDirectoryAtAnyDepth() {
 		ResourcePatternHint hint = new ResourcePatternHint("com/example/*", null);
 		assertThat(hint.toRegex().asMatchPredicate())
 				.accepts("com/example/file.properties", "com/example/another/file.properties", "com/example/another")
 				.rejects("file.properties", "com/file.properties");
 	}
+
+	@Test
+	void equalsAndHashCode() {
+		ResourcePatternHint h1 = new ResourcePatternHint("*.txt", null);
+		ResourcePatternHint h2 = new ResourcePatternHint("*.txt", null);
+		ResourcePatternHint h3 = new ResourcePatternHint("*.txt", TypeReference.of(Integer.class));
+		assertThat(h1.hashCode()).isEqualTo(h2.hashCode());
+		assertThat(h1).isEqualTo(h1).isEqualTo(h2).isNotEqualTo(h3);
+	}
+
 }

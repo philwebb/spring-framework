@@ -37,9 +37,11 @@ final class SimpleTypeReference extends AbstractTypeReference {
 	@Nullable
 	private String canonicalName;
 
+
 	SimpleTypeReference(String packageName, String simpleName, @Nullable TypeReference enclosingType) {
 		super(packageName, simpleName, enclosingType);
 	}
+
 
 	static SimpleTypeReference of(String className) {
 		Assert.notNull(className, "'className' must not be null");
@@ -98,12 +100,11 @@ final class SimpleTypeReference extends AbstractTypeReference {
 	}
 
 	private static void buildName(@Nullable TypeReference type, StringBuilder sb) {
-		if (type == null) {
-			return;
+		if (type != null) {
+			String typeName = (type.getEnclosingType() != null) ? "." + type.getSimpleName() : type.getSimpleName();
+			sb.insert(0, typeName);
+			buildName(type.getEnclosingType(), sb);
 		}
-		String typeName = (type.getEnclosingType() != null) ? "." + type.getSimpleName() : type.getSimpleName();
-		sb.insert(0, typeName);
-		buildName(type.getEnclosingType(), sb);
 	}
 
 }
