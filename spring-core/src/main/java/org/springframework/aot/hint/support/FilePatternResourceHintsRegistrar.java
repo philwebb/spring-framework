@@ -41,6 +41,7 @@ public class FilePatternResourceHintsRegistrar {
 
 	private final List<String> extensions;
 
+
 	/**
 	 * Create a new instance for the specified file names, locations, and file
 	 * extensions.
@@ -54,6 +55,7 @@ public class FilePatternResourceHintsRegistrar {
 		this.locations = validateLocations(locations);
 		this.extensions = validateExtensions(extensions);
 	}
+
 
 	private static List<String> validateNames(List<String> names) {
 		for (String name : names) {
@@ -105,7 +107,7 @@ public class FilePatternResourceHintsRegistrar {
 			}
 		}
 		if (!includes.isEmpty()) {
-			hints.registerPattern(hint -> hint.includes(includes.toArray(String[]::new)));
+			hints.registerInclude().forPattern(includes.toArray(String[]::new));
 		}
 	}
 }

@@ -36,19 +36,19 @@ class SerializationHintsPredicatesTests {
 
 	@Test
 	void shouldMatchRegisteredClass() {
-		runtimeHints.serialization().registerType(String.class);
+		runtimeHints.serialization().registerJavaSerialization().forType(String.class);
 		assertThat(serialization.onType(String.class).test(runtimeHints)).isTrue();
 	}
 
 	@Test
 	void shouldMatchRegisteredTypeReference() {
-		runtimeHints.serialization().registerType(TypeReference.of(String.class));
+		runtimeHints.serialization().registerJavaSerialization().forType(TypeReference.of(String.class));
 		assertThat(serialization.onType(String.class).test(runtimeHints)).isTrue();
 	}
 
 	@Test
 	void shouldNotMatchUnregisteredType() {
-		runtimeHints.serialization().registerType(Integer.class);
+		runtimeHints.serialization().registerJavaSerialization().forType(Integer.class);
 		assertThat(serialization.onType(Long.class).test(runtimeHints)).isFalse();
 	}
 

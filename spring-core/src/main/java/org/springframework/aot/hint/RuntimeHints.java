@@ -32,13 +32,13 @@ package org.springframework.aot.hint;
  */
 public class RuntimeHints {
 
-	private final ReflectionHints reflection = new ReflectionHints();
+	private final ReflectionHints reflectionHints = new ReflectionHints();
 
-	private final ResourceHints resources = new ResourceHints();
+	private final ResourceHints resourceHints = new ResourceHints();
 
-	private final SerializationHints serialization = new SerializationHints();
+	private final SerializationHints serializationHints = new SerializationHints();
 
-	private final ProxyHints proxies = new ProxyHints();
+	private final ProxyHints proxyHints = new ProxyHints();
 
 
 	/**
@@ -46,7 +46,7 @@ public class RuntimeHints {
 	 * @return reflection hints
 	 */
 	public ReflectionHints reflection() {
-		return this.reflection;
+		return this.reflectionHints;
 	}
 
 	/**
@@ -54,7 +54,7 @@ public class RuntimeHints {
 	 * @return resource hints
 	 */
 	public ResourceHints resources() {
-		return this.resources;
+		return this.resourceHints;
 	}
 
 	/**
@@ -62,7 +62,7 @@ public class RuntimeHints {
 	 * @return serialization hints
 	 */
 	public SerializationHints serialization() {
-		return this.serialization;
+		return this.serializationHints;
 	}
 
 	/**
@@ -70,7 +70,7 @@ public class RuntimeHints {
 	 * @return proxy hints
 	 */
 	public ProxyHints proxies() {
-		return this.proxies;
+		return this.proxyHints;
 	}
 
 }

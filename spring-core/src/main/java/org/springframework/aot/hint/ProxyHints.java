@@ -16,105 +16,127 @@
 
 package org.springframework.aot.hint;
 
-import java.util.LinkedHashSet;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Set;
-import java.util.function.Consumer;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.UnaryOperator;
 import java.util.stream.Stream;
 
-import org.springframework.aot.hint.ClassProxyHint.Builder;
+import org.springframework.util.Assert;
 
 /**
- * Gather the need for using proxies at runtime.
+ * Hints for runtime proxy needs.
  *
  * @author Stephane Nicoll
+ * @author Phillip Webb
  * @since 6.0
+ * @see JavaProxyHint
+ * @see RuntimeHints
  */
 public class ProxyHints {
 
-	private final Set<JdkProxyHint> jdkProxies = new LinkedHashSet<>();
-
-	private final Set<ClassProxyHint> classProxies = new LinkedHashSet<>();
+	private final Set<JavaProxyHint> javaProxyHints = Collections.newSetFromMap(new ConcurrentHashMap<>());
 
 
 	/**
-	 * Return the interface-based proxies that are required.
-	 * @return a stream of {@link JdkProxyHint}
+	 * Registration methods for Java proxy hints.
+	 * @return Java proxy hint registration methods
 	 */
-	public Stream<JdkProxyHint> jdkProxies() {
-		return this.jdkProxies.stream();
+	public JavaProxyHintRegistration registerJavaProxy() {
+		return new JavaProxyHintRegistration();
 	}
 
 	/**
-	 * Return the class-based proxies that are required.
-	 * @return a stream of {@link ClassProxyHint}
+	 * Return an unordered {@link Stream} of the {@link JavaProxyHint java proxy
+	 * hints} that have been registered.
+	 * @return the registered JDK proxy hints
 	 */
-	public Stream<ClassProxyHint> classProxies() {
-		return this.classProxies.stream();
+	public Stream<JavaProxyHint> javaProxies() {
+		return this.javaProxyHints.stream();
 	}
+
 
 	/**
-	 * Register a {@link JdkProxyHint}.
-	 * @param jdkProxyHint the consumer of the hint builder
-	 * @return {@code this}, to facilitate method chaining
+	 * Registration methods for Java proxy hints.
 	 */
-	public ProxyHints registerJdkProxy(Consumer<JdkProxyHint.Builder> jdkProxyHint) {
-		JdkProxyHint.Builder builder = new JdkProxyHint.Builder();
-		jdkProxyHint.accept(builder);
-		this.jdkProxies.add(builder.build());
-		return this;
-	}
+	public class JavaProxyHintRegistration extends ReachableTypeRegistration<JavaProxyHintRegistration> {
 
-	/**
-	 * Register that a JDK proxy implementing the interfaces defined by the
-	 * specified {@linkplain TypeReference type references} is required.
-	 * @param proxiedInterfaces the type references for the interfaces the proxy
-	 * should implement
-	 * @return {@code this}, to facilitate method chaining
-	 */
-	public ProxyHints registerJdkProxy(TypeReference... proxiedInterfaces) {
-		return registerJdkProxy(jdkProxyHint ->
-				jdkProxyHint.proxiedInterfaces(proxiedInterfaces));
-	}
+		private UnaryOperator<Class<?>[]> classesMapper;
 
-	/**
-	 * Register that a JDK proxy implementing the specified interfaces is
-	 * required.
-	 * <p>When registering a JDK proxy for Spring AOP, consider using
-	 * {@link org.springframework.aop.framework.AopProxyUtils#completeJdkProxyInterfaces(Class...)
-	 * AopProxyUtils.completeJdkProxyInterfaces()} for convenience.
-	 * @param proxiedInterfaces the interfaces the proxy should implement
-	 * @return {@code this}, to facilitate method chaining
-	 */
-	public ProxyHints registerJdkProxy(Class<?>... proxiedInterfaces) {
-		return registerJdkProxy(jdkProxyHint ->
-				jdkProxyHint.proxiedInterfaces(proxiedInterfaces));
-	}
 
-	/**
-	 * Register that a class proxy is required for the class defined by the
-	 * specified {@link TypeReference}.
-	 * @param typeReference the type reference for the target class of the proxy
-	 * @param classProxyHint a builder to further customize the hint for that proxy
-	 * @return {@code this}, to facilitate method chaining
-	 */
-	public ProxyHints registerClassProxy(TypeReference typeReference, Consumer<Builder> classProxyHint) {
-		return addClassProxyHint(ClassProxyHint.of(typeReference), classProxyHint);
-	}
+		JavaProxyHintRegistration() {
+			this.classesMapper = UnaryOperator.identity();
+		}
 
-	/**
-	 * Register that a class proxy is required for the specified class.
-	 * @param targetClass the target class of the proxy
-	 * @param classProxyHint a builder to further customize the hint for that proxy
-	 * @return {@code this}, to facilitate method chaining
-	 */
-	public ProxyHints registerClassProxy(Class<?> targetClass, Consumer<Builder> classProxyHint) {
-		return addClassProxyHint(ClassProxyHint.of(targetClass), classProxyHint);
-	}
 
-	private ProxyHints addClassProxyHint(ClassProxyHint.Builder builder, Consumer<ClassProxyHint.Builder> classProxyHint) {
-		classProxyHint.accept(builder);
-		this.classProxies.add(builder.build());
-		return this;
+		/**
+		 * Return a new {@link JavaProxyHintRegistration} that applies the given
+		 * {@link UnaryOperator} to the interface classes before they are
+		 * registered. This method is often used to add standard AOP classes.
+		 * For example:<pre class=
+		 * code>hints.registerJdkProxy().withClassMapper(AopProxyUtils::completeJdkProxyInterfaces)
+		 * 	.forInterface(Example.class);</pre>
+		 * @param mapper the class mapper
+		 * @return this instance
+		 */
+		JavaProxyHintRegistration withClassMapper(UnaryOperator<Class<?>[]> mapper) {
+			Assert.notNull(mapper, "'mapper' must not be null");
+			UnaryOperator<Class<?>[]> previous = this.classesMapper;
+			this.classesMapper = classes -> mapper.apply(previous.apply(classes));
+			return self();
+		}
+
+		/**
+		 * Complete the JDK proxy hint registration for the given interface
+		 * types (applying any {@link #withClassMapper(UnaryOperator) class
+		 * mappers}).
+		 * @param interfaceTypes the interface types to register
+		 * @return this instance
+		 */
+		public JavaProxyHintRegistration forInterfaces(Class<?>... interfaceTypes) {
+			Assert.notNull(interfaceTypes, "'interfaceTypes' must not be null");
+			return forInterfaces(TypeReference.arrayOf(mapAndVeryifyInterfaceTypes(interfaceTypes)));
+		}
+
+		/**
+		 * Complete the JDK proxy hint registration for the given interface
+		 * types.
+		 * @param interfaceTypes the names of interface types to register
+		 * @return this instance
+		 */
+		public JavaProxyHintRegistration forInterfaces(String... interfaceTypes) {
+			Assert.notNull(interfaceTypes, "'interfaceTypes' must not be null");
+			return forInterfaces(TypeReference.arrayOf(interfaceTypes));
+		}
+
+		/**
+		 * Complete the JDK proxy hint registration for the given interface
+		 * types.
+		 * @param interfaceTypes the interface types to register
+		 * @return this instance
+		 */
+		public JavaProxyHintRegistration forInterfaces(TypeReference... interfaceTypes) {
+			Assert.notNull(interfaceTypes, "'interfaceTypes' must not be null");
+			ProxyHints.this.javaProxyHints.add(new JavaProxyHint(interfaceTypes, getReachableType()));
+			return this;
+		}
+
+		private Class<?>[] mapAndVeryifyInterfaceTypes(Class<?>... interfaceTypes) {
+			Class<?>[] mapped = this.classesMapper.apply(interfaceTypes);
+			Assert.isTrue(Arrays.stream(mapped).noneMatch(this::isNotInterface),
+					() -> "The following must be interfaces: "
+							+ Arrays.stream(mapped).filter(this::isNotInterface).map(Class::getName).toList());
+			Assert.isTrue(Arrays.stream(mapped).noneMatch(Class::isSealed),
+					() -> "The following must be non-sealed interfaces: "
+							+ Arrays.stream(mapped).filter(Class::isSealed).map(Class::getName).toList());
+			return mapped;
+		}
+
+		private boolean isNotInterface(Class<?> candidate) {
+			return !candidate.isInterface();
+		}
+
 	}
 
 }

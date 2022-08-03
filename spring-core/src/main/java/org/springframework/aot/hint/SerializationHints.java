@@ -16,84 +16,79 @@
 
 package org.springframework.aot.hint;
 
-import java.io.Serializable;
-import java.util.LinkedHashSet;
+import java.util.Collections;
 import java.util.Set;
-import java.util.function.Consumer;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Stream;
 
-import org.springframework.lang.Nullable;
-
 /**
- * Gather the need for Java serialization at runtime.
+ * Hints for runtime Java serialization needs.
  *
  * @author Stephane Nicoll
+ * @author Phillip Webb
  * @since 6.0
- * @see Serializable
+ * @see JavaSerializationHint
+ * @see RuntimeHints
  */
 public class SerializationHints {
 
-	private final Set<JavaSerializationHint> javaSerializationHints;
+	private final Set<JavaSerializationHint> javaSerializationHints = Collections
+			.newSetFromMap(new ConcurrentHashMap<>());
 
 
-	public SerializationHints() {
-		this.javaSerializationHints = new LinkedHashSet<>();
+	/**
+	 * Registration methods for java serialization.
+	 * @return serialization hint registration methods
+	 */
+	public JavaSerializationRegistration registerJavaSerialization() {
+		return new JavaSerializationRegistration();
 	}
 
 	/**
-	 * Return the {@link JavaSerializationHint java serialization hints} for types
-	 * that need to be serialized using Java serialization at runtime.
-	 * @return a stream of {@link JavaSerializationHint java serialization hints}
+	 * Return an unordered {@link Stream} of the {@link JavaSerializationHint
+	 * java serialization hints} that have been registered.
+	 * @return a stream of {@link JavaSerializationHint}
 	 */
 	public Stream<JavaSerializationHint> javaSerialization() {
 		return this.javaSerializationHints.stream();
 	}
 
+
 	/**
-	 * Register that the type defined by the specified {@link TypeReference}
-	 * need to be serialized using java serialization.
-	 * @param type the type to register
-	 * @param serializationHint a builder to further customize the serialization
-	 * @return {@code this}, to facilitate method chaining
+	 * Registration methods for Java serialization.
 	 */
-	public SerializationHints registerType(TypeReference type, @Nullable Consumer<JavaSerializationHint.Builder> serializationHint) {
-		JavaSerializationHint.Builder builder = new JavaSerializationHint.Builder(type);
-		if (serializationHint != null) {
-			serializationHint.accept(builder);
+	public class JavaSerializationRegistration extends ReachableTypeRegistration<JavaSerializationRegistration> {
+
+		/**
+		 * Complete the hint registration for the given types.
+		 * @param types the types to register
+		 * @return this instance
+		 */
+		public JavaSerializationRegistration forType(Class<?>... types) {
+			return forType(TypeReference.arrayOf(types));
 		}
-		this.javaSerializationHints.add(builder.build());
-		return this;
-	}
 
-	/**
-	 * Register that the type defined by the specified {@link TypeReference}
-	 * need to be serialized using java serialization.
-	 * @param type the type to register
-	 * @return {@code this}, to facilitate method chaining
-	 */
-	public SerializationHints registerType(TypeReference type) {
-		return registerType(type, null);
-	}
+		/**
+		 * Complete the hint registration for the given type names.
+		 * @param types the type names to register
+		 * @return this instance
+		 */
+		public JavaSerializationRegistration forType(String... types) {
+			return forType(TypeReference.arrayOf(types));
+		}
 
-	/**
-	 * Register that the specified type need to be serialized using java
-	 * serialization.
-	 * @param type the type to register
-	 * @param serializationHint a builder to further customize the serialization
-	 * @return {@code this}, to facilitate method chaining
-	 */
-	public SerializationHints registerType(Class<? extends Serializable> type, @Nullable Consumer<JavaSerializationHint.Builder> serializationHint) {
-		return registerType(TypeReference.of(type), serializationHint);
-	}
+		/**
+		 * Complete the hint registration for the given types.
+		 * @param types the types to register
+		 * @return this instance
+		 */
+		public JavaSerializationRegistration forType(TypeReference... types) {
+			for (TypeReference type : types) {
+				SerializationHints.this.javaSerializationHints.add(new JavaSerializationHint(type, getReachableType()));
+			}
+			return this;
+		}
 
-	/**
-	 * Register that the specified type need to be serialized using java
-	 * serialization.
-	 * @param type the type to register
-	 * @return {@code this}, to facilitate method chaining
-	 */
-	public SerializationHints registerType(Class<? extends Serializable> type) {
-		return registerType(type, null);
 	}
 
 }
