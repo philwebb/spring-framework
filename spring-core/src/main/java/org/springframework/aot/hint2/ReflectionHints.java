@@ -14,18 +14,20 @@
  * limitations under the License.
  */
 
-package org.springframework.aot.hint;
+package org.springframework.aot.hint2;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.Arrays;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.BiFunction;
 import java.util.function.UnaryOperator;
 
-import org.springframework.aot.hint.ReflectionHints2.ReflectionHint.Attribute;
+import org.springframework.aot.hint.ExecutableHint;
+import org.springframework.aot.hint.FieldHint;
+import org.springframework.aot.hint.TypeReference;
+import org.springframework.aot.hint2.ReflectionHints.ReflectionHint.Attribute;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 import org.springframework.util.ReflectionUtils;
@@ -36,8 +38,9 @@ import org.springframework.util.ReflectionUtils;
  * @author Stephane Nicoll
  * @author Phillip Webb
  * @since 6.0
+ * @see RuntimeHints
  */
-public class ReflectionHints2 {
+public class ReflectionHints {
 
 	private Map<TypeReference, ReflectionHint> hints;
 
@@ -58,11 +61,11 @@ public class ReflectionHints2 {
 	}
 
 	public MethodRegistrar registerIntrospect() {
-		return new MethodRegistrar(false);
+		return new MethodRegistrar(ExecutableMode.INTROSPECT);
 	}
 
 	public MethodRegistrar registerInvoke() {
-		return new MethodRegistrar(true);
+		return new MethodRegistrar(ExecutableMode.INVOKE);
 	}
 
 	ReflectionHint computeHint(TypeReference type,
@@ -81,8 +84,11 @@ public class ReflectionHints2 {
 		}
 
 		public ConditionRegistration forTypes(Class<?>... types) {
-			return forTypes(Arrays.stream(types).map(TypeReference::of)
-					.toArray(TypeReference[]::new));
+			return forTypes(TypeReference.arrayOf(types));
+		}
+
+		public ConditionRegistration forTypes(String... types) {
+			return forTypes(TypeReference.arrayOf(types));
 		}
 
 		public ConditionRegistration forTypes(TypeReference... types) {
@@ -161,10 +167,10 @@ public class ReflectionHints2 {
 
 	public class MethodRegistrar {
 
-		private final boolean invoke;
+		private final ExecutableMode mode;
 
-		MethodRegistrar(boolean invoke) {
-			this.invoke = invoke;
+		MethodRegistrar(ExecutableMode mode) {
+			this.mode = mode;
 		}
 
 		public ConditionRegistration forMethod(Class<?> declaringClass, String name,
@@ -254,7 +260,10 @@ public class ReflectionHints2 {
 
 		private ConditionRegistration forTypes(Attribute introspectAttribute,
 				Attribute invokeAttribute, TypeReference... types) {
-			Attribute attribute = (!this.invoke) ? introspectAttribute : invokeAttribute;
+			Attribute attribute = switch (this.mode) {
+				case INTROSPECT -> introspectAttribute;
+				case INVOKE -> invokeAttribute;
+			};
 			for (TypeReference type : types) {
 				computeHint(type, hint -> hint.mergeAttributes(attribute));
 			}

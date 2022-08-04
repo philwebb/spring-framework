@@ -17,10 +17,13 @@
 package org.springframework.aot.hint;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 import org.junit.jupiter.api.Test;
 import sun.misc.Unsafe;
+
+import org.springframework.aot.hint2.ReflectionHints;
 
 /**
  *
@@ -31,12 +34,22 @@ class ReflectionHints2Tests {
 
 	@Test
 	void test() {
-		ReflectionHints2 hints = new ReflectionHints2();
+		ReflectionHints hints = new ReflectionHints();
 
 		// API usage example
 
 		Method someMethod = null;
 		Constructor<?> someConstructor = null;
+		Field field = null;
+
+		hints.registerWrite().forField(field);
+		hints.registerWrite().forPublicFieldsIn(SomeClass.class);
+		hints.registerWrite().forPublicFieldsIn(SomeClass.class, SomeOtherClass.class);
+		hints.registerRead().withUnsafeAccess().forPublicFieldsIn(SomeClass.class);
+
+
+		hints.registerInvoke().forConstructor(SomeClass.class);
+
 
 		// Single hint
 		hints.registerInvoke().forMethod(someMethod);
@@ -56,6 +69,8 @@ class ReflectionHints2Tests {
 		// Applying with conditions
 		hints.registerDeclaredClasses().forTypes(SomeClass.class, SomeOtherClass.class).whenReachable(Unsafe.class);
 		hints.registerInvoke().forDeclaredConstructorsIn(SomeOtherClass.class).whenReachable(SomeClass.class);
+
+
 
 	}
 
