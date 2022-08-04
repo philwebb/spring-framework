@@ -16,6 +16,8 @@
 
 package org.springframework.aot.hint;
 
+import java.util.Arrays;
+
 import org.springframework.lang.Nullable;
 
 /**
@@ -79,6 +81,26 @@ public interface TypeReference {
 	 */
 	static TypeReference of(String className) {
 		return SimpleTypeReference.of(className);
+	}
+
+	/**
+	 * Create an array of instances based on the specified types.
+	 * @param types the types to wrap
+	 * @return an array of type references for the specified types
+	 */
+	static TypeReference[] arrayOf(Class<?>... types) {
+		return Arrays.stream(types).map(TypeReference::of).toArray(TypeReference[]::new);
+	}
+
+	/**
+	 * Create an array of instances based on the specified class names. The
+	 * format of the class name must follow {@linkplain Class#getName()}, in
+	 * particular inner classes should be separated by a {@code $}.
+	 * @param classNames the class names of the types to wrap
+	 * @return an array of type references for the specified class names
+	 */
+	static TypeReference[] arrayOf(String... classNames) {
+		return Arrays.stream(classNames).map(TypeReference::of).toArray(TypeReference[]::new);
 	}
 
 }

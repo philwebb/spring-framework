@@ -25,6 +25,7 @@ import java.util.Set;
 import java.util.function.BiFunction;
 import java.util.function.UnaryOperator;
 
+import org.springframework.aot.hint.ReflectionHints2.ReflectionHint.Attribute;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 import org.springframework.util.ReflectionUtils;
@@ -86,7 +87,7 @@ public class ReflectionHints2 {
 
 		public ConditionRegistration forTypes(TypeReference... types) {
 			for (TypeReference type : types) {
-				computeHint(type, (hint) -> hint.merge(this.attributes));
+				computeHint(type, (hint) -> hint.mergeAttributes(this.attributes));
 			}
 			return new ConditionRegistration(types);
 		}
@@ -110,57 +111,48 @@ public class ReflectionHints2 {
 
 		public ConditionRegistration forField(Class<?> declaringClass, String name) {
 			Field field = ReflectionUtils.findField(declaringClass, name);
-			Assert.state(field != null, "Unable to find field '%s' in $s".formatted(name,
-					declaringClass.getName()));
+			Assert.state(field != null, () -> "Unable to find field '%s' in $s"
+					.formatted(name, declaringClass.getName()));
 			return forField(field);
 		}
 
 		public ConditionRegistration forField(Field field) {
 			TypeReference type = TypeReference.of(field.getDeclaringClass());
-			computeHint(type, hint -> hint.merge(this));
+			computeHint(type, hint -> hint.mergeField(field.getName(), this.allowWrite,
+					this.allowUnsafeAccess));
 			return new ConditionRegistration(type);
 		}
 
 		public ConditionRegistration forPublicFieldsIn(Class<?>... types) {
-			return forFieldsIn(Attribute.PUBLIC_FIELDS, types);
+			return forPublicFieldsIn(TypeReference.arrayOf(types));
 		}
 
 		public ConditionRegistration forPublicFieldsIn(String... types) {
-			return forFieldsIn(Attribute.PUBLIC_FIELDS, types);
+			return forPublicFieldsIn(TypeReference.arrayOf(types));
 		}
 
 		public ConditionRegistration forPublicFieldsIn(TypeReference... types) {
-			return forFieldsIn(Attribute.PUBLIC_FIELDS, types);
+			return forTypes(Attribute.PUBLIC_FIELDS, types);
 		}
 
 		public ConditionRegistration forDeclaredFieldsIn(Class<?>... types) {
-			return forFieldsIn(Attribute.DECLARED_FIELDS, types);
+			return forDeclaredFieldsIn(TypeReference.arrayOf(types));
 		}
 
 		public ConditionRegistration forDeclaredFieldsIn(String... types) {
-			return forFieldsIn(Attribute.DECLARED_FIELDS, types);
+			return forDeclaredFieldsIn(TypeReference.arrayOf(types));
 		}
 
 		public ConditionRegistration forDeclaredFieldsIn(TypeReference... types) {
-			return forFieldsIn(Attribute.DECLARED_FIELDS, types);
+			return forTypes(Attribute.DECLARED_FIELDS, types);
 		}
 
-		public ConditionRegistration forFieldsIn(Attribute attribute, Class<?>... types) {
-			return forFieldsIn(attribute, Arrays.stream(types).map(TypeReference::of)
-					.toArray(TypeReference[]::new));
-		}
-
-		public ConditionRegistration forFieldsIn(Attribute attribute, String... types) {
-			return forFieldsIn(attribute, Arrays.stream(types).map(TypeReference::of)
-					.toArray(TypeReference[]::new));
-		}
-
-		public ConditionRegistration forFieldsIn(Attribute attribute,
+		private ConditionRegistration forTypes(Attribute attribute,
 				TypeReference... types) {
 			Assert.state(!this.allowUnsafeAccess,
 					"'allowUnsafeAccess' cannot be set when finding fields in a type");
 			for (TypeReference type : types) {
-				computeHint(type, hint -> hint.merge(attribute));
+				computeHint(type, hint -> hint.mergeAttributes(attribute));
 			}
 			return new ConditionRegistration(types);
 		}
@@ -175,27 +167,98 @@ public class ReflectionHints2 {
 			this.invoke = invoke;
 		}
 
-		public void forMethod(Method method) {
+		public ConditionRegistration forMethod(Class<?> declaringClass, String name,
+				Class<?>... parameterTypes) {
+			Method method = ReflectionUtils.findMethod(declaringClass, name,
+					parameterTypes);
+			Assert.state(method != null, () -> "Unable to find method %s in class %s"
+					.formatted(name, declaringClass.getName()));
+			return forMethod(method);
 		}
 
-		public void forConstructor(Constructor<?> constructor) {
-
+		public ConditionRegistration forMethod(Method method) {
+			TypeReference type = TypeReference.of(method.getDeclaringClass());
+			computeHint(type, hint -> hint.mergeMethod());
+			return new ConditionRegistration(type);
 		}
 
-		public void forPublicConstructorsIn(Class<?>... types) {
+		public ConditionRegistration forConstructor(Class<?> declaringClass,
+				Class<?>... parameterTypes) {
+			try {
+				return forConstructor(declaringClass.getConstructor(parameterTypes));
 
+			}
+			catch (NoSuchMethodException | SecurityException ex) {
+				throw new IllegalStateException("Unable to find constructor in class %s"
+						.formatted(declaringClass.getName()));
+			}
 		}
 
-		public void forDeclaredConstructorsIn(Class<?>... types) {
-
+		public ConditionRegistration forConstructor(Constructor<?> constructor) {
+			TypeReference type = TypeReference.of(constructor.getDeclaringClass());
+			computeHint(type, hint -> hint.mergeConstructor());
+			return new ConditionRegistration(type);
 		}
 
-		public void forPublicMethodsIn(Class<?>... type) {
-
+		public ConditionRegistration forPublicConstructorsIn(Class<?>... types) {
+			return forPublicConstructorsIn(TypeReference.arrayOf(types));
 		}
 
-		public void forDeclaredMethodsIn(Class<?>... type) {
+		public ConditionRegistration forPublicConstructorsIn(String... types) {
+			return forPublicConstructorsIn(TypeReference.arrayOf(types));
+		}
 
+		public ConditionRegistration forPublicConstructorsIn(TypeReference... types) {
+			return forTypes(Attribute.INTROSPECT_PUBLIC_CONSTRUCTORS,
+					Attribute.INVOKE_PUBLIC_CONSTRUCTORS, types);
+		}
+
+		public ConditionRegistration forDeclaredConstructorsIn(Class<?>... types) {
+			return forDeclaredConstructorsIn(TypeReference.arrayOf(types));
+		}
+
+		public ConditionRegistration forDeclaredConstructorsIn(String... types) {
+			return forDeclaredConstructorsIn(TypeReference.arrayOf(types));
+		}
+
+		public ConditionRegistration forDeclaredConstructorsIn(TypeReference... types) {
+			return forTypes(Attribute.INTROSPECT_DECLARED_CONSTRUCTORS,
+					Attribute.INVOKE_DECLARED_CONSTRUCTORS, types);
+		}
+
+		public ConditionRegistration forPublicMethodsIn(Class<?>... types) {
+			return forPublicMethodsIn(TypeReference.arrayOf(types));
+		}
+
+		public ConditionRegistration forPublicMethodsIn(String... types) {
+			return forPublicMethodsIn(TypeReference.arrayOf(types));
+		}
+
+		public ConditionRegistration forPublicMethodsIn(TypeReference... types) {
+			return forTypes(Attribute.INTROSPECT_PUBLIC_METHODS,
+					Attribute.INVOKE_PUBLIC_METHODS, types);
+		}
+
+		public ConditionRegistration forDeclaredMethodsIn(Class<?>... types) {
+			return forDeclaredMethodsIn(TypeReference.arrayOf(types));
+		}
+
+		public ConditionRegistration forDeclaredMethodsIn(String... types) {
+			return forDeclaredMethodsIn(TypeReference.arrayOf(types));
+		}
+
+		public ConditionRegistration forDeclaredMethodsIn(TypeReference... types) {
+			return forTypes(Attribute.INTROSPECT_DECLARED_METHODS,
+					Attribute.INVOKE_DECLARED_METHODS, types);
+		}
+
+		private ConditionRegistration forTypes(Attribute introspectAttribute,
+				Attribute invokeAttribute, TypeReference... types) {
+			Attribute attribute = (!this.invoke) ? introspectAttribute : invokeAttribute;
+			for (TypeReference type : types) {
+				computeHint(type, hint -> hint.mergeAttributes(attribute));
+			}
+			return new ConditionRegistration(types);
 		}
 
 	}
@@ -203,6 +266,10 @@ public class ReflectionHints2 {
 	public static class ConditionRegistration {
 
 		ConditionRegistration(TypeReference... types) {
+		}
+
+		public ConditionRegistration whenReachable(Class<?> type) {
+			return this;
 		}
 
 	}
@@ -226,12 +293,20 @@ public class ReflectionHints2 {
 			this.type = type;
 		}
 
-		ReflectionHint merge(FieldRegistrar fieldRegistrar) {
-			// FIXME explicit args
+		ReflectionHint mergeAttributes(Attribute... attributes) {
 			return this;
 		}
 
-		ReflectionHint merge(Attribute... attributes) {
+		ReflectionHint mergeField(String name, boolean allowWrite,
+				boolean allowUnsafeAccess) {
+			return this;
+		}
+
+		ReflectionHint mergeMethod() {
+			return this;
+		}
+
+		ReflectionHint mergeConstructor() {
 			return this;
 		}
 
@@ -239,48 +314,34 @@ public class ReflectionHints2 {
 			return null;
 		}
 
+		public enum Attribute {
+
+			PUBLIC_FIELDS,
+
+			DECLARED_FIELDS,
+
+			INTROSPECT_PUBLIC_CONSTRUCTORS,
+
+			INTROSPECT_DECLARED_CONSTRUCTORS,
+
+			INVOKE_PUBLIC_CONSTRUCTORS,
+
+			INVOKE_DECLARED_CONSTRUCTORS,
+
+			INTROSPECT_PUBLIC_METHODS,
+
+			INTROSPECT_DECLARED_METHODS,
+
+			INVOKE_PUBLIC_METHODS,
+
+			INVOKE_DECLARED_METHODS,
+
+			PUBLIC_CLASSES,
+
+			DECLARED_CLASSES;
+
+		}
+
 	}
-
-	public enum Attribute {
-
-		PUBLIC_FIELDS,
-
-		DECLARED_FIELDS,
-
-		INTROSPECT_PUBLIC_CONSTRUCTORS,
-
-		INTROSPECT_DECLARED_CONSTRUCTORS,
-
-		INVOKE_PUBLIC_CONSTRUCTORS,
-
-		INVOKE_DECLARED_CONSTRUCTORS,
-
-		INTROSPECT_PUBLIC_METHODS,
-
-		INTROSPECT_DECLARED_METHODS,
-
-		INVOKE_PUBLIC_METHODS,
-
-		INVOKE_DECLARED_METHODS,
-
-		PUBLIC_CLASSES,
-
-		DECLARED_CLASSES;
-
-	}
-
-	// hints.reflection.registerRead().withUnsafe().forField(field)
-	// hints.reflection.registerRead().forPublicFields(type);
-	// hints.reflection.registerRead().forDeclaredFields(type);
-	// hints.reflection.registerWrite().forField(...);
-	// hints.reflection.registerInvoke().forMethod("");
-	// hints.reflection.registerIntrospect().forMethod("");
-	// hints.reflection.registerIntrospect().forConstructor("");
-	// hints.reflection.registerIntrospect().forPublicConstructorsOn(type);
-	// hints.reflection.registerIntrospect().forDeclaredConstructorsOn(type);
-	// hints.reflection.registerIntrospect().forPublicMethods(type);
-	// hints.reflection.registerIntrospect().forDeclaredMethods(type);
-	// hints.reglection.registerPublicClasses().forType(...);
-	// hints.reglection.registerDeclaredClasses().forType(..);
 
 }
