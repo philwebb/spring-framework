@@ -16,19 +16,23 @@
 
 package org.springframework.aot.hint2;
 
-import java.util.Set;
-
 /**
+ * An immutable hint that describes {@link ResourcePattern resource patterns}
+ * that should be made available at runtime.
  *
- * @author pwebb
+ * @author Stephane Nicoll
+ * @author Brian Clozel
+ * @author Sebastien Deleuze
+ * @author Phillip Webb
  * @since 6.0
+ * @see ResourceHints
  */
-public class ResourcePatternHint {
+public final class ResourcePatternHint {
 
-	/**
-	 * @param pattern
-	 */
-	public ResourcePatternHint(ResourcePattern pattern) {
-		// TODO Auto-generated constructor stub
+	ResourcePatternHint(ResourcePattern pattern) {
+	}
+
+	ResourcePatternHint andReachableType(TypeReference reachableType) {
+		return null;
 	}
 }

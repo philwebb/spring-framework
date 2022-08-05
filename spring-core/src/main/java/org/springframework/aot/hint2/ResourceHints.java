@@ -16,10 +16,12 @@
 
 package org.springframework.aot.hint2;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Consumer;
 import java.util.function.UnaryOperator;
 
 /**
@@ -28,25 +30,52 @@ import java.util.function.UnaryOperator;
  * @author Stephane Nicoll
  * @author Phillip Webb
  * @since 6.0
+ * @see ResourceLocationHint
+ * @see ResourcePatternHint
+ * @see ResourceBundleHint
  * @see RuntimeHints
  */
 public class ResourceHints {
 
+	private final Map<String, ResourceLocationHint> locationHints = new ConcurrentHashMap<>();
+
 	private final Map<ResourcePattern, ResourcePatternHint> patternHints = new ConcurrentHashMap<>();
-
-	private final Map<String, ResourcePatternHint> locationHints = new ConcurrentHashMap<>();
-
-	private final Map<String, ResourcePatternHint> bundleHints = new ConcurrentHashMap<>();
 
 	private final Set<TypeReference> classBytecodeHints = Collections
 			.newSetFromMap(new ConcurrentHashMap<>());
 
-	ConditionRegistration updatePattern(ResourcePattern[] patterns, UnaryOperator<ResourcePatternHint> mapper) {
+	private final Map<String, ResourceBundleHint> bundleHints = new ConcurrentHashMap<>();
+
+	LocationCondition updateLocation(String[] locations,
+			UnaryOperator<ResourceLocationHint> mapper) {
+		for (String location : locations) {
+			this.locationHints.compute(location, (key, hint) -> mapper
+					.apply((hint != null) ? hint : new ResourceLocationHint(location)));
+		}
+		Consumer<TypeReference> whenReachableAction = reachableType -> updateLocation(
+				locations, hint -> hint.andReachableType(reachableType));
+		Runnable whenPresentAction = () -> updateLocation(locations,
+				hint -> hint.andOnlyWhenPresent());
+		return new LocationCondition(whenReachableAction, whenPresentAction);
+	}
+
+	Condition updatePattern(ResourcePattern[] patterns,
+			UnaryOperator<ResourcePatternHint> mapper) {
 		for (ResourcePattern pattern : patterns) {
 			this.patternHints.compute(pattern, (key, hint) -> mapper
 					.apply((hint != null) ? hint : new ResourcePatternHint(pattern)));
 		}
-		return new ConditionRegistration();
+		return new Condition(reachableType -> updatePattern(patterns,
+				hint -> hint.andReachableType(reachableType)));
+	}
+
+	Condition updateBundle(String[] names, UnaryOperator<ResourceBundleHint> mapper) {
+		for (String name : names) {
+			this.bundleHints.compute(name, (key, hint) -> mapper
+					.apply((hint != null) ? hint : new ResourceBundleHint(name)));
+		}
+		return new Condition(reachableType -> updateBundle(names,
+				hint -> hint.andReachableType(reachableType)));
 	}
 
 	public ResourceRegistration registerResource() {
@@ -57,51 +86,64 @@ public class ResourceHints {
 		return new BundleRegistration();
 	}
 
-	public  class ResourceRegistration {
+	public class ResourceRegistration {
 
-		public ConditionLocationRegistration forLocation(String... locations) {
-			return null;
+		public LocationCondition forLocation(String... locations) {
+			return updateLocation(locations, UnaryOperator.identity());
 		}
 
-		public ConditionRegistration forPattern(String include, String exclude) {
-			return null;
+		public Condition forPattern(String includeRegex, String excludeRegex) {
+			return forPattern(ResourcePattern.of(includeRegex, excludeRegex));
 		}
 
-		public ConditionRegistration forPattern(ResourcePattern... patterns) {
-			return null;
+		public Condition forPattern(ResourcePattern... patterns) {
+			return updatePattern(patterns, UnaryOperator.identity());
 		}
 
 		public void forClassBytecode(Class<?>... types) {
+			forClassBytecode(TypeReference.arrayOf(types));
+		}
+
+		public void forClassBytecode(String... types) {
+			forClassBytecode(TypeReference.arrayOf(types));
+		}
+
+		public void forClassBytecode(TypeReference... types) {
+			classBytecodeHints.addAll(Arrays.asList(types));
 		}
 
 	}
 
-	public  class BundleRegistration {
+	public class BundleRegistration {
 
-		public ConditionRegistration forName(String... names) {
-			return null;
+		public Condition forName(String... names) {
+			return updateBundle(names, UnaryOperator.identity());
 		}
 
 	}
 
-	public class ConditionRegistration
-			extends AbstractConditionalRegistration<ConditionRegistration> {
+	public class Condition extends RegistrationCondition<Condition> {
 
-		@Override
-		protected void apply(TypeReference reachableType) {
+		Condition(Consumer<TypeReference> action) {
+			super(action);
 		}
 
 	}
 
-	public static class ConditionLocationRegistration
-			extends AbstractConditionalRegistration<ConditionLocationRegistration> {
+	public static class LocationCondition
+			extends RegistrationCondition<LocationCondition> {
 
-		public ConditionLocationRegistration whenPresent() {
+		private final Runnable whenPresentAction;
+
+		LocationCondition(Consumer<TypeReference> whenReachableAction,
+				Runnable whenPresentAction) {
+			super(whenReachableAction);
+			this.whenPresentAction = whenPresentAction;
+		}
+
+		public LocationCondition whenPresent() {
+			whenPresentAction.run();
 			return this;
-		}
-
-		@Override
-		protected void apply(TypeReference reachableType) {
 		}
 
 	}

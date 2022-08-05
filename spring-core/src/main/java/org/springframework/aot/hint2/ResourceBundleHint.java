@@ -16,11 +16,33 @@
 
 package org.springframework.aot.hint2;
 
+import java.util.ResourceBundle;
+
 /**
- * 
- * @author pwebb
+ * An immutable hint that describes the need to access a {@link ResourceBundle}.
+ *
+ * @author Stephane Nicoll
+ * @author Brian Clozel
+ * @author Phillip Webb
  * @since 6.0
+ * @see ResourceHints
  */
-public class ResourceBundleHint {
+public final class ResourceBundleHint {
+
+	/**
+	 * @param name
+	 */
+	ResourceBundleHint(String name) {
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * @param reachableType
+	 * @return
+	 */
+	ResourceBundleHint andReachableType(TypeReference reachableType) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Auto-generated method stub");
+	}
 
 }

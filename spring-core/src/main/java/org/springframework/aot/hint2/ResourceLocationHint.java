@@ -17,10 +17,24 @@
 package org.springframework.aot.hint2;
 
 /**
- * 
- * @author pwebb
+ * An immutable hint that describes resources location that should be made
+ * available at runtime.
+ *
+ * @author Phillip Webb
  * @since 6.0
+ * @see ResourceHints
  */
-public class ResourceLocationHint {
+public final class ResourceLocationHint {
+
+	ResourceLocationHint(String location) {
+	}
+
+	ResourceLocationHint andReachableType(TypeReference reachableType) {
+		return null;
+	}
+
+	ResourceLocationHint andOnlyWhenPresent() {
+		return null;
+	}
 
 }

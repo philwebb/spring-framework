@@ -25,9 +25,15 @@ import java.util.Set;
 
 import org.springframework.lang.Nullable;
 
+/**
+ * A immutable hint that describes the need for reflection on a type.
+ *
+ * @author Stephane Nicoll
+ * @author Phillip Webb
+ * @since 6.0
+ * @see ReflectionHints
+ */
 public final class ReflectionHint implements ConditionalHint {
-
-	public static final ReflectionHint NONE = null;
 
 	private final TypeReference type;
 

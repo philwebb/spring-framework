@@ -16,12 +16,23 @@
 
 package org.springframework.aot.hint2;
 
+import java.util.function.Consumer;
+
 /**
+ * Base class for condition classes that are returned when registering hints.
+ * Allows hints to be conditionally applied based on the reachability of a given
+ * type.
  *
- * @author pwebb
+ * @author Phillip Webb
  * @since 6.0
  */
-public abstract class AbstractConditionalRegistration<S extends AbstractConditionalRegistration<S>> {
+public abstract class RegistrationCondition<S extends RegistrationCondition<S>> {
+
+	private final Consumer<TypeReference> action;
+
+	RegistrationCondition(Consumer<TypeReference> action) {
+		this.action = action;
+	}
 
 	public S whenReachable(Class<?> reachableType) {
 		return whenReachable(TypeReference.of(reachableType));
@@ -32,11 +43,9 @@ public abstract class AbstractConditionalRegistration<S extends AbstractConditio
 	}
 
 	public S whenReachable(TypeReference reachableType) {
-		apply(reachableType);
+		this.action.accept(reachableType);
 		return self();
 	}
-
-	protected abstract void apply(TypeReference reachableType);
 
 	@SuppressWarnings("unchecked")
 	private S self() {

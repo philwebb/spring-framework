@@ -16,36 +16,76 @@
 
 package org.springframework.aot.hint2;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Consumer;
 import java.util.function.UnaryOperator;
 
 /**
  * Hints for runtime proxy needs.
  *
  * @author Stephane Nicoll
+ * @author Phillip Webb
  * @since 6.0
+ * @see JdkProxyHint
  * @see RuntimeHints
  */
 public class ProxyHints {
 
-	// FIXME
+	private final Map<InterfaceTypes, JdkProxyHint> hints = new ConcurrentHashMap<>();
 
-	public Dunno registerJdkProxy() {
-		return null;
+	public JdkProxyHintRegistration registerJdkProxy() {
+		return new JdkProxyHintRegistration();
 	}
 
-	static class Dunno {
+	Condition update(InterfaceTypes interfaceTypes, UnaryOperator<JdkProxyHint> mapper) {
+		this.hints.compute(interfaceTypes, (key, hint) -> mapper.apply(
+				(hint != null) ? hint : new JdkProxyHint(interfaceTypes.toArray())));
+		return new Condition(reachableType -> update(interfaceTypes,
+				hint -> hint.andReachableType(reachableType)));
+	}
 
-		Dunno with(UnaryOperator<Class<?>[]> mapper) {
-			return this;
+	public class JdkProxyHintRegistration {
+
+		private final UnaryOperator<Class<?>[]> mapper;
+
+		JdkProxyHintRegistration() {
+			this.mapper = UnaryOperator.identity();
 		}
 
-		public void forInterfaces(Class<?> types) {
+		private JdkProxyHintRegistration(UnaryOperator<Class<?>[]> mapper) {
+			this.mapper = mapper;
+		}
+
+		JdkProxyHintRegistration with(UnaryOperator<Class<?>[]> mapper) {
+			return new JdkProxyHintRegistration(
+					interfaceTypes -> mapper.apply(this.mapper.apply(interfaceTypes)));
+		}
+
+		public Condition forInterfaces(Class<?>... interfaceTypes) {
+			return update(new InterfaceTypes(this.mapper.apply(interfaceTypes)),
+					UnaryOperator.identity());
 		}
 
 	}
 
-	// registerJdkProxy().with(AopProxyUtils::completeJdkProxyInterfaces).forInterfaces(...).whenReachable(type);
+	public static class Condition extends RegistrationCondition<Condition> {
 
+		Condition(Consumer<TypeReference> action) {
+			super(action);
+		}
 
+	}
+
+	private static class InterfaceTypes {
+
+		InterfaceTypes(Class<?>[] apply) {
+		}
+
+		Class<?>[] toArray() {
+			return null;
+		}
+
+	}
 
 }

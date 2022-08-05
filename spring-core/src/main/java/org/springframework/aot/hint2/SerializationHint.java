@@ -17,10 +17,20 @@
 package org.springframework.aot.hint2;
 
 /**
- * 
- * @author pwebb
+ * An immutable hint that describes the need for serialization at runtime.
+ *
+ * @author Brian Clozel
+ * @author Phillip Webb
  * @since 6.0
+ * @see SerializationHints
  */
-public class SerializationHint {
+public final class SerializationHint {
+
+	SerializationHint(TypeReference type) {
+	}
+
+	SerializationHint andReachableType(TypeReference reachableType) {
+		return this;
+	}
 
 }

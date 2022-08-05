@@ -16,11 +16,25 @@
 
 package org.springframework.aot.hint2;
 
+import java.lang.reflect.Proxy;
+
 /**
- * 
- * @author pwebb
+ * An immutable hint that describes the need for a JDK interface-based
+ * {@link Proxy}.
+ *
+ * @author Stephane Nicoll
+ * @author Brian Clozel
+ * @author Phillip Webb
  * @since 6.0
+ * @see ProxyHints
  */
-public class ProxyHint {
+public final class JdkProxyHint {
+
+	JdkProxyHint(Class<?>[] interfaceTypes) {
+	}
+
+	JdkProxyHint andReachableType(TypeReference reachableType) {
+		return null;
+	}
 
 }

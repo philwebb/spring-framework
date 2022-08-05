@@ -16,8 +16,24 @@
 
 package org.springframework.aot.hint2;
 
+import java.lang.reflect.Field;
+
+/**
+ * Represents the need of reflection for a given {@link Field}.
+ *
+ * @author Phillip Webb
+ * @since 6.0
+ */
 public enum FieldMode {
 
-	READ, WRITE
+	/**
+	 * Only field read is required.
+	 */
+	READ,
+
+	/**
+	 * Full field read and write is required.
+	 */
+	WRITE
 
 }

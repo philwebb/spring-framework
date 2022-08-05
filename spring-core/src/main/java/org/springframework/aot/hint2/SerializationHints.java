@@ -16,31 +16,57 @@
 
 package org.springframework.aot.hint2;
 
-import java.io.Serializable;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Consumer;
+import java.util.function.UnaryOperator;
 
 /**
  * Hints for runtime Java serialization needs.
  *
  * @author Stephane Nicoll
+ * @author Phillip Webb
  * @since 6.0
+ * @see SerializationHint
  * @see RuntimeHints
- * @see Serializable
  */
 public class SerializationHints {
 
-	// registerSerialization().forType(...).whenReachable(...);
+	private final Map<TypeReference, SerializationHint> hints = new ConcurrentHashMap<>();
 
-	// FIXME
-
-	public ConditionRegistration registerType(Class<?>... types) {
-		return null;
+	public SerializationRegistration registerSerialization() {
+		return new SerializationRegistration();
 	}
 
+	Condition update(TypeReference[] types, UnaryOperator<SerializationHint> mapper) {
+		for (TypeReference type : types) {
+			this.hints.compute(type, (key, hint) -> mapper
+					.apply((hint != null) ? hint : new SerializationHint(type)));
+		}
+		return new Condition(reachableType -> update(types,
+				hint -> hint.andReachableType(reachableType)));
+	}
 
-	public static class ConditionRegistration {
+	public class SerializationRegistration {
 
-		ConditionRegistration whenReachable(Class<?> type) {
-			return this;
+		Condition forType(Class<?>... types) {
+			return forType(TypeReference.arrayOf(types));
+		}
+
+		Condition forType(String... types) {
+			return forType(TypeReference.arrayOf(types));
+		}
+
+		Condition forType(TypeReference... types) {
+			return update(types, UnaryOperator.identity());
+		}
+
+	}
+
+	public static class Condition extends RegistrationCondition<Condition> {
+
+		Condition(Consumer<TypeReference> action) {
+			super(action);
 		}
 
 	}
