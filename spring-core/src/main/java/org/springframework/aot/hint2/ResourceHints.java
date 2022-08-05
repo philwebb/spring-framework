@@ -21,7 +21,7 @@ import org.springframework.aot.hint2.ReflectionHints.ConditionRegistration;
 import org.springframework.util.ResizableByteArrayOutputStream;
 
 /**
- * Gather the need for resources available at runtime.
+ * Hints for runtime resource needs.
  *
  * @author Stephane Nicoll
  * @author Phillip Webb
@@ -29,6 +29,11 @@ import org.springframework.util.ResizableByteArrayOutputStream;
  * @see RuntimeHints
  */
 public class ResourceHints {
+
+	// registerResource().forPattern()
+	// registerResource().forClassBytecode()
+	// registerResource().forLocation()
+	// registerBundle().forName()
 
 	public ConditionLocationRegistration registerResource(String location) {
 		return null;

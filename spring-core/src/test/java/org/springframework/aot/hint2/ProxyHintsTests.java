@@ -16,36 +16,23 @@
 
 package org.springframework.aot.hint2;
 
-import java.util.function.UnaryOperator;
+import org.junit.jupiter.api.Test;
 
 /**
- * Hints for runtime proxy needs.
  *
- * @author Stephane Nicoll
+ * @author pwebb
  * @since 6.0
- * @see RuntimeHints
  */
-public class ProxyHints {
+class ProxyHintsTests {
 
-	// FIXME
+	@Test
+	void test() {
+		ProxyHints hints = new ProxyHints();
+		hints.registerJdkProxy().with(this::expand).forInterfaces(Iterable.class);
+	}
 
-	public Dunno registerJdkProxy() {
+	private Class<?>[] expand(Class<?>... foos) {
 		return null;
 	}
-
-	static class Dunno {
-
-		Dunno with(UnaryOperator<Class<?>[]> mapper) {
-			return this;
-		}
-
-		public void forInterfaces(Class<?> types) {
-		}
-
-	}
-
-	// registerJdkProxy().with(AopProxyUtils::completeJdkProxyInterfaces).forInterfaces(...).whenReachable(type);
-
-
 
 }

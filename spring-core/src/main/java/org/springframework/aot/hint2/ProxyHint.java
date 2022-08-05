@@ -16,29 +16,11 @@
 
 package org.springframework.aot.hint2;
 
-import java.lang.reflect.Member;
-
 /**
- * Base hint that describes the need for reflection on a {@link Member}.
- *
- * @author Stephane Nicoll
+ * 
+ * @author pwebb
  * @since 6.0
  */
-public abstract class MemberHint {
-
-	private final String name;
-
-
-	protected MemberHint(String name) {
-		this.name = name;
-	}
-
-	/**
-	 * Return the name of the member.
-	 * @return the name
-	 */
-	public String getName() {
-		return this.name;
-	}
+public class ProxyHint {
 
 }

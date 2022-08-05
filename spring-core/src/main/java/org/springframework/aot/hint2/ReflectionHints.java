@@ -19,68 +19,90 @@ package org.springframework.aot.hint2;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.Iterator;
 import java.util.Map;
-import java.util.Set;
-import java.util.function.BiFunction;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.UnaryOperator;
+import java.util.stream.Stream;
 
-import org.springframework.aot.hint.ExecutableHint;
-import org.springframework.aot.hint.FieldHint;
-import org.springframework.aot.hint.TypeReference;
-import org.springframework.aot.hint2.ReflectionHints.ReflectionHint.Attribute;
-import org.springframework.lang.Nullable;
+import org.springframework.aot.hint2.ReflectionHint.Category;
 import org.springframework.util.Assert;
 import org.springframework.util.ReflectionUtils;
 
 /**
- * Gather the need for reflection at runtime.
+ * Hints for runtime reflection needs.
  *
  * @author Stephane Nicoll
  * @author Phillip Webb
  * @since 6.0
  * @see RuntimeHints
  */
-public class ReflectionHints {
+public class ReflectionHints implements Iterable<ReflectionHint> {
 
-	private Map<TypeReference, ReflectionHint> hints;
+	private final Map<TypeReference, ReflectionHint> hints = new ConcurrentHashMap<>();
 
-	public TypeRegistrar registerPublicClasses() {
-		return new TypeRegistrar(Attribute.PUBLIC_CLASSES);
+	public TypeRegistration registerPublicClasses() {
+		return new TypeRegistration(Category.PUBLIC_CLASSES);
 	}
 
-	public TypeRegistrar registerDeclaredClasses() {
-		return new TypeRegistrar(Attribute.DECLARED_CLASSES);
+	public TypeRegistration registerDeclaredClasses() {
+		return new TypeRegistration(Category.DECLARED_CLASSES);
 	}
 
-	public FieldRegistrar registerRead() {
-		return new FieldRegistrar(false, false);
+	public FieldRegistration registerRead() {
+		return new FieldRegistration(FieldMode.READ, false);
 	}
 
-	public FieldRegistrar registerWrite() {
-		return new FieldRegistrar(true, false);
+	public FieldRegistration registerWrite() {
+		return new FieldRegistration(FieldMode.WRITE, false);
 	}
 
-	public MethodRegistrar registerIntrospect() {
-		return new MethodRegistrar(ExecutableMode.INTROSPECT);
+	public MethodRegistration registerIntrospect() {
+		return new MethodRegistration(ExecutableMode.INTROSPECT);
 	}
 
-	public MethodRegistrar registerInvoke() {
-		return new MethodRegistrar(ExecutableMode.INVOKE);
+	public MethodRegistration registerInvoke() {
+		return new MethodRegistration(ExecutableMode.INVOKE);
 	}
 
-	ReflectionHint computeHint(TypeReference type,
-			UnaryOperator<ReflectionHint> mergeFunction) {
-		BiFunction<TypeReference, ReflectionHint, ReflectionHint> mappingFunction = (key,
-				value) -> (value != null) ? value : new ReflectionHint(type);
-		return hints.compute(type, mappingFunction.andThen(mergeFunction));
+	@Override
+	public Iterator<ReflectionHint> iterator() {
+		return this.hints.values().iterator();
 	}
 
-	public class TypeRegistrar {
+	public Stream<ReflectionHint> stream() {
+		return this.hints.values().stream();
+	}
 
-		private Attribute[] attributes;
+	public ReflectionHint get(Class<?> type) {
+		return get(TypeReference.of(type));
+	}
 
-		TypeRegistrar(Attribute... attributes) {
-			this.attributes = attributes;
+	public ReflectionHint get(TypeReference type) {
+		return this.hints.getOrDefault(type, ReflectionHint.NONE);
+	}
+
+	ConditionRegistration update(TypeReference[] types,
+			UnaryOperator<ReflectionHint> mapper) {
+		for (TypeReference type : types) {
+			update(type, mapper);
+		}
+		return new ConditionRegistration(types);
+	}
+
+	ConditionRegistration update(TypeReference type,
+			UnaryOperator<ReflectionHint> mapper) {
+		this.hints.compute(type, (key, hint) -> mapper
+				.apply((hint != null) ? hint : new ReflectionHint(type)));
+		return new ConditionRegistration(type);
+	}
+
+	public class TypeRegistration {
+
+		private final Category category;
+
+		TypeRegistration(Category category) {
+			this.category = category;
 		}
 
 		public ConditionRegistration forTypes(Class<?>... types) {
@@ -92,27 +114,24 @@ public class ReflectionHints {
 		}
 
 		public ConditionRegistration forTypes(TypeReference... types) {
-			for (TypeReference type : types) {
-				computeHint(type, (hint) -> hint.mergeAttributes(this.attributes));
-			}
-			return new ConditionRegistration(types);
+			return update(types, (hint) -> hint.andCategory(this.category));
 		}
 
 	}
 
-	public class FieldRegistrar {
+	public class FieldRegistration {
 
-		private final boolean allowWrite;
+		private final FieldMode mode;
 
 		private final boolean allowUnsafeAccess;
 
-		FieldRegistrar(boolean allowWrite, boolean allowUnsafeAccess) {
-			this.allowWrite = allowWrite;
+		FieldRegistration(FieldMode mode, boolean allowUnsafeAccess) {
+			this.mode = mode;
 			this.allowUnsafeAccess = allowUnsafeAccess;
 		}
 
-		public FieldRegistrar withUnsafeAccess() {
-			return new FieldRegistrar(this.allowWrite, true);
+		public FieldRegistration withAllowUnsafeAccess() {
+			return new FieldRegistration(this.mode, true);
 		}
 
 		public ConditionRegistration forField(Class<?> declaringClass, String name) {
@@ -124,9 +143,8 @@ public class ReflectionHints {
 
 		public ConditionRegistration forField(Field field) {
 			TypeReference type = TypeReference.of(field.getDeclaringClass());
-			computeHint(type, hint -> hint.mergeField(field.getName(), this.allowWrite,
-					this.allowUnsafeAccess));
-			return new ConditionRegistration(type);
+			return update(type,
+					hint -> hint.andField(field, this.mode, this.allowUnsafeAccess));
 		}
 
 		public ConditionRegistration forPublicFieldsIn(Class<?>... types) {
@@ -138,7 +156,7 @@ public class ReflectionHints {
 		}
 
 		public ConditionRegistration forPublicFieldsIn(TypeReference... types) {
-			return forTypes(Attribute.PUBLIC_FIELDS, types);
+			return updateCategory(Category.PUBLIC_FIELDS, types);
 		}
 
 		public ConditionRegistration forDeclaredFieldsIn(Class<?>... types) {
@@ -150,26 +168,23 @@ public class ReflectionHints {
 		}
 
 		public ConditionRegistration forDeclaredFieldsIn(TypeReference... types) {
-			return forTypes(Attribute.DECLARED_FIELDS, types);
+			return updateCategory(Category.DECLARED_FIELDS, types);
 		}
 
-		private ConditionRegistration forTypes(Attribute attribute,
+		private ConditionRegistration updateCategory(Category category,
 				TypeReference... types) {
 			Assert.state(!this.allowUnsafeAccess,
 					"'allowUnsafeAccess' cannot be set when finding fields in a type");
-			for (TypeReference type : types) {
-				computeHint(type, hint -> hint.mergeAttributes(attribute));
-			}
-			return new ConditionRegistration(types);
+			return update(types, hint -> hint.andCategory(category));
 		}
 
 	}
 
-	public class MethodRegistrar {
+	public class MethodRegistration {
 
 		private final ExecutableMode mode;
 
-		MethodRegistrar(ExecutableMode mode) {
+		MethodRegistration(ExecutableMode mode) {
 			this.mode = mode;
 		}
 
@@ -184,15 +199,13 @@ public class ReflectionHints {
 
 		public ConditionRegistration forMethod(Method method) {
 			TypeReference type = TypeReference.of(method.getDeclaringClass());
-			computeHint(type, hint -> hint.mergeMethod());
-			return new ConditionRegistration(type);
+			return update(type, hint -> hint.andMethod(method, this.mode));
 		}
 
 		public ConditionRegistration forConstructor(Class<?> declaringClass,
 				Class<?>... parameterTypes) {
 			try {
-				return forConstructor(declaringClass.getConstructor(parameterTypes));
-
+				return forConstructor(declaringClass.getDeclaredConstructor(parameterTypes));
 			}
 			catch (NoSuchMethodException | SecurityException ex) {
 				throw new IllegalStateException("Unable to find constructor in class %s"
@@ -202,8 +215,7 @@ public class ReflectionHints {
 
 		public ConditionRegistration forConstructor(Constructor<?> constructor) {
 			TypeReference type = TypeReference.of(constructor.getDeclaringClass());
-			computeHint(type, hint -> hint.mergeConstructor());
-			return new ConditionRegistration(type);
+			return update(type, hint -> hint.andConstructor(constructor, this.mode));
 		}
 
 		public ConditionRegistration forPublicConstructorsIn(Class<?>... types) {
@@ -215,8 +227,8 @@ public class ReflectionHints {
 		}
 
 		public ConditionRegistration forPublicConstructorsIn(TypeReference... types) {
-			return forTypes(Attribute.INTROSPECT_PUBLIC_CONSTRUCTORS,
-					Attribute.INVOKE_PUBLIC_CONSTRUCTORS, types);
+			return updateCategory(Category.INTROSPECT_PUBLIC_CONSTRUCTORS,
+					Category.INVOKE_PUBLIC_CONSTRUCTORS, types);
 		}
 
 		public ConditionRegistration forDeclaredConstructorsIn(Class<?>... types) {
@@ -228,8 +240,8 @@ public class ReflectionHints {
 		}
 
 		public ConditionRegistration forDeclaredConstructorsIn(TypeReference... types) {
-			return forTypes(Attribute.INTROSPECT_DECLARED_CONSTRUCTORS,
-					Attribute.INVOKE_DECLARED_CONSTRUCTORS, types);
+			return updateCategory(Category.INTROSPECT_DECLARED_CONSTRUCTORS,
+					Category.INVOKE_DECLARED_CONSTRUCTORS, types);
 		}
 
 		public ConditionRegistration forPublicMethodsIn(Class<?>... types) {
@@ -241,8 +253,8 @@ public class ReflectionHints {
 		}
 
 		public ConditionRegistration forPublicMethodsIn(TypeReference... types) {
-			return forTypes(Attribute.INTROSPECT_PUBLIC_METHODS,
-					Attribute.INVOKE_PUBLIC_METHODS, types);
+			return updateCategory(Category.INTROSPECT_PUBLIC_METHODS,
+					Category.INVOKE_PUBLIC_METHODS, types);
 		}
 
 		public ConditionRegistration forDeclaredMethodsIn(Class<?>... types) {
@@ -254,101 +266,33 @@ public class ReflectionHints {
 		}
 
 		public ConditionRegistration forDeclaredMethodsIn(TypeReference... types) {
-			return forTypes(Attribute.INTROSPECT_DECLARED_METHODS,
-					Attribute.INVOKE_DECLARED_METHODS, types);
+			return updateCategory(Category.INTROSPECT_DECLARED_METHODS,
+					Category.INVOKE_DECLARED_METHODS, types);
 		}
 
-		private ConditionRegistration forTypes(Attribute introspectAttribute,
-				Attribute invokeAttribute, TypeReference... types) {
-			Attribute attribute = switch (this.mode) {
-				case INTROSPECT -> introspectAttribute;
-				case INVOKE -> invokeAttribute;
+		private ConditionRegistration updateCategory(Category introspectCategory,
+				Category invokeCategory, TypeReference... types) {
+			Category category = switch (this.mode) {
+			case INTROSPECT -> introspectCategory;
+			case INVOKE -> invokeCategory;
 			};
-			for (TypeReference type : types) {
-				computeHint(type, hint -> hint.mergeAttributes(attribute));
-			}
-			return new ConditionRegistration(types);
+			return update(types, hint -> hint.andCategory(category));
 		}
 
 	}
 
-	public static class ConditionRegistration {
+	public class ConditionRegistration
+			extends AbstractConditionalRegistration<ConditionRegistration> {
+
+		private final TypeReference[] types;
 
 		ConditionRegistration(TypeReference... types) {
+			this.types = types;
 		}
 
-		public ConditionRegistration whenReachable(Class<?> type) {
-			return this;
-		}
-
-	}
-
-	public static class ReflectionHint {
-
-		private final TypeReference type;
-
-		@Nullable
-		private final TypeReference reachableTypeCondition = null;
-
-		private final Set<Attribute> attributes = null;
-
-		private final Set<FieldHint> fields = null;
-
-		private final Set<ExecutableHint> constructors = null;
-
-		private final Set<ExecutableHint> methods = null;
-
-		ReflectionHint(TypeReference type) {
-			this.type = type;
-		}
-
-		ReflectionHint mergeAttributes(Attribute... attributes) {
-			return this;
-		}
-
-		ReflectionHint mergeField(String name, boolean allowWrite,
-				boolean allowUnsafeAccess) {
-			return this;
-		}
-
-		ReflectionHint mergeMethod() {
-			return this;
-		}
-
-		ReflectionHint mergeConstructor() {
-			return this;
-		}
-
-		static BiFunction<TypeReference, ReflectionHint, ReflectionHint> getOrCreate() {
-			return null;
-		}
-
-		public enum Attribute {
-
-			PUBLIC_FIELDS,
-
-			DECLARED_FIELDS,
-
-			INTROSPECT_PUBLIC_CONSTRUCTORS,
-
-			INTROSPECT_DECLARED_CONSTRUCTORS,
-
-			INVOKE_PUBLIC_CONSTRUCTORS,
-
-			INVOKE_DECLARED_CONSTRUCTORS,
-
-			INTROSPECT_PUBLIC_METHODS,
-
-			INTROSPECT_DECLARED_METHODS,
-
-			INVOKE_PUBLIC_METHODS,
-
-			INVOKE_DECLARED_METHODS,
-
-			PUBLIC_CLASSES,
-
-			DECLARED_CLASSES;
-
+		@Override
+		protected void apply(TypeReference reachableType) {
+			update(this.types, hint -> hint.andReachableType(reachableType));
 		}
 
 	}

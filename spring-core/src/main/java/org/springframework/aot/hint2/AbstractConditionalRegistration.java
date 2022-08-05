@@ -16,36 +16,31 @@
 
 package org.springframework.aot.hint2;
 
-import java.util.function.UnaryOperator;
-
 /**
- * Hints for runtime proxy needs.
  *
- * @author Stephane Nicoll
+ * @author pwebb
  * @since 6.0
- * @see RuntimeHints
  */
-public class ProxyHints {
+public abstract class AbstractConditionalRegistration<S extends AbstractConditionalRegistration<S>> {
 
-	// FIXME
-
-	public Dunno registerJdkProxy() {
-		return null;
+	public S whenReachable(Class<?> reachableType) {
+		return whenReachable(TypeReference.of(reachableType));
 	}
 
-	static class Dunno {
-
-		Dunno with(UnaryOperator<Class<?>[]> mapper) {
-			return this;
-		}
-
-		public void forInterfaces(Class<?> types) {
-		}
-
+	public S whenReachable(String reachableType) {
+		return whenReachable(TypeReference.of(reachableType));
 	}
 
-	// registerJdkProxy().with(AopProxyUtils::completeJdkProxyInterfaces).forInterfaces(...).whenReachable(type);
+	public S whenReachable(TypeReference reachableType) {
+		apply(reachableType);
+		return self();
+	}
 
+	protected abstract void apply(TypeReference reachableType);
 
+	@SuppressWarnings("unchecked")
+	private S self() {
+		return (S) this;
+	}
 
 }

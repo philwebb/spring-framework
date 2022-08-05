@@ -16,8 +16,6 @@
 
 package org.springframework.aot.hint2;
 
-import java.util.Objects;
-
 import org.springframework.lang.Nullable;
 
 /**
@@ -82,7 +80,7 @@ abstract class AbstractTypeReference implements TypeReference {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(getCanonicalName());
+		return getCanonicalName().hashCode();
 	}
 
 	@Override

@@ -19,7 +19,7 @@ package org.springframework.aot.hint2;
 import java.io.Serializable;
 
 /**
- * Gather the need for Java serialization at runtime.
+ * Hints for runtime Java serialization needs.
  *
  * @author Stephane Nicoll
  * @since 6.0
@@ -27,6 +27,8 @@ import java.io.Serializable;
  * @see Serializable
  */
 public class SerializationHints {
+
+	// registerSerialization().forType(...).whenReachable(...);
 
 	// FIXME
 
