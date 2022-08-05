@@ -82,19 +82,18 @@ public class ReflectionHints implements Iterable<ReflectionHint> {
 		return this.hints.getOrDefault(type, ReflectionHint.NONE);
 	}
 
+	ConditionRegistration update(TypeReference type,
+			UnaryOperator<ReflectionHint> mapper) {
+		return update(new TypeReference[] { type }, mapper);
+	}
+
 	ConditionRegistration update(TypeReference[] types,
 			UnaryOperator<ReflectionHint> mapper) {
 		for (TypeReference type : types) {
-			update(type, mapper);
+			this.hints.compute(type, (key, hint) -> mapper
+					.apply((hint != null) ? hint : new ReflectionHint(type)));
 		}
 		return new ConditionRegistration(types);
-	}
-
-	ConditionRegistration update(TypeReference type,
-			UnaryOperator<ReflectionHint> mapper) {
-		this.hints.compute(type, (key, hint) -> mapper
-				.apply((hint != null) ? hint : new ReflectionHint(type)));
-		return new ConditionRegistration(type);
 	}
 
 	public class TypeRegistration {

@@ -16,11 +16,19 @@
 
 package org.springframework.aot.hint2;
 
+import java.util.Set;
+
 /**
- * 
+ *
  * @author pwebb
  * @since 6.0
  */
-public class ResourceHint {
+public class ResourcePatternHint {
 
+	/**
+	 * @param pattern
+	 */
+	public ResourcePatternHint(ResourcePattern pattern) {
+		// TODO Auto-generated constructor stub
+	}
 }

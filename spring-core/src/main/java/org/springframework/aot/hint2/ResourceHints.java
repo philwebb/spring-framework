@@ -16,9 +16,11 @@
 
 package org.springframework.aot.hint2;
 
-import org.springframework.aot.hint.TypeReference;
-import org.springframework.aot.hint2.ReflectionHints.ConditionRegistration;
-import org.springframework.util.ResizableByteArrayOutputStream;
+import java.util.Collections;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.UnaryOperator;
 
 /**
  * Hints for runtime resource needs.
@@ -30,102 +32,78 @@ import org.springframework.util.ResizableByteArrayOutputStream;
  */
 public class ResourceHints {
 
-	// registerResource().forPattern()
-	// registerResource().forClassBytecode()
-	// registerResource().forLocation()
-	// registerBundle().forName()
+	private final Map<ResourcePattern, ResourcePatternHint> patternHints = new ConcurrentHashMap<>();
 
-	public ConditionLocationRegistration registerResource(String location) {
-		return null;
+	private final Map<String, ResourcePatternHint> locationHints = new ConcurrentHashMap<>();
+
+	private final Map<String, ResourcePatternHint> bundleHints = new ConcurrentHashMap<>();
+
+	private final Set<TypeReference> classBytecodeHints = Collections
+			.newSetFromMap(new ConcurrentHashMap<>());
+
+	ConditionRegistration updatePattern(ResourcePattern[] patterns, UnaryOperator<ResourcePatternHint> mapper) {
+		for (ResourcePattern pattern : patterns) {
+			this.patternHints.compute(pattern, (key, hint) -> mapper
+					.apply((hint != null) ? hint : new ResourcePatternHint(pattern)));
+		}
+		return new ConditionRegistration();
 	}
 
-	public ConditionRegistration registerResources(String include, String exclude) {
-		return null;
+	public ResourceRegistration registerResource() {
+		return new ResourceRegistration();
 	}
 
-	public ConditionRegistration registerResources(ResourcePattern pattern) {
-		return null;
+	public BundleRegistration registerBundle() {
+		return new BundleRegistration();
 	}
 
-	public ConditionRegistration registerBytecode(Class<?> type) {
-		return null;
-	}
+	public  class ResourceRegistration {
 
-	public ConditionRegistration registerBundle(String name) {
-		return null;
-	}
-
-	public static class ResourcePattern {
-
-		public ResourcePattern andInclude(String... includeRegexes) {
+		public ConditionLocationRegistration forLocation(String... locations) {
 			return null;
 		}
 
-		public ResourcePattern andExclude(String... includeRegexes) {
+		public ConditionRegistration forPattern(String include, String exclude) {
 			return null;
 		}
 
-		public ResourcePattern and(ResourcePattern... excludeRegexes) {
+		public ConditionRegistration forPattern(ResourcePattern... patterns) {
 			return null;
 		}
 
-
-		public static ResourcePattern of(String includeRegex, String excludeRegex) {
-			return null;
+		public void forClassBytecode(Class<?>... types) {
 		}
 
-		public static ResourcePattern include(String... includeRegexes) {
-			return null;
-		}
+	}
 
-		public static ResourcePattern exclude(String... excludeRegexes) {
+	public  class BundleRegistration {
+
+		public ConditionRegistration forName(String... names) {
 			return null;
 		}
 
 	}
 
-	public static class ConditionRegistration {
-
-		ConditionRegistration() {
-		}
-
-		public ConditionRegistration whenReachable(Class<?> type) {
-			return this;
-		}
-
-	}
-
-	public static class ConditionLocationRegistration extends ConditionRegistration {
+	public class ConditionRegistration
+			extends AbstractConditionalRegistration<ConditionRegistration> {
 
 		@Override
-		public ConditionLocationRegistration whenReachable(Class<?> type) {
-			return (ConditionLocationRegistration) super.whenReachable(type);
+		protected void apply(TypeReference reachableType) {
 		}
+
+	}
+
+	public static class ConditionLocationRegistration
+			extends AbstractConditionalRegistration<ConditionLocationRegistration> {
 
 		public ConditionLocationRegistration whenPresent() {
 			return this;
 		}
 
+		@Override
+		protected void apply(TypeReference reachableType) {
+		}
+
 	}
-
-
-	// FIXME
-
-	// ....whenReachable(type);
-	// ....whenPresent();
-
-	// ResourcePattern(include/exclude)
-
-	// registerType (makes a pattern from the type) this is include
-
-	// registerBundle
-
-	// registerLocation(...)
-	// registerPattern(include, exclude)
-	// registerPattern(Pattern)
-	// registerClassBytecode(...)
-	// registerBundle(...)
-
-
 
 }
