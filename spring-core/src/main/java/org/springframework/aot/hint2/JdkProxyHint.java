@@ -17,6 +17,10 @@
 package org.springframework.aot.hint2;
 
 import java.lang.reflect.Proxy;
+import java.util.List;
+
+import org.springframework.lang.Nullable;
+import org.springframework.util.Assert;
 
 /**
  * An immutable hint that describes the need for a JDK interface-based
@@ -28,13 +32,36 @@ import java.lang.reflect.Proxy;
  * @since 6.0
  * @see ProxyHints
  */
-public final class JdkProxyHint {
+public final class JdkProxyHint implements ConditionalHint {
 
-	JdkProxyHint(Class<?>[] interfaceTypes) {
+	private final List<TypeReference> proxiedInterfaces;
+
+	@Nullable
+	private final TypeReference reachableType;
+
+	JdkProxyHint(TypeReference[] proxiedInterfaces) {
+		this.proxiedInterfaces = List.of(proxiedInterfaces);
+		this.reachableType = null;
+	}
+
+	private JdkProxyHint(List<TypeReference> proxiedInterfaces, @Nullable TypeReference reachableType) {
+		this.proxiedInterfaces = proxiedInterfaces;
+		this.reachableType = reachableType;
+	}
+
+	public List<TypeReference> getProxiedInterfaces() {
+		return this.proxiedInterfaces;
+	}
+
+	@Override
+	@Nullable
+	public TypeReference getReachableType() {
+		return this.reachableType;
 	}
 
 	JdkProxyHint andReachableType(TypeReference reachableType) {
-		return null;
+		Assert.state(this.reachableType == null, "A reachableType condition has already been applied");
+		return new JdkProxyHint(this.proxiedInterfaces, reachableType);
 	}
 
 }
