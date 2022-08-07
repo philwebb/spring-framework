@@ -18,6 +18,7 @@ package org.springframework.aot.hint2;
 
 import java.lang.reflect.Proxy;
 import java.util.List;
+import java.util.Objects;
 
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
@@ -39,7 +40,7 @@ public final class JdkProxyHint implements ConditionalHint {
 	@Nullable
 	private final TypeReference reachableType;
 
-	JdkProxyHint(TypeReference[] proxiedInterfaces) {
+	JdkProxyHint(TypeReference... proxiedInterfaces) {
 		this.proxiedInterfaces = List.of(proxiedInterfaces);
 		this.reachableType = null;
 	}
@@ -49,6 +50,18 @@ public final class JdkProxyHint implements ConditionalHint {
 		this.reachableType = reachableType;
 	}
 
+	JdkProxyHint andReachableType(TypeReference reachableType) {
+		if (Objects.equals(this.reachableType, reachableType)) {
+			return this;
+		}
+		Assert.state(this.reachableType == null, "A reachableType condition has already been applied");
+		return new JdkProxyHint(this.proxiedInterfaces, reachableType);
+	}
+
+	/**
+	 * Return the interfaces to be proxied.
+	 * @return the interfaces that the proxy should implement
+	 */
 	public List<TypeReference> getProxiedInterfaces() {
 		return this.proxiedInterfaces;
 	}
@@ -57,11 +70,6 @@ public final class JdkProxyHint implements ConditionalHint {
 	@Nullable
 	public TypeReference getReachableType() {
 		return this.reachableType;
-	}
-
-	JdkProxyHint andReachableType(TypeReference reachableType) {
-		Assert.state(this.reachableType == null, "A reachableType condition has already been applied");
-		return new JdkProxyHint(this.proxiedInterfaces, reachableType);
 	}
 
 }

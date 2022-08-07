@@ -17,11 +17,16 @@
 package org.springframework.aot.hint2;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Executable;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
@@ -45,23 +50,25 @@ public final class ReflectionHint implements ConditionalHint {
 
 	private final Set<Category> categories;
 
-	private final Set<FieldHint> fields;
+	private final Map<Field, FieldHint> fields;
 
-	private final Set<ConstructorHint> constructors;
+	private final Map<Constructor<?>, ConstructorHint> constructors;
 
-	private final Set<MethodHint> methods;
+	private final Map<Method, MethodHint> methods;
 
 	ReflectionHint(TypeReference type) {
+		Assert.notNull(type, "'type' must not be null");
 		this.type = type;
 		this.reachableType = null;
 		this.categories = Collections.emptySet();
-		this.fields = Collections.emptySet();
-		this.constructors = Collections.emptySet();
-		this.methods = Collections.emptySet();
+		this.fields = Collections.emptyMap();
+		this.constructors = Collections.emptyMap();
+		this.methods = Collections.emptyMap();
 	}
 
 	private ReflectionHint(TypeReference type, TypeReference reachableType, Set<Category> categories,
-			Set<FieldHint> fields, Set<ConstructorHint> constructors, Set<MethodHint> methods) {
+			Map<Field, FieldHint> fields, Map<Constructor<?>, ConstructorHint> constructors,
+			Map<Method, MethodHint> methods) {
 		this.type = type;
 		this.reachableType = reachableType;
 		this.categories = categories;
@@ -71,31 +78,53 @@ public final class ReflectionHint implements ConditionalHint {
 	}
 
 	ReflectionHint andReachableType(TypeReference reachableType) {
+		if (Objects.equals(this.reachableType, reachableType)) {
+			return this;
+		}
 		Assert.state(this.reachableType == null, "A reachableType condition has already been applied");
 		return new ReflectionHint(this.type, reachableType, this.categories, this.fields, this.constructors,
 				this.methods);
 	}
 
 	ReflectionHint andCategory(Category category) {
+		if (this.categories.contains(category)) {
+			return this;
+		}
 		EnumSet<Category> categories = EnumSet.of(category);
 		categories.addAll(this.categories);
-		return new ReflectionHint(this.type, this.reachableType, categories, this.fields, this.constructors,
+		return new ReflectionHint(this.type, this.reachableType, Set.copyOf(categories), this.fields, this.constructors,
 				this.methods);
 	}
 
 	ReflectionHint andField(Field field, FieldMode mode, boolean allowUnsafeAccess) {
-		// FIXME
-		return this;
-	}
-
-	ReflectionHint andMethod(Method method, ExecutableMode mode) {
-		// FIXME
-		return this;
+		Map<Field, FieldHint> fields = new HashMap<>(this.fields);
+		fields.compute(field, (key, hint) -> (hint != null) ? hint.and(mode, allowUnsafeAccess)
+				: new FieldHint(field, mode, allowUnsafeAccess));
+		return new ReflectionHint(this.type, this.reachableType, this.categories, Map.copyOf(fields), this.constructors,
+				this.methods);
 	}
 
 	ReflectionHint andConstructor(Constructor<?> constructor, ExecutableMode mode) {
-		// FIXME
-		return this;
+		Map<Constructor<?>, ConstructorHint> constructors = new HashMap<>(this.constructors);
+		constructors.compute(constructor,
+				(key, hint) -> (hint != null) ? hint.and(mode) : new ConstructorHint(constructor, mode));
+		return new ReflectionHint(this.type, this.reachableType, this.categories, this.fields, Map.copyOf(constructors),
+				this.methods);
+	}
+
+	ReflectionHint andMethod(Method method, ExecutableMode mode) {
+		Map<Method, MethodHint> methods = new HashMap<>(this.methods);
+		methods.compute(method, (key, hint) -> (hint != null) ? hint.and(mode) : new MethodHint(method, mode));
+		return new ReflectionHint(this.type, this.reachableType, this.categories, this.fields, this.constructors,
+				Map.copyOf(methods));
+	}
+
+	/**
+	 * Return the type that this hint handles.
+	 * @return the type
+	 */
+	public TypeReference getType() {
+		return this.type;
 	}
 
 	@Override
@@ -103,19 +132,162 @@ public final class ReflectionHint implements ConditionalHint {
 		return this.reachableType;
 	}
 
+	/**
+	 * Return the categories that apply.
+	 * @return the categories
+	 */
+	public Set<Category> getCategories() {
+		return this.categories;
+	}
+
+	/**
+	 * Return an unordered stream of the fields requiring reflection.
+	 * @return a stream of {@link FieldHint FieldHints}
+	 */
+	public Stream<FieldHint> fields() {
+		return this.fields.values().stream();
+	}
+
+	/**
+	 * Return an unordered stream of the constructors requiring reflection.
+	 * @return a stream of {@link ConstructorHint ConstructorHints}
+	 */
+	public Stream<ConstructorHint> constructors() {
+		return this.constructors.values().stream();
+	}
+
+	/**
+	 * Return an unordered stream of the methods requiring reflection.
+	 * @return a stream of {@link MethodHint MethodHints}
+	 */
+	public Stream<MethodHint> methods() {
+		return this.methods.values().stream();
+	}
+
+	/**
+	 * A hint that describes the need of reflection on a {@link Field}.
+	 */
 	public static final class FieldHint {
 
+		private final Field field;
+
+		private final FieldMode mode;
+
+		private final boolean allowUnsafeAccess;
+
+		FieldHint(Field field, FieldMode mode, boolean allowUnsafeAccess) {
+			this.field = field;
+			this.mode = mode;
+			this.allowUnsafeAccess = allowUnsafeAccess;
+		}
+
+		FieldHint and(FieldMode mode, boolean allowUnsafeAccess) {
+			return new FieldHint(this.field, this.mode != FieldMode.WRITE ? mode : FieldMode.WRITE,
+					this.allowUnsafeAccess || allowUnsafeAccess);
+		}
+
+		/**
+		 * Return the name of the field.
+		 * @return the name
+		 */
+		public String getName() {
+			return this.field.getName();
+		}
+
+		/**
+		 * Return the {@link FieldMode} to use for the hint.
+		 * @return the field mode
+		 */
+		public FieldMode getMode() {
+			return this.mode;
+		}
+
+		/**
+		 * Return whether if using {@code Unsafe} on the field should be
+		 * allowed.
+		 * @return {@code true} to allow unsafe access
+		 */
+		public boolean isAllowUnsafeAccess() {
+			return this.allowUnsafeAccess;
+		}
+
 	}
 
-	public static abstract class ExecutableHint {
+	/**
+	 * Base class for a hint that describes the need of reflection on a
+	 * {@link Executable}.
+	 */
+	public abstract static class ExecutableHint {
 
+		private final Executable executable;
+
+		private final ExecutableMode mode;
+
+		ExecutableHint(Executable executable, ExecutableMode mode) {
+			this.executable = executable;
+			this.mode = mode;
+		}
+
+		/**
+		 * Return the name of the executable.
+		 * @return the name
+		 */
+		public String getName() {
+			return this.executable.getName();
+		}
+
+		/**
+		 * Return the parameter types of the executable.
+		 * @return the parameter types
+		 * @see Executable#getParameterTypes()
+		 */
+		public Class<?>[] getParameterTypes() {
+			return this.executable.getParameterTypes();
+		}
+
+		/**
+		 * Return the {@link ExecutableMode} to use for the hint.
+		 * @return the executable mode
+		 */
+		public ExecutableMode getMode() {
+			return mode;
+		}
 	}
 
+	/**
+	 * A hint that describes the need of reflection on a {@link Method}.
+	 */
 	public static final class MethodHint extends ExecutableHint {
 
+		private final Method method;
+
+		MethodHint(Method method, ExecutableMode mode) {
+			super(method, mode);
+			this.method = method;
+		}
+
+		MethodHint and(ExecutableMode mode) {
+			return new MethodHint(this.method, (getMode() != ExecutableMode.INVOKE ? mode : ExecutableMode.INVOKE));
+		}
+
 	}
 
+	/**
+	 * A hint that describes the need of reflection on a {@link Constructor}.
+	 */
 	public static final class ConstructorHint extends ExecutableHint {
+
+		private final Constructor<?> constructor;
+
+		ConstructorHint(Constructor<?> constructor, ExecutableMode mode) {
+			super(constructor, mode);
+			this.constructor = constructor;
+		}
+
+		ConstructorHint and(ExecutableMode mode) {
+			return new ConstructorHint(this.constructor,
+					(getMode() != ExecutableMode.INVOKE ? mode : ExecutableMode.INVOKE));
+		}
 
 	}
 
