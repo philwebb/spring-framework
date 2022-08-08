@@ -17,11 +17,11 @@
 package org.springframework.aot.hint2;
 
 /**
- * Tests for {@link JdkProxyHint}.
+ * Tests for {@link JavaProxyHint}.
  *
  * @author Stephane Nicoll
  * @author Phillip Webb
  */
-class JdkProxyHintTests {
+class JavaProxyHintTests {
 
 }

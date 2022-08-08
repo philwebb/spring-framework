@@ -21,7 +21,7 @@ import org.springframework.aot.hint.ClassProxyHint;
 import org.springframework.aot.hint.JavaSerializationHint;
 import org.springframework.aot.hint.JdkProxyHint;
 import org.springframework.aot.hint.ReflectionHints;
-import org.springframework.aot.hint.ResourceBundleHint;
+import org.springframework.aot.hint.BundleResourceHint;
 import org.springframework.aot.hint.ResourcePatternHint;
 
 /**
@@ -47,7 +47,7 @@ public enum HintType {
 	/**
 	 * Resource bundle hint, as described by {@link org.springframework.aot.hint.ResourceHints#resourceBundles()}.
 	 */
-	RESOURCE_BUNDLE(ResourceBundleHint.class),
+	RESOURCE_BUNDLE(BundleResourceHint.class),
 
 	/**
 	 * Java serialization hint, as described by {@link org.springframework.aot.hint.JavaSerializationHint}.

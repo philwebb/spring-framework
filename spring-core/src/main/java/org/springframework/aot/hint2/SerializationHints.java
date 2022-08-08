@@ -22,6 +22,7 @@ import java.util.function.Consumer;
 import java.util.function.UnaryOperator;
 import java.util.stream.Stream;
 
+import org.springframework.aot.hint2.ResourceHints.PatternRegistration;
 
 /**
  * Hints for runtime Java serialization needs.
@@ -34,23 +35,23 @@ import java.util.stream.Stream;
  */
 public class SerializationHints {
 
-	private final Map<TypeReference, JavaSerializationHint> javaSerializationHints = new ConcurrentHashMap<>();
+	private final Map<TypeReference, JavaSerializationHint> javaSerialization = new ConcurrentHashMap<>();
 
 	public JavaSerializationRegistration registerJavaSerialization() {
 		return new JavaSerializationRegistration();
 	}
 
-
 	/**
-	 * Return the {@link JavaSerializationHint java serialization hints} for types
-	 * that need to be serialized using Java serialization at runtime.
-	 * @return a stream of {@link JavaSerializationHint java serialization hints}
+	 * Return the {@link JavaSerializationHint java serialization hints} for
+	 * types that need to be serialized using Java serialization at runtime.
+	 * @return a stream of {@link JavaSerializationHint java serialization
+	 * hints}
 	 */
 	public Stream<JavaSerializationHint> javaSerialization() {
-		return this.javaSerializationHints.values().stream();
+		return this.javaSerialization.values().stream();
 	}
 
-	public class JavaSerializationRegistration {
+	public class JavaSerializationRegistration extends ReachableTypeRegistration<PatternRegistration> {
 
 		public void forType(Class<?>... types) {
 			forType(TypeReference.arrayOf(types));

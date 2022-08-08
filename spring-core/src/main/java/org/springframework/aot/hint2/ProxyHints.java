@@ -31,12 +31,12 @@ import org.springframework.util.Assert;
  * @author Stephane Nicoll
  * @author Phillip Webb
  * @since 6.0
- * @see JdkProxyHint
+ * @see JavaProxyHint
  * @see RuntimeHints
  */
 public class ProxyHints {
 
-	private final Set<JdkProxyHint> hints = Collections.newSetFromMap(new ConcurrentHashMap<>());
+	private final Set<JavaProxyHint> jdkProxyHints = Collections.newSetFromMap(new ConcurrentHashMap<>());
 
 	/**
 	 * Registration methods for JDK proxy hints.
@@ -47,12 +47,12 @@ public class ProxyHints {
 	}
 
 	/**
-	 * Return an unordered {@link Stream} if {@link JdkProxyHint JdkProxyHints}
+	 * Return an unordered {@link Stream} if {@link JavaProxyHint JdkProxyHints}
 	 * that have been registered.
 	 * @return the registered JDK proxy hints
 	 */
-	public Stream<JdkProxyHint> jdkProxies() {
-		return this.hints.stream();
+	public Stream<JavaProxyHint> jdkProxies() {
+		return this.jdkProxyHints.stream();
 	}
 
 	/**
@@ -110,7 +110,7 @@ public class ProxyHints {
 		 */
 		public void forInterfaces(TypeReference... interfaceTypes) {
 			Assert.notNull(interfaceTypes, "'interfaceTypes' must not be null");
-			ProxyHints.this.hints.add(new JdkProxyHint(interfaceTypes, getReachableType()));
+			ProxyHints.this.jdkProxyHints.add(new JavaProxyHint(interfaceTypes, getReachableType()));
 		}
 
 		private Class<?>[] mapAndVeryifyInterfaceTypes(Class<?>... interfaceTypes) {

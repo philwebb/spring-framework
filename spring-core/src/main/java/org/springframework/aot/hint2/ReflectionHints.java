@@ -25,7 +25,7 @@ import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
 import java.util.stream.Stream;
 
-import org.springframework.aot.hint2.ReflectionTypeHint.Category;
+import org.springframework.aot.hint2.JavaReflectionHint.Category;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
@@ -37,12 +37,16 @@ import org.springframework.util.ReflectionUtils;
  * @author Stephane Nicoll
  * @author Phillip Webb
  * @since 6.0
- * @see ReflectionTypeHint
+ * @see JavaReflectionHint
  * @see RuntimeHints
  */
 public class ReflectionHints {
 
-	private final Map<TypeReference, ReflectionTypeHint> typeHints = new ConcurrentHashMap<>();
+	private final Map<TypeReference, JavaReflectionHint> javaReflectionHints = new ConcurrentHashMap<>();
+
+	// hints.reflection().registerType().read().
+	// hints.reflection().registerType().write().
+	// hints.reflection().registerType().publicClasses().
 
 	/**
 	 * Registration methods for {@link Category#PUBLIC_CLASSES public classes}
@@ -98,12 +102,12 @@ public class ReflectionHints {
 	}
 
 	/**
-	 * Return an unordered {@link Stream} if {@link ReflectionTypeHint
+	 * Return an unordered {@link Stream} if {@link JavaReflectionHint
 	 * ReflectionTypeHints} that have been registered.
 	 * @return the registered reflection type hints
 	 */
-	public Stream<ReflectionTypeHint> typeHints() {
-		return this.typeHints.values().stream();
+	public Stream<JavaReflectionHint> javaReflection() {
+		return this.javaReflectionHints.values().stream();
 	}
 
 	/**
@@ -113,8 +117,8 @@ public class ReflectionHints {
 	 * @return the reflection hints for this type, or {@code null}
 	 */
 	@Nullable
-	public ReflectionTypeHint getTypeHint(Class<?> type) {
-		return getTypeHint(TypeReference.of(type));
+	public JavaReflectionHint getJavaReflectionHint(Class<?> type) {
+		return getJavaReflectionHint(TypeReference.of(type));
 	}
 
 	/**
@@ -124,20 +128,20 @@ public class ReflectionHints {
 	 * @return the reflection hints for this type, or {@code null}
 	 */
 	@Nullable
-	public ReflectionTypeHint getTypeHint(TypeReference type) {
-		return this.typeHints.get(type);
+	public JavaReflectionHint getJavaReflectionHint(TypeReference type) {
+		return this.javaReflectionHints.get(type);
 	}
 
-	void update(TypeReference type, ReflectionRegistration<?> registration, UnaryOperator<ReflectionTypeHint> mapper) {
+	void update(TypeReference type, ReflectionRegistration<?> registration, UnaryOperator<JavaReflectionHint> mapper) {
 		update(new TypeReference[] { type }, registration, mapper);
 	}
 
-	void update(TypeReference[] types, ReflectionRegistration<?> registration, UnaryOperator<ReflectionTypeHint> mapper) {
+	void update(TypeReference[] types, ReflectionRegistration<?> registration, UnaryOperator<JavaReflectionHint> mapper) {
 		for (TypeReference type : types) {
 			if (registration.getPredicate().test(type)) {
-				this.typeHints.compute(type, (key, hint) -> {
+				this.javaReflectionHints.compute(type, (key, hint) -> {
 					TypeReference reachableType = registration.getReachableType();
-					hint = (hint != null) ? hint : new ReflectionTypeHint(type);
+					hint = (hint != null) ? hint : new JavaReflectionHint(type);
 					hint = mapper.apply(hint);
 					hint = (reachableType != null) ? hint.andReachableType(reachableType) : hint;
 					return hint;

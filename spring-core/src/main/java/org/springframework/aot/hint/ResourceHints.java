@@ -38,7 +38,7 @@ public class ResourceHints {
 
 	private final List<ResourcePatternHints> resourcePatternHints;
 
-	private final Set<ResourceBundleHint> resourceBundleHints;
+	private final Set<BundleResourceHint> resourceBundleHints;
 
 
 	public ResourceHints() {
@@ -59,9 +59,9 @@ public class ResourceHints {
 
 	/**
 	 * Return the resource bundles that should be made available at runtime.
-	 * @return a stream of {@link ResourceBundleHint}
+	 * @return a stream of {@link BundleResourceHint}
 	 */
-	public Stream<ResourceBundleHint> resourceBundles() {
+	public Stream<BundleResourceHint> resourceBundles() {
 		return this.resourceBundleHints.stream();
 	}
 
@@ -136,8 +136,8 @@ public class ResourceHints {
 	 * @param resourceHint a builder to further customize the resource bundle
 	 * @return {@code this}, to facilitate method chaining
 	 */
-	public ResourceHints registerResourceBundle(String baseName, @Nullable Consumer<ResourceBundleHint.Builder> resourceHint) {
-		ResourceBundleHint.Builder builder = new ResourceBundleHint.Builder(baseName);
+	public ResourceHints registerResourceBundle(String baseName, @Nullable Consumer<BundleResourceHint.Builder> resourceHint) {
+		BundleResourceHint.Builder builder = new BundleResourceHint.Builder(baseName);
 		if (resourceHint != null) {
 			resourceHint.accept(builder);
 		}

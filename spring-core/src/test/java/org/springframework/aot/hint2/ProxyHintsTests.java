@@ -98,12 +98,12 @@ class ProxyHintsTests {
 
 	// FIXME test same type with different reachable
 
-	private static Consumer<JdkProxyHint> proxiedInterfaces(String... proxiedInterfaces) {
+	private static Consumer<JavaProxyHint> proxiedInterfaces(String... proxiedInterfaces) {
 		return jdkProxyHint -> assertThat(jdkProxyHint.getProxiedInterfaces())
 				.containsExactly(TypeReference.arrayOf(proxiedInterfaces));
 	}
 
-	private static Consumer<JdkProxyHint> proxiedInterfaces(Class<?>... proxiedInterfaces) {
+	private static Consumer<JavaProxyHint> proxiedInterfaces(Class<?>... proxiedInterfaces) {
 		return jdkProxyHint -> assertThat(jdkProxyHint.getProxiedInterfaces())
 				.containsExactly(TypeReference.arrayOf(proxiedInterfaces));
 	}

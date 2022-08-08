@@ -136,8 +136,8 @@ class ResourceHintsTests {
 
 	private Consumer<ResourcePatternHints> patternOf(List<String> includes, List<String> excludes) {
 		return pattern -> {
-			assertThat(pattern.getIncludes()).map(ResourcePatternHint::getPattern).containsExactlyElementsOf(includes);
-			assertThat(pattern.getExcludes()).map(ResourcePatternHint::getPattern).containsExactlyElementsOf(excludes);
+			assertThat(pattern.getIncludes()).map(PatternResourceHint::getPattern).containsExactlyElementsOf(includes);
+			assertThat(pattern.getExcludes()).map(PatternResourceHint::getPattern).containsExactlyElementsOf(excludes);
 		};
 	}
 

@@ -28,7 +28,7 @@ import org.springframework.lang.Nullable;
  * @author Brian Clozel
  * @since 6.0
  */
-public final class ResourceBundleHint implements ConditionalHint {
+public final class BundleResourceHint implements ConditionalHint {
 
 	private final String baseName;
 
@@ -36,7 +36,7 @@ public final class ResourceBundleHint implements ConditionalHint {
 	private final TypeReference reachableType;
 
 
-	ResourceBundleHint(Builder builder) {
+	BundleResourceHint(Builder builder) {
 		this.baseName = builder.baseName;
 		this.reachableType = builder.reachableType;
 	}
@@ -63,7 +63,7 @@ public final class ResourceBundleHint implements ConditionalHint {
 		if (o == null || getClass() != o.getClass()) {
 			return false;
 		}
-		ResourceBundleHint that = (ResourceBundleHint) o;
+		BundleResourceHint that = (BundleResourceHint) o;
 		return this.baseName.equals(that.baseName)
 				&& Objects.equals(this.reachableType, that.reachableType);
 	}
@@ -74,7 +74,7 @@ public final class ResourceBundleHint implements ConditionalHint {
 	}
 
 	/**
-	 * Builder for {@link ResourceBundleHint}.
+	 * Builder for {@link BundleResourceHint}.
 	 */
 	public static class Builder {
 
@@ -109,12 +109,12 @@ public final class ResourceBundleHint implements ConditionalHint {
 		}
 
 		/**
-		 * Creates a {@link ResourceBundleHint} based on the state of this
+		 * Creates a {@link BundleResourceHint} based on the state of this
 		 * builder.
 		 * @return a resource bundle hint
 		 */
-		ResourceBundleHint build() {
-			return new ResourceBundleHint(this);
+		BundleResourceHint build() {
+			return new BundleResourceHint(this);
 		}
 
 	}

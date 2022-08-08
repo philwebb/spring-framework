@@ -20,7 +20,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Stream;
 
-import org.springframework.aot.hint.ResourceBundleHint;
+import org.springframework.aot.hint.BundleResourceHint;
 import org.springframework.aot.hint.ResourcePatternHints;
 import org.springframework.lang.Nullable;
 
@@ -31,22 +31,22 @@ import org.springframework.lang.Nullable;
  * @author Phillip Webb
  * @since 6.0
  * @see ResourceLocationHint
- * @see ResourcePatternHint
- * @see ResourceBundleHint
+ * @see PatternResourceHint
+ * @see BundleResourceHint
  * @see RuntimeHints
  */
 public class ResourceHints {
 
-	private final Map<ResourcePattern, ResourcePatternHint> patternHints = new ConcurrentHashMap<>();
+	private final Map<ResourcePattern, PatternResourceHint> patternHints = new ConcurrentHashMap<>();
 
-	private final Map<String, ResourceBundleHint> bundleHints = new ConcurrentHashMap<>();
+	private final Map<String, BundleResourceHint> bundleHints = new ConcurrentHashMap<>();
 
 
-	public PatternRegistration registerPattern() {
+	public PatternRegistration registerResourcePattern() {
 		return new PatternRegistration();
 	}
 
-	public BundleRegistration registerBundle() {
+	public BundleRegistration registerResourceBundle() {
 		return new BundleRegistration();
 	}
 
@@ -54,15 +54,15 @@ public class ResourceHints {
 	 * Return the resources that should be made available at runtime.
 	 * @return a stream of {@link ResourcePatternHints}
 	 */
-	public Stream<ResourcePatternHints> resourcePatterns() {
+	public Stream<ResourcePatternHints> resourcePatternsHints() {
 		return null;
 	}
 
 	/**
 	 * Return the resource bundles that should be made available at runtime.
-	 * @return a stream of {@link ResourceBundleHint}
+	 * @return a stream of {@link BundleResourceHint}
 	 */
-	public Stream<ResourceBundleHint> resourceBundles() {
+	public Stream<BundleResourceHint> resourceBundleHints() {
 		return null;
 	}
 

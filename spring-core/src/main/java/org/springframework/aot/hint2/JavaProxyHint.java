@@ -32,14 +32,14 @@ import org.springframework.lang.Nullable;
  * @since 6.0
  * @see ProxyHints
  */
-public final class JdkProxyHint implements ConditionalHint {
+public final class JavaProxyHint implements ConditionalHint {
 
 	private final List<TypeReference> proxiedInterfaces;
 
 	@Nullable
 	private final TypeReference reachableType;
 
-	JdkProxyHint(TypeReference[] proxiedInterfaces, @Nullable TypeReference reachableType) {
+	JavaProxyHint(TypeReference[] proxiedInterfaces, @Nullable TypeReference reachableType) {
 		this.proxiedInterfaces = List.of(proxiedInterfaces);
 		this.reachableType = reachableType;
 	}
@@ -71,7 +71,7 @@ public final class JdkProxyHint implements ConditionalHint {
 		if (obj == null || getClass() != obj.getClass()) {
 			return false;
 		}
-		JdkProxyHint other = (JdkProxyHint) obj;
+		JavaProxyHint other = (JavaProxyHint) obj;
 		return Objects.equals(proxiedInterfaces, other.proxiedInterfaces)
 				&& Objects.equals(reachableType, other.reachableType);
 	}

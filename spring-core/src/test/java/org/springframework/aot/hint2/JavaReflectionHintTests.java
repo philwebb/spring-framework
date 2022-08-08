@@ -25,7 +25,7 @@ import java.util.function.Function;
 import io.netty.util.internal.shaded.org.jctools.queues.MessagePassingQueue.Supplier;
 import org.junit.jupiter.api.Test;
 
-import org.springframework.aot.hint2.ReflectionTypeHint.Category;
+import org.springframework.aot.hint2.JavaReflectionHint.Category;
 import org.springframework.util.ReflectionUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -33,30 +33,30 @@ import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 
 /**
- * Tests for {@link ReflectionTypeHint}.
+ * Tests for {@link JavaReflectionHint}.
  *
  * @author Stephane Nicoll
  * @author Phillip Webb
  */
-class ReflectionTypeHintTests {
+class JavaReflectionHintTests {
 
 	@Test
 	void createWithNullTypeReference() {
-		assertThatIllegalArgumentException().isThrownBy(() -> new ReflectionTypeHint(null))
+		assertThatIllegalArgumentException().isThrownBy(() -> new JavaReflectionHint(null))
 				.withMessage("'type' must not be null");
 	}
 
 	@Test
 	void createWithType() {
 		TypeReference type = TypeReference.of(String.class);
-		ReflectionTypeHint hint = new ReflectionTypeHint(type);
+		JavaReflectionHint hint = new JavaReflectionHint(type);
 		assertThat(hint.getType()).isEqualTo(type);
 	}
 
 	@Test
 	void andReachableTypeReturnsNewInstance() {
-		ReflectionTypeHint without = new ReflectionTypeHint(TypeReference.of(Function.class));
-		ReflectionTypeHint with = without.andReachableType(TypeReference.of(Consumer.class));
+		JavaReflectionHint without = new JavaReflectionHint(TypeReference.of(Function.class));
+		JavaReflectionHint with = without.andReachableType(TypeReference.of(Consumer.class));
 		assertThat(without).isNotSameAs(with);
 		assertThat(without.getReachableType()).isNull();
 		assertThat(with.getReachableType()).isEqualTo(TypeReference.of(Consumer.class));
@@ -64,7 +64,7 @@ class ReflectionTypeHintTests {
 
 	@Test
 	void andReachableTypeWhenAlreadySetWithDifferentTypeThrowsException() {
-		ReflectionTypeHint hint = new ReflectionTypeHint(TypeReference.of(Function.class))
+		JavaReflectionHint hint = new JavaReflectionHint(TypeReference.of(Function.class))
 				.andReachableType(TypeReference.of(Consumer.class));
 		assertThatIllegalStateException().isThrownBy(() -> hint.andReachableType(TypeReference.of(Supplier.class)))
 				.withMessage("A reachableType condition has already been applied");
@@ -72,15 +72,15 @@ class ReflectionTypeHintTests {
 
 	@Test
 	void andReachableTypeWhenAlreadySetWithSameTypeReturnsSameInstance() {
-		ReflectionTypeHint hint = new ReflectionTypeHint(TypeReference.of(Function.class))
+		JavaReflectionHint hint = new JavaReflectionHint(TypeReference.of(Function.class))
 				.andReachableType(TypeReference.of(Consumer.class));
 		assertThat(hint.andReachableType(TypeReference.of(Consumer.class))).isSameAs(hint);
 	}
 
 	@Test
 	void andCategoryReturnsNewInstance() {
-		ReflectionTypeHint hint = new ReflectionTypeHint(TypeReference.of(Function.class));
-		ReflectionTypeHint withCategory = hint.andCategory(Category.DECLARED_CLASSES);
+		JavaReflectionHint hint = new JavaReflectionHint(TypeReference.of(Function.class));
+		JavaReflectionHint withCategory = hint.andCategory(Category.DECLARED_CLASSES);
 		assertThat(withCategory).isNotSameAs(hint);
 		assertThat(hint.getCategories()).isEmpty();
 		assertThat(withCategory.getCategories()).containsExactly(Category.DECLARED_CLASSES);
@@ -88,7 +88,7 @@ class ReflectionTypeHintTests {
 
 	@Test
 	void andCategoryWhenAlreadyContainsCategoryReturnsSameInstance() {
-		ReflectionTypeHint hint = new ReflectionTypeHint(TypeReference.of(Function.class))
+		JavaReflectionHint hint = new JavaReflectionHint(TypeReference.of(Function.class))
 				.andCategory(Category.DECLARED_CLASSES);
 		assertThat(hint.andCategory(Category.DECLARED_CLASSES)).isSameAs(hint);
 	}
@@ -96,7 +96,7 @@ class ReflectionTypeHintTests {
 	@Test
 	void andFieldWhenNoFieldAddsField() {
 		Field field = ReflectionUtils.findField(ExampleBean.class, "field");
-		ReflectionTypeHint hint = new ReflectionTypeHint(TypeReference.of(ExampleBean.class));
+		JavaReflectionHint hint = new JavaReflectionHint(TypeReference.of(ExampleBean.class));
 		hint = hint.andField(field, FieldMode.READ, false);
 		assertThat(hint.fields()).singleElement().satisfies(fieldHint -> {
 			assertThat(fieldHint.getName()).isEqualTo("field");
@@ -108,9 +108,9 @@ class ReflectionTypeHintTests {
 	@Test
 	void andFieldWhenHasFieldWithLowerValuesUpdatesField() {
 		Field field = ReflectionUtils.findField(ExampleBean.class, "field");
-		ReflectionTypeHint hint = new ReflectionTypeHint(TypeReference.of(ExampleBean.class));
+		JavaReflectionHint hint = new JavaReflectionHint(TypeReference.of(ExampleBean.class));
 		hint = hint.andField(field, FieldMode.READ, false);
-		ReflectionTypeHint updatedHint = hint.andField(field, FieldMode.WRITE, true);
+		JavaReflectionHint updatedHint = hint.andField(field, FieldMode.WRITE, true);
 		assertThat(hint.fields()).singleElement().satisfies(fieldHint -> {
 			assertThat(fieldHint.getName()).isEqualTo("field");
 			assertThat(fieldHint.getMode()).isEqualTo(FieldMode.READ);
@@ -126,9 +126,9 @@ class ReflectionTypeHintTests {
 	@Test
 	void andFieldWhenHasFieldWithHigherUpdatesField() {
 		Field field = ReflectionUtils.findField(ExampleBean.class, "field");
-		ReflectionTypeHint hint = new ReflectionTypeHint(TypeReference.of(ExampleBean.class));
+		JavaReflectionHint hint = new JavaReflectionHint(TypeReference.of(ExampleBean.class));
 		hint = hint.andField(field, FieldMode.WRITE, true);
-		ReflectionTypeHint updatedHint = hint.andField(field, FieldMode.READ, false);
+		JavaReflectionHint updatedHint = hint.andField(field, FieldMode.READ, false);
 		assertThat(hint.fields()).singleElement().satisfies(fieldHint -> {
 			assertThat(fieldHint.getName()).isEqualTo("field");
 			assertThat(fieldHint.getMode()).isEqualTo(FieldMode.WRITE);
@@ -144,7 +144,7 @@ class ReflectionTypeHintTests {
 	@Test
 	void andMethodWhenNoMethodAddsMethod() {
 		Method method = ReflectionUtils.findMethod(ExampleBean.class, "method");
-		ReflectionTypeHint hint = new ReflectionTypeHint(TypeReference.of(ExampleBean.class));
+		JavaReflectionHint hint = new JavaReflectionHint(TypeReference.of(ExampleBean.class));
 		hint = hint.andMethod(method, ExecutableMode.INTROSPECT);
 		assertThat(hint.methods()).singleElement().satisfies(methodHint -> {
 			assertThat(methodHint.getName()).isEqualTo("method");
@@ -156,9 +156,9 @@ class ReflectionTypeHintTests {
 	@Test
 	void andMethodWhenHasMethodWithLowerValuesUpdatesMethod() {
 		Method method = ReflectionUtils.findMethod(ExampleBean.class, "method");
-		ReflectionTypeHint hint = new ReflectionTypeHint(TypeReference.of(ExampleBean.class));
+		JavaReflectionHint hint = new JavaReflectionHint(TypeReference.of(ExampleBean.class));
 		hint = hint.andMethod(method, ExecutableMode.INTROSPECT);
-		ReflectionTypeHint updatedHint = hint.andMethod(method, ExecutableMode.INVOKE);
+		JavaReflectionHint updatedHint = hint.andMethod(method, ExecutableMode.INVOKE);
 		assertThat(hint.methods()).singleElement().satisfies(methodHint -> {
 			assertThat(methodHint.getName()).isEqualTo("method");
 			assertThat(methodHint.getMode()).isEqualTo(ExecutableMode.INTROSPECT);
@@ -172,9 +172,9 @@ class ReflectionTypeHintTests {
 	@Test
 	void andMethodWhenHasMethodWithHigherUpdatesMethod() {
 		Method method = ReflectionUtils.findMethod(ExampleBean.class, "method");
-		ReflectionTypeHint hint = new ReflectionTypeHint(TypeReference.of(ExampleBean.class));
+		JavaReflectionHint hint = new JavaReflectionHint(TypeReference.of(ExampleBean.class));
 		hint = hint.andMethod(method, ExecutableMode.INVOKE);
-		ReflectionTypeHint updatedHint = hint.andMethod(method, ExecutableMode.INTROSPECT);
+		JavaReflectionHint updatedHint = hint.andMethod(method, ExecutableMode.INTROSPECT);
 		assertThat(hint.methods()).singleElement().satisfies(methodHint -> {
 			assertThat(methodHint.getName()).isEqualTo("method");
 			assertThat(methodHint.getMode()).isEqualTo(ExecutableMode.INVOKE);
@@ -188,7 +188,7 @@ class ReflectionTypeHintTests {
 	@Test
 	void andConstructorWhenNoMethodAddsMethod() throws Exception {
 		Constructor<?> constructor = ExampleBean.class.getDeclaredConstructor();
-		ReflectionTypeHint hint = new ReflectionTypeHint(TypeReference.of(ExampleBean.class));
+		JavaReflectionHint hint = new JavaReflectionHint(TypeReference.of(ExampleBean.class));
 		hint = hint.andConstructor(constructor, ExecutableMode.INTROSPECT);
 		assertThat(hint.constructors()).singleElement().satisfies(methodHint -> {
 			assertThat(methodHint.getName()).isEqualTo(ExampleBean.class.getName());
@@ -200,9 +200,9 @@ class ReflectionTypeHintTests {
 	@Test
 	void andConstructorWhenHasMethodWithLowerValuesUpdatesMethod() throws Exception {
 		Constructor<?> constructor = ExampleBean.class.getDeclaredConstructor();
-		ReflectionTypeHint hint = new ReflectionTypeHint(TypeReference.of(ExampleBean.class));
+		JavaReflectionHint hint = new JavaReflectionHint(TypeReference.of(ExampleBean.class));
 		hint = hint.andConstructor(constructor, ExecutableMode.INTROSPECT);
-		ReflectionTypeHint updatedHint = hint.andConstructor(constructor, ExecutableMode.INVOKE);
+		JavaReflectionHint updatedHint = hint.andConstructor(constructor, ExecutableMode.INVOKE);
 		assertThat(hint.constructors()).singleElement().satisfies(methodHint -> {
 			assertThat(methodHint.getName()).isEqualTo(ExampleBean.class.getName());
 			assertThat(methodHint.getMode()).isEqualTo(ExecutableMode.INTROSPECT);
@@ -216,9 +216,9 @@ class ReflectionTypeHintTests {
 	@Test
 	void andConstructorWhenHasMethodWithHigherUpdatesMethod() throws Exception {
 		Constructor<?> constructor = ExampleBean.class.getDeclaredConstructor();
-		ReflectionTypeHint hint = new ReflectionTypeHint(TypeReference.of(ExampleBean.class));
+		JavaReflectionHint hint = new JavaReflectionHint(TypeReference.of(ExampleBean.class));
 		hint = hint.andConstructor(constructor, ExecutableMode.INVOKE);
-		ReflectionTypeHint updatedHint = hint.andConstructor(constructor, ExecutableMode.INTROSPECT);
+		JavaReflectionHint updatedHint = hint.andConstructor(constructor, ExecutableMode.INTROSPECT);
 		assertThat(hint.constructors()).singleElement().satisfies(methodHint -> {
 			assertThat(methodHint.getName()).isEqualTo(ExampleBean.class.getName());
 			assertThat(methodHint.getMode()).isEqualTo(ExecutableMode.INVOKE);

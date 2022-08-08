@@ -41,7 +41,7 @@ import org.springframework.util.Assert;
  * @since 6.0
  * @see ReflectionHints
  */
-public final class ReflectionTypeHint implements ConditionalHint {
+public final class JavaReflectionHint implements ConditionalHint {
 
 	private final TypeReference type;
 
@@ -56,7 +56,7 @@ public final class ReflectionTypeHint implements ConditionalHint {
 
 	private final Map<Method, MethodHint> methods;
 
-	ReflectionTypeHint(TypeReference type) {
+	JavaReflectionHint(TypeReference type) {
 		Assert.notNull(type, "'type' must not be null");
 		this.type = type;
 		this.reachableType = null;
@@ -66,7 +66,7 @@ public final class ReflectionTypeHint implements ConditionalHint {
 		this.methods = Collections.emptyMap();
 	}
 
-	private ReflectionTypeHint(TypeReference type, TypeReference reachableType, Set<Category> categories,
+	private JavaReflectionHint(TypeReference type, TypeReference reachableType, Set<Category> categories,
 			Map<Field, FieldHint> fields, Map<Constructor<?>, ConstructorHint> constructors,
 			Map<Method, MethodHint> methods) {
 		this.type = type;
@@ -77,45 +77,45 @@ public final class ReflectionTypeHint implements ConditionalHint {
 		this.methods = methods;
 	}
 
-	ReflectionTypeHint andReachableType(TypeReference reachableType) {
+	JavaReflectionHint andReachableType(TypeReference reachableType) {
 		if (Objects.equals(this.reachableType, reachableType)) {
 			return this;
 		}
 		Assert.state(this.reachableType == null, "A reachableType condition has already been applied");
-		return new ReflectionTypeHint(this.type, reachableType, this.categories, this.fields, this.constructors,
+		return new JavaReflectionHint(this.type, reachableType, this.categories, this.fields, this.constructors,
 				this.methods);
 	}
 
-	ReflectionTypeHint andCategory(Category category) {
+	JavaReflectionHint andCategory(Category category) {
 		if (this.categories.contains(category)) {
 			return this;
 		}
 		EnumSet<Category> categories = EnumSet.of(category);
 		categories.addAll(this.categories);
-		return new ReflectionTypeHint(this.type, this.reachableType, Set.copyOf(categories), this.fields, this.constructors,
+		return new JavaReflectionHint(this.type, this.reachableType, Set.copyOf(categories), this.fields, this.constructors,
 				this.methods);
 	}
 
-	ReflectionTypeHint andField(Field field, FieldMode mode, boolean allowUnsafeAccess) {
+	JavaReflectionHint andField(Field field, FieldMode mode, boolean allowUnsafeAccess) {
 		Map<Field, FieldHint> fields = new HashMap<>(this.fields);
 		fields.compute(field, (key, hint) -> (hint != null) ? hint.and(mode, allowUnsafeAccess)
 				: new FieldHint(field, mode, allowUnsafeAccess));
-		return new ReflectionTypeHint(this.type, this.reachableType, this.categories, Map.copyOf(fields), this.constructors,
+		return new JavaReflectionHint(this.type, this.reachableType, this.categories, Map.copyOf(fields), this.constructors,
 				this.methods);
 	}
 
-	ReflectionTypeHint andConstructor(Constructor<?> constructor, ExecutableMode mode) {
+	JavaReflectionHint andConstructor(Constructor<?> constructor, ExecutableMode mode) {
 		Map<Constructor<?>, ConstructorHint> constructors = new HashMap<>(this.constructors);
 		constructors.compute(constructor,
 				(key, hint) -> (hint != null) ? hint.and(mode) : new ConstructorHint(constructor, mode));
-		return new ReflectionTypeHint(this.type, this.reachableType, this.categories, this.fields, Map.copyOf(constructors),
+		return new JavaReflectionHint(this.type, this.reachableType, this.categories, this.fields, Map.copyOf(constructors),
 				this.methods);
 	}
 
-	ReflectionTypeHint andMethod(Method method, ExecutableMode mode) {
+	JavaReflectionHint andMethod(Method method, ExecutableMode mode) {
 		Map<Method, MethodHint> methods = new HashMap<>(this.methods);
 		methods.compute(method, (key, hint) -> (hint != null) ? hint.and(mode) : new MethodHint(method, mode));
-		return new ReflectionTypeHint(this.type, this.reachableType, this.categories, this.fields, this.constructors,
+		return new JavaReflectionHint(this.type, this.reachableType, this.categories, this.fields, this.constructors,
 				Map.copyOf(methods));
 	}
 

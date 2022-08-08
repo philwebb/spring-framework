@@ -41,7 +41,7 @@ package org.springframework.aot.hint2;
  * @author Sebastien Deleuze
  * @author Phillip Webb
  * @since 6.0
- * @see ResourcePatternHint
+ * @see PatternResourceHint
  */
 public class ResourcePattern {
 

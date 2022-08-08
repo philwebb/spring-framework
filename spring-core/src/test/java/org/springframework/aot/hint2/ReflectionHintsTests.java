@@ -23,7 +23,7 @@ import java.util.function.Consumer;
 
 import org.junit.jupiter.api.Test;
 
-import org.springframework.aot.hint2.ReflectionTypeHint.Category;
+import org.springframework.aot.hint2.JavaReflectionHint.Category;
 import org.springframework.lang.Nullable;
 import org.springframework.util.ReflectionUtils;
 
@@ -158,7 +158,7 @@ class ReflectionHintsTests {
 		});
 	}
 
-	private Consumer<ReflectionTypeHint> typeWithCategories(Class<?> type, Category... categories) {
+	private Consumer<JavaReflectionHint> typeWithCategories(Class<?> type, Category... categories) {
 		return typeHint -> {
 			assertThat(typeHint.getType().getCanonicalName()).isEqualTo(type.getCanonicalName());
 			assertThat(typeHint.fields()).isEmpty();
