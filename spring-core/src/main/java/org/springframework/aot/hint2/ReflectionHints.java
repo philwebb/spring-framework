@@ -143,10 +143,22 @@ public class ReflectionHints {
 		return new Condition(types, reachableType -> update(types, hint -> hint.andReachableType(reachableType)));
 	}
 
+	public abstract class Registration<S extends Registration<S>> extends ReachableTypeRegistration<S> {
+
+		public S whenTypeIsPresent() {
+			return whenTypeIsPresent(null);
+		}
+
+		public S whenTypeIsPresent(@Nullable ClassLoader classLoader) {
+			return null;
+		}
+
+	}
+
 	/**
 	 * Registration methods for type hints.
 	 */
-	public class TypeRegistration {
+	public class TypeRegistration extends Registration<TypeRegistration> {
 
 		private final Category category;
 
@@ -157,31 +169,25 @@ public class ReflectionHints {
 		/**
 		 * Complete the reflection hint registration for the given types.
 		 * @param types the types to register
-		 * @return a {@link Condition} class that can be used to apply
-		 * conditions
 		 */
-		public Condition forType(Class<?>... types) {
-			return forType(TypeReference.arrayOf(types));
+		public void forType(Class<?>... types) {
+			forType(TypeReference.arrayOf(types));
 		}
 
 		/**
 		 * Complete the reflection hint registration for the given types.
 		 * @param types the type names to register
-		 * @return a {@link Condition} class that can be used to apply
-		 * conditions
 		 */
-		public Condition forType(String... types) {
-			return forType(TypeReference.arrayOf(types));
+		public void forType(String... types) {
+			forType(TypeReference.arrayOf(types));
 		}
 
 		/**
 		 * Complete the reflection hint registration for the given types.
 		 * @param types the types to register
-		 * @return a {@link Condition} class that can be used to apply
-		 * conditions
 		 */
-		public Condition forType(TypeReference... types) {
-			return update(types, (hint) -> hint.andCategory(this.category));
+		public void forType(TypeReference... types) {
+			update(types, (hint) -> hint.andCategory(this.category));
 		}
 
 	}
@@ -189,7 +195,7 @@ public class ReflectionHints {
 	/**
 	 * Registration methods for field hints.
 	 */
-	public class FieldRegistration {
+	public class FieldRegistration extends Registration<FieldRegistration> {
 
 		private final FieldMode mode;
 
@@ -558,25 +564,9 @@ public class ReflectionHints {
 	}
 
 	/**
-	 * {@link RegistrationCondition} for reflection hints.
+	 * {@link ReachableTypeRegistration} for reflection hints.
 	 */
-	public class Condition extends RegistrationCondition<Condition> {
-
-		private TypeReference[] types;
-
-		Condition(TypeReference[] types, Consumer<TypeReference> action) {
-			super(action);
-			this.types = types;
-		}
-
-		public Condition whenTypeIsPresent() {
-			return whenTypeIsPresent(null);
-		}
-
-		public Condition whenTypeIsPresent(@Nullable ClassLoader classLoader) {
-			return this;
-		}
-
+	public class Condition {
 	}
 
 }

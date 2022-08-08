@@ -53,7 +53,7 @@ class ReflectionHintsTests {
 
 	@Test
 	void registerTypeIfPresentRegisterExistingClass() {
-		this.reflectionHints.registerRead().forDeclaredFieldsIn(String.class.getName()).whenTypeIsPresent();
+		this.reflectionHints.registerRead().whenTypeIsPresent().forDeclaredFieldsIn(String.class.getName());
 		assertThat(this.reflectionHints.typeHints()).singleElement()
 				.satisfies(typeWithCategories(String.class, Category.DECLARED_FIELDS));
 	}
@@ -61,7 +61,7 @@ class ReflectionHintsTests {
 	@Test
 	@SuppressWarnings("unchecked")
 	void registerTypeIfPresentIgnoreMissingClass() {
-		this.reflectionHints.registerRead().forDeclaredFieldsIn("com.example.DoesNotExist").whenTypeIsPresent();
+		this.reflectionHints.registerRead().whenTypeIsPresent().forDeclaredFieldsIn("com.example.DoesNotExist");
 		assertThat(this.reflectionHints.typeHints()).isEmpty();
 	}
 

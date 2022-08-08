@@ -119,9 +119,6 @@ public final class ReflectionTypeHint implements ConditionalHint {
 				Map.copyOf(methods));
 	}
 
-	public ReflectionTypeHint andWhenTypeIsPresent(@Nullable ClassLoader classLoader) {
-	}
-
 	/**
 	 * Return the type that this hint handles.
 	 * @return the type

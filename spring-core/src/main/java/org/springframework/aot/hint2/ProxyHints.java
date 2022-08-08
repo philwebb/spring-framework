@@ -17,9 +17,9 @@
 package org.springframework.aot.hint2;
 
 import java.util.Arrays;
-import java.util.Map;
+import java.util.Collections;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Consumer;
 import java.util.function.UnaryOperator;
 import java.util.stream.Stream;
 
@@ -36,7 +36,7 @@ import org.springframework.util.Assert;
  */
 public class ProxyHints {
 
-	private final Map<InterfaceTypes, JdkProxyHint> hints = new ConcurrentHashMap<>();
+	private final Set<JdkProxyHint> hints = Collections.newSetFromMap(new ConcurrentHashMap<>());
 
 	/**
 	 * Registration methods for JDK proxy hints.
@@ -52,28 +52,18 @@ public class ProxyHints {
 	 * @return the registered JDK proxy hints
 	 */
 	public Stream<JdkProxyHint> jdkProxies() {
-		return this.hints.values().stream();
-	}
-
-	Condition update(InterfaceTypes interfaceTypes, UnaryOperator<JdkProxyHint> mapper) {
-		this.hints.compute(interfaceTypes,
-				(key, hint) -> mapper.apply((hint != null) ? hint : new JdkProxyHint(interfaceTypes.toArray())));
-		return new Condition(reachableType -> update(interfaceTypes, hint -> hint.andReachableType(reachableType)));
+		return this.hints.stream();
 	}
 
 	/**
 	 * Registration methods for JDK proxy hints.
 	 */
-	public class JdkProxyHintRegistration {
+	public class JdkProxyHintRegistration extends ReachableTypeRegistration<JdkProxyHintRegistration> {
 
-		private final UnaryOperator<Class<?>[]> classesMapper;
+		private UnaryOperator<Class<?>[]> classesMapper;
 
 		JdkProxyHintRegistration() {
 			this.classesMapper = UnaryOperator.identity();
-		}
-
-		private JdkProxyHintRegistration(UnaryOperator<Class<?>[]> classesMapper) {
-			this.classesMapper = classesMapper;
 		}
 
 		/**
@@ -88,8 +78,8 @@ public class ProxyHints {
 		 */
 		JdkProxyHintRegistration withClassMapper(UnaryOperator<Class<?>[]> mapper) {
 			Assert.notNull(mapper, "'mapper' must not be null");
-			return new JdkProxyHintRegistration(
-					interfaceTypes -> mapper.apply(this.classesMapper.apply(interfaceTypes)));
+			this.classesMapper = mapper;
+			return self();
 		}
 
 		/**
@@ -97,36 +87,30 @@ public class ProxyHints {
 		 * types (applying any {@link #withClassMapper(UnaryOperator) class
 		 * mappers}).
 		 * @param interfaceTypes the interface types to register
-		 * @return a {@link Condition} class that can be used to apply
-		 * conditions
 		 */
-		public Condition forInterfaces(Class<?>... interfaceTypes) {
+		public void forInterfaces(Class<?>... interfaceTypes) {
 			Assert.notNull(interfaceTypes, "'interfaceTypes' must not be null");
-			return forInterfaces(TypeReference.arrayOf(mapAndVeryifyInterfaceTypes(interfaceTypes)));
+			forInterfaces(TypeReference.arrayOf(mapAndVeryifyInterfaceTypes(interfaceTypes)));
 		}
 
 		/**
 		 * Complete the JDK proxy hint registration for the given interface
 		 * types.
 		 * @param interfaceTypes the names of interface types to register
-		 * @return a {@link Condition} class that can be used to apply
-		 * conditions
 		 */
-		public Condition forInterfaces(String... interfaceTypes) {
+		public void forInterfaces(String... interfaceTypes) {
 			Assert.notNull(interfaceTypes, "'interfaceTypes' must not be null");
-			return forInterfaces(TypeReference.arrayOf(interfaceTypes));
+			forInterfaces(TypeReference.arrayOf(interfaceTypes));
 		}
 
 		/**
 		 * Complete the JDK proxy hint registration for the given interface
 		 * types.
 		 * @param interfaceTypes the interface types to register
-		 * @return a {@link Condition} class that can be used to apply
-		 * conditions
 		 */
-		public Condition forInterfaces(TypeReference... interfaceTypes) {
+		public void forInterfaces(TypeReference... interfaceTypes) {
 			Assert.notNull(interfaceTypes, "'interfaceTypes' must not be null");
-			return update(new InterfaceTypes(interfaceTypes), UnaryOperator.identity());
+			ProxyHints.this.hints.add(new JdkProxyHint(interfaceTypes, getReachableType()));
 		}
 
 		private Class<?>[] mapAndVeryifyInterfaceTypes(Class<?>... interfaceTypes) {
@@ -142,50 +126,6 @@ public class ProxyHints {
 
 		private boolean isNotInterface(Class<?> candidate) {
 			return !candidate.isInterface();
-		}
-
-	}
-
-	/**
-	 * {@link RegistrationCondition} for proxy hints.
-	 */
-	public static class Condition extends RegistrationCondition<Condition> {
-
-		Condition(Consumer<TypeReference> action) {
-			super(action);
-		}
-
-	}
-
-	/**
-	 * Interface types used as a hint key.
-	 */
-	private static class InterfaceTypes {
-
-		private final TypeReference[] interfaceTypes;
-
-		InterfaceTypes(TypeReference[] interfaceTypes) {
-			this.interfaceTypes = interfaceTypes;
-		}
-
-		@Override
-		public int hashCode() {
-			return Arrays.hashCode(this.interfaceTypes);
-		}
-
-		@Override
-		public boolean equals(Object obj) {
-			if (this == obj) {
-				return true;
-			}
-			if (obj == null || getClass() != obj.getClass()) {
-				return false;
-			}
-			return Arrays.equals(this.interfaceTypes, ((InterfaceTypes) obj).interfaceTypes);
-		}
-
-		TypeReference[] toArray() {
-			return this.interfaceTypes;
 		}
 
 	}

@@ -63,7 +63,7 @@ public class SerializationHints {
 
 	}
 
-	public static class Condition extends RegistrationCondition<Condition> {
+	public static class Condition extends ReachableTypeRegistration<Condition> {
 
 		Condition(Consumer<TypeReference> action) {
 			super(action);

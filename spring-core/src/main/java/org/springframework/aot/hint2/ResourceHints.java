@@ -122,7 +122,7 @@ public class ResourceHints {
 
 	}
 
-	public class Condition extends RegistrationCondition<Condition> {
+	public class Condition extends ReachableTypeRegistration<Condition> {
 
 		Condition(Consumer<TypeReference> action) {
 			super(action);
@@ -131,7 +131,7 @@ public class ResourceHints {
 	}
 
 	public static class LocationCondition
-			extends RegistrationCondition<LocationCondition> {
+			extends ReachableTypeRegistration<LocationCondition> {
 
 		private final Runnable whenPresentAction;
 

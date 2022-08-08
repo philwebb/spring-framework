@@ -75,7 +75,7 @@ class ProxyHintsTests {
 
 	@Test
 	void registerJdkProxyWithReachableTypeCondition() {
-		this.proxyHints.registerJdkProxy().forInterfaces(Function.class).whenReachable(Stream.class);
+		this.proxyHints.registerJdkProxy().whenReachable(Stream.class).forInterfaces(Function.class);
 		assertThat(this.proxyHints.jdkProxies()).singleElement()
 				.satisfies((hint) -> assertThat(hint.getReachableType()).hasToString(Stream.class.getCanonicalName()));
 	}
@@ -95,6 +95,8 @@ class ProxyHintsTests {
 		assertThat(this.proxyHints.jdkProxies()).singleElement()
 				.satisfies(proxiedInterfaces(Function.class, BiFunction.class));
 	}
+
+	// FIXME test same type with different reachable
 
 	private static Consumer<JdkProxyHint> proxiedInterfaces(String... proxiedInterfaces) {
 		return jdkProxyHint -> assertThat(jdkProxyHint.getProxiedInterfaces())

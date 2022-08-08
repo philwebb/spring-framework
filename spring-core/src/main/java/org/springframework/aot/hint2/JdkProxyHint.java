@@ -40,22 +40,9 @@ public final class JdkProxyHint implements ConditionalHint {
 	@Nullable
 	private final TypeReference reachableType;
 
-	JdkProxyHint(TypeReference... proxiedInterfaces) {
+	JdkProxyHint(TypeReference[] proxiedInterfaces, @Nullable TypeReference reachableType) {
 		this.proxiedInterfaces = List.of(proxiedInterfaces);
-		this.reachableType = null;
-	}
-
-	private JdkProxyHint(List<TypeReference> proxiedInterfaces, @Nullable TypeReference reachableType) {
-		this.proxiedInterfaces = proxiedInterfaces;
 		this.reachableType = reachableType;
-	}
-
-	JdkProxyHint andReachableType(TypeReference reachableType) {
-		if (Objects.equals(this.reachableType, reachableType)) {
-			return this;
-		}
-		Assert.state(this.reachableType == null, "A reachableType condition has already been applied");
-		return new JdkProxyHint(this.proxiedInterfaces, reachableType);
 	}
 
 	/**
@@ -70,6 +57,24 @@ public final class JdkProxyHint implements ConditionalHint {
 	@Nullable
 	public TypeReference getReachableType() {
 		return this.reachableType;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(this.proxiedInterfaces, this.reachableType);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null || getClass() != obj.getClass()) {
+			return false;
+		}
+		JdkProxyHint other = (JdkProxyHint) obj;
+		return Objects.equals(proxiedInterfaces, other.proxiedInterfaces)
+				&& Objects.equals(reachableType, other.reachableType);
 	}
 
 }
