@@ -25,7 +25,7 @@ import org.junit.jupiter.api.Test;
 
 import org.springframework.aot.hint.MemberCategory;
 import org.springframework.aot.hint.TypeHint;
-import org.springframework.aot.hint2.ReflectionHint.Category;
+import org.springframework.aot.hint2.ReflectionTypeHint.Category;
 import org.springframework.aot.hint2.ReflectionHintsTests.TestType;
 import org.springframework.lang.Nullable;
 import org.springframework.util.ReflectionUtils;
@@ -47,14 +47,14 @@ class ReflectionHintsTests {
 	@Test
 	void registerType() {
 		this.reflectionHints.registerRead().forDeclaredFieldsIn(String.class);
-		assertThat(this.reflectionHints.reflectionHints()).singleElement()
+		assertThat(this.reflectionHints.typeHints()).singleElement()
 				.satisfies(typeWithCategories(String.class, Category.DECLARED_FIELDS));
 	}
 
 	@Test
 	void registerTypeIfPresentRegisterExistingClass() {
 		this.reflectionHints.registerRead().forDeclaredFieldsIn(String.class.getName()).whenTypeIsPresent();
-		assertThat(this.reflectionHints.reflectionHints()).singleElement()
+		assertThat(this.reflectionHints.typeHints()).singleElement()
 				.satisfies(typeWithCategories(String.class, Category.DECLARED_FIELDS));
 	}
 
@@ -62,7 +62,7 @@ class ReflectionHintsTests {
 	@SuppressWarnings("unchecked")
 	void registerTypeIfPresentIgnoreMissingClass() {
 		this.reflectionHints.registerRead().forDeclaredFieldsIn("com.example.DoesNotExist").whenTypeIsPresent();
-		assertThat(this.reflectionHints.reflectionHints()).isEmpty();
+		assertThat(this.reflectionHints.typeHints()).isEmpty();
 	}
 
 	@Test
@@ -167,7 +167,7 @@ class ReflectionHintsTests {
 		});
 	}
 
-	private Consumer<ReflectionHint> typeWithCategories(Class<?> type, Category... categories) {
+	private Consumer<ReflectionTypeHint> typeWithCategories(Class<?> type, Category... categories) {
 		return typeHint -> {
 			assertThat(typeHint.getType().getCanonicalName()).isEqualTo(type.getCanonicalName());
 			assertThat(typeHint.fields()).isEmpty();

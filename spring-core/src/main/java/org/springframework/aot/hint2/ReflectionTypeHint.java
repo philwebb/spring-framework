@@ -41,7 +41,7 @@ import org.springframework.util.Assert;
  * @since 6.0
  * @see ReflectionHints
  */
-public final class ReflectionHint implements ConditionalHint {
+public final class ReflectionTypeHint implements ConditionalHint {
 
 	private final TypeReference type;
 
@@ -56,7 +56,7 @@ public final class ReflectionHint implements ConditionalHint {
 
 	private final Map<Method, MethodHint> methods;
 
-	ReflectionHint(TypeReference type) {
+	ReflectionTypeHint(TypeReference type) {
 		Assert.notNull(type, "'type' must not be null");
 		this.type = type;
 		this.reachableType = null;
@@ -66,7 +66,7 @@ public final class ReflectionHint implements ConditionalHint {
 		this.methods = Collections.emptyMap();
 	}
 
-	private ReflectionHint(TypeReference type, TypeReference reachableType, Set<Category> categories,
+	private ReflectionTypeHint(TypeReference type, TypeReference reachableType, Set<Category> categories,
 			Map<Field, FieldHint> fields, Map<Constructor<?>, ConstructorHint> constructors,
 			Map<Method, MethodHint> methods) {
 		this.type = type;
@@ -77,46 +77,49 @@ public final class ReflectionHint implements ConditionalHint {
 		this.methods = methods;
 	}
 
-	ReflectionHint andReachableType(TypeReference reachableType) {
+	ReflectionTypeHint andReachableType(TypeReference reachableType) {
 		if (Objects.equals(this.reachableType, reachableType)) {
 			return this;
 		}
 		Assert.state(this.reachableType == null, "A reachableType condition has already been applied");
-		return new ReflectionHint(this.type, reachableType, this.categories, this.fields, this.constructors,
+		return new ReflectionTypeHint(this.type, reachableType, this.categories, this.fields, this.constructors,
 				this.methods);
 	}
 
-	ReflectionHint andCategory(Category category) {
+	ReflectionTypeHint andCategory(Category category) {
 		if (this.categories.contains(category)) {
 			return this;
 		}
 		EnumSet<Category> categories = EnumSet.of(category);
 		categories.addAll(this.categories);
-		return new ReflectionHint(this.type, this.reachableType, Set.copyOf(categories), this.fields, this.constructors,
+		return new ReflectionTypeHint(this.type, this.reachableType, Set.copyOf(categories), this.fields, this.constructors,
 				this.methods);
 	}
 
-	ReflectionHint andField(Field field, FieldMode mode, boolean allowUnsafeAccess) {
+	ReflectionTypeHint andField(Field field, FieldMode mode, boolean allowUnsafeAccess) {
 		Map<Field, FieldHint> fields = new HashMap<>(this.fields);
 		fields.compute(field, (key, hint) -> (hint != null) ? hint.and(mode, allowUnsafeAccess)
 				: new FieldHint(field, mode, allowUnsafeAccess));
-		return new ReflectionHint(this.type, this.reachableType, this.categories, Map.copyOf(fields), this.constructors,
+		return new ReflectionTypeHint(this.type, this.reachableType, this.categories, Map.copyOf(fields), this.constructors,
 				this.methods);
 	}
 
-	ReflectionHint andConstructor(Constructor<?> constructor, ExecutableMode mode) {
+	ReflectionTypeHint andConstructor(Constructor<?> constructor, ExecutableMode mode) {
 		Map<Constructor<?>, ConstructorHint> constructors = new HashMap<>(this.constructors);
 		constructors.compute(constructor,
 				(key, hint) -> (hint != null) ? hint.and(mode) : new ConstructorHint(constructor, mode));
-		return new ReflectionHint(this.type, this.reachableType, this.categories, this.fields, Map.copyOf(constructors),
+		return new ReflectionTypeHint(this.type, this.reachableType, this.categories, this.fields, Map.copyOf(constructors),
 				this.methods);
 	}
 
-	ReflectionHint andMethod(Method method, ExecutableMode mode) {
+	ReflectionTypeHint andMethod(Method method, ExecutableMode mode) {
 		Map<Method, MethodHint> methods = new HashMap<>(this.methods);
 		methods.compute(method, (key, hint) -> (hint != null) ? hint.and(mode) : new MethodHint(method, mode));
-		return new ReflectionHint(this.type, this.reachableType, this.categories, this.fields, this.constructors,
+		return new ReflectionTypeHint(this.type, this.reachableType, this.categories, this.fields, this.constructors,
 				Map.copyOf(methods));
+	}
+
+	public ReflectionTypeHint andWhenTypeIsPresent(@Nullable ClassLoader classLoader) {
 	}
 
 	/**
