@@ -24,12 +24,12 @@ package org.springframework.aot.hint2;
  * @since 6.0
  * @see SerializationHints
  */
-public final class SerializationHint {
+public final class JavaSerializationHint {
 
-	SerializationHint(TypeReference type) {
+	JavaSerializationHint(TypeReference type) {
 	}
 
-	SerializationHint andReachableType(TypeReference reachableType) {
+	JavaSerializationHint andReachableType(TypeReference reachableType) {
 		return this;
 	}
 

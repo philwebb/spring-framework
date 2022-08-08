@@ -21,7 +21,6 @@ import java.util.List;
 import java.util.Objects;
 
 import org.springframework.lang.Nullable;
-import org.springframework.util.Assert;
 
 /**
  * An immutable hint that describes the need for a JDK interface-based

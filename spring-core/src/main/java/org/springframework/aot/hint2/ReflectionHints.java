@@ -128,11 +128,11 @@ public class ReflectionHints {
 		return this.typeHints.get(type);
 	}
 
-	void update(TypeReference type, Registration<?> registration, UnaryOperator<ReflectionTypeHint> mapper) {
+	void update(TypeReference type, ReflectionRegistration<?> registration, UnaryOperator<ReflectionTypeHint> mapper) {
 		update(new TypeReference[] { type }, registration, mapper);
 	}
 
-	void update(TypeReference[] types, Registration<?> registration, UnaryOperator<ReflectionTypeHint> mapper) {
+	void update(TypeReference[] types, ReflectionRegistration<?> registration, UnaryOperator<ReflectionTypeHint> mapper) {
 		for (TypeReference type : types) {
 			if (registration.getPredicate().test(type)) {
 				this.typeHints.compute(type, (key, hint) -> {
@@ -146,12 +146,11 @@ public class ReflectionHints {
 		}
 	}
 
-	public abstract class Registration<S extends Registration<S>> extends ReachableTypeRegistration<S> {
+	public abstract class ReflectionRegistration<S extends ReflectionRegistration<S>> extends ReachableTypeRegistration<S> {
 
 		private Predicate<TypeReference> predicate = type -> true;
 
 		public S whenTypeIsPresent() {
-			// FIXME
 			return whenTypeIsPresent(null);
 		}
 
@@ -172,7 +171,7 @@ public class ReflectionHints {
 	/**
 	 * Registration methods for type hints.
 	 */
-	public class TypeRegistration extends Registration<TypeRegistration> {
+	public class TypeRegistration extends ReflectionRegistration<TypeRegistration> {
 
 		private final Category category;
 
@@ -209,7 +208,7 @@ public class ReflectionHints {
 	/**
 	 * Registration methods for field hints.
 	 */
-	public class FieldRegistration extends Registration<FieldRegistration> {
+	public class FieldRegistration extends ReflectionRegistration<FieldRegistration> {
 
 		private final FieldMode mode;
 
@@ -322,7 +321,7 @@ public class ReflectionHints {
 	/**
 	 * Registration methods for method hints.
 	 */
-	public class MethodRegistration extends Registration<MethodRegistration> {
+	public class MethodRegistration extends ReflectionRegistration<MethodRegistration> {
 
 		private final ExecutableMode mode;
 

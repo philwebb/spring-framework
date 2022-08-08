@@ -20,6 +20,8 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 import java.util.function.UnaryOperator;
+import java.util.stream.Stream;
+
 
 /**
  * Hints for runtime Java serialization needs.
@@ -27,46 +29,38 @@ import java.util.function.UnaryOperator;
  * @author Stephane Nicoll
  * @author Phillip Webb
  * @since 6.0
- * @see SerializationHint
+ * @see JavaSerializationHint
  * @see RuntimeHints
  */
 public class SerializationHints {
 
-	private final Map<TypeReference, SerializationHint> hints = new ConcurrentHashMap<>();
+	private final Map<TypeReference, JavaSerializationHint> javaSerializationHints = new ConcurrentHashMap<>();
 
-	public SerializationRegistration registerSerialization() {
-		return new SerializationRegistration();
+	public JavaSerializationRegistration registerJavaSerialization() {
+		return new JavaSerializationRegistration();
 	}
 
-	Condition update(TypeReference[] types, UnaryOperator<SerializationHint> mapper) {
-		for (TypeReference type : types) {
-			this.hints.compute(type, (key, hint) -> mapper
-					.apply((hint != null) ? hint : new SerializationHint(type)));
-		}
-		return new Condition(reachableType -> update(types,
-				hint -> hint.andReachableType(reachableType)));
+
+	/**
+	 * Return the {@link JavaSerializationHint java serialization hints} for types
+	 * that need to be serialized using Java serialization at runtime.
+	 * @return a stream of {@link JavaSerializationHint java serialization hints}
+	 */
+	public Stream<JavaSerializationHint> javaSerialization() {
+		return this.javaSerializationHints.values().stream();
 	}
 
-	public class SerializationRegistration {
+	public class JavaSerializationRegistration {
 
-		Condition forType(Class<?>... types) {
-			return forType(TypeReference.arrayOf(types));
+		public void forType(Class<?>... types) {
+			forType(TypeReference.arrayOf(types));
 		}
 
-		Condition forType(String... types) {
-			return forType(TypeReference.arrayOf(types));
+		public void forType(String... types) {
+			forType(TypeReference.arrayOf(types));
 		}
 
-		Condition forType(TypeReference... types) {
-			return update(types, UnaryOperator.identity());
-		}
-
-	}
-
-	public static class Condition extends ReachableTypeRegistration<Condition> {
-
-		Condition(Consumer<TypeReference> action) {
-			super(action);
+		public void forType(TypeReference... types) {
 		}
 
 	}

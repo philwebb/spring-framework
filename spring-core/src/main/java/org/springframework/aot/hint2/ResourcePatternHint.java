@@ -16,6 +16,8 @@
 
 package org.springframework.aot.hint2;
 
+import org.springframework.lang.Nullable;
+
 /**
  * An immutable hint that describes {@link ResourcePattern resource patterns}
  * that should be made available at runtime.
@@ -29,10 +31,7 @@ package org.springframework.aot.hint2;
  */
 public final class ResourcePatternHint {
 
-	ResourcePatternHint(ResourcePattern pattern) {
+	ResourcePatternHint(ResourcePattern pattern, @Nullable TypeReference reachableType) {
 	}
 
-	ResourcePatternHint andReachableType(TypeReference reachableType) {
-		return null;
-	}
 }

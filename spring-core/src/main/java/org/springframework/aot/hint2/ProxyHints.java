@@ -78,7 +78,7 @@ public class ProxyHints {
 		 */
 		JdkProxyHintRegistration withClassMapper(UnaryOperator<Class<?>[]> mapper) {
 			Assert.notNull(mapper, "'mapper' must not be null");
-			this.classesMapper = mapper;
+			this.classesMapper = classes -> mapper.apply(this.classesMapper.apply(classes));
 			return self();
 		}
 

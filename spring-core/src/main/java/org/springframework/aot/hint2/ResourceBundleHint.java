@@ -18,6 +18,8 @@ package org.springframework.aot.hint2;
 
 import java.util.ResourceBundle;
 
+import org.springframework.lang.Nullable;
+
 /**
  * An immutable hint that describes the need to access a {@link ResourceBundle}.
  *
@@ -29,20 +31,7 @@ import java.util.ResourceBundle;
  */
 public final class ResourceBundleHint {
 
-	/**
-	 * @param name
-	 */
-	ResourceBundleHint(String name) {
-		// TODO Auto-generated constructor stub
-	}
-
-	/**
-	 * @param reachableType
-	 * @return
-	 */
-	ResourceBundleHint andReachableType(TypeReference reachableType) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Auto-generated method stub");
+	ResourceBundleHint(String name, @Nullable TypeReference reachableType) {
 	}
 
 }
