@@ -45,10 +45,10 @@ class ReflectionTypeReferenceTests {
 				arguments(int[].class, "int[]"),
 				arguments(Integer[].class, "java.lang.Integer[]"),
 				arguments(Object[].class, "java.lang.Object[]"),
-				arguments(StaticNested.class, "org.springframework.aot.hint.ReflectionTypeReferenceTests$StaticNested"),
-				arguments(StaticNested[].class, "org.springframework.aot.hint.ReflectionTypeReferenceTests$StaticNested[]"),
-				arguments(Inner.class, "org.springframework.aot.hint.ReflectionTypeReferenceTests$Inner"),
-				arguments(Inner[].class, "org.springframework.aot.hint.ReflectionTypeReferenceTests$Inner[]")
+				arguments(StaticNested.class, "org.springframework.aot.hint2.ReflectionTypeReferenceTests$StaticNested"),
+				arguments(StaticNested[].class, "org.springframework.aot.hint2.ReflectionTypeReferenceTests$StaticNested[]"),
+				arguments(Inner.class, "org.springframework.aot.hint2.ReflectionTypeReferenceTests$Inner"),
+				arguments(Inner[].class, "org.springframework.aot.hint2.ReflectionTypeReferenceTests$Inner[]")
 		);
 	}
 

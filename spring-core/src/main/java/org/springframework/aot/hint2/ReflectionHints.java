@@ -21,13 +21,14 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Consumer;
+import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
 import java.util.stream.Stream;
 
 import org.springframework.aot.hint2.ReflectionTypeHint.Category;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
+import org.springframework.util.ClassUtils;
 import org.springframework.util.ReflectionUtils;
 
 /**
@@ -66,7 +67,7 @@ public class ReflectionHints {
 	 * @return field read registration methods
 	 */
 	public FieldRegistration registerRead() {
-		return new FieldRegistration(FieldMode.READ, false);
+		return new FieldRegistration(FieldMode.READ);
 	}
 
 	/**
@@ -75,7 +76,7 @@ public class ReflectionHints {
 	 * @return field write registration methods
 	 */
 	public FieldRegistration registerWrite() {
-		return new FieldRegistration(FieldMode.WRITE, false);
+		return new FieldRegistration(FieldMode.WRITE);
 	}
 
 	/**
@@ -113,46 +114,59 @@ public class ReflectionHints {
 	 */
 	@Nullable
 	public ReflectionTypeHint getTypeHint(Class<?> type) {
-		return getReflectionHint(TypeReference.of(type));
+		return getTypeHint(TypeReference.of(type));
 	}
 
 	/**
-	 * Return the reflection hints for the type defined by the specified
+	 * Return the reflection type hint for the type defined by the specified
 	 * {@link TypeReference}.
 	 * @param type the type to inspect
 	 * @return the reflection hints for this type, or {@code null}
 	 */
 	@Nullable
-	public ReflectionTypeHint getReflectionHint(TypeReference type) {
+	public ReflectionTypeHint getTypeHint(TypeReference type) {
 		return this.typeHints.get(type);
 	}
 
-	Condition update(TypeReference type, UnaryOperator<ReflectionTypeHint> mapper) {
-		return update(new TypeReference[] { type }, mapper);
+	void update(TypeReference type, Registration<?> registration, UnaryOperator<ReflectionTypeHint> mapper) {
+		update(new TypeReference[] { type }, registration, mapper);
 	}
 
-	Condition update(TypeReference[] types, UnaryOperator<ReflectionTypeHint> mapper) {
+	void update(TypeReference[] types, Registration<?> registration, UnaryOperator<ReflectionTypeHint> mapper) {
 		for (TypeReference type : types) {
-			this.typeHints.compute(type,
-					(key, hint) -> mapper.apply((hint != null) ? hint : new ReflectionTypeHint(type)));
+			if (registration.getPredicate().test(type)) {
+				this.typeHints.compute(type, (key, hint) -> {
+					TypeReference reachableType = registration.getReachableType();
+					hint = (hint != null) ? hint : new ReflectionTypeHint(type);
+					hint = mapper.apply(hint);
+					hint = (reachableType != null) ? hint.andReachableType(reachableType) : hint;
+					return hint;
+				});
+			}
 		}
-		return condition(types);
-	}
-
-	Condition condition(TypeReference... types) {
-		return new Condition(types, reachableType -> update(types, hint -> hint.andReachableType(reachableType)));
 	}
 
 	public abstract class Registration<S extends Registration<S>> extends ReachableTypeRegistration<S> {
 
+		private Predicate<TypeReference> predicate = type -> true;
+
 		public S whenTypeIsPresent() {
+			// FIXME
 			return whenTypeIsPresent(null);
 		}
 
 		public S whenTypeIsPresent(@Nullable ClassLoader classLoader) {
-			return null;
+			return when(type -> ClassUtils.isPresent(type.getCanonicalName(), classLoader));
 		}
 
+		public S when(Predicate<TypeReference> predicate) {
+			this.predicate = predicate.and(predicate);
+			return self();
+		}
+
+		protected final Predicate<TypeReference> getPredicate() {
+			return this.predicate;
+		}
 	}
 
 	/**
@@ -167,7 +181,7 @@ public class ReflectionHints {
 		}
 
 		/**
-		 * Complete the reflection hint registration for the given types.
+		 * Complete the hint registration for the given types.
 		 * @param types the types to register
 		 */
 		public void forType(Class<?>... types) {
@@ -175,7 +189,7 @@ public class ReflectionHints {
 		}
 
 		/**
-		 * Complete the reflection hint registration for the given types.
+		 * Complete the hint registration for the given types.
 		 * @param types the type names to register
 		 */
 		public void forType(String... types) {
@@ -183,11 +197,11 @@ public class ReflectionHints {
 		}
 
 		/**
-		 * Complete the reflection hint registration for the given types.
+		 * Complete the hint registration for the given types.
 		 * @param types the types to register
 		 */
 		public void forType(TypeReference... types) {
-			update(types, (hint) -> hint.andCategory(this.category));
+			update(types, this, (hint) -> hint.andCategory(this.category));
 		}
 
 	}
@@ -199,126 +213,108 @@ public class ReflectionHints {
 
 		private final FieldMode mode;
 
-		private final boolean allowUnsafeAccess;
+		private boolean allowUnsafeAccess;
 
-		FieldRegistration(FieldMode mode, boolean allowUnsafeAccess) {
+		FieldRegistration(FieldMode mode) {
 			this.mode = mode;
-			this.allowUnsafeAccess = allowUnsafeAccess;
 		}
 
 		/**
-		 * Return a new {@link FieldRegistration} that registers items with
-		 * "allow unsafe access".
-		 * @return a new {@link FieldRegistration} instance
+		 * Register with "allow unsafe access".
+		 * @return this instance
 		 */
 		public FieldRegistration withAllowUnsafeAccess() {
-			return new FieldRegistration(this.mode, true);
+			this.allowUnsafeAccess = true;
+			return self();
 		}
 
 		/**
-		 * Complete the reflection hint registration by finding a field.
+		 * Complete the hint registration by finding a field.
 		 * @param declaringClass the class that declares the field
 		 * @param name the name of the field
-		 * @return a {@link Condition} class that can be used to apply
-		 * conditions
 		 */
-		public Condition forField(Class<?> declaringClass, String name) {
+		public void forField(Class<?> declaringClass, String name) {
 			Field field = ReflectionUtils.findField(declaringClass, name);
 			Assert.state(field != null,
 					() -> "Unable to find field '%s' in $s".formatted(name, declaringClass.getName()));
-			return forField(field);
+			forField(field);
 		}
 
 		/**
-		 * Complete the reflection hint registration for the given fields.
+		 * Complete the hint registration for the given fields.
 		 * @param fields the fields to register
-		 * @return a {@link Condition} class that can be used to apply
-		 * conditions
 		 */
-		public Condition forField(Field... fields) {
+		public void forField(Field... fields) {
 			TypeReference[] types = TypeReference.arrayOf(fields, Field::getDeclaringClass);
 			for (int i = 0; i < fields.length; i++) {
 				Field field = fields[i];
-				update(types[i], hint -> hint.andField(field, this.mode, this.allowUnsafeAccess));
+				update(types[i], this, hint -> hint.andField(field, this.mode, this.allowUnsafeAccess));
 			}
-			return condition(types);
 		}
 
 		/**
-		 * Complete the reflection hint for all public fields in the given
+		 * Complete the hint registration for all public fields in the given
 		 * types.
 		 * @param types the types to consider
-		 * @return a {@link Condition} class that can be used to apply
-		 * conditions
 		 * @see Category#PUBLIC_FIELDS
 		 */
-		public Condition forPublicFieldsIn(Class<?>... types) {
-			return forPublicFieldsIn(TypeReference.arrayOf(types));
+		public void forPublicFieldsIn(Class<?>... types) {
+			forPublicFieldsIn(TypeReference.arrayOf(types));
 		}
 
 		/**
-		 * Complete the reflection hint for all public fields in the given
+		 * Complete the hint registration for all public fields in the given
 		 * types.
 		 * @param types the type names to consider
-		 * @return a {@link Condition} class that can be used to apply
-		 * conditions
 		 * @see Category#PUBLIC_FIELDS
 		 */
-		public Condition forPublicFieldsIn(String... types) {
-			return forPublicFieldsIn(TypeReference.arrayOf(types));
+		public void forPublicFieldsIn(String... types) {
+			forPublicFieldsIn(TypeReference.arrayOf(types));
 		}
 
 		/**
-		 * Complete the reflection hint for all public fields in the given
+		 * Complete the hint registration for all public fields in the given
 		 * types.
 		 * @param types the types to consider
-		 * @return a {@link Condition} class that can be used to apply
-		 * conditions
 		 * @see Category#PUBLIC_FIELDS
 		 */
-		public Condition forPublicFieldsIn(TypeReference... types) {
-			return updateCategory(Category.PUBLIC_FIELDS, types);
+		public void forPublicFieldsIn(TypeReference... types) {
+			updateCategory(Category.PUBLIC_FIELDS, types);
 		}
 
 		/**
-		 * Complete the reflection hint for all declared fields in the given
+		 * Complete the hint registration for all declared fields in the given
 		 * types.
 		 * @param types the types to consider
-		 * @return a {@link Condition} class that can be used to apply
-		 * conditions
 		 * @see Category#DECLARED_FIELDS
 		 */
-		public Condition forDeclaredFieldsIn(Class<?>... types) {
-			return forDeclaredFieldsIn(TypeReference.arrayOf(types));
+		public void forDeclaredFieldsIn(Class<?>... types) {
+			forDeclaredFieldsIn(TypeReference.arrayOf(types));
 		}
 
 		/**
-		 * Complete the reflection hint for all declared fields in the given
+		 * Complete the hint registration for all declared fields in the given
 		 * types.
 		 * @param types the types to consider
-		 * @return a {@link Condition} class that can be used to apply
-		 * conditions
 		 * @see Category#DECLARED_FIELDS
 		 */
-		public Condition forDeclaredFieldsIn(String... types) {
-			return forDeclaredFieldsIn(TypeReference.arrayOf(types));
+		public void forDeclaredFieldsIn(String... types) {
+			forDeclaredFieldsIn(TypeReference.arrayOf(types));
 		}
 
 		/**
-		 * Complete the reflection hint for all declared fields in the given
+		 * Complete the hint registration for all declared fields in the given
 		 * types.
 		 * @param types the types to consider
-		 * @return a {@link Condition} class that can be used to apply
-		 * conditions
 		 * @see Category#DECLARED_FIELDS
 		 */
-		public Condition forDeclaredFieldsIn(TypeReference... types) {
-			return updateCategory(Category.DECLARED_FIELDS, types);
+		public void forDeclaredFieldsIn(TypeReference... types) {
+			updateCategory(Category.DECLARED_FIELDS, types);
 		}
 
-		private Condition updateCategory(Category category, TypeReference... types) {
+		private void updateCategory(Category category, TypeReference... types) {
 			Assert.state(!this.allowUnsafeAccess, "'allowUnsafeAccess' cannot be set when finding fields in a type");
-			return update(types, hint -> hint.andCategory(category));
+			update(types, this, hint -> hint.andCategory(category));
 		}
 
 	}
@@ -326,7 +322,7 @@ public class ReflectionHints {
 	/**
 	 * Registration methods for method hints.
 	 */
-	public class MethodRegistration {
+	public class MethodRegistration extends Registration<MethodRegistration> {
 
 		private final ExecutableMode mode;
 
@@ -335,45 +331,38 @@ public class ReflectionHints {
 		}
 
 		/**
-		 * Complete the reflection hint registration by finding a method.
+		 * Complete the hint registration by finding a method.
 		 * @param declaringClass the class that declares the method
 		 * @param name the name of the method
 		 * @param parameterTypes the method parameter types
-		 * @return a {@link Condition} class that can be used to apply
-		 * conditions
 		 */
-		public Condition forMethod(Class<?> declaringClass, String name, Class<?>... parameterTypes) {
+		public void forMethod(Class<?> declaringClass, String name, Class<?>... parameterTypes) {
 			Method method = ReflectionUtils.findMethod(declaringClass, name, parameterTypes);
 			Assert.state(method != null,
 					() -> "Unable to find method %s in class %s".formatted(name, declaringClass.getName()));
-			return forMethod(method);
+			forMethod(method);
 		}
 
 		/**
-		 * Complete the reflection hint registration for the given methods.
+		 * Complete the hint registration for the given methods.
 		 * @param methods the methods to register
-		 * @return a {@link Condition} class that can be used to apply
-		 * conditions
 		 */
-		public Condition forMethod(Method... methods) {
+		public void forMethod(Method... methods) {
 			TypeReference[] types = TypeReference.arrayOf(methods, Method::getDeclaringClass);
 			for (int i = 0; i < methods.length; i++) {
 				Method method = methods[i];
-				update(types[i], hint -> hint.andMethod(method, this.mode));
+				update(types[i], this, hint -> hint.andMethod(method, this.mode));
 			}
-			return condition(types);
 		}
 
 		/**
-		 * Complete the reflection hint registration by finding a constructor.
+		 * Complete the hint registration by finding a constructor.
 		 * @param declaringClass the class that declares the constructor
 		 * @param parameterTypes the method parameter types
-		 * @return a {@link Condition} class that can be used to apply
-		 * conditions
 		 */
-		public Condition forConstructor(Class<?> declaringClass, Class<?>... parameterTypes) {
+		public void forConstructor(Class<?> declaringClass, Class<?>... parameterTypes) {
 			try {
-				return forConstructor(declaringClass.getDeclaredConstructor(parameterTypes));
+				forConstructor(declaringClass.getDeclaredConstructor(parameterTypes));
 			}
 			catch (NoSuchMethodException | SecurityException ex) {
 				throw new IllegalStateException(
@@ -382,191 +371,157 @@ public class ReflectionHints {
 		}
 
 		/**
-		 * Complete the reflection hint registration for the given constructors.
+		 * Complete the hint registration for the given constructors.
 		 * @param constructors the constructors to register
-		 * @return a {@link Condition} class that can be used to apply
-		 * conditions
 		 */
-		public Condition forConstructor(Constructor<?>... constructors) {
+		public void forConstructor(Constructor<?>... constructors) {
 			TypeReference[] types = TypeReference.arrayOf(constructors, Constructor::getDeclaringClass);
 			for (int i = 0; i < constructors.length; i++) {
 				Constructor<?> constructor = constructors[i];
-				update(types[i], hint -> hint.andConstructor(constructor, this.mode));
+				update(types[i], this, hint -> hint.andConstructor(constructor, this.mode));
 			}
-			return condition(types);
 		}
 
 		/**
-		 * Complete the reflection hint for all public constructors in the given
-		 * types.
-		 * @param types the types to consider
-		 * @return a {@link Condition} class that can be used to apply
-		 * conditions
-		 * @see Category#INTROSPECT_PUBLIC_CONSTRUCTORS
-		 * @see Category#INVOKE_PUBLIC_CONSTRUCTORS
-		 */
-		public Condition forPublicConstructorsIn(Class<?>... types) {
-			return forPublicConstructorsIn(TypeReference.arrayOf(types));
-		}
-
-		/**
-		 * Complete the reflection hint for all public constructors in the given
-		 * types.
-		 * @param types the type names to consider
-		 * @return a {@link Condition} class that can be used to apply
-		 * conditions
-		 * @see Category#INTROSPECT_PUBLIC_CONSTRUCTORS
-		 * @see Category#INVOKE_PUBLIC_CONSTRUCTORS
-		 */
-		public Condition forPublicConstructorsIn(String... types) {
-			return forPublicConstructorsIn(TypeReference.arrayOf(types));
-		}
-
-		/**
-		 * Complete the reflection hint for all public constructors in the given
-		 * types.
-		 * @param types the types to consider
-		 * @return a {@link Condition} class that can be used to apply
-		 * conditions
-		 * @see Category#INTROSPECT_PUBLIC_CONSTRUCTORS
-		 * @see Category#INVOKE_PUBLIC_CONSTRUCTORS
-		 */
-		public Condition forPublicConstructorsIn(TypeReference... types) {
-			return updateCategory(Category.INTROSPECT_PUBLIC_CONSTRUCTORS, Category.INVOKE_PUBLIC_CONSTRUCTORS, types);
-		}
-
-		/**
-		 * Complete the reflection hint for all declared constructors in the
+		 * Complete the hint registration for all public constructors in the
 		 * given types.
 		 * @param types the types to consider
-		 * @return a {@link Condition} class that can be used to apply
-		 * conditions
-		 * @see Category#INTROSPECT_DECLARED_CONSTRUCTORS
-		 * @see Category#INVOKE_DECLARED_CONSTRUCTORS
+		 * @see Category#INTROSPECT_PUBLIC_CONSTRUCTORS
+		 * @see Category#INVOKE_PUBLIC_CONSTRUCTORS
 		 */
-		public Condition forDeclaredConstructorsIn(Class<?>... types) {
-			return forDeclaredConstructorsIn(TypeReference.arrayOf(types));
+		public void forPublicConstructorsIn(Class<?>... types) {
+			forPublicConstructorsIn(TypeReference.arrayOf(types));
 		}
 
 		/**
-		 * Complete the reflection hint for all declared constructors in the
+		 * Complete the hint registration for all public constructors in the
 		 * given types.
 		 * @param types the type names to consider
-		 * @return a {@link Condition} class that can be used to apply
-		 * conditions
-		 * @see Category#INTROSPECT_DECLARED_CONSTRUCTORS
-		 * @see Category#INVOKE_DECLARED_CONSTRUCTORS
+		 * @see Category#INTROSPECT_PUBLIC_CONSTRUCTORS
+		 * @see Category#INVOKE_PUBLIC_CONSTRUCTORS
 		 */
-		public Condition forDeclaredConstructorsIn(String... types) {
-			return forDeclaredConstructorsIn(TypeReference.arrayOf(types));
+		public void forPublicConstructorsIn(String... types) {
+			forPublicConstructorsIn(TypeReference.arrayOf(types));
 		}
 
 		/**
-		 * Complete the reflection hint for all declared constructors in the
+		 * Complete the hint registration for all public constructors in the
 		 * given types.
 		 * @param types the types to consider
-		 * @return a {@link Condition} class that can be used to apply
-		 * conditions
+		 * @see Category#INTROSPECT_PUBLIC_CONSTRUCTORS
+		 * @see Category#INVOKE_PUBLIC_CONSTRUCTORS
+		 */
+		public void forPublicConstructorsIn(TypeReference... types) {
+			updateCategory(Category.INTROSPECT_PUBLIC_CONSTRUCTORS, Category.INVOKE_PUBLIC_CONSTRUCTORS, types);
+		}
+
+		/**
+		 * Complete the hint registration for all declared constructors in the
+		 * given types.
+		 * @param types the types to consider
 		 * @see Category#INTROSPECT_DECLARED_CONSTRUCTORS
 		 * @see Category#INVOKE_DECLARED_CONSTRUCTORS
 		 */
-		public Condition forDeclaredConstructorsIn(TypeReference... types) {
-			return updateCategory(Category.INTROSPECT_DECLARED_CONSTRUCTORS, Category.INVOKE_DECLARED_CONSTRUCTORS,
-					types);
+		public void forDeclaredConstructorsIn(Class<?>... types) {
+			forDeclaredConstructorsIn(TypeReference.arrayOf(types));
+		}
+
+		/**
+		 * Complete the hint registration for all declared constructors in the
+		 * given types.
+		 * @param types the type names to consider
+		 * @see Category#INTROSPECT_DECLARED_CONSTRUCTORS
+		 * @see Category#INVOKE_DECLARED_CONSTRUCTORS
+		 */
+		public void forDeclaredConstructorsIn(String... types) {
+			forDeclaredConstructorsIn(TypeReference.arrayOf(types));
+		}
+
+		/**
+		 * Complete the hint registration for all declared constructors in the
+		 * given types.
+		 * @param types the types to consider
+		 * @see Category#INTROSPECT_DECLARED_CONSTRUCTORS
+		 * @see Category#INVOKE_DECLARED_CONSTRUCTORS
+		 */
+		public void forDeclaredConstructorsIn(TypeReference... types) {
+			updateCategory(Category.INTROSPECT_DECLARED_CONSTRUCTORS, Category.INVOKE_DECLARED_CONSTRUCTORS, types);
+		}
+
+		/**
+		 * Complete the hint registration for all public methods in the given
+		 * types.
+		 * @param types the types to consider
+		 * @see Category#INTROSPECT_PUBLIC_METHODS
+		 * @see Category#INVOKE_PUBLIC_METHODS
+		 */
+		public void forPublicMethodsIn(Class<?>... types) {
+			forPublicMethodsIn(TypeReference.arrayOf(types));
+		}
+
+		/**
+		 * Complete the hint registration for all public methods in the given
+		 * types.
+		 * @param types the type names to consider
+		 * @see Category#INTROSPECT_PUBLIC_METHODS
+		 * @see Category#INVOKE_PUBLIC_METHODS
+		 */
+		public void forPublicMethodsIn(String... types) {
+			forPublicMethodsIn(TypeReference.arrayOf(types));
 		}
 
 		/**
 		 * Complete the reflection hint for all public methods in the given
 		 * types.
 		 * @param types the types to consider
-		 * @return a {@link Condition} class that can be used to apply
-		 * conditions
 		 * @see Category#INTROSPECT_PUBLIC_METHODS
 		 * @see Category#INVOKE_PUBLIC_METHODS
 		 */
-		public Condition forPublicMethodsIn(Class<?>... types) {
-			return forPublicMethodsIn(TypeReference.arrayOf(types));
+		public void forPublicMethodsIn(TypeReference... types) {
+			updateCategory(Category.INTROSPECT_PUBLIC_METHODS, Category.INVOKE_PUBLIC_METHODS, types);
 		}
 
 		/**
-		 * Complete the reflection hint for all public methods in the given
+		 * Complete the hint registration for all declared methods in the given
+		 * types.
+		 * @param types the types to consider
+		 * @see Category#INTROSPECT_DECLARED_METHODS
+		 * @see Category#INVOKE_DECLARED_METHODS
+		 */
+		public void forDeclaredMethodsIn(Class<?>... types) {
+			forDeclaredMethodsIn(TypeReference.arrayOf(types));
+		}
+
+		/**
+		 * Complete the hint registration for all declared methods in the given
 		 * types.
 		 * @param types the type names to consider
-		 * @return a {@link Condition} class that can be used to apply
-		 * conditions
-		 * @see Category#INTROSPECT_PUBLIC_METHODS
-		 * @see Category#INVOKE_PUBLIC_METHODS
-		 */
-		public Condition forPublicMethodsIn(String... types) {
-			return forPublicMethodsIn(TypeReference.arrayOf(types));
-		}
-
-		/**
-		 * Complete the reflection hint for all public methods in the given
-		 * types.
-		 * @param types the types to consider
-		 * @return a {@link Condition} class that can be used to apply
-		 * conditions
-		 * @see Category#INTROSPECT_PUBLIC_METHODS
-		 * @see Category#INVOKE_PUBLIC_METHODS
-		 */
-		public Condition forPublicMethodsIn(TypeReference... types) {
-			return updateCategory(Category.INTROSPECT_PUBLIC_METHODS, Category.INVOKE_PUBLIC_METHODS, types);
-		}
-
-		/**
-		 * Complete the reflection hint for all declared methods in the given
-		 * types.
-		 * @param types the types to consider
-		 * @return a {@link Condition} class that can be used to apply
-		 * conditions
 		 * @see Category#INTROSPECT_DECLARED_METHODS
 		 * @see Category#INVOKE_DECLARED_METHODS
 		 */
-		public Condition forDeclaredMethodsIn(Class<?>... types) {
-			return forDeclaredMethodsIn(TypeReference.arrayOf(types));
+		public void forDeclaredMethodsIn(String... types) {
+			forDeclaredMethodsIn(TypeReference.arrayOf(types));
 		}
 
 		/**
-		 * Complete the reflection hint for all declared methods in the given
-		 * types.
-		 * @param types the type names to consider
-		 * @return a {@link Condition} class that can be used to apply
-		 * conditions
-		 * @see Category#INTROSPECT_DECLARED_METHODS
-		 * @see Category#INVOKE_DECLARED_METHODS
-		 */
-		public Condition forDeclaredMethodsIn(String... types) {
-			return forDeclaredMethodsIn(TypeReference.arrayOf(types));
-		}
-
-		/**
-		 * Complete the reflection hint for all declared methods in the given
+		 * Complete the hint registration for all declared methods in the given
 		 * types.
 		 * @param types the types to consider
-		 * @return a {@link Condition} class that can be used to apply
-		 * conditions
 		 * @see Category#INTROSPECT_DECLARED_METHODS
 		 * @see Category#INVOKE_DECLARED_METHODS
 		 */
-		public Condition forDeclaredMethodsIn(TypeReference... types) {
-			return updateCategory(Category.INTROSPECT_DECLARED_METHODS, Category.INVOKE_DECLARED_METHODS, types);
+		public void forDeclaredMethodsIn(TypeReference... types) {
+			updateCategory(Category.INTROSPECT_DECLARED_METHODS, Category.INVOKE_DECLARED_METHODS, types);
 		}
 
-		private Condition updateCategory(Category introspectCategory, Category invokeCategory, TypeReference... types) {
+		private void updateCategory(Category introspectCategory, Category invokeCategory, TypeReference... types) {
 			Category category = switch (this.mode) {
 			case INTROSPECT -> introspectCategory;
 			case INVOKE -> invokeCategory;
 			};
-			return update(types, hint -> hint.andCategory(category));
+			update(types, this, hint -> hint.andCategory(category));
 		}
 
-	}
-
-	/**
-	 * {@link ReachableTypeRegistration} for reflection hints.
-	 */
-	public class Condition {
 	}
 
 }

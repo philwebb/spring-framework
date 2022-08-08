@@ -86,18 +86,27 @@ public class ResourceHints {
 		return new BundleRegistration();
 	}
 
-	public class ResourceRegistration {
+	public class ResourceRegistration extends ReachableTypeRegistration<ResourceRegistration> {
+
+
+		public ResourceRegistration whenResourceIsPresent() {
+
+		}
+
+		public ResourceRegistration whenResourceIsPresent(ClassLoader classLoader) {
+
+		}
 
 		public LocationCondition forLocation(String... locations) {
 			return updateLocation(locations, UnaryOperator.identity());
 		}
 
-		public Condition forPattern(String includeRegex, String excludeRegex) {
+		public void forPattern(String includeRegex, String excludeRegex) {
 			return forPattern(ResourcePattern.of(includeRegex, excludeRegex));
 		}
 
-		public Condition forPattern(ResourcePattern... patterns) {
-			return updatePattern(patterns, UnaryOperator.identity());
+		public void forPattern(ResourcePattern... patterns) {
+			updatePattern(patterns, UnaryOperator.identity());
 		}
 
 		public void forClassBytecode(Class<?>... types) {
@@ -114,21 +123,14 @@ public class ResourceHints {
 
 	}
 
-	public class BundleRegistration {
+	public class BundleRegistration extends ReachableTypeRegistration<ResourceRegistration> {
 
-		public Condition forName(String... names) {
-			return updateBundle(names, UnaryOperator.identity());
+		public void forName(String... names) {
+			updateBundle(names, UnaryOperator.identity());
 		}
 
 	}
 
-	public class Condition extends ReachableTypeRegistration<Condition> {
-
-		Condition(Consumer<TypeReference> action) {
-			super(action);
-		}
-
-	}
 
 	public static class LocationCondition
 			extends ReachableTypeRegistration<LocationCondition> {

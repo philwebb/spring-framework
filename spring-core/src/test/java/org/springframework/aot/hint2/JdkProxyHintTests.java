@@ -16,15 +16,6 @@
 
 package org.springframework.aot.hint2;
 
-import java.util.function.Consumer;
-import java.util.function.Function;
-
-import io.netty.util.internal.shaded.org.jctools.queues.MessagePassingQueue.Supplier;
-import org.junit.jupiter.api.Test;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
-
 /**
  * Tests for {@link JdkProxyHint}.
  *
@@ -32,29 +23,5 @@ import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
  * @author Phillip Webb
  */
 class JdkProxyHintTests {
-
-	@Test
-	void andReachableTypeReturnsNewInstance() {
-		JdkProxyHint without = new JdkProxyHint(TypeReference.arrayOf(Function.class));
-		JdkProxyHint with = without.andReachableType(TypeReference.of(Consumer.class));
-		assertThat(without).isNotSameAs(with);
-		assertThat(without.getReachableType()).isNull();
-		assertThat(with.getReachableType()).isEqualTo(TypeReference.of(Consumer.class));
-	}
-
-	@Test
-	void andReachableTypeWhenAlreadySetWithDifferentTypeThrowsException() {
-		JdkProxyHint hint = new JdkProxyHint(TypeReference.arrayOf(Function.class))
-				.andReachableType(TypeReference.of(Consumer.class));
-		assertThatIllegalStateException().isThrownBy(() -> hint.andReachableType(TypeReference.of(Supplier.class)))
-				.withMessage("A reachableType condition has already been applied");
-	}
-
-	@Test
-	void andReachableTypeWhenAlreadySetWithSameTypeReturnsSameInstance() {
-		JdkProxyHint hint = new JdkProxyHint(TypeReference.arrayOf(Function.class))
-				.andReachableType(TypeReference.of(Consumer.class));
-		assertThat(hint.andReachableType(TypeReference.of(Consumer.class))).isSameAs(hint);
-	}
 
 }

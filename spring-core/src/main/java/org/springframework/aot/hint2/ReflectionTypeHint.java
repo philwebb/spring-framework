@@ -241,8 +241,8 @@ public final class ReflectionTypeHint implements ConditionalHint {
 		 * @return the parameter types
 		 * @see Executable#getParameterTypes()
 		 */
-		public Class<?>[] getParameterTypes() {
-			return this.executable.getParameterTypes();
+		public TypeReference[] getParameterTypes() {
+			return TypeReference.arrayOf(this.executable.getParameterTypes());
 		}
 
 		/**
