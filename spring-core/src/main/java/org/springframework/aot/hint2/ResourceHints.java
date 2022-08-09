@@ -49,7 +49,7 @@ public class ResourceHints {
 
 	/**
 	 * Return the resources that should be made available at runtime.
-	 * @return a stream of {@link ResourcePatternHints}
+	 * @return a stream of {@link ResourcePatternsHint}
 	 */
 	public Stream<ResourcePatternHint> resourcePatterns() {
 		return this.resourcePatternHints.values().stream();

@@ -104,7 +104,7 @@ class ResourceHintsTests {
 	@Test
 	@SuppressWarnings("unchecked")
 	void registerIfPresentIgnoreMissingLocation() {
-		Consumer<ResourcePatternHints.Builder> hintBuilder = mock(Consumer.class);
+		Consumer<ResourcePatternsHint.Builder> hintBuilder = mock(Consumer.class);
 		this.resourceHints.registerPatternIfPresent(null, "location/does-not-exist/", hintBuilder);
 		assertThat(this.resourceHints.resourcePatterns()).isEmpty();
 		verifyNoInteractions(hintBuilder);
@@ -126,7 +126,7 @@ class ResourceHintsTests {
 	}
 
 
-	private Consumer<ResourcePatternHints> patternOf(String... includes) {
+	private Consumer<ResourcePatternsHint> patternOf(String... includes) {
 		return patternOf(Arrays.asList(includes), Collections.emptyList());
 	}
 
@@ -134,7 +134,7 @@ class ResourceHintsTests {
 		return resourceBundleHint -> assertThat(resourceBundleHint.getBaseName()).isEqualTo(baseName);
 	}
 
-	private Consumer<ResourcePatternHints> patternOf(List<String> includes, List<String> excludes) {
+	private Consumer<ResourcePatternsHint> patternOf(List<String> includes, List<String> excludes) {
 		return pattern -> {
 			assertThat(pattern.getIncludes()).map(ResourcePatternHint::getPattern).containsExactlyElementsOf(includes);
 			assertThat(pattern.getExcludes()).map(ResourcePatternHint::getPattern).containsExactlyElementsOf(excludes);
