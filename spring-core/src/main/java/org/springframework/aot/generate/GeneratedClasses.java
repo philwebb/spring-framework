@@ -53,7 +53,7 @@ public class GeneratedClasses {
 	 * Create a new instance using the specified naming conventions.
 	 * @param classNameGenerator the class name generator to use
 	 */
-	GeneratedClasses(ClassNameGenerator classNameGenerator) {
+	public GeneratedClasses(ClassNameGenerator classNameGenerator) {
 		this(classNameGenerator, new ArrayList<>(), new ConcurrentHashMap<>());
 	}
 
@@ -159,7 +159,7 @@ public class GeneratedClasses {
 	 * @param generatedFiles where to write the generated classes
 	 * @throws IOException on IO error
 	 */
-	void writeTo(GeneratedFiles generatedFiles) {
+	public void writeTo(GeneratedFiles generatedFiles) {
 		Assert.notNull(generatedFiles, "'generatedFiles' must not be null");
 		List<GeneratedClass> generatedClasses = new ArrayList<>(this.classes);
 		generatedClasses.sort(Comparator.comparing(GeneratedClass::getName));

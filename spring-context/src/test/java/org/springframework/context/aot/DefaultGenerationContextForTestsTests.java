@@ -7,7 +7,9 @@ import org.junit.jupiter.api.Test;
 
 import org.springframework.aot.generate.ClassNameGenerator;
 import org.springframework.aot.generate.DefaultGenerationContext;
+import org.springframework.aot.generate.GeneratedClasses;
 import org.springframework.aot.generate.InMemoryGeneratedFiles;
+import org.springframework.aot.hint.RuntimeHints;
 import org.springframework.aot.test.generator.compile.TestCompiler;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Configuration;
@@ -20,16 +22,16 @@ class DefaultGenerationContextForTestsTests {
 	@SuppressWarnings("resource")
 	void example() {
 		ApplicationContextAotGenerator aotGenerator = new ApplicationContextAotGenerator();
-		ClassNameGenerator classNameGenerator = new ClassNameGenerator(null);
+		GeneratedClasses generatedClasses = new GeneratedClasses(new ClassNameGenerator(Object.class));
 		InMemoryGeneratedFiles generatedFiles = new InMemoryGeneratedFiles();
-		DefaultGenerationContext generationContext = new DefaultGenerationContext(
-				classNameGenerator, generatedFiles);
+		RuntimeHints runtimeHints = new RuntimeHints();
 		getContexts().forEach((details, applicationContext) -> {
-			DefaultGenerationContext generationContextToUse = generationContext
-					.withDefaultTarget(details.defaultTarget()).withName(details.name());
-			aotGenerator.processAheadOfTime(applicationContext, generationContextToUse);
+			ClassNameGenerator classNameGenerator = new ClassNameGenerator(details);
+			DefaultGenerationContext generationContext = new DefaultGenerationContext(
+					generatedClasses.withNamingConventions(classNameGenerator), generatedFiles, runtimeHints);
+			aotGenerator.processAheadOfTime(applicationContext, generationContext);
 		});
-		generationContext.writeGeneratedContent();
+		generatedClasses.writeTo(generatedFiles);
 		TestCompiler.forSystem().withFiles(generatedFiles).printFiles(System.out)
 				.compile(compiled -> {});
 	}
