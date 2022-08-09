@@ -23,7 +23,7 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 import org.springframework.aot.hint.ConditionalHint;
-import org.springframework.aot.hint.BundleResourceHint;
+import org.springframework.aot.hint.ResourceBundleHint;
 import org.springframework.aot.hint.ResourceHints;
 import org.springframework.aot.hint.ResourcePatternHint;
 import org.springframework.aot.hint.ResourcePatternHints;
@@ -60,11 +60,11 @@ class ResourceHintsWriter {
 		return attributes;
 	}
 
-	private void handleResourceBundles(Map<String, Object> attributes, Stream<BundleResourceHint> ressourceBundles) {
+	private void handleResourceBundles(Map<String, Object> attributes, Stream<ResourceBundleHint> ressourceBundles) {
 		addIfNotEmpty(attributes, "bundles", ressourceBundles.map(this::toAttributes).toList());
 	}
 
-	private Map<String, Object> toAttributes(BundleResourceHint hint) {
+	private Map<String, Object> toAttributes(ResourceBundleHint hint) {
 		Map<String, Object> attributes = new LinkedHashMap<>();
 		handleCondition(attributes, hint);
 		attributes.put("name", hint.getBaseName());

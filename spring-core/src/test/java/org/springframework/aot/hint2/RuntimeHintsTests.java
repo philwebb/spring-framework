@@ -48,7 +48,7 @@ class RuntimeHintsTests {
 	void resourceHintWithClass() {
 		this.hints.resources().registerType(String.class);
 		assertThat(this.hints.resources().resourcePatterns()).singleElement().satisfies(resourceHint -> {
-			assertThat(resourceHint.getIncludes()).map(PatternResourceHint::getPattern).containsExactly("java/lang/String.class");
+			assertThat(resourceHint.getIncludes()).map(ResourcePatternHint::getPattern).containsExactly("java/lang/String.class");
 			assertThat(resourceHint.getExcludes()).isEmpty();
 		});
 	}

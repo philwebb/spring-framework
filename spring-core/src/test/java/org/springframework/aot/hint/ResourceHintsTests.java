@@ -130,7 +130,7 @@ class ResourceHintsTests {
 		return patternOf(Arrays.asList(includes), Collections.emptyList());
 	}
 
-	private Consumer<BundleResourceHint> resourceBundle(String baseName) {
+	private Consumer<ResourceBundleHint> resourceBundle(String baseName) {
 		return resourceBundleHint -> assertThat(resourceBundleHint.getBaseName()).isEqualTo(baseName);
 	}
 

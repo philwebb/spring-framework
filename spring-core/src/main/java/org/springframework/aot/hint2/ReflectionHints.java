@@ -44,10 +44,6 @@ public class ReflectionHints {
 
 	private final Map<TypeReference, JavaReflectionHint> javaReflectionHints = new ConcurrentHashMap<>();
 
-	// hints.reflection().registerType().read().
-	// hints.reflection().registerType().write().
-	// hints.reflection().registerType().publicClasses().
-
 	/**
 	 * Registration methods for {@link Category#PUBLIC_CLASSES public classes}
 	 * support.

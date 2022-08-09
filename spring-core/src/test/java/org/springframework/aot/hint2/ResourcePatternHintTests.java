@@ -21,15 +21,15 @@ import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * Tests for {@link PatternResourceHint}.
+ * Tests for {@link ResourcePatternHint}.
  *
  * @author Sebastien Deleuze
  */
-public class PatternResourceHintTests {
+public class ResourcePatternHintTests {
 
 	@Test
 	void fileAtRoot() {
-		PatternResourceHint hint = new PatternResourceHint("file.properties", null);
+		ResourcePatternHint hint = new ResourcePatternHint("file.properties", null);
 		assertThat(hint.toRegex().asMatchPredicate())
 				.accepts("file.properties")
 				.rejects("com/example/file.properties", "file.prop", "another-file.properties");
@@ -37,7 +37,7 @@ public class PatternResourceHintTests {
 
 	@Test
 	void fileInDirectory() {
-		PatternResourceHint hint = new PatternResourceHint("com/example/file.properties", null);
+		ResourcePatternHint hint = new ResourcePatternHint("com/example/file.properties", null);
 		assertThat(hint.toRegex().asMatchPredicate())
 				.accepts("com/example/file.properties")
 				.rejects("file.properties", "com/file.properties", "com/example/another-file.properties");
@@ -45,7 +45,7 @@ public class PatternResourceHintTests {
 
 	@Test
 	void extension() {
-		PatternResourceHint hint = new PatternResourceHint("*.properties", null);
+		ResourcePatternHint hint = new ResourcePatternHint("*.properties", null);
 		assertThat(hint.toRegex().asMatchPredicate())
 				.accepts("file.properties", "com/example/file.properties")
 				.rejects("file.prop", "com/example/file.prop");
@@ -53,7 +53,7 @@ public class PatternResourceHintTests {
 
 	@Test
 	void extensionInDirectoryAtAnyDepth() {
-		PatternResourceHint hint = new PatternResourceHint("com/example/*.properties", null);
+		ResourcePatternHint hint = new ResourcePatternHint("com/example/*.properties", null);
 		assertThat(hint.toRegex().asMatchPredicate())
 				.accepts("com/example/file.properties", "com/example/another/file.properties")
 				.rejects("file.properties", "com/file.properties");
@@ -61,7 +61,7 @@ public class PatternResourceHintTests {
 
 	@Test
 	void anyFileInDirectoryAtAnyDepth() {
-		PatternResourceHint hint = new PatternResourceHint("com/example/*", null);
+		ResourcePatternHint hint = new ResourcePatternHint("com/example/*", null);
 		assertThat(hint.toRegex().asMatchPredicate())
 				.accepts("com/example/file.properties", "com/example/another/file.properties", "com/example/another")
 				.rejects("file.properties", "com/file.properties");

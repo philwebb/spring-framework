@@ -20,8 +20,6 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Stream;
 
-import org.springframework.aot.hint.BundleResourceHint;
-import org.springframework.aot.hint.ResourcePatternHints;
 import org.springframework.lang.Nullable;
 
 /**
@@ -31,16 +29,15 @@ import org.springframework.lang.Nullable;
  * @author Phillip Webb
  * @since 6.0
  * @see ResourceLocationHint
- * @see PatternResourceHint
- * @see BundleResourceHint
+ * @see ResourcePatternHint
+ * @see ResourceBundleHint
  * @see RuntimeHints
  */
 public class ResourceHints {
 
-	private final Map<ResourcePattern, PatternResourceHint> patternHints = new ConcurrentHashMap<>();
+	private final Map<ResourcePattern, ResourcePatternHint> resourcePatternHints = new ConcurrentHashMap<>();
 
-	private final Map<String, BundleResourceHint> bundleHints = new ConcurrentHashMap<>();
-
+	private final Map<String, ResourceBundleHint> resourceBundleHints = new ConcurrentHashMap<>();
 
 	public PatternRegistration registerResourcePattern() {
 		return new PatternRegistration();
@@ -54,21 +51,19 @@ public class ResourceHints {
 	 * Return the resources that should be made available at runtime.
 	 * @return a stream of {@link ResourcePatternHints}
 	 */
-	public Stream<ResourcePatternHints> resourcePatternsHints() {
-		return null;
+	public Stream<ResourcePatternHint> resourcePatterns() {
+		return this.resourcePatternHints.values().stream();
 	}
 
 	/**
 	 * Return the resource bundles that should be made available at runtime.
-	 * @return a stream of {@link BundleResourceHint}
+	 * @return a stream of {@link ResourceBundleHint}
 	 */
-	public Stream<BundleResourceHint> resourceBundleHints() {
-		return null;
+	public Stream<ResourceBundleHint> resourceBundles() {
+		return this.resourceBundleHints.values().stream();
 	}
 
-
 	public class PatternRegistration extends ReachableTypeRegistration<PatternRegistration> {
-
 
 		public PatternRegistration whenResourceIsPresent(String location) {
 			return whenResourceIsPresent(null, location);
@@ -77,7 +72,6 @@ public class ResourceHints {
 		public PatternRegistration whenResourceIsPresent(@Nullable ClassLoader classLoader, String location) {
 			return this;
 		}
-
 
 		public void forPattern(String... includeRegexes) {
 			forPattern(ResourcePattern.include(includeRegexes));

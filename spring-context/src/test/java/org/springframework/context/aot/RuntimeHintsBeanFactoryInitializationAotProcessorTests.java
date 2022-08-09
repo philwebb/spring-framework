@@ -26,7 +26,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.aot.generate.GenerationContext;
-import org.springframework.aot.hint.BundleResourceHint;
+import org.springframework.aot.hint.ResourceBundleHint;
 import org.springframework.aot.hint.RuntimeHints;
 import org.springframework.aot.hint.RuntimeHintsRegistrar;
 import org.springframework.beans.BeanInstantiationException;
@@ -100,7 +100,7 @@ class RuntimeHintsBeanFactoryInitializationAotProcessorTests {
 		this.generator.processAheadOfTime(applicationContext,
 				this.generationContext);
 		RuntimeHints runtimeHints = this.generationContext.getRuntimeHints();
-		assertThat(runtimeHints.resources().resourceBundles().map(BundleResourceHint::getBaseName))
+		assertThat(runtimeHints.resources().resourceBundles().map(ResourceBundleHint::getBaseName))
 				.containsOnly("com.example.example0", "sample");
 		assertThat(IncrementalRuntimeHintsRegistrar.counter.get()).isEqualTo(1);
 	}
@@ -115,7 +115,7 @@ class RuntimeHintsBeanFactoryInitializationAotProcessorTests {
 	}
 
 	private void assertThatSampleRegistrarContributed() {
-		Stream<BundleResourceHint> bundleHints = this.generationContext.getRuntimeHints()
+		Stream<ResourceBundleHint> bundleHints = this.generationContext.getRuntimeHints()
 				.resources().resourceBundles();
 		assertThat(bundleHints)
 				.anyMatch(bundleHint -> "sample".equals(bundleHint.getBaseName()));

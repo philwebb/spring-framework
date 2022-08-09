@@ -29,9 +29,9 @@ import org.springframework.lang.Nullable;
  * @since 6.0
  * @see ResourceHints
  */
-public final class PatternResourceHint {
+public final class ResourcePatternHint {
 
-	PatternResourceHint(ResourcePattern pattern, @Nullable TypeReference reachableType) {
+	ResourcePatternHint(ResourcePattern pattern, @Nullable TypeReference reachableType) {
 	}
 
 }
