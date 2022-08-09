@@ -22,16 +22,16 @@ class DefaultGenerationContextForTestsTests {
 	@SuppressWarnings("resource")
 	void example() {
 		ApplicationContextAotGenerator aotGenerator = new ApplicationContextAotGenerator();
-		GeneratedClasses generatedClasses = new GeneratedClasses(new ClassNameGenerator(Object.class));
 		InMemoryGeneratedFiles generatedFiles = new InMemoryGeneratedFiles();
 		RuntimeHints runtimeHints = new RuntimeHints();
 		getContexts().forEach((details, applicationContext) -> {
 			ClassNameGenerator classNameGenerator = new ClassNameGenerator(details);
+			GeneratedClasses generatedClasses = new GeneratedClasses(classNameGenerator);
 			DefaultGenerationContext generationContext = new DefaultGenerationContext(
-					generatedClasses.withNamingConventions(classNameGenerator), generatedFiles, runtimeHints);
+					generatedClasses, generatedFiles, runtimeHints);
 			aotGenerator.processAheadOfTime(applicationContext, generationContext);
+			generatedClasses.writeTo(generatedFiles);
 		});
-		generatedClasses.writeTo(generatedFiles);
 		TestCompiler.forSystem().withFiles(generatedFiles).printFiles(System.out)
 				.compile(compiled -> {});
 	}
