@@ -16,6 +16,11 @@
 
 package org.springframework.aot.hint2;
 
+import java.io.Serializable;
+import java.util.Objects;
+
+import org.springframework.lang.Nullable;
+
 /**
  * An immutable hint that describes the need for serialization at runtime.
  *
@@ -24,13 +29,50 @@ package org.springframework.aot.hint2;
  * @since 6.0
  * @see SerializationHints
  */
-public final class JavaSerializationHint {
+public final class JavaSerializationHint implements ConditionalHint {
 
-	JavaSerializationHint(TypeReference type) {
+	private final TypeReference type;
+
+	@Nullable
+	private final TypeReference reachableType;
+
+
+	JavaSerializationHint(TypeReference type, @Nullable TypeReference reachableType) {
+		this.type = type;
+		this.reachableType = reachableType;
 	}
 
-	JavaSerializationHint andReachableType(TypeReference reachableType) {
-		return this;
+
+	/**
+	 * Return the {@link TypeReference type} that needs to be serialized using
+	 * Java serialization at runtime.
+	 * @return a {@link Serializable} type
+	 */
+	public TypeReference getType() {
+		return this.type;
+	}
+
+	@Override
+	@Nullable
+	public TypeReference getReachableType() {
+		return this.reachableType;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null || getClass() != obj.getClass()) {
+			return false;
+		}
+		JavaSerializationHint other = (JavaSerializationHint) obj;
+		return this.type.equals(other.type) && Objects.equals(this.reachableType, other.reachableType);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(this.type, this.reachableType);
 	}
 
 }

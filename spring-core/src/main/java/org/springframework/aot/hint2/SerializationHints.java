@@ -16,11 +16,10 @@
 
 package org.springframework.aot.hint2;
 
-import java.util.Map;
+import java.util.Collections;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Stream;
-
-import org.springframework.aot.hint2.ResourceHints.PatternRegistration;
 
 /**
  * Hints for runtime Java serialization needs.
@@ -33,33 +32,57 @@ import org.springframework.aot.hint2.ResourceHints.PatternRegistration;
  */
 public class SerializationHints {
 
-	private final Map<TypeReference, JavaSerializationHint> javaSerialization = new ConcurrentHashMap<>();
+	private final Set<JavaSerializationHint> javaSerializationHints = Collections
+			.newSetFromMap(new ConcurrentHashMap<>());
 
+
+	/**
+	 * Registration methods for java serialization.
+	 * @return serialization hint registration methods
+	 */
 	public JavaSerializationRegistration registerJavaSerialization() {
 		return new JavaSerializationRegistration();
 	}
 
 	/**
-	 * Return the {@link JavaSerializationHint java serialization hints} for
-	 * types that need to be serialized using Java serialization at runtime.
-	 * @return a stream of {@link JavaSerializationHint java serialization
-	 * hints}
+	 * Return an unordered {@link Stream} of the {@link JavaSerializationHint
+	 * java serialization hints} that have been registered.
+	 * @return a stream of {@link JavaSerializationHint}
 	 */
 	public Stream<JavaSerializationHint> javaSerialization() {
-		return this.javaSerialization.values().stream();
+		return this.javaSerializationHints.stream();
 	}
 
-	public class JavaSerializationRegistration extends ReachableTypeRegistration<PatternRegistration> {
 
+	/**
+	 * Registration methods for Java serialization.
+	 */
+	public class JavaSerializationRegistration extends ReachableTypeRegistration<JavaSerializationRegistration> {
+
+		/**
+		 * Complete the hint registration for the given types.
+		 * @param types the types to register
+		 */
 		public void forType(Class<?>... types) {
 			forType(TypeReference.arrayOf(types));
 		}
 
+		/**
+		 * Complete the hint registration for the given type names.
+		 * @param types the type names to register
+		 */
 		public void forType(String... types) {
 			forType(TypeReference.arrayOf(types));
 		}
 
+		/**
+		 * Complete the hint registration for the given types.
+		 * @param types the types to register
+		 */
 		public void forType(TypeReference... types) {
+			for (TypeReference type : types) {
+				SerializationHints.this.javaSerializationHints.add(new JavaSerializationHint(type, getReachableType()));
+			}
 		}
 
 	}

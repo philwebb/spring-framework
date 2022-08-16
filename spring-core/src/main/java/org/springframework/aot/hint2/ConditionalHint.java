@@ -42,7 +42,7 @@ public interface ConditionalHint {
 	 * <p>Instead of checking for actual reachability of a type in the
 	 * application, the classpath is checked for the presence of this
 	 * type as a simple heuristic.
-	 * @param classLoader the current classloader
+	 * @param classLoader the current class loader
 	 * @return whether the condition is met and the hint applies
 	 */
 	default boolean conditionMatches(ClassLoader classLoader) {

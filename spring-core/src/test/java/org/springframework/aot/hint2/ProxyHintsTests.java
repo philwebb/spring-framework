@@ -37,66 +37,72 @@ import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException
  */
 class ProxyHintsTests {
 
-	private final ProxyHints proxyHints = new ProxyHints();
+	private final ProxyHints hints = new ProxyHints();
 
 	@Test
-	void registerJdkProxyWhenSealedInterfaceThrowsException() {
+	void registerJavaProxyWhenSealedInterfaceThrowsException() {
 		assertThatIllegalArgumentException()
-				.isThrownBy(() -> this.proxyHints.registerJdkProxy().forInterfaces(SealedInterface.class))
+				.isThrownBy(() -> this.hints.registerJavaProxy().forInterfaces(SealedInterface.class))
 				.withMessageContaining(SealedInterface.class.getName());
 	}
 
 	@Test
-	void registerJdkProxyWhenConcreteClassThrowsException() {
+	void registerJavaProxyWhenConcreteClassThrowsException() {
 		assertThatIllegalArgumentException()
-				.isThrownBy(() -> this.proxyHints.registerJdkProxy().forInterfaces(String.class))
+				.isThrownBy(() -> this.hints.registerJavaProxy().forInterfaces(String.class))
 				.withMessageContaining(String.class.getName());
 	}
 
 	@Test
-	void registerJdkProxyWithClass() {
-		this.proxyHints.registerJdkProxy().forInterfaces(Function.class);
-		assertThat(this.proxyHints.jdkProxies()).singleElement().satisfies(proxiedInterfaces(Function.class));
+	void registerJavaProxyWithClass() {
+		this.hints.registerJavaProxy().forInterfaces(Function.class);
+		assertThat(this.hints.javaProxies()).singleElement().satisfies(proxiedInterfaces(Function.class));
 	}
 
 	@Test
-	void registerJdkProxyWithString() {
-		this.proxyHints.registerJdkProxy().forInterfaces(Function.class.getName());
-		assertThat(this.proxyHints.jdkProxies()).singleElement().satisfies(proxiedInterfaces(Function.class));
+	void registerJavaProxyWithString() {
+		this.hints.registerJavaProxy().forInterfaces(Function.class.getName());
+		assertThat(this.hints.javaProxies()).singleElement().satisfies(proxiedInterfaces(Function.class));
 	}
 
 	@Test
-	void registerJdkProxyWithTypeReferences() {
-		this.proxyHints.registerJdkProxy().forInterfaces(TypeReference.of(Function.class),
+	void registerJavaProxyWithTypeReferences() {
+		this.hints.registerJavaProxy().forInterfaces(TypeReference.of(Function.class),
 				TypeReference.of("com.example.Advised"));
-		assertThat(this.proxyHints.jdkProxies()).singleElement()
+		assertThat(this.hints.javaProxies()).singleElement()
 				.satisfies(proxiedInterfaces(Function.class.getName(), "com.example.Advised"));
 	}
 
 	@Test
-	void registerJdkProxyWithReachableTypeCondition() {
-		this.proxyHints.registerJdkProxy().whenReachable(Stream.class).forInterfaces(Function.class);
-		assertThat(this.proxyHints.jdkProxies()).singleElement()
+	void registerJavaProxyWithReachableTypeCondition() {
+		this.hints.registerJavaProxy().whenReachable(Stream.class).forInterfaces(Function.class);
+		assertThat(this.hints.javaProxies()).singleElement()
 				.satisfies((hint) -> assertThat(hint.getReachableType()).hasToString(Stream.class.getCanonicalName()));
 	}
 
 	@Test
-	void registerJdkProxyWhenSameTypeRegisteredTwiceExposesOneHint() {
-		this.proxyHints.registerJdkProxy().forInterfaces(Function.class);
-		this.proxyHints.registerJdkProxy().forInterfaces(TypeReference.of(Function.class.getName()));
-		assertThat(this.proxyHints.jdkProxies()).singleElement().satisfies(proxiedInterfaces(Function.class));
+	void registerJavaProxyWhenSameTypeRegisteredTwiceExposesOneHint() {
+		this.hints.registerJavaProxy().forInterfaces(Function.class);
+		this.hints.registerJavaProxy().forInterfaces(TypeReference.of(Function.class.getName()));
+		assertThat(this.hints.javaProxies()).singleElement().satisfies(proxiedInterfaces(Function.class));
 	}
 
 	@Test
-	void registerJdkProxyWithClassMapperAppliesMapping() {
-		this.proxyHints.registerJdkProxy()
+	void registerJavaProxyWithClassMapperAppliesMapping() {
+		this.hints.registerJavaProxy()
 				.withClassMapper(existing -> ObjectUtils.addObjectToArray(existing, BiFunction.class))
 				.forInterfaces(Function.class);
-		assertThat(this.proxyHints.jdkProxies()).singleElement()
+		assertThat(this.hints.javaProxies()).singleElement()
 				.satisfies(proxiedInterfaces(Function.class, BiFunction.class));
 	}
 
-	// FIXME test same type with different reachable
+	@Test
+	void registerJavaProxyWhenSameTypeWithDifferentReachableRegistersBoth() {
+		this.hints.registerJavaProxy().forInterfaces(Function.class);
+		this.hints.registerJavaProxy().whenReachable(String.class).forInterfaces(Function.class);
+		this.hints.registerJavaProxy().whenReachable(Integer.class).forInterfaces(Function.class);
+		assertThat(this.hints.javaProxies()).hasSize(3);
+	}
 
 	private static Consumer<JavaProxyHint> proxiedInterfaces(String... proxiedInterfaces) {
 		return jdkProxyHint -> assertThat(jdkProxyHint.getProxiedInterfaces())

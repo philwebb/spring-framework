@@ -34,7 +34,6 @@ import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
  */
 class SimpleTypeReferenceTests {
 
-
 	@ParameterizedTest
 	@MethodSource("primitivesAndPrimitivesArray")
 	void primitivesAreHandledProperly(TypeReference typeReference, String expectedName) {

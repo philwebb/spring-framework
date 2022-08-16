@@ -39,10 +39,12 @@ public final class JavaProxyHint implements ConditionalHint {
 	@Nullable
 	private final TypeReference reachableType;
 
+
 	JavaProxyHint(TypeReference[] proxiedInterfaces, @Nullable TypeReference reachableType) {
 		this.proxiedInterfaces = List.of(proxiedInterfaces);
 		this.reachableType = reachableType;
 	}
+
 
 	/**
 	 * Return the interfaces to be proxied.
@@ -68,7 +70,7 @@ public final class JavaProxyHint implements ConditionalHint {
 		}
 		JavaProxyHint other = (JavaProxyHint) obj;
 		return this.proxiedInterfaces.equals(other.proxiedInterfaces)
-				&& Objects.equals(reachableType, other.reachableType);
+				&& Objects.equals(this.reachableType, other.reachableType);
 	}
 
 	@Override

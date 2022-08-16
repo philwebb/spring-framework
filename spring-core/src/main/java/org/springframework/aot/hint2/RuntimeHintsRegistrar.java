@@ -37,7 +37,7 @@ public interface RuntimeHintsRegistrar {
 	/**
 	 * Contribute hints to the given {@link RuntimeHints} instance.
 	 * @param hints the hints contributed so far for the deployment unit
-	 * @param classLoader the classloader, or {@code null} if even the system ClassLoader isn't accessible
+	 * @param classLoader the class loader, or {@code null} if even the system ClassLoader isn't accessible
 	 */
 	void registerHints(RuntimeHints hints, @Nullable ClassLoader classLoader);
 

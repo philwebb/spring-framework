@@ -17,6 +17,7 @@
 package org.springframework.aot.hint2;
 
 import org.springframework.lang.Nullable;
+import org.springframework.util.Assert;
 
 /**
  * Base class for registration classes that allow hints to be conditionally
@@ -30,15 +31,37 @@ public abstract class ReachableTypeRegistration<S extends ReachableTypeRegistrat
 	@Nullable
 	private TypeReference reachableType;
 
+
+	ReachableTypeRegistration() {
+	}
+
+
+	/**
+	 * Only register when the given type is reachable.
+	 * @param reachableType the type that must be reachable
+	 * @return this instance
+	 */
 	public S whenReachable(Class<?> reachableType) {
 		return whenReachable(TypeReference.of(reachableType));
 	}
 
+	/**
+	 * Only register when the given type name is reachable.
+	 * @param reachableType the type name that must be reachable
+	 * @return this instance
+	 * @see TypeReference#of(String)
+	 */
 	public S whenReachable(String reachableType) {
 		return whenReachable(TypeReference.of(reachableType));
 	}
 
+	/**
+	 * Only register when the given type is reachable.
+	 * @param reachableType the type that must be reachable
+	 * @return this instance
+	 */
 	public S whenReachable(TypeReference reachableType) {
+		Assert.notNull(reachableType, "'reachableType' must not be null");
 		this.reachableType = reachableType;
 		return self();
 	}

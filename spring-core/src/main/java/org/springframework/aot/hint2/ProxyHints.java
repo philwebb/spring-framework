@@ -36,49 +36,54 @@ import org.springframework.util.Assert;
  */
 public class ProxyHints {
 
-	private final Set<JavaProxyHint> jdkProxyHints = Collections.newSetFromMap(new ConcurrentHashMap<>());
+	private final Set<JavaProxyHint> javaProxyHints = Collections.newSetFromMap(new ConcurrentHashMap<>());
+
 
 	/**
-	 * Registration methods for JDK proxy hints.
-	 * @return JDK proxy hint registration methods
+	 * Registration methods for Java proxy hints.
+	 * @return Java proxy hint registration methods
 	 */
-	public JdkProxyHintRegistration registerJdkProxy() {
-		return new JdkProxyHintRegistration();
+	public JavaProxyHintRegistration registerJavaProxy() {
+		return new JavaProxyHintRegistration();
 	}
 
 	/**
-	 * Return an unordered {@link Stream} if {@link JavaProxyHint JdkProxyHints}
-	 * that have been registered.
+	 * Return an unordered {@link Stream} of the {@link JavaProxyHint java proxy
+	 * hints} that have been registered.
 	 * @return the registered JDK proxy hints
 	 */
-	public Stream<JavaProxyHint> jdkProxies() {
-		return this.jdkProxyHints.stream();
+	public Stream<JavaProxyHint> javaProxies() {
+		return this.javaProxyHints.stream();
 	}
 
+
 	/**
-	 * Registration methods for JDK proxy hints.
+	 * Registration methods for Java proxy hints.
 	 */
-	public class JdkProxyHintRegistration extends ReachableTypeRegistration<JdkProxyHintRegistration> {
+	public class JavaProxyHintRegistration extends ReachableTypeRegistration<JavaProxyHintRegistration> {
 
 		private UnaryOperator<Class<?>[]> classesMapper;
 
-		JdkProxyHintRegistration() {
+
+		JavaProxyHintRegistration() {
 			this.classesMapper = UnaryOperator.identity();
 		}
 
+
 		/**
-		 * Return a new {@link JdkProxyHintRegistration} that applies the given
+		 * Return a new {@link JavaProxyHintRegistration} that applies the given
 		 * {@link UnaryOperator} to the interface classes before they are
 		 * registered. This method is often used to add standard AOP classes.
 		 * For example:<pre class=
 		 * code>hints.registerJdkProxy().withClassMapper(AopProxyUtils::completeJdkProxyInterfaces)
 		 * 	.forInterface(Example.class);</pre>
 		 * @param mapper the class mapper
-		 * @return a new {@link JdkProxyHintRegistration} instance
+		 * @return a new {@link JavaProxyHintRegistration} instance
 		 */
-		JdkProxyHintRegistration withClassMapper(UnaryOperator<Class<?>[]> mapper) {
+		JavaProxyHintRegistration withClassMapper(UnaryOperator<Class<?>[]> mapper) {
 			Assert.notNull(mapper, "'mapper' must not be null");
-			this.classesMapper = classes -> mapper.apply(this.classesMapper.apply(classes));
+			UnaryOperator<Class<?>[]> previous = this.classesMapper;
+			this.classesMapper = classes -> mapper.apply(previous.apply(classes));
 			return self();
 		}
 
@@ -110,7 +115,7 @@ public class ProxyHints {
 		 */
 		public void forInterfaces(TypeReference... interfaceTypes) {
 			Assert.notNull(interfaceTypes, "'interfaceTypes' must not be null");
-			ProxyHints.this.jdkProxyHints.add(new JavaProxyHint(interfaceTypes, getReachableType()));
+			ProxyHints.this.javaProxyHints.add(new JavaProxyHint(interfaceTypes, getReachableType()));
 		}
 
 		private Class<?>[] mapAndVeryifyInterfaceTypes(Class<?>... interfaceTypes) {

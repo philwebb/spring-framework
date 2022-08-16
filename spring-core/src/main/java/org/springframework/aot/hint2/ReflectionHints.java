@@ -44,6 +44,7 @@ public class ReflectionHints {
 
 	private final Map<TypeReference, JavaReflectionHint> javaReflectionHints = new ConcurrentHashMap<>();
 
+
 	/**
 	 * Registration methods for {@link Category#PUBLIC_CLASSES public classes}
 	 * support.
@@ -98,8 +99,8 @@ public class ReflectionHints {
 	}
 
 	/**
-	 * Return an unordered {@link Stream} if {@link JavaReflectionHint
-	 * ReflectionTypeHints} that have been registered.
+	 * Return an unordered {@link Stream} of the {@link JavaReflectionHint
+	 * reflection hints} that have been registered.
 	 * @return the registered reflection type hints
 	 */
 	public Stream<JavaReflectionHint> javaReflection() {
@@ -132,7 +133,8 @@ public class ReflectionHints {
 		update(new TypeReference[] { type }, registration, mapper);
 	}
 
-	void update(TypeReference[] types, ReflectionRegistration<?> registration, UnaryOperator<JavaReflectionHint> mapper) {
+	void update(TypeReference[] types, ReflectionRegistration<?> registration,
+			UnaryOperator<JavaReflectionHint> mapper) {
 		for (TypeReference type : types) {
 			if (registration.getPredicate().test(type)) {
 				this.javaReflectionHints.compute(type, (key, hint) -> {
@@ -146,38 +148,65 @@ public class ReflectionHints {
 		}
 	}
 
-	public abstract class ReflectionRegistration<S extends ReflectionRegistration<S>> extends ReachableTypeRegistration<S> {
+
+	/**
+	 * Registration methods for reflection hints.
+	 */
+	public abstract class ReflectionRegistration<S extends ReflectionRegistration<S>>
+			extends ReachableTypeRegistration<S> {
 
 		private Predicate<TypeReference> predicate = type -> true;
 
+
+		/**
+		 * Only register when the target type is present in the
+		 * {@link ClassUtils#getDefaultClassLoader() default classloader}.
+		 * @return this instance
+		 */
 		public S whenTypeIsPresent() {
 			return whenTypeIsPresent(null);
 		}
 
+		/**
+		 * Only register when the target type is present in the specified class
+		 * loader.
+		 * @param classLoader the class loader to check
+		 * @return this instance
+		 */
 		public S whenTypeIsPresent(@Nullable ClassLoader classLoader) {
 			return when(type -> ClassUtils.isPresent(type.getCanonicalName(), classLoader));
 		}
 
+		/**
+		 * Only register when the target type matches the given predicate.
+		 * @param predicate the predicate used to test the target type
+		 * @return this instance
+		 */
 		public S when(Predicate<TypeReference> predicate) {
+			Assert.notNull(predicate, "'predicate' must not be null");
 			this.predicate = predicate.and(predicate);
 			return self();
 		}
 
-		protected final Predicate<TypeReference> getPredicate() {
+		Predicate<TypeReference> getPredicate() {
 			return this.predicate;
 		}
+
 	}
+
 
 	/**
 	 * Registration methods for type hints.
 	 */
-	public class TypeRegistration extends ReflectionRegistration<TypeRegistration> {
+	public final class TypeRegistration extends ReflectionRegistration<TypeRegistration> {
 
 		private final Category category;
+
 
 		TypeRegistration(Category category) {
 			this.category = category;
 		}
+
 
 		/**
 		 * Complete the hint registration for the given types.
@@ -205,18 +234,21 @@ public class ReflectionHints {
 
 	}
 
+
 	/**
 	 * Registration methods for field hints.
 	 */
-	public class FieldRegistration extends ReflectionRegistration<FieldRegistration> {
+	public final class FieldRegistration extends ReflectionRegistration<FieldRegistration> {
 
 		private final FieldMode mode;
 
 		private boolean allowUnsafeAccess;
 
+
 		FieldRegistration(FieldMode mode) {
 			this.mode = mode;
 		}
+
 
 		/**
 		 * Register with "allow unsafe access".
@@ -235,7 +267,7 @@ public class ReflectionHints {
 		public void forField(Class<?> declaringClass, String name) {
 			Field field = ReflectionUtils.findField(declaringClass, name);
 			Assert.state(field != null,
-					() -> "Unable to find field '%s' in $s".formatted(name, declaringClass.getName()));
+					() -> "Unable to find field '%s' in %s".formatted(name, declaringClass.getName()));
 			forField(field);
 		}
 
@@ -318,16 +350,19 @@ public class ReflectionHints {
 
 	}
 
+
 	/**
 	 * Registration methods for method hints.
 	 */
-	public class MethodRegistration extends ReflectionRegistration<MethodRegistration> {
+	public final class MethodRegistration extends ReflectionRegistration<MethodRegistration> {
 
 		private final ExecutableMode mode;
+
 
 		MethodRegistration(ExecutableMode mode) {
 			this.mode = mode;
 		}
+
 
 		/**
 		 * Complete the hint registration by finding a method.
@@ -338,7 +373,7 @@ public class ReflectionHints {
 		public void forMethod(Class<?> declaringClass, String name, Class<?>... parameterTypes) {
 			Method method = ReflectionUtils.findMethod(declaringClass, name, parameterTypes);
 			Assert.state(method != null,
-					() -> "Unable to find method %s in class %s".formatted(name, declaringClass.getName()));
+					() -> "Unable to find method '%s' in class %s".formatted(name, declaringClass.getName()));
 			forMethod(method);
 		}
 

@@ -16,6 +16,7 @@
 
 package org.springframework.aot.hint2;
 
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 import org.springframework.lang.Nullable;
@@ -29,9 +30,48 @@ import org.springframework.lang.Nullable;
  * @since 6.0
  * @see ResourceHints
  */
-public final class ResourceBundleHint {
+public final class ResourceBundleHint implements ConditionalHint {
 
-	ResourceBundleHint(String name, @Nullable TypeReference reachableType) {
+	private final String baseName;
+
+	@Nullable
+	private final TypeReference reachableType;
+
+
+	ResourceBundleHint(String baseName, @Nullable TypeReference reachableType) {
+		this.baseName = baseName;
+		this.reachableType = reachableType;
+	}
+
+
+	/**
+	 * Return the {@code baseName} of the resource bundle.
+	 * @return the base name
+	 */
+	public String getBaseName() {
+		return this.baseName;
+	}
+
+	@Override
+	public TypeReference getReachableType() {
+		return this.reachableType;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null || getClass() != obj.getClass()) {
+			return false;
+		}
+		ResourceBundleHint other = (ResourceBundleHint) obj;
+		return this.baseName.equals(other.baseName) && Objects.equals(this.reachableType, other.reachableType);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(this.baseName, this.reachableType);
 	}
 
 }

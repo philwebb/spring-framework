@@ -24,22 +24,25 @@ import java.util.stream.Collectors;
 import org.springframework.lang.Nullable;
 
 /**
- * A hint that describes resources that should be made available at runtime.
+ * An immutable hint that describes resources that should be made available at
+ * runtime.
  *
- * <p>The patterns may be a simple path which has a one-to-one mapping to a
- * resource on the classpath, or alternatively may contain the special
- * {@code *} character to indicate a wildcard search. For example:
+ * <p>
+ * The patterns may be a simple path which has a one-to-one mapping to a
+ * resource on the classpath, or alternatively may contain the special {@code *}
+ * character to indicate a wildcard search. For example:
  * <ul>
- *     <li>{@code file.properties}: matches just the {@code file.properties}
- *         file at the root of the classpath.</li>
- *     <li>{@code com/example/file.properties}: matches just the
- *         {@code file.properties} file in {@code com/example/}.</li>
- *     <li>{@code *.properties}: matches all the files with a {@code .properties}
- *         extension anywhere in the classpath.</li>
- *     <li>{@code com/example/*.properties}: matches all the files with a {@code .properties}
- *         extension in {@code com/example/} and its child directories at any depth.</li>
- *     <li>{@code com/example/*}: matches all the files in {@code com/example/}
- *         and its child directories at any depth.</li>
+ * <li>{@code file.properties}: matches just the {@code file.properties} file at
+ * the root of the classpath.</li>
+ * <li>{@code com/example/file.properties}: matches just the
+ * {@code file.properties} file in {@code com/example/}.</li>
+ * <li>{@code *.properties}: matches all the files with a {@code .properties}
+ * extension anywhere in the classpath.</li>
+ * <li>{@code com/example/*.properties}: matches all the files with a
+ * {@code .properties} extension in {@code com/example/} and its child
+ * directories at any depth.</li>
+ * <li>{@code com/example/*}: matches all the files in {@code com/example/} and
+ * its child directories at any depth.</li>
  * </ul>
  *
  * @author Stephane Nicoll
@@ -54,10 +57,12 @@ public final class ResourcePatternHint implements ConditionalHint {
 	@Nullable
 	private final TypeReference reachableType;
 
+
 	ResourcePatternHint(String pattern, @Nullable TypeReference reachableType) {
 		this.pattern = pattern;
 		this.reachableType = reachableType;
 	}
+
 
 	/**
 	 * Return the pattern to use for identifying the resources to match.
@@ -68,16 +73,17 @@ public final class ResourcePatternHint implements ConditionalHint {
 	}
 
 	/**
-	 * Return the regex {@link Pattern} to use for identifying the resources to match.
+	 * Return the regex {@link Pattern} to use for identifying the resources to
+	 * match.
 	 * @return the regex pattern
 	 */
 	public Pattern toRegex() {
 		String prefix = (this.pattern.startsWith("*") ? ".*" : "");
 		String suffix = (this.pattern.endsWith("*") ? ".*" : "");
 		String regex = Arrays.stream(this.pattern.split("\\*"))
-				.filter(s -> !s.isEmpty())
-				.map(Pattern::quote)
-				.collect(Collectors.joining(".*", prefix, suffix));
+							.filter(s -> !s.isEmpty())
+							.map(Pattern::quote)
+							.collect(Collectors.joining(".*", prefix, suffix));
 		return Pattern.compile(regex);
 	}
 
@@ -96,8 +102,7 @@ public final class ResourcePatternHint implements ConditionalHint {
 			return false;
 		}
 		ResourcePatternHint other = (ResourcePatternHint) obj;
-		return this.pattern.equals(other.pattern)
-				&& Objects.equals(this.reachableType, other.reachableType);
+		return this.pattern.equals(other.pattern) && Objects.equals(this.reachableType, other.reachableType);
 	}
 
 	@Override

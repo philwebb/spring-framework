@@ -56,6 +56,7 @@ public final class JavaReflectionHint implements ConditionalHint {
 
 	private final Map<Method, MethodHint> methods;
 
+
 	JavaReflectionHint(TypeReference type) {
 		Assert.notNull(type, "'type' must not be null");
 		this.type = type;
@@ -77,6 +78,7 @@ public final class JavaReflectionHint implements ConditionalHint {
 		this.methods = methods;
 	}
 
+
 	JavaReflectionHint andReachableType(TypeReference reachableType) {
 		if (Objects.equals(this.reachableType, reachableType)) {
 			return this;
@@ -92,24 +94,24 @@ public final class JavaReflectionHint implements ConditionalHint {
 		}
 		EnumSet<Category> categories = EnumSet.of(category);
 		categories.addAll(this.categories);
-		return new JavaReflectionHint(this.type, this.reachableType, Set.copyOf(categories), this.fields, this.constructors,
-				this.methods);
+		return new JavaReflectionHint(this.type, this.reachableType, Set.copyOf(categories), this.fields,
+				this.constructors, this.methods);
 	}
 
 	JavaReflectionHint andField(Field field, FieldMode mode, boolean allowUnsafeAccess) {
 		Map<Field, FieldHint> fields = new HashMap<>(this.fields);
 		fields.compute(field, (key, hint) -> (hint != null) ? hint.and(mode, allowUnsafeAccess)
 				: new FieldHint(field, mode, allowUnsafeAccess));
-		return new JavaReflectionHint(this.type, this.reachableType, this.categories, Map.copyOf(fields), this.constructors,
-				this.methods);
+		return new JavaReflectionHint(this.type, this.reachableType, this.categories, Map.copyOf(fields),
+				this.constructors, this.methods);
 	}
 
 	JavaReflectionHint andConstructor(Constructor<?> constructor, ExecutableMode mode) {
 		Map<Constructor<?>, ConstructorHint> constructors = new HashMap<>(this.constructors);
 		constructors.compute(constructor,
 				(key, hint) -> (hint != null) ? hint.and(mode) : new ConstructorHint(constructor, mode));
-		return new JavaReflectionHint(this.type, this.reachableType, this.categories, this.fields, Map.copyOf(constructors),
-				this.methods);
+		return new JavaReflectionHint(this.type, this.reachableType, this.categories, this.fields,
+				Map.copyOf(constructors), this.methods);
 	}
 
 	JavaReflectionHint andMethod(Method method, ExecutableMode mode) {
@@ -164,6 +166,7 @@ public final class JavaReflectionHint implements ConditionalHint {
 		return this.methods.values().stream();
 	}
 
+
 	/**
 	 * A hint that describes the need of reflection on a {@link Field}.
 	 */
@@ -175,11 +178,13 @@ public final class JavaReflectionHint implements ConditionalHint {
 
 		private final boolean allowUnsafeAccess;
 
+
 		FieldHint(Field field, FieldMode mode, boolean allowUnsafeAccess) {
 			this.field = field;
 			this.mode = mode;
 			this.allowUnsafeAccess = allowUnsafeAccess;
 		}
+
 
 		FieldHint and(FieldMode mode, boolean allowUnsafeAccess) {
 			return new FieldHint(this.field, this.mode != FieldMode.WRITE ? mode : FieldMode.WRITE,
@@ -213,6 +218,7 @@ public final class JavaReflectionHint implements ConditionalHint {
 
 	}
 
+
 	/**
 	 * Base class for a hint that describes the need of reflection on a
 	 * {@link Executable}.
@@ -223,10 +229,12 @@ public final class JavaReflectionHint implements ConditionalHint {
 
 		private final ExecutableMode mode;
 
+
 		ExecutableHint(Executable executable, ExecutableMode mode) {
 			this.executable = executable;
 			this.mode = mode;
 		}
+
 
 		/**
 		 * Return the name of the executable.
@@ -250,9 +258,10 @@ public final class JavaReflectionHint implements ConditionalHint {
 		 * @return the executable mode
 		 */
 		public ExecutableMode getMode() {
-			return mode;
+			return this.mode;
 		}
 	}
+
 
 	/**
 	 * A hint that describes the need of reflection on a {@link Method}.
@@ -261,10 +270,12 @@ public final class JavaReflectionHint implements ConditionalHint {
 
 		private final Method method;
 
+
 		MethodHint(Method method, ExecutableMode mode) {
 			super(method, mode);
 			this.method = method;
 		}
+
 
 		MethodHint and(ExecutableMode mode) {
 			return new MethodHint(this.method, (getMode() != ExecutableMode.INVOKE ? mode : ExecutableMode.INVOKE));
@@ -272,12 +283,14 @@ public final class JavaReflectionHint implements ConditionalHint {
 
 	}
 
+
 	/**
 	 * A hint that describes the need of reflection on a {@link Constructor}.
 	 */
 	public static final class ConstructorHint extends ExecutableHint {
 
 		private final Constructor<?> constructor;
+
 
 		ConstructorHint(Constructor<?> constructor, ExecutableMode mode) {
 			super(constructor, mode);
