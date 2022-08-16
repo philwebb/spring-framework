@@ -16,10 +16,13 @@
 
 package org.springframework.aot.hint2;
 
+import java.util.Collections;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Stream;
 
+import org.springframework.aot.hint.ResourcePatternHints;
 import org.springframework.lang.Nullable;
 
 /**
@@ -35,24 +38,40 @@ import org.springframework.lang.Nullable;
  */
 public class ResourceHints {
 
-	private final Map<ResourcePattern, ResourcePatternHint> resourcePatternHints = new ConcurrentHashMap<>();
+	private final Set<ResourcePatternHint> includeResourcePatternHints = Collections
+			.newSetFromMap(new ConcurrentHashMap<>());
+
+	private final Set<ResourcePatternHint> excludeResourcePatternHints = Collections
+			.newSetFromMap(new ConcurrentHashMap<>());
 
 	private final Map<String, ResourceBundleHint> resourceBundleHints = new ConcurrentHashMap<>();
 
-	public PatternRegistration registerResourcePattern() {
-		return new PatternRegistration();
+	public PatternRegistration registerInclude() {
+		return new PatternRegistration(this.includeResourcePatternHints);
 	}
 
-	public BundleRegistration registerResourceBundle() {
+	public PatternRegistration registerExclude() {
+		return new PatternRegistration(this.excludeResourcePatternHints);
+	}
+
+	public BundleRegistration registerBundle() {
 		return new BundleRegistration();
 	}
 
 	/**
 	 * Return the resources that should be made available at runtime.
-	 * @return a stream of {@link ResourcePatternsHint}
+	 * @return a stream of {@link ResourcePatternHints}
 	 */
-	public Stream<ResourcePatternHint> resourcePatterns() {
-		return this.resourcePatternHints.values().stream();
+	public Stream<ResourcePatternHint> includeResourcePatterns() {
+		return this.includeResourcePatternHints.stream();
+	}
+
+	/**
+	 * Return the resources that should be made available at runtime.
+	 * @return a stream of {@link ResourcePatternHints}
+	 */
+	public Stream<ResourcePatternHint> excludeResourcePatterns() {
+		return this.excludeResourcePatternHints.stream();
 	}
 
 	/**
@@ -65,19 +84,19 @@ public class ResourceHints {
 
 	public class PatternRegistration extends ReachableTypeRegistration<PatternRegistration> {
 
+		PatternRegistration(Set<ResourcePatternHint> includeResourcePatternHints) {
+		}
+
 		public PatternRegistration whenResourceIsPresent(String location) {
 			return whenResourceIsPresent(null, location);
 		}
 
 		public PatternRegistration whenResourceIsPresent(@Nullable ClassLoader classLoader, String location) {
+			// FIXME
 			return this;
 		}
 
-		public void forPattern(String... includeRegexes) {
-			forPattern(ResourcePattern.include(includeRegexes));
-		}
-
-		public void forPattern(ResourcePattern... patterns) {
+		public void forPattern(String... regexes) {
 		}
 
 		public void forClassBytecode(Class<?>... types) {

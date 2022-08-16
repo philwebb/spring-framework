@@ -59,11 +59,6 @@ public final class JavaProxyHint implements ConditionalHint {
 	}
 
 	@Override
-	public int hashCode() {
-		return Objects.hash(this.proxiedInterfaces, this.reachableType);
-	}
-
-	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
 			return true;
@@ -72,8 +67,13 @@ public final class JavaProxyHint implements ConditionalHint {
 			return false;
 		}
 		JavaProxyHint other = (JavaProxyHint) obj;
-		return Objects.equals(proxiedInterfaces, other.proxiedInterfaces)
+		return this.proxiedInterfaces.equals(other.proxiedInterfaces)
 				&& Objects.equals(reachableType, other.reachableType);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(this.proxiedInterfaces, this.reachableType);
 	}
 
 }

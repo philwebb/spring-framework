@@ -88,20 +88,21 @@ public final class ResourcePatternHint implements ConditionalHint {
 	}
 
 	@Override
-	public boolean equals(Object o) {
-		if (this == o) {
+	public boolean equals(Object obj) {
+		if (this == obj) {
 			return true;
 		}
-		if (o == null || getClass() != o.getClass()) {
+		if (obj == null || getClass() != obj.getClass()) {
 			return false;
 		}
-		ResourcePatternHint that = (ResourcePatternHint) o;
-		return this.pattern.equals(that.pattern)
-				&& Objects.equals(this.reachableType, that.reachableType);
+		ResourcePatternHint other = (ResourcePatternHint) obj;
+		return this.pattern.equals(other.pattern)
+				&& Objects.equals(this.reachableType, other.reachableType);
 	}
 
 	@Override
 	public int hashCode() {
 		return Objects.hash(this.pattern, this.reachableType);
 	}
+
 }

@@ -114,6 +114,4 @@ public interface TypeReference {
 		return Arrays.stream(classNames).map(TypeReference::of).toArray(TypeReference[]::new);
 	}
 
-
-
 }

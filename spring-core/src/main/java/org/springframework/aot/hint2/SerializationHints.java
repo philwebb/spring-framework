@@ -18,8 +18,6 @@ package org.springframework.aot.hint2;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Consumer;
-import java.util.function.UnaryOperator;
 import java.util.stream.Stream;
 
 import org.springframework.aot.hint2.ResourceHints.PatternRegistration;
