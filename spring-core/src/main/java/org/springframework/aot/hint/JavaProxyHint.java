@@ -32,7 +32,7 @@ import org.springframework.lang.Nullable;
  * @since 6.0
  * @see ProxyHints
  */
-public final class JavaProxyHint implements ConditionalHint {
+public final class JavaProxyHint implements ConditionalHint, Comparable<JavaProxyHint> {
 
 	private final List<TypeReference> proxiedInterfaces;
 

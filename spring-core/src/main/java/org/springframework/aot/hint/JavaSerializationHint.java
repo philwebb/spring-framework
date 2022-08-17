@@ -29,7 +29,7 @@ import org.springframework.lang.Nullable;
  * @since 6.0
  * @see SerializationHints
  */
-public final class JavaSerializationHint implements ConditionalHint {
+public final class JavaSerializationHint implements ConditionalHint, Comparable<JavaSerializationHint> {
 
 	private final TypeReference type;
 

@@ -46,6 +46,14 @@ public class ReflectionHints {
 
 
 	/**
+	 * Registration methods for basic type support.
+	 * @return public classes registration methods
+	 */
+	public TypeRegistration register() {
+		return new TypeRegistration(null);
+	}
+
+	/**
 	 * Registration methods for {@link Category#PUBLIC_CLASSES public classes}
 	 * support.
 	 * @return public classes registration methods
@@ -200,10 +208,11 @@ public class ReflectionHints {
 	 */
 	public final class TypeRegistration extends ReflectionRegistration<TypeRegistration> {
 
+		@Nullable
 		private final Category category;
 
 
-		TypeRegistration(Category category) {
+		TypeRegistration(@Nullable Category category) {
 			this.category = category;
 		}
 
@@ -229,7 +238,7 @@ public class ReflectionHints {
 		 * @param types the types to register
 		 */
 		public void forType(TypeReference... types) {
-			update(types, this, (hint) -> hint.andCategory(this.category));
+			update(types, this, (hint) -> (this.category != null) ? hint.andCategory(this.category) : hint);
 		}
 
 	}

@@ -16,12 +16,7 @@
 
 package org.springframework.aot.hint.support;
 
-import java.util.function.Consumer;
-
-import org.springframework.aot.hint.MemberCategory;
 import org.springframework.aot.hint.RuntimeHints;
-import org.springframework.aot.hint.TypeHint;
-import org.springframework.aot.hint.TypeHint.Builder;
 import org.springframework.core.annotation.AliasFor;
 import org.springframework.core.annotation.MergedAnnotation;
 import org.springframework.core.annotation.SynthesizedAnnotation;
@@ -36,15 +31,6 @@ import org.springframework.core.annotation.SynthesizedAnnotation;
 public abstract class RuntimeHintsUtils {
 
 	// FIXME can we merge with new API
-
-	/**
-	 * A {@link TypeHint} customizer suitable for an annotation. Make sure
-	 * that its attributes are visible.
-	 * @deprecated as annotation attributes are visible without additional hints
-	 */
-	@Deprecated
-	public static final Consumer<Builder> ANNOTATION_HINT = hint ->
-			hint.withMembers(MemberCategory.INVOKE_DECLARED_METHODS);
 
 	/**
 	 * Register the necessary hints so that the specified annotation is visible
@@ -75,7 +61,7 @@ public abstract class RuntimeHintsUtils {
 	 * @see SynthesizedAnnotation
 	 */
 	public static void registerSynthesizedAnnotation(RuntimeHints hints, Class<?> annotationType) {
-		hints.proxies().registerJdkProxy(annotationType, SynthesizedAnnotation.class);
+		hints.proxies().registerJavaProxy().forInterfaces(annotationType, SynthesizedAnnotation.class);
 	}
 
 	/**

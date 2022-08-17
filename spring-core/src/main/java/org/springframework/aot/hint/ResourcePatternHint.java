@@ -50,7 +50,7 @@ import org.springframework.lang.Nullable;
  * @author Sebastien Deleuze
  * @since 6.0
  */
-public final class ResourcePatternHint implements ConditionalHint {
+public final class ResourcePatternHint implements ConditionalHint, Comparable<ResourcePatternHint> {
 
 	private final String pattern;
 

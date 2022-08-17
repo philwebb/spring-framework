@@ -26,7 +26,7 @@ import org.springframework.lang.Nullable;
  * @author Stephane Nicoll
  * @since 6.0
  */
-abstract class AbstractTypeReference implements TypeReference {
+public abstract class AbstractTypeReference implements TypeReference {
 
 	private final String packageName;
 

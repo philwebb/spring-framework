@@ -18,7 +18,6 @@ package org.springframework.aot.nativex;
 
 import java.util.Collection;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
@@ -26,7 +25,6 @@ import org.springframework.aot.hint.ConditionalHint;
 import org.springframework.aot.hint.ResourceBundleHint;
 import org.springframework.aot.hint.ResourceHints;
 import org.springframework.aot.hint.ResourcePatternHint;
-import org.springframework.aot.hint.ResourcePatternHints;
 import org.springframework.lang.Nullable;
 
 /**
@@ -53,15 +51,13 @@ class ResourceHintsWriter {
 
 	private Map<String, Object> toAttributes(ResourceHints hint) {
 		Map<String, Object> attributes = new LinkedHashMap<>();
-		addIfNotEmpty(attributes, "includes", hint.resourcePatterns().map(ResourcePatternHints::getIncludes)
-				.flatMap(List::stream).distinct().map(this::toAttributes).toList());
-		addIfNotEmpty(attributes, "excludes", hint.resourcePatterns().map(ResourcePatternHints::getExcludes)
-				.flatMap(List::stream).distinct().map(this::toAttributes).toList());
+		addIfNotEmpty(attributes, "includes", hint.includeResourcePatterns().sorted().map(this::toAttributes).toList());
+		addIfNotEmpty(attributes, "excludes", hint.excludeResourcePatterns().sorted().map(this::toAttributes).toList());
 		return attributes;
 	}
 
 	private void handleResourceBundles(Map<String, Object> attributes, Stream<ResourceBundleHint> ressourceBundles) {
-		addIfNotEmpty(attributes, "bundles", ressourceBundles.map(this::toAttributes).toList());
+		addIfNotEmpty(attributes, "bundles", ressourceBundles.sorted().map(this::toAttributes).toList());
 	}
 
 	private Map<String, Object> toAttributes(ResourceBundleHint hint) {

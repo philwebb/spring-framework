@@ -105,7 +105,7 @@ public class FilePatternResourceHintsRegistrar {
 			}
 		}
 		if (!includes.isEmpty()) {
-			hints.registerPattern(hint -> hint.includes(includes.toArray(String[]::new)));
+			hints.registerInclude().forPattern(includes.toArray(String[]::new));
 		}
 	}
 }

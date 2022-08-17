@@ -41,7 +41,7 @@ import org.springframework.util.Assert;
  * @since 6.0
  * @see ReflectionHints
  */
-public final class JavaReflectionHint implements ConditionalHint {
+public final class JavaReflectionHint implements ConditionalHint, Comparable<JavaReflectionHint> {
 
 	private final TypeReference type;
 

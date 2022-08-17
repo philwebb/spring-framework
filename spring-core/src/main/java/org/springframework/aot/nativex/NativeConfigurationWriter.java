@@ -42,13 +42,14 @@ public abstract class NativeConfigurationWriter {
 		if (hints.serialization().javaSerialization().findAny().isPresent()) {
 			writeJavaSerializationHints(hints.serialization());
 		}
-		if (hints.proxies().jdkProxies().findAny().isPresent()) {
+		if (hints.proxies().javaProxies().findAny().isPresent()) {
 			writeProxyHints(hints.proxies());
 		}
-		if (hints.reflection().typeHints().findAny().isPresent()) {
+		if (hints.reflection().javaReflection().findAny().isPresent()) {
 			writeReflectionHints(hints.reflection());
 		}
-		if (hints.resources().resourcePatterns().findAny().isPresent() ||
+		if (hints.resources().includeResourcePatterns().findAny().isPresent() ||
+				hints.resources().excludeResourcePatterns().findAny().isPresent() ||
 				hints.resources().resourceBundles().findAny().isPresent()) {
 			writeResourceHints(hints.resources());
 		}

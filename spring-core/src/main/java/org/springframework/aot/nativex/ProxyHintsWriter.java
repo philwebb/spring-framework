@@ -19,7 +19,7 @@ package org.springframework.aot.nativex;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import org.springframework.aot.hint.JdkProxyHint;
+import org.springframework.aot.hint.JavaProxyHint;
 import org.springframework.aot.hint.ProxyHints;
 
 /**
@@ -39,17 +39,17 @@ class ProxyHintsWriter {
 	public static final ProxyHintsWriter INSTANCE = new ProxyHintsWriter();
 
 	public void write(BasicJsonWriter writer, ProxyHints hints) {
-		writer.writeArray(hints.jdkProxies().map(this::toAttributes).toList());
+		writer.writeArray(hints.javaProxies().sorted().map(this::toAttributes).toList());
 	}
 
-	private Map<String, Object> toAttributes(JdkProxyHint hint) {
+	private Map<String, Object> toAttributes(JavaProxyHint hint) {
 		Map<String, Object> attributes = new LinkedHashMap<>();
 		handleCondition(attributes, hint);
 		attributes.put("interfaces", hint.getProxiedInterfaces());
 		return attributes;
 	}
 
-	private void handleCondition(Map<String, Object> attributes, JdkProxyHint hint) {
+	private void handleCondition(Map<String, Object> attributes, JavaProxyHint hint) {
 		if (hint.getReachableType() != null) {
 			Map<String, Object> conditionAttributes = new LinkedHashMap<>();
 			conditionAttributes.put("typeReachable", hint.getReachableType());
