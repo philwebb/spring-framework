@@ -32,9 +32,9 @@ import org.springframework.lang.Nullable;
  */
 public final class JavaSerializationHint implements ConditionalHint, Comparable<JavaSerializationHint> {
 
-	private static final Comparator<JavaSerializationHint> COMPARATOR = Comparator.<JavaSerializationHint, String>
-			comparing(hint -> hint.type.getCanonicalName()).
-			thenComparing(Comparator.nullsFirst(Comparator.comparing(hint -> hint.reachableType.getCanonicalName())));
+	private static final Comparator<JavaSerializationHint> COMPARATOR = Comparator
+			.<JavaSerializationHint, String>comparing(hint -> hint.type.getCanonicalName())
+			.thenComparing(CONDITIONAL_HINT_COMPARATOR);
 
 
 	private final TypeReference type;

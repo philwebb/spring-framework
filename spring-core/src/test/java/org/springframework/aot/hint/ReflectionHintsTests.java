@@ -23,11 +23,6 @@ import java.util.function.Consumer;
 
 import org.junit.jupiter.api.Test;
 
-import org.springframework.aot.hint.ExecutableMode;
-import org.springframework.aot.hint.FieldMode;
-import org.springframework.aot.hint.JavaReflectionHint;
-import org.springframework.aot.hint.ReflectionHints;
-import org.springframework.aot.hint.TypeReference;
 import org.springframework.aot.hint.JavaReflectionHint.Category;
 import org.springframework.lang.Nullable;
 import org.springframework.util.ReflectionUtils;

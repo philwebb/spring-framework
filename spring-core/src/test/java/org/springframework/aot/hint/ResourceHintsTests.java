@@ -20,10 +20,6 @@ import java.util.function.Consumer;
 
 import org.junit.jupiter.api.Test;
 
-import org.springframework.aot.hint.ResourceBundleHint;
-import org.springframework.aot.hint.ResourceHints;
-import org.springframework.aot.hint.ResourcePatternHint;
-import org.springframework.aot.hint.TypeReference;
 import org.springframework.aot.hint.ResourceHintsTests.Nested.Inner;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -70,14 +66,14 @@ class ResourceHintsTests {
 	void registerIncludeForClassBytecodeWhenNestedTypeRegistersHint() {
 		this.hints.registerInclude().forClassBytecode(Nested.class);
 		assertThat(this.hints.includeResourcePatterns()).singleElement()
-				.satisfies(patternOf("org/springframework/aot/hint2/ResourceHintsTests$Nested.class"));
+				.satisfies(patternOf("org/springframework/aot/hint/ResourceHintsTests$Nested.class"));
 	}
 
 	@Test
 	void registerIncludeForClassBytecodeWhenInnerNestedTypeRegistersHint() {
 		this.hints.registerInclude().forClassBytecode(Inner.class);
 		assertThat(this.hints.includeResourcePatterns()).singleElement()
-				.satisfies(patternOf("org/springframework/aot/hint2/ResourceHintsTests$Nested$Inner.class"));
+				.satisfies(patternOf("org/springframework/aot/hint/ResourceHintsTests$Nested$Inner.class"));
 	}
 
 	@Test

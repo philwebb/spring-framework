@@ -16,6 +16,8 @@
 
 package org.springframework.aot.hint;
 
+import java.util.Comparator;
+
 import org.springframework.lang.Nullable;
 import org.springframework.util.ClassUtils;
 
@@ -27,6 +29,8 @@ import org.springframework.util.ClassUtils;
  * @since 6.0
  */
 public interface ConditionalHint {
+
+	Comparator<ConditionalHint> CONDITIONAL_HINT_COMPARATOR = Comparator.nullsFirst(Comparator.comparing(hint -> hint.getReachableType().getCanonicalName()));
 
 	/**
 	 * Return the type that should be reachable for this hint to apply, or

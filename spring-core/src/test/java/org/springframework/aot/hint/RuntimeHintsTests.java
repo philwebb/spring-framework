@@ -20,9 +20,6 @@ import java.util.function.Function;
 
 import org.junit.jupiter.api.Test;
 
-import org.springframework.aot.hint.JavaSerializationHint;
-import org.springframework.aot.hint.RuntimeHints;
-import org.springframework.aot.hint.TypeReference;
 import org.springframework.aot.hint.JavaReflectionHint.Category;
 
 import static org.assertj.core.api.Assertions.assertThat;

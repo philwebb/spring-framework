@@ -25,10 +25,6 @@ import java.util.function.Function;
 import io.netty.util.internal.shaded.org.jctools.queues.MessagePassingQueue.Supplier;
 import org.junit.jupiter.api.Test;
 
-import org.springframework.aot.hint.ExecutableMode;
-import org.springframework.aot.hint.FieldMode;
-import org.springframework.aot.hint.JavaReflectionHint;
-import org.springframework.aot.hint.TypeReference;
 import org.springframework.aot.hint.JavaReflectionHint.Category;
 import org.springframework.util.ReflectionUtils;
 
@@ -82,19 +78,19 @@ class JavaReflectionHintTests {
 	}
 
 	@Test
-	void andCategoryReturnsNewInstance() {
+	void andCategoriesReturnsNewInstance() {
 		JavaReflectionHint hint = new JavaReflectionHint(TypeReference.of(Function.class));
-		JavaReflectionHint withCategory = hint.andCategory(Category.DECLARED_CLASSES);
+		JavaReflectionHint withCategory = hint.andCategories(Category.DECLARED_CLASSES);
 		assertThat(withCategory).isNotSameAs(hint);
 		assertThat(hint.getCategories()).isEmpty();
 		assertThat(withCategory.getCategories()).containsExactly(Category.DECLARED_CLASSES);
 	}
 
 	@Test
-	void andCategoryWhenAlreadyContainsCategoryReturnsSameInstance() {
+	void andCategoriesWhenAlreadyContainsCategoryReturnsSameInstance() {
 		JavaReflectionHint hint = new JavaReflectionHint(TypeReference.of(Function.class))
-				.andCategory(Category.DECLARED_CLASSES);
-		assertThat(hint.andCategory(Category.DECLARED_CLASSES)).isSameAs(hint);
+				.andCategories(Category.DECLARED_CLASSES);
+		assertThat(hint.andCategories(Category.DECLARED_CLASSES)).isSameAs(hint);
 	}
 
 	@Test
@@ -195,7 +191,7 @@ class JavaReflectionHintTests {
 		JavaReflectionHint hint = new JavaReflectionHint(TypeReference.of(ExampleBean.class));
 		hint = hint.andConstructor(constructor, ExecutableMode.INTROSPECT);
 		assertThat(hint.constructors()).singleElement().satisfies(methodHint -> {
-			assertThat(methodHint.getName()).isEqualTo(ExampleBean.class.getName());
+			assertThat(methodHint.getName()).isEqualTo("<init>");
 			assertThat(methodHint.getParameterTypes()).isEmpty();
 			assertThat(methodHint.getMode()).isEqualTo(ExecutableMode.INTROSPECT);
 		});
@@ -208,11 +204,11 @@ class JavaReflectionHintTests {
 		hint = hint.andConstructor(constructor, ExecutableMode.INTROSPECT);
 		JavaReflectionHint updatedHint = hint.andConstructor(constructor, ExecutableMode.INVOKE);
 		assertThat(hint.constructors()).singleElement().satisfies(methodHint -> {
-			assertThat(methodHint.getName()).isEqualTo(ExampleBean.class.getName());
+			assertThat(methodHint.getName()).isEqualTo("<init>");
 			assertThat(methodHint.getMode()).isEqualTo(ExecutableMode.INTROSPECT);
 		});
 		assertThat(updatedHint.constructors()).singleElement().satisfies(methodHint -> {
-			assertThat(methodHint.getName()).isEqualTo(ExampleBean.class.getName());
+			assertThat(methodHint.getName()).isEqualTo("<init>");
 			assertThat(methodHint.getMode()).isEqualTo(ExecutableMode.INVOKE);
 		});
 	}
@@ -224,11 +220,11 @@ class JavaReflectionHintTests {
 		hint = hint.andConstructor(constructor, ExecutableMode.INVOKE);
 		JavaReflectionHint updatedHint = hint.andConstructor(constructor, ExecutableMode.INTROSPECT);
 		assertThat(hint.constructors()).singleElement().satisfies(methodHint -> {
-			assertThat(methodHint.getName()).isEqualTo(ExampleBean.class.getName());
+			assertThat(methodHint.getName()).isEqualTo("<init>");
 			assertThat(methodHint.getMode()).isEqualTo(ExecutableMode.INVOKE);
 		});
 		assertThat(updatedHint.constructors()).singleElement().satisfies(methodHint -> {
-			assertThat(methodHint.getName()).isEqualTo(ExampleBean.class.getName());
+			assertThat(methodHint.getName()).isEqualTo("<init>");
 			assertThat(methodHint.getMode()).isEqualTo(ExecutableMode.INVOKE);
 		});
 	}

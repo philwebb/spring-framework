@@ -35,9 +35,9 @@ import org.springframework.lang.Nullable;
  */
 public final class JavaProxyHint implements ConditionalHint, Comparable<JavaProxyHint> {
 
-	private static final Comparator<JavaProxyHint> COMPARATOR = Comparator.<JavaProxyHint, String>
-			comparing(hint -> hint.proxiedInterfaces.toString()).
-			thenComparing(Comparator.nullsFirst(Comparator.comparing(hint -> hint.reachableType.getCanonicalName())));
+	private static final Comparator<JavaProxyHint> COMPARATOR = Comparator
+			.<JavaProxyHint, String>comparing(hint -> hint.proxiedInterfaces.toString())
+			.thenComparing(CONDITIONAL_HINT_COMPARATOR);
 
 
 	private final List<TypeReference> proxiedInterfaces;

@@ -21,9 +21,6 @@ import java.util.function.Function;
 
 import org.junit.jupiter.api.Test;
 
-import org.springframework.aot.hint.JavaProxyHint;
-import org.springframework.aot.hint.TypeReference;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**

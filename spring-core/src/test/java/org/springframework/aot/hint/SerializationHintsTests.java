@@ -20,10 +20,6 @@ import java.net.URL;
 
 import org.junit.jupiter.api.Test;
 
-import org.springframework.aot.hint.JavaSerializationHint;
-import org.springframework.aot.hint.SerializationHints;
-import org.springframework.aot.hint.TypeReference;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**

@@ -47,10 +47,15 @@ public class ReflectionHints {
 
 	/**
 	 * Registration methods for basic type support.
+	 * @param categories the categories to apply. If a single category is being
+	 * used consider using {@link #registerPublicClasses()},
+	 * {@link #registerDeclaredClasses()} or one of the {@code for...In(...)}
+	 * methods under {@link #registerIntrospect()}, {@link #registerInvoke()},
+	 * {@link #registerRead()} or {@link #registerWrite()}.
 	 * @return public classes registration methods
 	 */
-	public TypeRegistration register() {
-		return new TypeRegistration(null);
+	public TypeRegistration register(Category... categories) {
+		return new TypeRegistration(categories);
 	}
 
 	/**
@@ -209,11 +214,11 @@ public class ReflectionHints {
 	public final class TypeRegistration extends ReflectionRegistration<TypeRegistration> {
 
 		@Nullable
-		private final Category category;
+		private final Category[] categories;
 
 
-		TypeRegistration(@Nullable Category category) {
-			this.category = category;
+		TypeRegistration(Category... categories) {
+			this.categories = categories;
 		}
 
 
@@ -241,7 +246,7 @@ public class ReflectionHints {
 		 * @return this instance
 		 */
 		public TypeRegistration forType(TypeReference... types) {
-			update(types, this, (hint) -> (this.category != null) ? hint.andCategory(this.category) : hint);
+			update(types, this, (hint) -> hint.andCategories(this.categories));
 			return this;
 		}
 
@@ -367,7 +372,7 @@ public class ReflectionHints {
 
 		private FieldRegistration updateCategory(Category category, TypeReference... types) {
 			Assert.state(!this.allowUnsafeAccess, "'allowUnsafeAccess' cannot be set when finding fields in a type");
-			update(types, this, hint -> hint.andCategory(category));
+			update(types, this, hint -> hint.andCategories(category));
 			return this;
 		}
 
@@ -596,7 +601,7 @@ public class ReflectionHints {
 			case INTROSPECT -> introspectCategory;
 			case INVOKE -> invokeCategory;
 			};
-			update(types, this, hint -> hint.andCategory(category));
+			update(types, this, hint -> hint.andCategories(category));
 			return this;
 		}
 

@@ -52,9 +52,9 @@ import org.springframework.lang.Nullable;
  */
 public final class ResourcePatternHint implements ConditionalHint, Comparable<ResourcePatternHint> {
 
-	private static final Comparator<ResourcePatternHint> COMPARATOR = Comparator.<ResourcePatternHint, String>
-			comparing(ResourcePatternHint::getPattern).
-			thenComparing(Comparator.nullsFirst(Comparator.comparing(hint -> hint.reachableType.getCanonicalName())));
+	private static final Comparator<ResourcePatternHint> COMPARATOR = Comparator
+			.comparing(ResourcePatternHint::getPattern)
+			.thenComparing(CONDITIONAL_HINT_COMPARATOR);
 
 
 	private final String pattern;

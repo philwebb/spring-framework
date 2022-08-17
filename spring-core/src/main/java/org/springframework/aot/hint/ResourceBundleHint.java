@@ -16,6 +16,7 @@
 
 package org.springframework.aot.hint;
 
+import java.util.Comparator;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
@@ -30,7 +31,12 @@ import org.springframework.lang.Nullable;
  * @since 6.0
  * @see ResourceHints
  */
-public final class ResourceBundleHint implements ConditionalHint {
+public final class ResourceBundleHint implements ConditionalHint, Comparable<ResourceBundleHint> {
+
+	private static final Comparator<ResourceBundleHint> COMPARATOR = Comparator
+			.comparing(ResourceBundleHint::getBaseName)
+			.thenComparing(CONDITIONAL_HINT_COMPARATOR);
+
 
 	private final String baseName;
 
@@ -55,6 +61,11 @@ public final class ResourceBundleHint implements ConditionalHint {
 	@Override
 	public TypeReference getReachableType() {
 		return this.reachableType;
+	}
+
+	@Override
+	public int compareTo(ResourceBundleHint other) {
+		return COMPARATOR.compare(this, other);
 	}
 
 	@Override

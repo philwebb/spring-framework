@@ -19,7 +19,7 @@ package org.springframework.aot.hint.support;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import org.springframework.aot.hint.MemberCategory;
+import org.springframework.aot.hint.JavaReflectionHint.Category;
 import org.springframework.aot.hint.RuntimeHints;
 import org.springframework.aot.hint.RuntimeHintsRegistrar;
 import org.springframework.aot.hint.predicate.RuntimeHintsPredicates;
@@ -55,13 +55,13 @@ class SpringFactoriesLoaderRuntimeHintsTests {
 	@Test
 	void factoryTypeHasHint() {
 		assertThat(RuntimeHintsPredicates.reflection().onType(DummyFactory.class)
-				.withMemberCategory(MemberCategory.INVOKE_DECLARED_CONSTRUCTORS)).accepts(this.hints);
+				.withCategory(Category.INVOKE_DECLARED_CONSTRUCTORS)).accepts(this.hints);
 	}
 
 	@Test
 	void factoryImplementationHasHint() {
 		assertThat(RuntimeHintsPredicates.reflection().onType(MyDummyFactory1.class)
-				.withMemberCategory(MemberCategory.INVOKE_DECLARED_CONSTRUCTORS)).accepts(this.hints);
+				.withCategory(Category.INVOKE_DECLARED_CONSTRUCTORS)).accepts(this.hints);
 	}
 
 }

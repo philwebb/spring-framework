@@ -94,13 +94,18 @@ public final class JavaReflectionHint implements ConditionalHint, Comparable<Jav
 				this.methods);
 	}
 
-	JavaReflectionHint andCategory(Category category) {
-		if (this.categories.contains(category)) {
+	JavaReflectionHint andCategories(Category... categories) {
+		return andCategories(Set.of(categories));
+	}
+
+	JavaReflectionHint andCategories(Set<Category> categories) {
+		if (this.categories.containsAll(categories)) {
 			return this;
 		}
-		EnumSet<Category> categories = EnumSet.of(category);
-		categories.addAll(this.categories);
-		return new JavaReflectionHint(this.type, this.reachableType, Set.copyOf(categories), this.fields,
+		EnumSet<Category> combined = EnumSet.noneOf(Category.class);
+		combined.addAll(this.categories);
+		combined.addAll(categories);
+		return new JavaReflectionHint(this.type, this.reachableType, Collections.unmodifiableSet(combined), this.fields,
 				this.constructors, this.methods);
 	}
 

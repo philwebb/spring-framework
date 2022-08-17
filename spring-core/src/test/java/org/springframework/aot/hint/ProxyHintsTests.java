@@ -23,9 +23,6 @@ import java.util.stream.Stream;
 
 import org.junit.jupiter.api.Test;
 
-import org.springframework.aot.hint.JavaProxyHint;
-import org.springframework.aot.hint.ProxyHints;
-import org.springframework.aot.hint.TypeReference;
 import org.springframework.util.ObjectUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
