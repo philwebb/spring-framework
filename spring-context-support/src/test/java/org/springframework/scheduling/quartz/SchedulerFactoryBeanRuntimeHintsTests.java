@@ -19,7 +19,7 @@ package org.springframework.scheduling.quartz;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import org.springframework.aot.hint.MemberCategory;
+import org.springframework.aot.hint.JavaReflectionHint.Category;
 import org.springframework.aot.hint.RuntimeHints;
 import org.springframework.aot.hint.RuntimeHintsRegistrar;
 import org.springframework.aot.hint.TypeReference;
@@ -48,26 +48,26 @@ public class SchedulerFactoryBeanRuntimeHintsTests {
 	@Test
 	void stdSchedulerFactoryHasHints() {
 		assertThat(RuntimeHintsPredicates.reflection().onType(TypeReference.of("org.quartz.impl.StdSchedulerFactory"))
-				.withMemberCategory(MemberCategory.INVOKE_DECLARED_CONSTRUCTORS)).accepts(this.hints);
+				.withCategory(Category.INVOKE_DECLARED_CONSTRUCTORS)).accepts(this.hints);
 	}
 
 	@Test
 	void defaultClassLoadHelperHasHints() {
 		assertThat(RuntimeHintsPredicates.reflection().onType(ResourceLoaderClassLoadHelper.class)
-				.withMemberCategory(MemberCategory.INVOKE_DECLARED_CONSTRUCTORS)).accepts(this.hints);
+				.withCategory(Category.INVOKE_DECLARED_CONSTRUCTORS)).accepts(this.hints);
 	}
 
 	@Test
 	void defaultThreadPoolHasHints() {
 		assertThat(RuntimeHintsPredicates.reflection().onType(LocalTaskExecutorThreadPool.class)
-				.withMemberCategory(MemberCategory.INVOKE_DECLARED_CONSTRUCTORS))
+				.withCategory(Category.INVOKE_DECLARED_CONSTRUCTORS))
 				.accepts(this.hints);
 	}
 
 	@Test
 	void defaultJobStoreHasHints() {
 		assertThat(RuntimeHintsPredicates.reflection().onType(LocalDataSourceJobStore.class)
-				.withMemberCategory(MemberCategory.INVOKE_DECLARED_CONSTRUCTORS))
+				.withCategory(Category.INVOKE_DECLARED_CONSTRUCTORS))
 				.accepts(this.hints);
 	}
 }
