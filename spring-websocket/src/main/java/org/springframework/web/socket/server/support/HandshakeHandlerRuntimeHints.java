@@ -16,11 +16,9 @@
 
 package org.springframework.web.socket.server.support;
 
-import org.springframework.aot.hint.MemberCategory;
 import org.springframework.aot.hint.ReflectionHints;
 import org.springframework.aot.hint.RuntimeHints;
 import org.springframework.aot.hint.RuntimeHintsRegistrar;
-import org.springframework.aot.hint.TypeReference;
 import org.springframework.util.ClassUtils;
 
 /**
@@ -84,7 +82,6 @@ class HandshakeHandlerRuntimeHints implements RuntimeHintsRegistrar {
 	}
 
 	private void registerType(ReflectionHints reflectionHints, String className) {
-		reflectionHints.registerType(TypeReference.of(className),
-				builder -> builder.withMembers(MemberCategory.INVOKE_DECLARED_CONSTRUCTORS));
+		reflectionHints.registerInvoke().forDeclaredConstructorsIn(className);
 	}
 }

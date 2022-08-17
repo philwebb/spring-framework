@@ -30,6 +30,9 @@ import org.springframework.util.ClassUtils;
  */
 public interface ConditionalHint {
 
+	/**
+	 * {@link Comparator} that can be used to order {@link ConditionalHint} instances.
+	 */
 	Comparator<ConditionalHint> CONDITIONAL_HINT_COMPARATOR = Comparator.nullsFirst(Comparator.comparing(hint -> hint.getReachableType().getCanonicalName()));
 
 	/**

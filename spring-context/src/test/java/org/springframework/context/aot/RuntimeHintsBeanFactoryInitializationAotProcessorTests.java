@@ -154,7 +154,7 @@ class RuntimeHintsBeanFactoryInitializationAotProcessorTests {
 
 		@Override
 		public void registerHints(RuntimeHints hints, ClassLoader classLoader) {
-			hints.resources().registerResourceBundle("sample");
+			hints.resources().registerBundle().forBaseName("sample");
 		}
 
 	}
@@ -170,7 +170,7 @@ class RuntimeHintsBeanFactoryInitializationAotProcessorTests {
 
 		@Override
 		public void registerHints(RuntimeHints hints, @Nullable ClassLoader classLoader) {
-			hints.resources().registerResourceBundle("com.example.example" + counter.getAndIncrement());
+			hints.resources().registerBundle().forBaseName("com.example.example" + counter.getAndIncrement());
 		}
 	}
 
@@ -192,7 +192,7 @@ class RuntimeHintsBeanFactoryInitializationAotProcessorTests {
 
 		@Override
 		public void registerHints(RuntimeHints hints, ClassLoader classLoader) {
-			hints.resources().registerResourceBundle("sample");
+			hints.resources().registerBundle().forBaseName("sample");
 		}
 
 	}

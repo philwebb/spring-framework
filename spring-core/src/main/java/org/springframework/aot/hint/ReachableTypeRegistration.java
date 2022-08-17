@@ -25,6 +25,7 @@ import org.springframework.util.Assert;
  *
  * @author Phillip Webb
  * @since 6.0
+ * @param <S> self type
  */
 public abstract class ReachableTypeRegistration<S extends ReachableTypeRegistration<S>> {
 

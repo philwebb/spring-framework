@@ -78,7 +78,7 @@ public class ReflectionHintsWriterTests {
 							{ "name": "setDefaultCharset", "parameterTypes": [ "java.nio.charset.Charset" ] }
 						],
 						"queriedMethods":  [
-							{ "name": "<init>", "parameterTypes": [ "java.util.List", "boolean", "org.springframework.util.MimeType" ] },
+							{ "name": "<init>", "parameterTypes": [ "java.util.List", "boolean", "org.springframework.util.MimeType[]" ] },
 							{ "name": "getDefaultCharset", "parameterTypes": [ ] }
 						]
 					}
@@ -163,12 +163,6 @@ public class ReflectionHintsWriterTests {
 				[
 					{
 						"name": "java.lang.Integer",
-						"queriedMethods": [
-							{
-								"name": "parseInt",
-								"parameterTypes": ["java.lang.String"]
-							}
-						],
 						"methods": [
 							{
 								"name": "parseInt",

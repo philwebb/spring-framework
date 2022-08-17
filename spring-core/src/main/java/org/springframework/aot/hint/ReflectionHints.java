@@ -164,6 +164,7 @@ public class ReflectionHints {
 
 	/**
 	 * Registration methods for reflection hints.
+	 * @param <S> self type
 	 */
 	public abstract class ReflectionRegistration<S extends ReflectionRegistration<S>>
 			extends ReachableTypeRegistration<S> {
@@ -246,7 +247,7 @@ public class ReflectionHints {
 		 * @return this instance
 		 */
 		public TypeRegistration forType(TypeReference... types) {
-			update(types, this, (hint) -> hint.andCategories(this.categories));
+			update(types, this, hint -> hint.andCategories(this.categories));
 			return this;
 		}
 

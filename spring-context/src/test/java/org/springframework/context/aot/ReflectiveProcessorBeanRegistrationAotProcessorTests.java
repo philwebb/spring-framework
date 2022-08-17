@@ -62,14 +62,14 @@ class ReflectiveProcessorBeanRegistrationAotProcessorTests {
 	@Test
 	void shouldProcessAnnotationOnType() {
 		process(SampleTypeAnnotatedBean.class);
-		assertThat(this.generationContext.getRuntimeHints().reflection().getTypeHint(SampleTypeAnnotatedBean.class))
+		assertThat(this.generationContext.getRuntimeHints().reflection().getJavaReflectionHint(SampleTypeAnnotatedBean.class))
 				.isNotNull();
 	}
 
 	@Test
 	void shouldProcessAnnotationOnConstructor() {
 		process(SampleConstructorAnnotatedBean.class);
-		assertThat(this.generationContext.getRuntimeHints().reflection().getTypeHint(SampleConstructorAnnotatedBean.class))
+		assertThat(this.generationContext.getRuntimeHints().reflection().getJavaReflectionHint(SampleConstructorAnnotatedBean.class))
 				.satisfies(typeHint -> assertThat(typeHint.constructors()).singleElement()
 						.satisfies(constructorHint -> assertThat(constructorHint.getParameterTypes())
 								.containsExactly(TypeReference.of(String.class))));
@@ -78,7 +78,7 @@ class ReflectiveProcessorBeanRegistrationAotProcessorTests {
 	@Test
 	void shouldProcessAnnotationOnField() {
 		process(SampleFieldAnnotatedBean.class);
-		assertThat(this.generationContext.getRuntimeHints().reflection().getTypeHint(SampleFieldAnnotatedBean.class))
+		assertThat(this.generationContext.getRuntimeHints().reflection().getJavaReflectionHint(SampleFieldAnnotatedBean.class))
 				.satisfies(typeHint -> assertThat(typeHint.fields()).singleElement()
 						.satisfies(fieldHint -> assertThat(fieldHint.getName()).isEqualTo("managed")));
 	}
@@ -86,7 +86,7 @@ class ReflectiveProcessorBeanRegistrationAotProcessorTests {
 	@Test
 	void shouldProcessAnnotationOnMethod() {
 		process(SampleMethodAnnotatedBean.class);
-		assertThat(this.generationContext.getRuntimeHints().reflection().getTypeHint(SampleMethodAnnotatedBean.class))
+		assertThat(this.generationContext.getRuntimeHints().reflection().getJavaReflectionHint(SampleMethodAnnotatedBean.class))
 				.satisfies(typeHint -> assertThat(typeHint.methods()).singleElement()
 						.satisfies(methodHint -> assertThat(methodHint.getName()).isEqualTo("managed")));
 	}
@@ -95,7 +95,7 @@ class ReflectiveProcessorBeanRegistrationAotProcessorTests {
 	void shouldNotRegisterAnnotationProxyIfNotNeeded() {
 		process(SampleMethodMetaAnnotatedBean.class);
 		RuntimeHints runtimeHints = this.generationContext.getRuntimeHints();
-		assertThat(runtimeHints.proxies().jdkProxies()).isEmpty();
+		assertThat(runtimeHints.proxies().javaProxies()).isEmpty();
 	}
 
 	@Test
@@ -109,10 +109,10 @@ class ReflectiveProcessorBeanRegistrationAotProcessorTests {
 	@Test
 	void shouldProcessAnnotationOnInterface() {
 		process(SampleMethodAnnotatedBeanWithInterface.class);
-		assertThat(this.generationContext.getRuntimeHints().reflection().getTypeHint(SampleInterface.class))
+		assertThat(this.generationContext.getRuntimeHints().reflection().getJavaReflectionHint(SampleInterface.class))
 				.satisfies(typeHint -> assertThat(typeHint.methods()).singleElement()
 						.satisfies(methodHint -> assertThat(methodHint.getName()).isEqualTo("managed")));
-		assertThat(this.generationContext.getRuntimeHints().reflection().getTypeHint(SampleMethodAnnotatedBeanWithInterface.class))
+		assertThat(this.generationContext.getRuntimeHints().reflection().getJavaReflectionHint(SampleMethodAnnotatedBeanWithInterface.class))
 				.satisfies(typeHint -> assertThat(typeHint.methods()).singleElement()
 						.satisfies(methodHint -> assertThat(methodHint.getName()).isEqualTo("managed")));
 	}
@@ -120,10 +120,10 @@ class ReflectiveProcessorBeanRegistrationAotProcessorTests {
 	@Test
 	void shouldProcessAnnotationOnInheritedClass() {
 		process(SampleMethodAnnotatedBeanWithInheritance.class);
-		assertThat(this.generationContext.getRuntimeHints().reflection().getTypeHint(SampleInheritedClass.class))
+		assertThat(this.generationContext.getRuntimeHints().reflection().getJavaReflectionHint(SampleInheritedClass.class))
 				.satisfies(typeHint -> assertThat(typeHint.methods()).singleElement()
 						.satisfies(methodHint -> assertThat(methodHint.getName()).isEqualTo("managed")));
-		assertThat(this.generationContext.getRuntimeHints().reflection().getTypeHint(SampleMethodAnnotatedBeanWithInheritance.class))
+		assertThat(this.generationContext.getRuntimeHints().reflection().getJavaReflectionHint(SampleMethodAnnotatedBeanWithInheritance.class))
 				.satisfies(typeHint -> assertThat(typeHint.methods()).singleElement()
 						.satisfies(methodHint -> assertThat(methodHint.getName()).isEqualTo("managed")));
 	}

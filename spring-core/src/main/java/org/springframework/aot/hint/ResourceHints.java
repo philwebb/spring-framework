@@ -128,7 +128,7 @@ public class ResourceHints {
 
 		/**
 		 * Only register patterns if the a resource at the given location is
-		 * present in given class loader
+		 * present in given class loader.
 		 * @param classLoader the class loader to check or {@code null} to use
 		 * the {@link ClassUtils#getDefaultClassLoader() default class loader}.
 		 * @param location the location to check
@@ -165,7 +165,7 @@ public class ResourceHints {
 		/**
 		 * Complete the hint registration with patterns that match the
 		 * {@code .class} bytecode of the given types.
-		 * @param the types to register
+		 * @param types the types to register
 		 * @return this instance
 		 */
 		public PatternRegistration forClassBytecode(Class<?>... types) {
@@ -175,7 +175,7 @@ public class ResourceHints {
 		/**
 		 * Complete the hint registration with patterns that match the
 		 * {@code .class} bytecode of the given type names.
-		 * @param the type names to register
+		 * @param types the type names to register
 		 * @return this instance
 		 */
 		public PatternRegistration forClassBytecode(String... types) {
@@ -185,7 +185,7 @@ public class ResourceHints {
 		/**
 		 * Complete the hint registration with patterns that match the
 		 * {@code .class} bytecode of the given types.
-		 * @param the types to register
+		 * @param types the types to register
 		 * @return this instance
 		 */
 		public PatternRegistration forClassBytecode(TypeReference... types) {
@@ -212,7 +212,7 @@ public class ResourceHints {
 
 		/**
 		 * Complete the hint registration with the given base names.
-		 * @param baseNames
+		 * @param baseNames the base names to register
 		 * @return this instance
 		 */
 		public BundleRegistration forBaseName(String... baseNames) {

@@ -23,7 +23,7 @@ import org.junit.jupiter.api.Test;
 
 import org.springframework.aot.generate.GeneratedFiles.Kind;
 import org.springframework.aot.generate.InMemoryGeneratedFiles;
-import org.springframework.aot.hint.MemberCategory;
+import org.springframework.aot.hint.JavaReflectionHint.Category;
 import org.springframework.aot.hint.TypeReference;
 import org.springframework.aot.hint.predicate.RuntimeHintsPredicates;
 import org.springframework.core.io.InputStreamSource;
@@ -55,8 +55,8 @@ class GeneratedClassHandlerTests {
 		String className = "com.example.Test$$SpringCGLIB$$0";
 		this.handler.accept(className, TEST_CONTENT);
 		assertThat(RuntimeHintsPredicates.reflection().onType(TypeReference.of(className))
-				.withMemberCategories(MemberCategory.INVOKE_DECLARED_CONSTRUCTORS,
-						MemberCategory.INVOKE_DECLARED_METHODS, MemberCategory.DECLARED_FIELDS))
+				.withCategories(Category.INVOKE_DECLARED_CONSTRUCTORS,
+						Category.INVOKE_DECLARED_METHODS, Category.DECLARED_FIELDS))
 				.accepts(this.generationContext.getRuntimeHints());
 	}
 
@@ -65,8 +65,8 @@ class GeneratedClassHandlerTests {
 		String className = "com.example.Test$$SpringCGLIB$$0";
 		this.handler.accept(className, TEST_CONTENT);
 		assertThat(RuntimeHintsPredicates.reflection().onType(TypeReference.of("com.example.Test"))
-				.withMemberCategories(MemberCategory.INTROSPECT_DECLARED_CONSTRUCTORS,
-						MemberCategory.INVOKE_DECLARED_METHODS))
+				.withCategories(Category.INTROSPECT_DECLARED_CONSTRUCTORS,
+						Category.INVOKE_DECLARED_METHODS))
 				.accepts(this.generationContext.getRuntimeHints());
 	}
 

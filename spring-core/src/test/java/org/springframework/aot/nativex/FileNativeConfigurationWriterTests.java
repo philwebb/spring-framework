@@ -168,7 +168,6 @@ public class FileNativeConfigurationWriterTests {
 	private void assertEquals(String expectedString, String filename) throws IOException, JSONException {
 		Path jsonFile = tempDir.resolve("META-INF").resolve("native-image").resolve(filename);
 		String content = new String(Files.readAllBytes(jsonFile));
-		System.out.println(content);
 		JSONAssert.assertEquals(expectedString, content, JSONCompareMode.NON_EXTENSIBLE);
 	}
 

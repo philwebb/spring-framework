@@ -32,6 +32,7 @@ import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import org.springframework.aot.hint.FieldMode;
 import org.springframework.aot.hint.TypeReference;
 import org.springframework.aot.test.generator.compile.CompileWithTargetClassAccess;
 import org.springframework.aot.test.generator.compile.Compiled;
@@ -76,7 +77,7 @@ class PersistenceAnnotationBeanPostProcessorAotContributionTests {
 			DefaultPersistenceUnitField instance = new DefaultPersistenceUnitField();
 			actual.accept(registeredBean, instance);
 			assertThat(instance).extracting("emf").isSameAs(entityManagerFactory);
-			assertThat(this.generationContext.getRuntimeHints().reflection().typeHints())
+			assertThat(this.generationContext.getRuntimeHints().reflection().javaReflection())
 					.isEmpty();
 		});
 	}
@@ -91,7 +92,7 @@ class PersistenceAnnotationBeanPostProcessorAotContributionTests {
 			DefaultPersistenceUnitMethod instance = new DefaultPersistenceUnitMethod();
 			actual.accept(registeredBean, instance);
 			assertThat(instance).extracting("emf").isSameAs(entityManagerFactory);
-			assertThat(this.generationContext.getRuntimeHints().reflection().typeHints())
+			assertThat(this.generationContext.getRuntimeHints().reflection().javaReflection())
 					.isEmpty();
 		});
 	}
@@ -108,7 +109,7 @@ class PersistenceAnnotationBeanPostProcessorAotContributionTests {
 			assertThat(instance).extracting("emf").isSameAs(entityManagerFactory);
 			assertThat(compiled.getSourceFile()).contains(
 					"findEntityManagerFactory((ListableBeanFactory) registeredBean.getBeanFactory(), \"custom\")");
-			assertThat(this.generationContext.getRuntimeHints().reflection().typeHints())
+			assertThat(this.generationContext.getRuntimeHints().reflection().javaReflection())
 					.isEmpty();
 		});
 	}
@@ -124,15 +125,15 @@ class PersistenceAnnotationBeanPostProcessorAotContributionTests {
 			DefaultPersistenceContextField instance = new DefaultPersistenceContextField();
 			actual.accept(registeredBean, instance);
 			assertThat(instance).extracting("entityManager").isNotNull();
-			assertThat(this.generationContext.getRuntimeHints().reflection().typeHints())
-					.singleElement().satisfies(typeHint -> {
-						assertThat(typeHint.getType()).isEqualTo(
+			assertThat(this.generationContext.getRuntimeHints().reflection().javaReflection())
+					.singleElement().satisfies(javaReflectionHint -> {
+						assertThat(javaReflectionHint.getType()).isEqualTo(
 								TypeReference.of(DefaultPersistenceContextField.class));
-						assertThat(typeHint.fields()).singleElement()
+						assertThat(javaReflectionHint.fields()).singleElement()
 								.satisfies(fieldHint -> {
 									assertThat(fieldHint.getName())
 											.isEqualTo("entityManager");
-									assertThat(fieldHint.isAllowWrite()).isTrue();
+									assertThat(fieldHint.getMode()).isEqualTo(FieldMode.WRITE);
 									assertThat(fieldHint.isAllowUnsafeAccess()).isFalse();
 								});
 					});
@@ -160,7 +161,7 @@ class PersistenceAnnotationBeanPostProcessorAotContributionTests {
 					.asInstanceOf(InstanceOfAssertFactories.MAP)
 					.containsEntry("jpa.test", "value")
 					.containsEntry("jpa.test2", "value2");
-			assertThat(this.generationContext.getRuntimeHints().reflection().typeHints())
+			assertThat(this.generationContext.getRuntimeHints().reflection().javaReflection())
 					.isEmpty();
 		});
 	}

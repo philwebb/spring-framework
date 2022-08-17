@@ -77,7 +77,7 @@ class ProxyHintsTests {
 	void registerJavaProxyWithReachableTypeCondition() {
 		this.hints.registerJavaProxy().whenReachable(Stream.class).forInterfaces(Function.class);
 		assertThat(this.hints.javaProxies()).singleElement()
-				.satisfies((hint) -> assertThat(hint.getReachableType()).hasToString(Stream.class.getCanonicalName()));
+				.satisfies(hint -> assertThat(hint.getReachableType()).hasToString(Stream.class.getCanonicalName()));
 	}
 
 	@Test

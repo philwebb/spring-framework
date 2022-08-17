@@ -22,7 +22,7 @@ import java.util.function.BiConsumer;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.aot.generate.GeneratedFiles.Kind;
-import org.springframework.aot.hint.MemberCategory;
+import org.springframework.aot.hint.JavaReflectionHint.Category;
 import org.springframework.aot.hint.TypeReference;
 import org.springframework.aot.hint.predicate.RuntimeHintsPredicates;
 import org.springframework.aot.test.generator.compile.Compiled;
@@ -177,7 +177,7 @@ class ApplicationContextAotGeneratorTests {
 		assertThat(context.getGeneratedFiles()
 				.getGeneratedFileContent(Kind.CLASS, proxyClassName.replace('.', '/') + ".class")).isNotNull();
 		assertThat(RuntimeHintsPredicates.reflection().onType(TypeReference.of(proxyClassName))
-				.withMemberCategory(MemberCategory.INVOKE_DECLARED_CONSTRUCTORS)).accepts(context.getRuntimeHints());
+				.withCategory(Category.INVOKE_DECLARED_CONSTRUCTORS)).accepts(context.getRuntimeHints());
 	}
 
 	private static TestGenerationContext processAheadOfTime(GenericApplicationContext applicationContext) {

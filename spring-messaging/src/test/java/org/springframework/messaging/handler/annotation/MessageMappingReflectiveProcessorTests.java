@@ -26,13 +26,9 @@ import org.springframework.aot.hint.ReflectionHints;
 import org.springframework.aot.hint.TypeReference;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHeaders;
-import org.springframework.messaging.handler.annotation.MessageMappingReflectiveProcessorTests.IncomingMessage;
-import org.springframework.messaging.handler.annotation.MessageMappingReflectiveProcessorTests.OutgoingMessage;
-import org.springframework.messaging.handler.annotation.MessageMappingReflectiveProcessorTests.SampleAnnotatedController;
-import org.springframework.messaging.handler.annotation.MessageMappingReflectiveProcessorTests.SampleController;
 import org.springframework.messaging.support.MessageHeaderAccessor;
 
-import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Tests for {@link MessageMappingReflectiveProcessor}.
@@ -50,17 +46,17 @@ public class MessageMappingReflectiveProcessorTests {
 		Method method = SampleController.class.getDeclaredMethod("returnValue");
 		processor.registerReflectionHints(hints, method);
 		assertThat(hints.javaReflection()).satisfiesExactlyInAnyOrder(
-				typeHint -> assertThat(typeHint.getType()).isEqualTo(TypeReference.of(SampleController.class)),
-				typeHint -> {
-					assertThat(typeHint.getType()).isEqualTo(TypeReference.of(OutgoingMessage.class));
-					assertThat(typeHint.getCategories()).containsExactlyInAnyOrder(
+				javaReflectionHint -> assertThat(javaReflectionHint.getType()).isEqualTo(TypeReference.of(SampleController.class)),
+				javaReflectionHint -> {
+					assertThat(javaReflectionHint.getType()).isEqualTo(TypeReference.of(OutgoingMessage.class));
+					assertThat(javaReflectionHint.getCategories()).containsExactlyInAnyOrder(
 							Category.INVOKE_DECLARED_CONSTRUCTORS,
 							Category.DECLARED_FIELDS);
-					assertThat(typeHint.methods()).satisfiesExactlyInAnyOrder(
+					assertThat(javaReflectionHint.methods()).satisfiesExactlyInAnyOrder(
 							hint -> assertThat(hint.getName()).isEqualTo("getMessage"),
 							hint -> assertThat(hint.getName()).isEqualTo("setMessage"));
 				},
-				typeHint -> assertThat(typeHint.getType()).isEqualTo(TypeReference.of(String.class)));
+				javaReflectionHint -> assertThat(javaReflectionHint.getType()).isEqualTo(TypeReference.of(String.class)));
 	}
 
 	@Test
@@ -68,37 +64,37 @@ public class MessageMappingReflectiveProcessorTests {
 		Method method = SampleController.class.getDeclaredMethod("explicitPayload", IncomingMessage.class);
 		processor.registerReflectionHints(hints, method);
 		assertThat(hints.javaReflection()).satisfiesExactlyInAnyOrder(
-				typeHint -> assertThat(typeHint.getType()).isEqualTo(TypeReference.of(SampleController.class)),
-				typeHint -> {
-					assertThat(typeHint.getType()).isEqualTo(TypeReference.of(IncomingMessage.class));
-					assertThat(typeHint.getCategories()).containsExactlyInAnyOrder(
+				javaReflectionHint -> assertThat(javaReflectionHint.getType()).isEqualTo(TypeReference.of(SampleController.class)),
+				javaReflectionHint -> {
+					assertThat(javaReflectionHint.getType()).isEqualTo(TypeReference.of(IncomingMessage.class));
+					assertThat(javaReflectionHint.getCategories()).containsExactlyInAnyOrder(
 							Category.INVOKE_DECLARED_CONSTRUCTORS,
 							Category.DECLARED_FIELDS);
-					assertThat(typeHint.methods()).satisfiesExactlyInAnyOrder(
+					assertThat(javaReflectionHint.methods()).satisfiesExactlyInAnyOrder(
 							hint -> assertThat(hint.getName()).isEqualTo("getMessage"),
 							hint -> assertThat(hint.getName()).isEqualTo("setMessage"));
 				},
-				typeHint -> assertThat(typeHint.getType()).isEqualTo(TypeReference.of(String.class)));
+				javaReflectionHint -> assertThat(javaReflectionHint.getType()).isEqualTo(TypeReference.of(String.class)));
 	}
 
 	@Test
 	void registerReflectiveHintsForMethodWithImplicitPayload() throws NoSuchMethodException {
 		Method method = SampleController.class.getDeclaredMethod("implicitPayload", IncomingMessage.class);
 		processor.registerReflectionHints(hints, method);
-		assertThat(hints.typeHints()).satisfiesExactlyInAnyOrder(
-				typeHint -> assertThat(typeHint.getType()).isEqualTo(TypeReference.of(SampleController.class)),
-				typeHint -> assertThat(typeHint.getType()).isEqualTo(TypeReference.of(IncomingMessage.class)),
-				typeHint -> assertThat(typeHint.getType()).isEqualTo(TypeReference.of(String.class)));
+		assertThat(hints.javaReflection()).satisfiesExactlyInAnyOrder(
+				javaReflectionHint -> assertThat(javaReflectionHint.getType()).isEqualTo(TypeReference.of(SampleController.class)),
+				javaReflectionHint -> assertThat(javaReflectionHint.getType()).isEqualTo(TypeReference.of(IncomingMessage.class)),
+				javaReflectionHint -> assertThat(javaReflectionHint.getType()).isEqualTo(TypeReference.of(String.class)));
 	}
 
 	@Test
 	void registerReflectiveHintsForMethodWithMessage() throws NoSuchMethodException {
 		Method method = SampleController.class.getDeclaredMethod("message", Message.class);
 		processor.registerReflectionHints(hints, method);
-		assertThat(hints.typeHints()).satisfiesExactlyInAnyOrder(
-				typeHint -> assertThat(typeHint.getType()).isEqualTo(TypeReference.of(SampleController.class)),
-				typeHint -> assertThat(typeHint.getType()).isEqualTo(TypeReference.of(IncomingMessage.class)),
-				typeHint -> assertThat(typeHint.getType()).isEqualTo(TypeReference.of(String.class)));
+		assertThat(hints.javaReflection()).satisfiesExactlyInAnyOrder(
+				javaReflectionHint -> assertThat(javaReflectionHint.getType()).isEqualTo(TypeReference.of(SampleController.class)),
+				javaReflectionHint -> assertThat(javaReflectionHint.getType()).isEqualTo(TypeReference.of(IncomingMessage.class)),
+				javaReflectionHint -> assertThat(javaReflectionHint.getType()).isEqualTo(TypeReference.of(String.class)));
 	}
 
 	@Test
@@ -107,17 +103,17 @@ public class MessageMappingReflectiveProcessorTests {
 				IncomingMessage.class, Ignored.class, Ignored.class, Ignored.class, MessageHeaders.class,
 				MessageHeaderAccessor.class, Principal.class);
 		processor.registerReflectionHints(hints, method);
-		assertThat(hints.typeHints()).satisfiesExactlyInAnyOrder(
-				typeHint -> assertThat(typeHint.getType()).isEqualTo(TypeReference.of(SampleController.class)),
-				typeHint -> assertThat(typeHint.getType()).isEqualTo(TypeReference.of(IncomingMessage.class)),
-				typeHint -> assertThat(typeHint.getType()).isEqualTo(TypeReference.of(String.class)));
+		assertThat(hints.javaReflection()).satisfiesExactlyInAnyOrder(
+				javaReflectionHint -> assertThat(javaReflectionHint.getType()).isEqualTo(TypeReference.of(SampleController.class)),
+				javaReflectionHint -> assertThat(javaReflectionHint.getType()).isEqualTo(TypeReference.of(IncomingMessage.class)),
+				javaReflectionHint -> assertThat(javaReflectionHint.getType()).isEqualTo(TypeReference.of(String.class)));
 	}
 
 	@Test
 	void registerReflectiveHintsForClass() {
 		processor.registerReflectionHints(hints, SampleAnnotatedController.class);
-		assertThat(hints.typeHints()).singleElement().satisfies(
-				typeHint -> assertThat(typeHint.getType()).isEqualTo(TypeReference.of(SampleAnnotatedController.class)));
+		assertThat(hints.javaReflection()).singleElement().satisfies(
+				javaReflectionHint -> assertThat(javaReflectionHint.getType()).isEqualTo(TypeReference.of(SampleAnnotatedController.class)));
 	}
 
 

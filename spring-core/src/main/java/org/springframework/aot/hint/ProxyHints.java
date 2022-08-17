@@ -41,7 +41,7 @@ public class ProxyHints {
 
 	/**
 	 * Registration methods for Java proxy hints.
-	 * @return Java proxy hint registration methods
+	 * @return java proxy hint registration methods
 	 */
 	public JavaProxyHintRegistration registerJavaProxy() {
 		return new JavaProxyHintRegistration();
