@@ -80,7 +80,7 @@ public class ProxyHints {
 		 * @param mapper the class mapper
 		 * @return this instance
 		 */
-		JavaProxyHintRegistration withClassMapper(UnaryOperator<Class<?>[]> mapper) {
+		public JavaProxyHintRegistration withClassMapper(UnaryOperator<Class<?>[]> mapper) {
 			Assert.notNull(mapper, "'mapper' must not be null");
 			UnaryOperator<Class<?>[]> previous = this.classesMapper;
 			this.classesMapper = classes -> mapper.apply(previous.apply(classes));

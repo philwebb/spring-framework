@@ -16,10 +16,8 @@
 
 package org.springframework.http.codec;
 
-import org.springframework.aot.hint.MemberCategory;
 import org.springframework.aot.hint.RuntimeHints;
 import org.springframework.aot.hint.RuntimeHintsRegistrar;
-import org.springframework.aot.hint.TypeReference;
 import org.springframework.http.codec.support.DefaultClientCodecConfigurer;
 import org.springframework.http.codec.support.DefaultServerCodecConfigurer;
 import org.springframework.lang.Nullable;
@@ -35,14 +33,14 @@ class CodecConfigurerRuntimeHints implements RuntimeHintsRegistrar {
 
 	@Override
 	public void registerHints(RuntimeHints hints, @Nullable ClassLoader classLoader) {
-		hints.resources().registerPattern("org/springframework/http/codec/CodecConfigurer.properties");
+		hints.resources().registerInclude().forPattern("org/springframework/http/codec/CodecConfigurer.properties");
 		registerType(hints, DefaultClientCodecConfigurer.class);
 		registerType(hints, DefaultServerCodecConfigurer.class);
 	}
 
 	private void registerType(RuntimeHints hints, Class<?> type) {
-		hints.reflection().registerType(type, builder ->
-				builder.onReachableType(TypeReference.of(CodecConfigurerFactory.class))
-						.withMembers(MemberCategory.INVOKE_PUBLIC_CONSTRUCTORS));
+		hints.reflection().registerInvoke()
+				.whenReachable(CodecConfigurerFactory.class)
+				.forPublicConstructorsIn(type);
 	}
 }

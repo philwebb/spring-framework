@@ -35,7 +35,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Consumer;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -45,9 +44,6 @@ import org.springframework.aot.generate.GeneratedClass;
 import org.springframework.aot.generate.GeneratedMethod;
 import org.springframework.aot.generate.GenerationContext;
 import org.springframework.aot.generate.MethodReference;
-import org.springframework.aot.hint.ExecutableHint;
-import org.springframework.aot.hint.ExecutableMode;
-import org.springframework.aot.hint.FieldHint;
 import org.springframework.aot.hint.RuntimeHints;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeansException;
@@ -903,12 +899,6 @@ public class AutowiredAnnotationBeanPostProcessor implements SmartInstantiationA
 
 		private static final String INSTANCE_PARAMETER = "instance";
 
-		private static final Consumer<ExecutableHint.Builder> INTROSPECT = builder -> builder
-				.withMode(ExecutableMode.INTROSPECT);
-
-		private static final Consumer<FieldHint.Builder> ALLOW_WRITE = builder -> builder
-				.allowWrite(true);
-
 
 		private final Class<?> target;
 
@@ -970,7 +960,7 @@ public class AutowiredAnnotationBeanPostProcessor implements SmartInstantiationA
 		private CodeBlock generateMethodStatementForField(Field field, boolean required,
 				RuntimeHints hints) {
 
-			hints.reflection().registerField(field, ALLOW_WRITE);
+			hints.reflection().registerWrite().forField(field);
 			CodeBlock resolver = CodeBlock.of("$T.$L($S)",
 					AutowiredFieldValueResolver.class,
 					(!required) ? "forField" : "forRequiredField", field.getName());
@@ -999,12 +989,12 @@ public class AutowiredAnnotationBeanPostProcessor implements SmartInstantiationA
 			AccessVisibility visibility = AccessVisibility.forMember(method);
 			if (visibility == AccessVisibility.PRIVATE
 					|| visibility == AccessVisibility.PROTECTED) {
-				hints.reflection().registerMethod(method);
+				hints.reflection().registerInvoke().forMethod(method);
 				builder.add(".resolveAndInvoke($L, $L)", REGISTERED_BEAN_PARAMETER,
 						INSTANCE_PARAMETER);
 			}
 			else {
-				hints.reflection().registerMethod(method, INTROSPECT);
+				hints.reflection().registerIntrospect().forMethod(method);
 				CodeBlock arguments = new AutowiredArgumentsCodeGenerator(this.target,
 						method).generateCode(method.getParameterTypes());
 				CodeBlock injectionCode = CodeBlock.of("args -> $L.$L($L)",

@@ -21,14 +21,18 @@ import java.security.Principal;
 
 import org.junit.jupiter.api.Test;
 
-import org.springframework.aot.hint.MemberCategory;
+import org.springframework.aot.hint.JavaReflectionHint.Category;
 import org.springframework.aot.hint.ReflectionHints;
 import org.springframework.aot.hint.TypeReference;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHeaders;
+import org.springframework.messaging.handler.annotation.MessageMappingReflectiveProcessorTests.IncomingMessage;
+import org.springframework.messaging.handler.annotation.MessageMappingReflectiveProcessorTests.OutgoingMessage;
+import org.springframework.messaging.handler.annotation.MessageMappingReflectiveProcessorTests.SampleAnnotatedController;
+import org.springframework.messaging.handler.annotation.MessageMappingReflectiveProcessorTests.SampleController;
 import org.springframework.messaging.support.MessageHeaderAccessor;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertThat;
 
 /**
  * Tests for {@link MessageMappingReflectiveProcessor}.
@@ -45,13 +49,13 @@ public class MessageMappingReflectiveProcessorTests {
 	void registerReflectiveHintsForMethodWithReturnValue() throws NoSuchMethodException {
 		Method method = SampleController.class.getDeclaredMethod("returnValue");
 		processor.registerReflectionHints(hints, method);
-		assertThat(hints.typeHints()).satisfiesExactlyInAnyOrder(
+		assertThat(hints.javaReflection()).satisfiesExactlyInAnyOrder(
 				typeHint -> assertThat(typeHint.getType()).isEqualTo(TypeReference.of(SampleController.class)),
 				typeHint -> {
 					assertThat(typeHint.getType()).isEqualTo(TypeReference.of(OutgoingMessage.class));
-					assertThat(typeHint.getMemberCategories()).containsExactlyInAnyOrder(
-							MemberCategory.INVOKE_DECLARED_CONSTRUCTORS,
-							MemberCategory.DECLARED_FIELDS);
+					assertThat(typeHint.getCategories()).containsExactlyInAnyOrder(
+							Category.INVOKE_DECLARED_CONSTRUCTORS,
+							Category.DECLARED_FIELDS);
 					assertThat(typeHint.methods()).satisfiesExactlyInAnyOrder(
 							hint -> assertThat(hint.getName()).isEqualTo("getMessage"),
 							hint -> assertThat(hint.getName()).isEqualTo("setMessage"));
@@ -63,13 +67,13 @@ public class MessageMappingReflectiveProcessorTests {
 	void registerReflectiveHintsForMethodWithExplicitPayload() throws NoSuchMethodException {
 		Method method = SampleController.class.getDeclaredMethod("explicitPayload", IncomingMessage.class);
 		processor.registerReflectionHints(hints, method);
-		assertThat(hints.typeHints()).satisfiesExactlyInAnyOrder(
+		assertThat(hints.javaReflection()).satisfiesExactlyInAnyOrder(
 				typeHint -> assertThat(typeHint.getType()).isEqualTo(TypeReference.of(SampleController.class)),
 				typeHint -> {
 					assertThat(typeHint.getType()).isEqualTo(TypeReference.of(IncomingMessage.class));
-					assertThat(typeHint.getMemberCategories()).containsExactlyInAnyOrder(
-							MemberCategory.INVOKE_DECLARED_CONSTRUCTORS,
-							MemberCategory.DECLARED_FIELDS);
+					assertThat(typeHint.getCategories()).containsExactlyInAnyOrder(
+							Category.INVOKE_DECLARED_CONSTRUCTORS,
+							Category.DECLARED_FIELDS);
 					assertThat(typeHint.methods()).satisfiesExactlyInAnyOrder(
 							hint -> assertThat(hint.getName()).isEqualTo("getMessage"),
 							hint -> assertThat(hint.getName()).isEqualTo("setMessage"));

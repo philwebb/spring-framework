@@ -16,12 +16,9 @@
 
 package org.springframework.scheduling.quartz;
 
-import java.util.List;
-
-import org.springframework.aot.hint.MemberCategory;
+import org.springframework.aot.hint.ReflectionHints.MethodRegistration;
 import org.springframework.aot.hint.RuntimeHints;
 import org.springframework.aot.hint.RuntimeHintsRegistrar;
-import org.springframework.aot.hint.TypeReference;
 import org.springframework.util.ClassUtils;
 
 /**
@@ -35,30 +32,20 @@ public class SchedulerFactoryBeanRuntimeHints implements RuntimeHintsRegistrar {
 
 	private static String SCHEDULER_FACTORY_CLASS_NAME = "org.quartz.impl.StdSchedulerFactory";
 
-	private static TypeReference FACTORY_BEAN_TYPE_REFERENCE = TypeReference.of(SchedulerFactoryBean.class);
-
 	@Override
 	public void registerHints(RuntimeHints hints, ClassLoader classLoader) {
 		if (ClassUtils.isPresent(SCHEDULER_FACTORY_CLASS_NAME, classLoader)) {
-			hints.reflection().registerType(TypeReference.of(SCHEDULER_FACTORY_CLASS_NAME),
-					builder -> builder
-							.withMembers(MemberCategory.INVOKE_DECLARED_CONSTRUCTORS)
-							.onReachableType(FACTORY_BEAN_TYPE_REFERENCE));
-			hints.reflection().registerType(ResourceLoaderClassLoadHelper.class,
-					builder -> builder
-							.withMembers(MemberCategory.INVOKE_DECLARED_CONSTRUCTORS)
-							.onReachableType(FACTORY_BEAN_TYPE_REFERENCE));
-			hints.reflection().registerType(LocalTaskExecutorThreadPool.class,
-					builder -> builder
-							.withMembers(MemberCategory.INVOKE_DECLARED_CONSTRUCTORS)
-							.withMethod("setInstanceId", List.of(TypeReference.of(String.class)), b -> {})
-							.withMethod("setInstanceName", List.of(TypeReference.of(String.class)), b -> {})
-							.onReachableType(FACTORY_BEAN_TYPE_REFERENCE));
-			hints.reflection().registerType(LocalDataSourceJobStore.class,
-					builder -> builder
-							.withMembers(MemberCategory.INVOKE_DECLARED_CONSTRUCTORS)
-							.onReachableType(FACTORY_BEAN_TYPE_REFERENCE));
-
+			MethodRegistration registerInvoke = hints.reflection().registerInvoke()
+					.whenReachable(SchedulerFactoryBean.class);
+			MethodRegistration registerIntrospect = hints.reflection().registerIntrospect()
+					.whenReachable(SchedulerFactoryBean.class);
+			registerInvoke.forDeclaredConstructorsIn(SCHEDULER_FACTORY_CLASS_NAME);
+			registerInvoke.forDeclaredConstructorsIn(ResourceLoaderClassLoadHelper.class);
+			registerInvoke.forDeclaredConstructorsIn(LocalTaskExecutorThreadPool.class);
+			registerIntrospect.forMethod(LocalTaskExecutorThreadPool.class, "setInstanceId", String.class);
+			registerIntrospect.forMethod(LocalTaskExecutorThreadPool.class, "setInstanceName", String.class);
+			registerInvoke.whenReachable(SchedulerFactoryBean.class).forDeclaredConstructorsIn(LocalDataSourceJobStore.class);
 		}
 	}
+
 }

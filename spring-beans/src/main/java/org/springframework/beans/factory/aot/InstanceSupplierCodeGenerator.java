@@ -28,8 +28,6 @@ import org.springframework.aot.generate.AccessVisibility;
 import org.springframework.aot.generate.GeneratedMethod;
 import org.springframework.aot.generate.GeneratedMethods;
 import org.springframework.aot.generate.GenerationContext;
-import org.springframework.aot.hint.ExecutableHint;
-import org.springframework.aot.hint.ExecutableMode;
 import org.springframework.beans.factory.support.InstanceSupplier;
 import org.springframework.beans.factory.support.RegisteredBean;
 import org.springframework.core.ResolvableType;
@@ -68,9 +66,6 @@ class InstanceSupplierCodeGenerator {
 			javax.lang.model.element.Modifier.STATIC };
 
 	private static final CodeBlock NO_ARGS = CodeBlock.of("");
-
-	private static final Consumer<ExecutableHint.Builder> INTROSPECT = hint -> hint
-			.withMode(ExecutableMode.INTROSPECT);
 
 
 	private final GenerationContext generationContext;
@@ -127,8 +122,7 @@ class InstanceSupplierCodeGenerator {
 	private CodeBlock generateCodeForAccessibleConstructor(String beanName, Class<?> beanClass,
 			Constructor<?> constructor, boolean dependsOnBean, Class<?> declaringClass) {
 
-		this.generationContext.getRuntimeHints().reflection()
-				.registerConstructor(constructor, INTROSPECT);
+		this.generationContext.getRuntimeHints().reflection().registerIntrospect().forConstructor(constructor);
 		if (!dependsOnBean && constructor.getParameterCount() == 0) {
 			if (!this.allowDirectSupplierShortcut) {
 				return CodeBlock.of("$T.using($T::new)", InstanceSupplier.class,
@@ -149,8 +143,7 @@ class InstanceSupplierCodeGenerator {
 	private CodeBlock generateCodeForInaccessibleConstructor(String beanName,
 			Class<?> beanClass, Constructor<?> constructor, boolean dependsOnBean) {
 
-		this.generationContext.getRuntimeHints().reflection()
-				.registerConstructor(constructor);
+		this.generationContext.getRuntimeHints().reflection().registerInvoke().forConstructor(constructor);
 		GeneratedMethod generatedMethod = generateGetInstanceSupplierMethod(method -> {
 			method.addJavadoc("Get the bean instance supplier for '$L'.", beanName);
 			method.addModifiers(PRIVATE_STATIC);
@@ -224,8 +217,7 @@ class InstanceSupplierCodeGenerator {
 	private CodeBlock generateCodeForAccessibleFactoryMethod(String beanName,
 			Class<?> beanClass, Method factoryMethod, Class<?> declaringClass, boolean dependsOnBean) {
 
-		this.generationContext.getRuntimeHints().reflection()
-				.registerMethod(factoryMethod, INTROSPECT);
+		this.generationContext.getRuntimeHints().reflection().registerIntrospect().forMethod(factoryMethod);
 		if (!dependsOnBean && factoryMethod.getParameterCount() == 0) {
 			CodeBlock.Builder code = CodeBlock.builder();
 			code.add("$T.<$T>forFactoryMethod($T.class, $S)", BeanInstanceSupplier.class,
@@ -242,8 +234,7 @@ class InstanceSupplierCodeGenerator {
 	private CodeBlock generateCodeForInaccessibleFactoryMethod(String beanName, Class<?> beanClass,
 			Method factoryMethod, Class<?> declaringClass) {
 
-		this.generationContext.getRuntimeHints().reflection()
-				.registerMethod(factoryMethod);
+		this.generationContext.getRuntimeHints().reflection().registerInvoke().forMethod(factoryMethod);
 		GeneratedMethod getInstanceMethod = generateGetInstanceSupplierMethod(method -> {
 			method.addJavadoc("Get the bean instance supplier for '$L'.", beanName);
 			method.addModifiers(PRIVATE_STATIC);

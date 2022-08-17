@@ -136,7 +136,9 @@ public class MethodValidationPostProcessor extends AbstractBeanFactoryAwareAdvis
 
 		@Override
 		public void registerHints(RuntimeHints hints, @Nullable ClassLoader classLoader) {
-			hints.proxies().registerJdkProxy(AopProxyUtils.completeJdkProxyInterfaces(Validator.class));
+			hints.proxies().registerJavaProxy()
+					.withClassMapper(AopProxyUtils::completeJdkProxyInterfaces)
+					.forInterfaces(Validator.class);
 		}
 
 	}

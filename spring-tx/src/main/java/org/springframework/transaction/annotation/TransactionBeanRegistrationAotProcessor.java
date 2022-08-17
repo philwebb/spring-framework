@@ -22,7 +22,6 @@ import java.util.Set;
 
 import org.springframework.aop.framework.AopProxyUtils;
 import org.springframework.aot.generate.GenerationContext;
-import org.springframework.aot.hint.MemberCategory;
 import org.springframework.aot.hint.RuntimeHints;
 import org.springframework.beans.factory.aot.BeanRegistrationAotContribution;
 import org.springframework.beans.factory.aot.BeanRegistrationAotProcessor;
@@ -85,12 +84,12 @@ class TransactionBeanRegistrationAotProcessor implements BeanRegistrationAotProc
 			if (proxyInterfaces.length == 0) {
 				return;
 			}
-			for (Class<?> proxyInterface : proxyInterfaces) {
-				runtimeHints.reflection().registerType(proxyInterface,
-						builder -> builder.withMembers(MemberCategory.INVOKE_DECLARED_METHODS));
-			}
-			runtimeHints.proxies().registerJdkProxy(AopProxyUtils.completeJdkProxyInterfaces(proxyInterfaces));
+			runtimeHints.reflection().registerInvoke().forDeclaredMethodsIn(proxyInterfaces);
+			runtimeHints.proxies().registerJavaProxy()
+					.withClassMapper(AopProxyUtils::completeJdkProxyInterfaces)
+					.forInterfaces(proxyInterfaces);
 		}
+
 	}
 
 }
