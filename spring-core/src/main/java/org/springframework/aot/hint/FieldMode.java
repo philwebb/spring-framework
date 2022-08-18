@@ -16,29 +16,25 @@
 
 package org.springframework.aot.hint;
 
-import java.lang.reflect.Member;
+import java.lang.reflect.Field;
 
 /**
- * Base hint that describes the need for reflection on a {@link Member}.
+ * Represents the need of reflection for a given {@link Field}.
  *
- * @author Stephane Nicoll
+ * @author Phillip Webb
  * @since 6.0
+ * @see ReflectionHints
  */
-public abstract class MemberHint {
-
-	private final String name;
-
-
-	protected MemberHint(String name) {
-		this.name = name;
-	}
+public enum FieldMode {
 
 	/**
-	 * Return the name of the member.
-	 * @return the name
+	 * Only field read is required.
 	 */
-	public String getName() {
-		return this.name;
-	}
+	READ,
+
+	/**
+	 * Full field read and write is required.
+	 */
+	WRITE
 
 }

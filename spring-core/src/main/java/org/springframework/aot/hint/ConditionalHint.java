@@ -16,6 +16,8 @@
 
 package org.springframework.aot.hint;
 
+import java.util.Comparator;
+
 import org.springframework.lang.Nullable;
 import org.springframework.util.ClassUtils;
 
@@ -27,6 +29,11 @@ import org.springframework.util.ClassUtils;
  * @since 6.0
  */
 public interface ConditionalHint {
+
+	/**
+	 * {@link Comparator} that can be used to order {@link ConditionalHint} instances.
+	 */
+	Comparator<ConditionalHint> CONDITIONAL_HINT_COMPARATOR = Comparator.nullsFirst(Comparator.comparing(hint -> hint.getReachableType().getCanonicalName()));
 
 	/**
 	 * Return the type that should be reachable for this hint to apply, or
@@ -42,15 +49,13 @@ public interface ConditionalHint {
 	 * <p>Instead of checking for actual reachability of a type in the
 	 * application, the classpath is checked for the presence of this
 	 * type as a simple heuristic.
-	 * @param classLoader the current classloader
+	 * @param classLoader the current class loader
 	 * @return whether the condition is met and the hint applies
 	 */
 	default boolean conditionMatches(ClassLoader classLoader) {
 		TypeReference reachableType = getReachableType();
-		if (reachableType != null) {
-			return ClassUtils.isPresent(reachableType.getCanonicalName(), classLoader);
-		}
-		return true;
+		return (reachableType != null)
+				&& ClassUtils.isPresent(reachableType.getCanonicalName(), classLoader);
 	}
 
 }

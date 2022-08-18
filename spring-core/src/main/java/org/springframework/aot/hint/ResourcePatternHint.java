@@ -17,18 +17,22 @@
 package org.springframework.aot.hint;
 
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Objects;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import org.springframework.lang.Nullable;
+import org.springframework.util.Assert;
 
 /**
- * A hint that describes resources that should be made available at runtime.
+ * An immutable hint that describes resources that should be made available at
+ * runtime.
  *
- * <p>The patterns may be a simple path which has a one-to-one mapping to a
- * resource on the classpath, or alternatively may contain the special
- * {@code *} character to indicate a wildcard search. For example:
+ * <p>
+ * The patterns may be a simple path which has a one-to-one mapping to a
+ * resource on the classpath, or alternatively may contain the special {@code *}
+ * character to indicate a wildcard search. For example:
  * <ul>
  *     <li>{@code file.properties}: matches just the {@code file.properties}
  *         file at the root of the classpath.</li>
@@ -47,17 +51,25 @@ import org.springframework.lang.Nullable;
  * @author Sebastien Deleuze
  * @since 6.0
  */
-public final class ResourcePatternHint implements ConditionalHint {
+public final class ResourcePatternHint implements ConditionalHint, Comparable<ResourcePatternHint> {
+
+	private static final Comparator<ResourcePatternHint> COMPARATOR = Comparator
+			.comparing(ResourcePatternHint::getPattern)
+			.thenComparing(CONDITIONAL_HINT_COMPARATOR);
+
 
 	private final String pattern;
 
 	@Nullable
 	private final TypeReference reachableType;
 
+
 	ResourcePatternHint(String pattern, @Nullable TypeReference reachableType) {
+		Assert.notNull(pattern, "'pattern' must not be null");
 		this.pattern = pattern;
 		this.reachableType = reachableType;
 	}
+
 
 	/**
 	 * Return the pattern to use for identifying the resources to match.
@@ -68,7 +80,8 @@ public final class ResourcePatternHint implements ConditionalHint {
 	}
 
 	/**
-	 * Return the regex {@link Pattern} to use for identifying the resources to match.
+	 * Return the regex {@link Pattern} to use for identifying the resources to
+	 * match.
 	 * @return the regex pattern
 	 */
 	public Pattern toRegex() {
@@ -88,20 +101,25 @@ public final class ResourcePatternHint implements ConditionalHint {
 	}
 
 	@Override
-	public boolean equals(Object o) {
-		if (this == o) {
+	public int compareTo(ResourcePatternHint other) {
+		return COMPARATOR.compare(this, other);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
 			return true;
 		}
-		if (o == null || getClass() != o.getClass()) {
+		if (obj == null || getClass() != obj.getClass()) {
 			return false;
 		}
-		ResourcePatternHint that = (ResourcePatternHint) o;
-		return this.pattern.equals(that.pattern)
-				&& Objects.equals(this.reachableType, that.reachableType);
+		ResourcePatternHint other = (ResourcePatternHint) obj;
+		return this.pattern.equals(other.pattern) && Objects.equals(this.reachableType, other.reachableType);
 	}
 
 	@Override
 	public int hashCode() {
 		return Objects.hash(this.pattern, this.reachableType);
 	}
+
 }

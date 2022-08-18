@@ -16,48 +16,50 @@
 
 package org.springframework.aot.hint;
 
-import java.io.Serializable;
+import java.lang.reflect.Proxy;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Objects;
 
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 
 /**
- * An immutable hint that describes the need for serialization at runtime.
+ * An immutable hint that describes the need for a Java interface-based
+ * {@link Proxy}.
  *
+ * @author Stephane Nicoll
  * @author Brian Clozel
  * @author Phillip Webb
  * @since 6.0
- * @see SerializationHints
+ * @see ProxyHints
  */
-public final class JavaSerializationHint implements ConditionalHint, Comparable<JavaSerializationHint> {
+public final class JavaProxyHint implements ConditionalHint, Comparable<JavaProxyHint> {
 
-	private static final Comparator<JavaSerializationHint> COMPARATOR = Comparator
-			.<JavaSerializationHint, String>comparing(hint -> hint.type.getCanonicalName())
+	private static final Comparator<JavaProxyHint> COMPARATOR = Comparator
+			.<JavaProxyHint, String>comparing(hint -> hint.proxiedInterfaces.toString())
 			.thenComparing(CONDITIONAL_HINT_COMPARATOR);
 
 
-	private final TypeReference type;
+	private final List<TypeReference> proxiedInterfaces;
 
 	@Nullable
 	private final TypeReference reachableType;
 
 
-	JavaSerializationHint(TypeReference type, @Nullable TypeReference reachableType) {
-		Assert.notNull(type, "'type' must not be null");
-		this.type = type;
+	JavaProxyHint(TypeReference[] proxiedInterfaces, @Nullable TypeReference reachableType) {
+		Assert.notNull(proxiedInterfaces, "'proxiedInterfaces' must not be null");
+		this.proxiedInterfaces = List.of(proxiedInterfaces);
 		this.reachableType = reachableType;
 	}
 
 
 	/**
-	 * Return the {@link TypeReference type} that needs to be serialized using
-	 * Java serialization at runtime.
-	 * @return a {@link Serializable} type
+	 * Return the interfaces to be proxied.
+	 * @return the interfaces that the proxy should implement
 	 */
-	public TypeReference getType() {
-		return this.type;
+	public List<TypeReference> getProxiedInterfaces() {
+		return this.proxiedInterfaces;
 	}
 
 	@Override
@@ -67,7 +69,7 @@ public final class JavaSerializationHint implements ConditionalHint, Comparable<
 	}
 
 	@Override
-	public int compareTo(JavaSerializationHint other) {
+	public int compareTo(JavaProxyHint other) {
 		return COMPARATOR.compare(this, other);
 	}
 
@@ -79,13 +81,14 @@ public final class JavaSerializationHint implements ConditionalHint, Comparable<
 		if (obj == null || getClass() != obj.getClass()) {
 			return false;
 		}
-		JavaSerializationHint other = (JavaSerializationHint) obj;
-		return this.type.equals(other.type) && Objects.equals(this.reachableType, other.reachableType);
+		JavaProxyHint other = (JavaProxyHint) obj;
+		return this.proxiedInterfaces.equals(other.proxiedInterfaces)
+				&& Objects.equals(this.reachableType, other.reachableType);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(this.type, this.reachableType);
+		return Objects.hash(this.proxiedInterfaces, this.reachableType);
 	}
 
 }

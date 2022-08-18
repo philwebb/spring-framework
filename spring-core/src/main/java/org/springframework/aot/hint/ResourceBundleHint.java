@@ -16,19 +16,28 @@
 
 package org.springframework.aot.hint;
 
+import java.util.Comparator;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
 import org.springframework.lang.Nullable;
+import org.springframework.util.Assert;
 
 /**
- * A hint that describes the need to access a {@link ResourceBundle}.
+ * An immutable hint that describes the need to access a {@link ResourceBundle}.
  *
  * @author Stephane Nicoll
  * @author Brian Clozel
+ * @author Phillip Webb
  * @since 6.0
+ * @see ResourceHints
  */
-public final class ResourceBundleHint implements ConditionalHint {
+public final class ResourceBundleHint implements ConditionalHint, Comparable<ResourceBundleHint> {
+
+	private static final Comparator<ResourceBundleHint> COMPARATOR = Comparator
+			.comparing(ResourceBundleHint::getBaseName)
+			.thenComparing(CONDITIONAL_HINT_COMPARATOR);
+
 
 	private final String baseName;
 
@@ -36,10 +45,12 @@ public final class ResourceBundleHint implements ConditionalHint {
 	private final TypeReference reachableType;
 
 
-	ResourceBundleHint(Builder builder) {
-		this.baseName = builder.baseName;
-		this.reachableType = builder.reachableType;
+	ResourceBundleHint(String baseName, @Nullable TypeReference reachableType) {
+		Assert.notNull(baseName, "'baseName' must not be null");
+		this.baseName = baseName;
+		this.reachableType = reachableType;
 	}
+
 
 	/**
 	 * Return the {@code baseName} of the resource bundle.
@@ -49,74 +60,31 @@ public final class ResourceBundleHint implements ConditionalHint {
 		return this.baseName;
 	}
 
-	@Nullable
 	@Override
 	public TypeReference getReachableType() {
 		return this.reachableType;
 	}
 
 	@Override
-	public boolean equals(Object o) {
-		if (this == o) {
+	public int compareTo(ResourceBundleHint other) {
+		return COMPARATOR.compare(this, other);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
 			return true;
 		}
-		if (o == null || getClass() != o.getClass()) {
+		if (obj == null || getClass() != obj.getClass()) {
 			return false;
 		}
-		ResourceBundleHint that = (ResourceBundleHint) o;
-		return this.baseName.equals(that.baseName)
-				&& Objects.equals(this.reachableType, that.reachableType);
+		ResourceBundleHint other = (ResourceBundleHint) obj;
+		return this.baseName.equals(other.baseName) && Objects.equals(this.reachableType, other.reachableType);
 	}
 
 	@Override
 	public int hashCode() {
 		return Objects.hash(this.baseName, this.reachableType);
-	}
-
-	/**
-	 * Builder for {@link ResourceBundleHint}.
-	 */
-	public static class Builder {
-
-		private String baseName;
-
-		@Nullable
-		private TypeReference reachableType;
-
-		Builder(String baseName) {
-			this.baseName = baseName;
-		}
-
-		/**
-		 * Make this hint conditional on the fact that the specified type
-		 * can be resolved.
-		 * @param reachableType the type that should be reachable for this
-		 * hint to apply
-		 * @return {@code this}, to facilitate method chaining
-		 */
-		public Builder onReachableType(TypeReference reachableType) {
-			this.reachableType = reachableType;
-			return this;
-		}
-
-		/**
-		 * Use the the {@code baseName} of the resource bundle.
-		 * @return {@code this}, to facilitate method chaining
-		 */
-		public Builder baseName(String baseName) {
-			this.baseName = baseName;
-			return this;
-		}
-
-		/**
-		 * Creates a {@link ResourceBundleHint} based on the state of this
-		 * builder.
-		 * @return a resource bundle hint
-		 */
-		ResourceBundleHint build() {
-			return new ResourceBundleHint(this);
-		}
-
 	}
 
 }
