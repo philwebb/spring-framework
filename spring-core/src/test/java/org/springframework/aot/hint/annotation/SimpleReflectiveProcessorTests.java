@@ -41,59 +41,59 @@ class SimpleReflectiveProcessorTests {
 
 	@Test
 	void registerReflectiveHintsForClass() {
-		processor.registerReflectionHints(hints, SampleBean.class);
-		assertThat(hints.typeHints()).singleElement().satisfies(typeHint -> {
-			assertThat(typeHint.getType()).isEqualTo(TypeReference.of(SampleBean.class));
-			assertThat(typeHint.getMemberCategories()).isEmpty();
-			assertThat(typeHint.constructors()).isEmpty();
-			assertThat(typeHint.fields()).isEmpty();
-			assertThat(typeHint.methods()).isEmpty();
+		this.processor.registerReflectionHints(this.hints, SampleBean.class);
+		assertThat(this.hints.javaReflection()).singleElement().satisfies(hint -> {
+			assertThat(hint.getType()).isEqualTo(TypeReference.of(SampleBean.class));
+			assertThat(hint.getCategories()).isEmpty();
+			assertThat(hint.constructors()).isEmpty();
+			assertThat(hint.fields()).isEmpty();
+			assertThat(hint.methods()).isEmpty();
 		});
 	}
 
 	@Test
 	void registerReflectiveHintsForConstructor() {
 		Constructor<?> constructor = SampleBean.class.getDeclaredConstructors()[0];
-		processor.registerReflectionHints(hints, constructor);
-		assertThat(hints.typeHints()).singleElement().satisfies(typeHint -> {
-			assertThat(typeHint.getType()).isEqualTo(TypeReference.of(SampleBean.class));
-			assertThat(typeHint.getMemberCategories()).isEmpty();
-			assertThat(typeHint.constructors()).singleElement().satisfies(constructorHint -> {
+		this.processor.registerReflectionHints(this.hints, constructor);
+		assertThat(this.hints.javaReflection()).singleElement().satisfies(hint -> {
+			assertThat(hint.getType()).isEqualTo(TypeReference.of(SampleBean.class));
+			assertThat(hint.getCategories()).isEmpty();
+			assertThat(hint.constructors()).singleElement().satisfies(constructorHint -> {
 				assertThat(constructorHint.getName()).isEqualTo("<init>");
-				assertThat(constructorHint.getModes()).containsExactly(ExecutableMode.INVOKE);
+				assertThat(constructorHint.getMode()).isEqualTo(ExecutableMode.INVOKE);
 				assertThat(constructorHint.getParameterTypes()).containsExactly(TypeReference.of(String.class));
 			});
-			assertThat(typeHint.fields()).isEmpty();
-			assertThat(typeHint.methods()).isEmpty();
+			assertThat(hint.fields()).isEmpty();
+			assertThat(hint.methods()).isEmpty();
 		});
 	}
 
 	@Test
 	void registerReflectiveHintsForField() throws NoSuchFieldException {
 		Field field = SampleBean.class.getDeclaredField("name");
-		processor.registerReflectionHints(hints, field);
-		assertThat(hints.typeHints()).singleElement().satisfies(typeHint -> {
-			assertThat(typeHint.getType()).isEqualTo(TypeReference.of(SampleBean.class));
-			assertThat(typeHint.getMemberCategories()).isEmpty();
-			assertThat(typeHint.constructors()).isEmpty();
-			assertThat(typeHint.fields()).singleElement().satisfies(fieldHint ->
+		this.processor.registerReflectionHints(this.hints, field);
+		assertThat(this.hints.javaReflection()).singleElement().satisfies(hint -> {
+			assertThat(hint.getType()).isEqualTo(TypeReference.of(SampleBean.class));
+			assertThat(hint.getCategories()).isEmpty();
+			assertThat(hint.constructors()).isEmpty();
+			assertThat(hint.fields()).singleElement().satisfies(fieldHint ->
 					assertThat(fieldHint.getName()).isEqualTo("name"));
-			assertThat(typeHint.methods()).isEmpty();
+			assertThat(hint.methods()).isEmpty();
 		});
 	}
 
 	@Test
 	void registerReflectiveHintsForMethod() throws NoSuchMethodException {
 		Method method = SampleBean.class.getDeclaredMethod("setName", String.class);
-		processor.registerReflectionHints(hints, method);
-		assertThat(hints.typeHints()).singleElement().satisfies(typeHint -> {
-			assertThat(typeHint.getType()).isEqualTo(TypeReference.of(SampleBean.class));
-			assertThat(typeHint.getMemberCategories()).isEmpty();
-			assertThat(typeHint.constructors()).isEmpty();
-			assertThat(typeHint.fields()).isEmpty();
-			assertThat(typeHint.methods()).singleElement().satisfies(methodHint -> {
+		this.processor.registerReflectionHints(this.hints, method);
+		assertThat(this.hints.javaReflection()).singleElement().satisfies(hint -> {
+			assertThat(hint.getType()).isEqualTo(TypeReference.of(SampleBean.class));
+			assertThat(hint.getCategories()).isEmpty();
+			assertThat(hint.constructors()).isEmpty();
+			assertThat(hint.fields()).isEmpty();
+			assertThat(hint.methods()).singleElement().satisfies(methodHint -> {
 				assertThat(methodHint.getName()).isEqualTo("setName");
-				assertThat(methodHint.getModes()).containsExactly(ExecutableMode.INVOKE);
+				assertThat(methodHint.getMode()).isEqualTo(ExecutableMode.INVOKE);
 				assertThat(methodHint.getParameterTypes()).containsExactly(TypeReference.of(String.class));
 			});
 		});

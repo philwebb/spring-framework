@@ -19,7 +19,7 @@ package org.springframework.transaction.annotation;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.aot.generate.GenerationContext;
-import org.springframework.aot.hint.MemberCategory;
+import org.springframework.aot.hint.JavaReflectionHint.Category;
 import org.springframework.aot.hint.predicate.RuntimeHintsPredicates;
 import org.springframework.beans.factory.aot.BeanRegistrationAotContribution;
 import org.springframework.beans.factory.aot.BeanRegistrationCode;
@@ -46,48 +46,48 @@ public class TransactionBeanRegistrationAotProcessorTests {
 	@Test
 	void shouldSkipNonAnnotatedType() {
 		process(NonAnnotatedBean.class);
-		assertThat(this.generationContext.getRuntimeHints().reflection().typeHints()).isEmpty();
+		assertThat(this.generationContext.getRuntimeHints().reflection().javaReflection()).isEmpty();
 	}
 
 	@Test
 	void shouldSkipAnnotatedTypeWithNoInterface() {
 		process(NoInterfaceBean.class);
-		assertThat(this.generationContext.getRuntimeHints().reflection().typeHints()).isEmpty();
+		assertThat(this.generationContext.getRuntimeHints().reflection().javaReflection()).isEmpty();
 	}
 
 	@Test
 	void shouldProcessTransactionalOnClass() {
 		process(TransactionalOnTypeBean.class);
 		assertThat(RuntimeHintsPredicates.reflection().onType(NonAnnotatedTransactionalInterface.class)
-				.withMemberCategory(MemberCategory.INVOKE_DECLARED_METHODS)).accepts(this.generationContext.getRuntimeHints());
+				.withCategory(Category.INVOKE_DECLARED_METHODS)).accepts(this.generationContext.getRuntimeHints());
 	}
 
 	@Test
 	void shouldProcessJakartaTransactionalOnClass() {
 		process(JakartaTransactionalOnTypeBean.class);
 		assertThat(RuntimeHintsPredicates.reflection().onType(NonAnnotatedTransactionalInterface.class)
-				.withMemberCategory(MemberCategory.INVOKE_DECLARED_METHODS)).accepts(this.generationContext.getRuntimeHints());
+				.withCategory(Category.INVOKE_DECLARED_METHODS)).accepts(this.generationContext.getRuntimeHints());
 	}
 
 	@Test
 	void shouldProcessTransactionalOnInterface() {
 		process(TransactionalOnTypeInterface.class);
 		assertThat(RuntimeHintsPredicates.reflection().onType(TransactionalOnTypeInterface.class)
-				.withMemberCategory(MemberCategory.INVOKE_DECLARED_METHODS)).accepts(this.generationContext.getRuntimeHints());
+				.withCategory(Category.INVOKE_DECLARED_METHODS)).accepts(this.generationContext.getRuntimeHints());
 	}
 
 	@Test
 	void shouldProcessTransactionalOnClassMethod() {
 		process(TransactionalOnClassMethodBean.class);
 		assertThat(RuntimeHintsPredicates.reflection().onType(NonAnnotatedTransactionalInterface.class)
-				.withMemberCategory(MemberCategory.INVOKE_DECLARED_METHODS)).accepts(this.generationContext.getRuntimeHints());
+				.withCategory(Category.INVOKE_DECLARED_METHODS)).accepts(this.generationContext.getRuntimeHints());
 	}
 
 	@Test
 	void shouldProcessTransactionalOnInterfaceMethod() {
 		process(TransactionalOnInterfaceMethodBean.class);
 		assertThat(RuntimeHintsPredicates.reflection().onType(TransactionalOnMethodInterface.class)
-				.withMemberCategory(MemberCategory.INVOKE_DECLARED_METHODS)).accepts(this.generationContext.getRuntimeHints());
+				.withCategory(Category.INVOKE_DECLARED_METHODS)).accepts(this.generationContext.getRuntimeHints());
 	}
 
 	private void process(Class<?> beanClass) {

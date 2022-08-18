@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -31,14 +30,12 @@ import org.junit.jupiter.api.io.TempDir;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.skyscreamer.jsonassert.JSONCompareMode;
 
-import org.springframework.aot.hint.ExecutableMode;
-import org.springframework.aot.hint.MemberCategory;
+import org.springframework.aot.hint.JavaReflectionHint.Category;
 import org.springframework.aot.hint.ProxyHints;
 import org.springframework.aot.hint.ReflectionHints;
 import org.springframework.aot.hint.ResourceHints;
 import org.springframework.aot.hint.RuntimeHints;
 import org.springframework.aot.hint.SerializationHints;
-import org.springframework.aot.hint.TypeReference;
 import org.springframework.core.codec.StringDecoder;
 import org.springframework.util.MimeType;
 
@@ -67,8 +64,7 @@ public class FileNativeConfigurationWriterTests {
 		FileNativeConfigurationWriter generator = new FileNativeConfigurationWriter(tempDir);
 		RuntimeHints hints = new RuntimeHints();
 		SerializationHints serializationHints = hints.serialization();
-		serializationHints.registerType(Integer.class);
-		serializationHints.registerType(Long.class);
+		serializationHints.registerJavaSerialization().forType(Integer.class, Long.class);
 		generator.write(hints);
 		assertEquals("""
 				[
@@ -82,8 +78,8 @@ public class FileNativeConfigurationWriterTests {
 		FileNativeConfigurationWriter generator = new FileNativeConfigurationWriter(tempDir);
 		RuntimeHints hints = new RuntimeHints();
 		ProxyHints proxyHints = hints.proxies();
-		proxyHints.registerJdkProxy(Function.class);
-		proxyHints.registerJdkProxy(Function.class, Consumer.class);
+		proxyHints.registerJavaProxy().forInterfaces(Function.class);
+		proxyHints.registerJavaProxy().forInterfaces(Function.class, Consumer.class);
 		generator.write(hints);
 		assertEquals("""
 				[
@@ -97,26 +93,13 @@ public class FileNativeConfigurationWriterTests {
 		FileNativeConfigurationWriter generator = new FileNativeConfigurationWriter(tempDir);
 		RuntimeHints hints = new RuntimeHints();
 		ReflectionHints reflectionHints = hints.reflection();
-		reflectionHints.registerType(StringDecoder.class, builder -> {
-			builder
-					.onReachableType(TypeReference.of(String.class))
-					.withMembers(MemberCategory.PUBLIC_FIELDS, MemberCategory.DECLARED_FIELDS,
-							MemberCategory.INTROSPECT_PUBLIC_CONSTRUCTORS, MemberCategory.INTROSPECT_DECLARED_CONSTRUCTORS,
-							MemberCategory.INVOKE_PUBLIC_CONSTRUCTORS, MemberCategory.INVOKE_DECLARED_CONSTRUCTORS,
-							MemberCategory.INTROSPECT_PUBLIC_METHODS, MemberCategory.INTROSPECT_DECLARED_METHODS,
-							MemberCategory.INVOKE_PUBLIC_METHODS, MemberCategory.INVOKE_DECLARED_METHODS,
-							MemberCategory.PUBLIC_CLASSES, MemberCategory.DECLARED_CLASSES)
-					.withField("DEFAULT_CHARSET", fieldBuilder -> {})
-					.withField("defaultCharset", fieldBuilder -> {
-						fieldBuilder.allowWrite(true);
-						fieldBuilder.allowUnsafeAccess(true);
-					})
-					.withConstructor(TypeReference.listOf(List.class, boolean.class, MimeType.class), constructorHint ->
-							constructorHint.withMode(ExecutableMode.INTROSPECT))
-					.withMethod("setDefaultCharset", TypeReference.listOf(Charset.class), ctorBuilder -> {})
-					.withMethod("getDefaultCharset", Collections.emptyList(), constructorHint ->
-							constructorHint.withMode(ExecutableMode.INTROSPECT));
-		});
+		Class<StringDecoder> type = StringDecoder.class;
+		reflectionHints.register(Category.values()).whenReachable(String.class).forType(type);
+		reflectionHints.registerRead().forField(type, "DEFAULT_CHARSET");
+		reflectionHints.registerWrite().withAllowUnsafeAccess().forField(type, "defaultCharset");
+		reflectionHints.registerIntrospect().forConstructor(type, List.class, boolean.class, MimeType[].class);
+		reflectionHints.registerInvoke().forMethod(type, "setDefaultCharset", Charset.class);
+		reflectionHints.registerIntrospect().forMethod(type, "getDefaultCharset");
 		generator.write(hints);
 		assertEquals("""
 				[
@@ -143,7 +126,7 @@ public class FileNativeConfigurationWriterTests {
 							{ "name": "setDefaultCharset", "parameterTypes": [ "java.nio.charset.Charset" ] }
 						],
 						"queriedMethods":  [
-							{ "name": "<init>", "parameterTypes": [ "java.util.List", "boolean", "org.springframework.util.MimeType" ] },
+							{ "name": "<init>", "parameterTypes": [ "java.util.List", "boolean", "org.springframework.util.MimeType[]" ] },
 							{ "name": "getDefaultCharset", "parameterTypes": [ ] }
 						]
 					}
@@ -155,8 +138,7 @@ public class FileNativeConfigurationWriterTests {
 		FileNativeConfigurationWriter generator = new FileNativeConfigurationWriter(tempDir);
 		RuntimeHints hints = new RuntimeHints();
 		ResourceHints resourceHints = hints.resources();
-		resourceHints.registerPattern("com/example/test.properties");
-		resourceHints.registerPattern("com/example/another.properties");
+		resourceHints.registerInclude().forPattern("com/example/test.properties", "com/example/another.properties");
 		generator.write(hints);
 		assertEquals("""
 				{
@@ -177,7 +159,7 @@ public class FileNativeConfigurationWriterTests {
 		FileNativeConfigurationWriter generator = new FileNativeConfigurationWriter(tempDir, groupId, artifactId);
 		RuntimeHints hints = new RuntimeHints();
 		ResourceHints resourceHints = hints.resources();
-		resourceHints.registerPattern("com/example/test.properties");
+		resourceHints.registerInclude().forPattern("com/example/test.properties");
 		generator.write(hints);
 		Path jsonFile = tempDir.resolve("META-INF").resolve("native-image").resolve(groupId).resolve(artifactId).resolve(filename);
 		assertThat(jsonFile.toFile().exists()).isTrue();

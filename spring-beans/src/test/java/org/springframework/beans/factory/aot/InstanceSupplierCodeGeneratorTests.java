@@ -26,10 +26,10 @@ import org.assertj.core.api.ThrowingConsumer;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.aot.generate.GeneratedClass;
-import org.springframework.aot.hint.ExecutableHint;
 import org.springframework.aot.hint.ExecutableMode;
+import org.springframework.aot.hint.JavaReflectionHint;
+import org.springframework.aot.hint.JavaReflectionHint.ExecutableHint;
 import org.springframework.aot.hint.ReflectionHints;
-import org.springframework.aot.hint.TypeHint;
 import org.springframework.aot.test.generator.compile.Compiled;
 import org.springframework.aot.test.generator.compile.TestCompiler;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -84,7 +84,7 @@ class InstanceSupplierCodeGeneratorTests {
 			assertThat(compiled.getSourceFile())
 					.contains("InstanceSupplier.using(TestBean::new)");
 		});
-		assertThat(getReflectionHints().getTypeHint(TestBean.class))
+		assertThat(getReflectionHints().getJavaReflectionHint(TestBean.class))
 				.satisfies(hasConstructorWithMode(ExecutableMode.INTROSPECT));
 	}
 
@@ -99,7 +99,7 @@ class InstanceSupplierCodeGeneratorTests {
 			assertThat(bean).isInstanceOf(InjectionComponent.class).extracting("bean")
 					.isEqualTo("injected");
 		});
-		assertThat(getReflectionHints().getTypeHint(InjectionComponent.class))
+		assertThat(getReflectionHints().getJavaReflectionHint(InjectionComponent.class))
 				.satisfies(hasConstructorWithMode(ExecutableMode.INTROSPECT));
 	}
 
@@ -116,7 +116,7 @@ class InstanceSupplierCodeGeneratorTests {
 			assertThat(compiled.getSourceFile()).contains(
 					"getBeanFactory().getBean(InnerComponentConfiguration.class).new NoDependencyComponent()");
 		});
-		assertThat(getReflectionHints().getTypeHint(NoDependencyComponent.class))
+		assertThat(getReflectionHints().getJavaReflectionHint(NoDependencyComponent.class))
 				.satisfies(hasConstructorWithMode(ExecutableMode.INTROSPECT));
 	}
 
@@ -134,7 +134,7 @@ class InstanceSupplierCodeGeneratorTests {
 			assertThat(compiled.getSourceFile()).contains(
 					"getBeanFactory().getBean(InnerComponentConfiguration.class).new EnvironmentAwareComponent(");
 		});
-		assertThat(getReflectionHints().getTypeHint(EnvironmentAwareComponent.class))
+		assertThat(getReflectionHints().getJavaReflectionHint(EnvironmentAwareComponent.class))
 				.satisfies(hasConstructorWithMode(ExecutableMode.INTROSPECT));
 	}
 
@@ -150,7 +150,7 @@ class InstanceSupplierCodeGeneratorTests {
 			assertThat(bean).extracting("number").isNull(); // No property actually set
 			assertThat(compiled.getSourceFile()).contains("NumberHolderFactoryBean::new");
 		});
-		assertThat(getReflectionHints().getTypeHint(NumberHolderFactoryBean.class))
+		assertThat(getReflectionHints().getJavaReflectionHint(NumberHolderFactoryBean.class))
 				.satisfies(hasConstructorWithMode(ExecutableMode.INTROSPECT));
 	}
 
@@ -166,7 +166,7 @@ class InstanceSupplierCodeGeneratorTests {
 			assertThat(compiled.getSourceFile())
 					.contains("return BeanInstanceSupplier.<TestBeanWithPrivateConstructor>forConstructor();");
 		});
-		assertThat(getReflectionHints().getTypeHint(TestBeanWithPrivateConstructor.class))
+		assertThat(getReflectionHints().getJavaReflectionHint(TestBeanWithPrivateConstructor.class))
 				.satisfies(hasConstructorWithMode(ExecutableMode.INVOKE));
 	}
 
@@ -185,7 +185,7 @@ class InstanceSupplierCodeGeneratorTests {
 			assertThat(compiled.getSourceFile()).contains(
 					"getBeanFactory().getBean(SimpleConfiguration.class).stringBean()");
 		});
-		assertThat(getReflectionHints().getTypeHint(SimpleConfiguration.class))
+		assertThat(getReflectionHints().getJavaReflectionHint(SimpleConfiguration.class))
 				.satisfies(hasMethodWithMode(ExecutableMode.INTROSPECT));
 	}
 
@@ -206,7 +206,7 @@ class InstanceSupplierCodeGeneratorTests {
 					.contains("forFactoryMethod")
 					.doesNotContain("withGenerator");
 		});
-		assertThat(getReflectionHints().getTypeHint(SimpleConfiguration.class))
+		assertThat(getReflectionHints().getJavaReflectionHint(SimpleConfiguration.class))
 				.satisfies(hasMethodWithMode(ExecutableMode.INVOKE));
 	}
 
@@ -225,7 +225,7 @@ class InstanceSupplierCodeGeneratorTests {
 			assertThat(compiled.getSourceFile())
 					.contains("SimpleConfiguration::integerBean");
 		});
-		assertThat(getReflectionHints().getTypeHint(SimpleConfiguration.class))
+		assertThat(getReflectionHints().getJavaReflectionHint(SimpleConfiguration.class))
 				.satisfies(hasMethodWithMode(ExecutableMode.INTROSPECT));
 	}
 
@@ -247,7 +247,7 @@ class InstanceSupplierCodeGeneratorTests {
 			assertThat(bean).isEqualTo("42test");
 			assertThat(compiled.getSourceFile()).contains("SampleFactory.create(");
 		});
-		assertThat(getReflectionHints().getTypeHint(SampleFactory.class))
+		assertThat(getReflectionHints().getJavaReflectionHint(SampleFactory.class))
 				.satisfies(hasMethodWithMode(ExecutableMode.INTROSPECT));
 	}
 
@@ -266,7 +266,7 @@ class InstanceSupplierCodeGeneratorTests {
 			assertThat(bean).isEqualTo(42);
 			assertThat(compiled.getSourceFile()).doesNotContain(") throws Exception {");
 		});
-		assertThat(getReflectionHints().getTypeHint(SimpleConfiguration.class))
+		assertThat(getReflectionHints().getJavaReflectionHint(SimpleConfiguration.class))
 				.satisfies(hasMethodWithMode(ExecutableMode.INTROSPECT));
 	}
 
@@ -274,16 +274,16 @@ class InstanceSupplierCodeGeneratorTests {
 		return this.generationContext.getRuntimeHints().reflection();
 	}
 
-	private ThrowingConsumer<TypeHint> hasConstructorWithMode(ExecutableMode mode) {
+	private ThrowingConsumer<JavaReflectionHint> hasConstructorWithMode(ExecutableMode mode) {
 		return hint -> assertThat(hint.constructors()).anySatisfy(hasMode(mode));
 	}
 
-	private ThrowingConsumer<TypeHint> hasMethodWithMode(ExecutableMode mode) {
+	private ThrowingConsumer<JavaReflectionHint> hasMethodWithMode(ExecutableMode mode) {
 		return hint -> assertThat(hint.methods()).anySatisfy(hasMode(mode));
 	}
 
 	private ThrowingConsumer<ExecutableHint> hasMode(ExecutableMode mode) {
-		return hint -> assertThat(hint.getModes()).containsExactly(mode);
+		return hint -> assertThat(hint.getMode()).isEqualTo(mode);
 	}
 
 	@SuppressWarnings("unchecked")

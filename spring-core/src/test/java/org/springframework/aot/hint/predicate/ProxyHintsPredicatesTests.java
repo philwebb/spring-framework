@@ -49,13 +49,13 @@ class ProxyHintsPredicatesTests {
 
 	@Test
 	void proxyForInterfacesMatchesProxyHint() {
-		this.runtimeHints.proxies().registerJdkProxy(FirstTestInterface.class, SecondTestInterface.class);
+		this.runtimeHints.proxies().registerJavaProxy().forInterfaces(FirstTestInterface.class, SecondTestInterface.class);
 		assertPredicateMatches(this.proxy.forInterfaces(FirstTestInterface.class, SecondTestInterface.class));
 	}
 
 	@Test
 	void proxyForInterfacesDoesNotMatchProxyHintDifferentOrder() {
-		this.runtimeHints.proxies().registerJdkProxy(SecondTestInterface.class, FirstTestInterface.class);
+		this.runtimeHints.proxies().registerJavaProxy().forInterfaces(SecondTestInterface.class, FirstTestInterface.class);
 		assertPredicateDoesNotMatch(this.proxy.forInterfaces(FirstTestInterface.class, SecondTestInterface.class));
 	}
 

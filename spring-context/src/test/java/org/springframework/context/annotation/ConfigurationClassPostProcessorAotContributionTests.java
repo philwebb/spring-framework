@@ -135,12 +135,8 @@ class ConfigurationClassPostProcessorAotContributionTests {
 	void applyToWhenHasImportAwareConfigurationRegistersHints() {
 		BeanFactoryInitializationAotContribution contribution = getContribution(ImportConfiguration.class);
 		contribution.applyTo(this.generationContext, this.beanFactoryInitializationCode);
-		assertThat(generationContext.getRuntimeHints().resources().resourcePatterns())
-				.singleElement()
-				.satisfies(resourceHint -> assertThat(resourceHint.getIncludes())
-						.map(ResourcePatternHint::getPattern)
-						.containsOnly("org/springframework/context/testfixture/context/generator/annotation/"
-								+ "ImportConfiguration.class"));
+		assertThat(generationContext.getRuntimeHints().resources().includeResourcePatterns().map(ResourcePatternHint::getPattern))
+						.containsOnly("org/springframework/context/testfixture/context/generator/annotation/ImportConfiguration.class");
 	}
 
 	@Nullable

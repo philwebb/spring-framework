@@ -22,7 +22,7 @@ import java.util.function.Consumer;
 
 import org.junit.jupiter.api.Test;
 
-import org.springframework.aot.hint.JdkProxyHint;
+import org.springframework.aot.hint.JavaProxyHint;
 import org.springframework.aot.hint.RuntimeHints;
 import org.springframework.aot.hint.TypeReference;
 import org.springframework.core.annotation.AliasFor;
@@ -45,7 +45,7 @@ class RuntimeHintsUtilsTests {
 	@Test
 	void registerSynthesizedAnnotation() {
 		RuntimeHintsUtils.registerSynthesizedAnnotation(this.hints, SampleInvoker.class);
-		assertThat(this.hints.proxies().jdkProxies()).singleElement()
+		assertThat(this.hints.proxies().javaProxies()).singleElement()
 				.satisfies(annotationProxy(SampleInvoker.class));
 	}
 
@@ -54,7 +54,7 @@ class RuntimeHintsUtilsTests {
 		MergedAnnotation<SampleInvoker> annotation = MergedAnnotations
 				.from(TestBean.class.getField("sampleInvoker")).get(SampleInvoker.class);
 		RuntimeHintsUtils.registerAnnotationIfNecessary(this.hints, annotation);
-		assertThat(this.hints.proxies().jdkProxies()).isEmpty();
+		assertThat(this.hints.proxies().javaProxies()).isEmpty();
 	}
 
 	@Test
@@ -62,7 +62,7 @@ class RuntimeHintsUtilsTests {
 		MergedAnnotation<LocalMapping> annotation = MergedAnnotations
 				.from(TestBean.class.getField("localMapping")).get(LocalMapping.class);
 		RuntimeHintsUtils.registerAnnotationIfNecessary(this.hints, annotation);
-		assertThat(this.hints.proxies().jdkProxies()).singleElement()
+		assertThat(this.hints.proxies().javaProxies()).singleElement()
 				.satisfies(annotationProxy(LocalMapping.class));
 	}
 
@@ -71,7 +71,7 @@ class RuntimeHintsUtilsTests {
 		MergedAnnotation<SampleInvoker> annotation = MergedAnnotations
 				.from(TestBean.class.getField("retryInvoker")).get(SampleInvoker.class);
 		RuntimeHintsUtils.registerAnnotationIfNecessary(this.hints, annotation);
-		assertThat(this.hints.proxies().jdkProxies()).singleElement()
+		assertThat(this.hints.proxies().javaProxies()).singleElement()
 				.satisfies(annotationProxy(SampleInvoker.class));
 	}
 
@@ -80,12 +80,12 @@ class RuntimeHintsUtilsTests {
 		MergedAnnotation<RetryContainer> annotation = MergedAnnotations
 				.from(TestBean.class.getField("retryContainer")).get(RetryContainer.class);
 		RuntimeHintsUtils.registerAnnotationIfNecessary(this.hints, annotation);
-		assertThat(this.hints.proxies().jdkProxies()).singleElement()
+		assertThat(this.hints.proxies().javaProxies()).singleElement()
 				.satisfies(annotationProxy(RetryContainer.class));
 	}
 
-	private Consumer<JdkProxyHint> annotationProxy(Class<?> type) {
-		return jdkProxyHint -> assertThat(jdkProxyHint.getProxiedInterfaces())
+	private Consumer<JavaProxyHint> annotationProxy(Class<?> type) {
+		return hint -> assertThat(hint.getProxiedInterfaces())
 				.containsExactly(TypeReference.of(type), TypeReference.of(SynthesizedAnnotation.class));
 	}
 

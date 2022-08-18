@@ -16,13 +16,8 @@
 
 package org.springframework.http.converter.json;
 
-import java.util.function.Consumer;
-
-import org.springframework.aot.hint.MemberCategory;
 import org.springframework.aot.hint.RuntimeHints;
 import org.springframework.aot.hint.RuntimeHintsRegistrar;
-import org.springframework.aot.hint.TypeHint.Builder;
-import org.springframework.aot.hint.TypeReference;
 
 /**
  * {@link RuntimeHintsRegistrar} implementation that registers reflection entries
@@ -34,19 +29,15 @@ import org.springframework.aot.hint.TypeReference;
  */
 class JacksonModulesRuntimeHints implements RuntimeHintsRegistrar {
 
-	private static final Consumer<Builder> asJacksonModule = builder ->
-			builder.onReachableType(TypeReference.of(Jackson2ObjectMapperBuilder.class))
-					.withMembers(MemberCategory.INVOKE_DECLARED_CONSTRUCTORS);
-
 	@Override
 	public void registerHints(RuntimeHints hints, ClassLoader classLoader) {
-		hints.reflection()
-				.registerTypeIfPresent(classLoader,
-						"com.fasterxml.jackson.datatype.jdk8.Jdk8Module", asJacksonModule)
-				.registerTypeIfPresent(classLoader,
-						"com.fasterxml.jackson.datatype.jsr310.JavaTimeModule", asJacksonModule)
-				.registerTypeIfPresent(classLoader,
-						"com.fasterxml.jackson.module.kotlin.KotlinModule", asJacksonModule);
+		hints.reflection().registerInvoke()
+				.whenReachable(Jackson2ObjectMapperBuilder.class)
+				.whenTypeIsPresent(classLoader)
+				.forDeclaredConstructorsIn(
+						"com.fasterxml.jackson.datatype.jdk8.Jdk8Module",
+						"com.fasterxml.jackson.datatype.jsr310.JavaTimeModule",
+						"com.fasterxml.jackson.module.kotlin.KotlinModule");
 	}
 
 }

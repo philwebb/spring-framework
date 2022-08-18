@@ -18,7 +18,6 @@ package org.springframework.aot.test;
 
 import org.junit.jupiter.api.Test;
 
-import org.springframework.aot.hint.MemberCategory;
 import org.springframework.aot.hint.RuntimeHints;
 import org.springframework.aot.test.agent.EnabledIfRuntimeHintsAgent;
 import org.springframework.aot.test.agent.RuntimeHintsInvocations;
@@ -33,7 +32,7 @@ class ReflectionInvocationsTests {
 	@Test
 	void sampleTest() {
 		RuntimeHints hints = new RuntimeHints();
-		hints.reflection().registerType(String.class, hint -> hint.withMembers(MemberCategory.INTROSPECT_PUBLIC_METHODS));
+		hints.reflection().registerIntrospect().forPublicMethodsIn(String.class);
 
 		RuntimeHintsInvocations invocations = RuntimeHintsRecorder.record(() -> {
 			SampleReflection sample = new SampleReflection();
@@ -45,8 +44,7 @@ class ReflectionInvocationsTests {
 	@Test
 	void multipleCallsTest() {
 		RuntimeHints hints = new RuntimeHints();
-		hints.reflection().registerType(String.class, hint -> hint.withMembers(MemberCategory.INTROSPECT_PUBLIC_METHODS));
-		hints.reflection().registerType(Integer.class, hint -> hint.withMembers(MemberCategory.INTROSPECT_PUBLIC_METHODS));
+		hints.reflection().registerIntrospect().forPublicMethodsIn(String.class, Integer.class);
 		RuntimeHintsInvocations invocations = RuntimeHintsRecorder.record(() -> {
 			SampleReflection sample = new SampleReflection();
 			sample.multipleCalls(); // does Method[] methods = String.class.getMethods(); methods = Integer.class.getMethods();

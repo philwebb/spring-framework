@@ -25,14 +25,10 @@ import java.lang.reflect.RecordComponent;
 import java.lang.reflect.Type;
 import java.util.LinkedHashSet;
 import java.util.Set;
-import java.util.function.Consumer;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.springframework.aot.hint.ExecutableHint;
-import org.springframework.aot.hint.ExecutableMode;
-import org.springframework.aot.hint.MemberCategory;
 import org.springframework.aot.hint.ReflectionHints;
 import org.springframework.core.KotlinDetector;
 import org.springframework.core.MethodParameter;
@@ -53,9 +49,6 @@ import org.springframework.util.ClassUtils;
 public class BindingReflectionHintsRegistrar {
 
 	private static final Log logger = LogFactory.getLog(BindingReflectionHintsRegistrar.class);
-
-	private static final Consumer<ExecutableHint.Builder> INVOKE = builder -> builder
-			.withMode(ExecutableMode.INVOKE);
 
 	private static final String KOTLIN_COMPANION_SUFFIX = "$Companion";
 
@@ -85,22 +78,18 @@ public class BindingReflectionHintsRegistrar {
 			if (clazz.isPrimitive() || clazz == Object.class) {
 				return;
 			}
-			hints.registerType(clazz, builder -> {
-				if (seen.contains(type)) {
-					return;
-				}
-				seen.add(type);
+			if (seen.add(type)) {
+				hints.register().forType(clazz);
 				if (shouldRegisterMembers(clazz)) {
 					if (clazz.isRecord()) {
-						builder.withMembers(MemberCategory.INVOKE_DECLARED_CONSTRUCTORS);
+						hints.registerInvoke().forDeclaredConstructorsIn(clazz);
 						for (RecordComponent recordComponent : clazz.getRecordComponents()) {
 							registerRecordHints(hints, seen, recordComponent.getAccessor());
 						}
 					}
 					else {
-						builder.withMembers(
-								MemberCategory.DECLARED_FIELDS,
-								MemberCategory.INVOKE_DECLARED_CONSTRUCTORS);
+						hints.registerWrite().forDeclaredFieldsIn(clazz);
+						hints.registerInvoke().forDeclaredConstructorsIn(clazz);
 						try {
 							BeanInfo beanInfo = Introspector.getBeanInfo(clazz);
 							PropertyDescriptor[] propertyDescriptors = beanInfo.getPropertyDescriptors();
@@ -119,7 +108,7 @@ public class BindingReflectionHintsRegistrar {
 				if (KotlinDetector.isKotlinType(clazz)) {
 					registerKotlinSerializationHints(hints, clazz);
 				}
-			});
+			}
 		}
 		Set<Class<?>> referencedTypes = new LinkedHashSet<>();
 		collectReferencedTypes(seen, referencedTypes, type);
@@ -127,7 +116,7 @@ public class BindingReflectionHintsRegistrar {
 	}
 
 	private void registerRecordHints(ReflectionHints hints, Set<Type> seen, Method method) {
-		hints.registerMethod(method, INVOKE);
+		hints.registerInvoke().forMethod(method);
 		MethodParameter methodParameter = MethodParameter.forExecutable(method, -1);
 		Type methodParameterType = methodParameter.getGenericParameterType();
 		if (!seen.contains(methodParameterType)) {
@@ -138,7 +127,7 @@ public class BindingReflectionHintsRegistrar {
 	private void registerPropertyHints(ReflectionHints hints, Set<Type> seen, @Nullable Method method, int parameterIndex) {
 		if (method != null && method.getDeclaringClass() != Object.class
 				&& method.getDeclaringClass() != Enum.class) {
-			hints.registerMethod(method, INVOKE);
+			hints.registerInvoke().forMethod(method);
 			MethodParameter methodParameter = MethodParameter.forExecutable(method, parameterIndex);
 			Type methodParameterType = methodParameter.getGenericParameterType();
 			if (!seen.contains(methodParameterType)) {
@@ -153,7 +142,7 @@ public class BindingReflectionHintsRegistrar {
 			Class<?> companionClass = ClassUtils.resolveClassName(companionClassName, null);
 			Method serializerMethod = ClassUtils.getMethodIfAvailable(companionClass, "serializer");
 			if (serializerMethod != null) {
-				hints.registerMethod(serializerMethod);
+				hints.registerInvoke().forMethod(serializerMethod);
 			}
 		}
 	}

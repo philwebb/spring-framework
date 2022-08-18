@@ -17,8 +17,8 @@
 package org.springframework.aot.agent;
 
 
+import org.springframework.aot.hint.JavaProxyHint;
 import org.springframework.aot.hint.JavaSerializationHint;
-import org.springframework.aot.hint.JdkProxyHint;
 import org.springframework.aot.hint.ReflectionHints;
 import org.springframework.aot.hint.ResourceBundleHint;
 import org.springframework.aot.hint.ResourcePatternHint;
@@ -55,10 +55,9 @@ public enum HintType {
 	JAVA_SERIALIZATION(JavaSerializationHint.class),
 
 	/**
-	 * JDK proxies hint, as described by {@link org.springframework.aot.hint.ProxyHints#jdkProxies()}.
+	 * Java proxies hint, as described by {@link org.springframework.aot.hint.ProxyHints#javaProxies()}.
 	 */
-	JDK_PROXIES(JdkProxyHint.class);
-
+	JAVA_PROXIES(JavaProxyHint.class);
 
 	private final Class<?> hintClass;
 

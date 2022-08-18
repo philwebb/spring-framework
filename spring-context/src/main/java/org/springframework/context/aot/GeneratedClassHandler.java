@@ -17,17 +17,15 @@
 package org.springframework.context.aot;
 
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 
 import org.springframework.aot.generate.GeneratedFiles;
 import org.springframework.aot.generate.GeneratedFiles.Kind;
 import org.springframework.aot.generate.GenerationContext;
-import org.springframework.aot.hint.MemberCategory;
+import org.springframework.aot.hint.JavaReflectionHint.Category;
 import org.springframework.aot.hint.RuntimeHints;
-import org.springframework.aot.hint.TypeHint.Builder;
-import org.springframework.aot.hint.TypeReference;
 import org.springframework.cglib.core.ReflectUtils;
 import org.springframework.core.io.ByteArrayResource;
+import org.springframework.util.Assert;
 
 /**
  * Handle generated classes by adding them to a {@link GenerationContext},
@@ -37,15 +35,6 @@ import org.springframework.core.io.ByteArrayResource;
  * @see ReflectUtils#setGeneratedClassHandler(BiConsumer)
  */
 class GeneratedClassHandler implements BiConsumer<String, byte[]> {
-
-	private static final Consumer<Builder> asCglibProxy = hint ->
-			hint.withMembers(MemberCategory.INVOKE_DECLARED_CONSTRUCTORS,
-					MemberCategory.INVOKE_DECLARED_METHODS,
-					MemberCategory.DECLARED_FIELDS);
-
-	private static final Consumer<Builder> asCglibProxyTargetType = hint ->
-			hint.withMembers(MemberCategory.INTROSPECT_DECLARED_CONSTRUCTORS,
-					MemberCategory.INVOKE_DECLARED_METHODS);
 
 	private final RuntimeHints runtimeHints;
 
@@ -58,17 +47,21 @@ class GeneratedClassHandler implements BiConsumer<String, byte[]> {
 
 	@Override
 	public void accept(String className, byte[] content) {
-		this.runtimeHints.reflection().registerType(TypeReference.of(className), asCglibProxy)
-				.registerType(TypeReference.of(getTargetTypeClassName(className)), asCglibProxyTargetType);
+		String targetTypeClassName = getTargetTypeClassName(className);
+		this.runtimeHints.reflection().register(
+				Category.INVOKE_DECLARED_CONSTRUCTORS,
+				Category.INVOKE_DECLARED_METHODS,
+				Category.DECLARED_FIELDS ).forType(className);
+		this.runtimeHints.reflection().register(
+				Category.INTROSPECT_DECLARED_CONSTRUCTORS,
+				Category.INVOKE_DECLARED_METHODS).forType(targetTypeClassName);
 		String path = className.replace(".", "/") + ".class";
 		this.generatedFiles.addFile(Kind.CLASS, path, new ByteArrayResource(content));
 	}
 
 	private String getTargetTypeClassName(String proxyClassName) {
 		int index = proxyClassName.indexOf("$$SpringCGLIB$$");
-		if (index == -1) {
-			throw new IllegalArgumentException("Failed to extract target type from " + proxyClassName);
-		}
+		Assert.isTrue(index != -1, () -> "Failed to extract target type from " + proxyClassName);
 		return proxyClassName.substring(0, index);
 	}
 

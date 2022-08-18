@@ -24,7 +24,6 @@ import org.skyscreamer.jsonassert.JSONAssert;
 import org.skyscreamer.jsonassert.JSONCompareMode;
 
 import org.springframework.aot.hint.SerializationHints;
-import org.springframework.aot.hint.TypeReference;
 import org.springframework.core.env.Environment;
 
 /**
@@ -42,7 +41,8 @@ public class SerializationHintsWriterTests {
 
 	@Test
 	void shouldWriteSingleHint() throws JSONException {
-		SerializationHints hints = new SerializationHints().registerType(TypeReference.of(String.class));
+		SerializationHints hints = new SerializationHints();
+		hints.registerJavaSerialization().forType(String.class);
 		assertEquals("""
 				[
 					{ "name": "java.lang.String" }
@@ -51,9 +51,8 @@ public class SerializationHintsWriterTests {
 
 	@Test
 	void shouldWriteMultipleHints() throws JSONException {
-		SerializationHints hints = new SerializationHints()
-				.registerType(TypeReference.of(String.class))
-				.registerType(TypeReference.of(Environment.class));
+		SerializationHints hints = new SerializationHints();
+		hints.registerJavaSerialization().forType(String.class, Environment.class);
 		assertEquals("""
 				[
 					{ "name": "java.lang.String" },
@@ -63,8 +62,8 @@ public class SerializationHintsWriterTests {
 
 	@Test
 	void shouldWriteSingleHintWithCondition() throws JSONException {
-		SerializationHints hints = new SerializationHints().registerType(TypeReference.of(String.class),
-				builder -> builder.onReachableType(TypeReference.of("org.example.Test")));
+		SerializationHints hints = new SerializationHints();
+		hints.registerJavaSerialization().whenReachable("org.example.Test").forType(String.class);
 		assertEquals("""
 				[
 					{ "condition": { "typeReachable": "org.example.Test" }, "name": "java.lang.String" }

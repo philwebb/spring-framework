@@ -25,7 +25,7 @@ import java.lang.reflect.Method;
 
 import org.junit.jupiter.api.Test;
 
-import org.springframework.aot.hint.MemberCategory;
+import org.springframework.aot.hint.JavaReflectionHint.Category;
 import org.springframework.aot.hint.ReflectionHints;
 import org.springframework.aot.hint.RuntimeHints;
 import org.springframework.aot.hint.TypeReference;
@@ -58,15 +58,15 @@ class ReflectiveRuntimeHintsRegistrarTests {
 	@Test
 	void shouldProcessAnnotationOnType() {
 		process(SampleTypeAnnotatedBean.class);
-		assertThat(this.runtimeHints.reflection().getTypeHint(SampleTypeAnnotatedBean.class))
+		assertThat(this.runtimeHints.reflection().getJavaReflectionHint(SampleTypeAnnotatedBean.class))
 				.isNotNull();
 	}
 
 	@Test
 	void shouldProcessAnnotationOnConstructor() {
 		process(SampleConstructorAnnotatedBean.class);
-		assertThat(this.runtimeHints.reflection().getTypeHint(SampleConstructorAnnotatedBean.class))
-				.satisfies(typeHint -> assertThat(typeHint.constructors()).singleElement()
+		assertThat(this.runtimeHints.reflection().getJavaReflectionHint(SampleConstructorAnnotatedBean.class))
+				.satisfies(javaReflectionHint -> assertThat(javaReflectionHint.constructors()).singleElement()
 						.satisfies(constructorHint -> assertThat(constructorHint.getParameterTypes())
 								.containsExactly(TypeReference.of(String.class))));
 	}
@@ -74,16 +74,16 @@ class ReflectiveRuntimeHintsRegistrarTests {
 	@Test
 	void shouldProcessAnnotationOnField() {
 		process(SampleFieldAnnotatedBean.class);
-		assertThat(this.runtimeHints.reflection().getTypeHint(SampleFieldAnnotatedBean.class))
-				.satisfies(typeHint -> assertThat(typeHint.fields()).singleElement()
+		assertThat(this.runtimeHints.reflection().getJavaReflectionHint(SampleFieldAnnotatedBean.class))
+				.satisfies(javaReflectionHint -> assertThat(javaReflectionHint.fields()).singleElement()
 						.satisfies(fieldHint -> assertThat(fieldHint.getName()).isEqualTo("managed")));
 	}
 
 	@Test
 	void shouldProcessAnnotationOnMethod() {
 		process(SampleMethodAnnotatedBean.class);
-		assertThat(this.runtimeHints.reflection().getTypeHint(SampleMethodAnnotatedBean.class))
-				.satisfies(typeHint -> assertThat(typeHint.methods()).singleElement()
+		assertThat(this.runtimeHints.reflection().getJavaReflectionHint(SampleMethodAnnotatedBean.class))
+				.satisfies(javaReflectionHint -> assertThat(javaReflectionHint.methods()).singleElement()
 						.satisfies(methodHint -> assertThat(methodHint.getName()).isEqualTo("managed")));
 	}
 
@@ -91,7 +91,7 @@ class ReflectiveRuntimeHintsRegistrarTests {
 	void shouldNotRegisterAnnotationProxyIfNotNeeded() {
 		process(SampleMethodMetaAnnotatedBean.class);
 		RuntimeHints runtimeHints = this.runtimeHints;
-		assertThat(runtimeHints.proxies().jdkProxies()).isEmpty();
+		assertThat(runtimeHints.proxies().javaProxies()).isEmpty();
 	}
 
 	@Test
@@ -105,22 +105,22 @@ class ReflectiveRuntimeHintsRegistrarTests {
 	@Test
 	void shouldProcessAnnotationOnInterface() {
 		process(SampleMethodAnnotatedBeanWithInterface.class);
-		assertThat(this.runtimeHints.reflection().getTypeHint(SampleInterface.class))
-				.satisfies(typeHint -> assertThat(typeHint.methods()).singleElement()
+		assertThat(this.runtimeHints.reflection().getJavaReflectionHint(SampleInterface.class))
+				.satisfies(javaReflectionHint -> assertThat(javaReflectionHint.methods()).singleElement()
 						.satisfies(methodHint -> assertThat(methodHint.getName()).isEqualTo("managed")));
-		assertThat(this.runtimeHints.reflection().getTypeHint(SampleMethodAnnotatedBeanWithInterface.class))
-				.satisfies(typeHint -> assertThat(typeHint.methods()).singleElement()
+		assertThat(this.runtimeHints.reflection().getJavaReflectionHint(SampleMethodAnnotatedBeanWithInterface.class))
+				.satisfies(javaReflectionHint -> assertThat(javaReflectionHint.methods()).singleElement()
 						.satisfies(methodHint -> assertThat(methodHint.getName()).isEqualTo("managed")));
 	}
 
 	@Test
 	void shouldProcessAnnotationOnInheritedClass() {
 		process(SampleMethodAnnotatedBeanWithInheritance.class);
-		assertThat(this.runtimeHints.reflection().getTypeHint(SampleInheritedClass.class))
-				.satisfies(typeHint -> assertThat(typeHint.methods()).singleElement()
+		assertThat(this.runtimeHints.reflection().getJavaReflectionHint(SampleInheritedClass.class))
+				.satisfies(javaReflectionHint -> assertThat(javaReflectionHint.methods()).singleElement()
 						.satisfies(methodHint -> assertThat(methodHint.getName()).isEqualTo("managed")));
-		assertThat(this.runtimeHints.reflection().getTypeHint(SampleMethodAnnotatedBeanWithInheritance.class))
-				.satisfies(typeHint -> assertThat(typeHint.methods()).singleElement()
+		assertThat(this.runtimeHints.reflection().getJavaReflectionHint(SampleMethodAnnotatedBeanWithInheritance.class))
+				.satisfies(javaReflectionHint -> assertThat(javaReflectionHint.methods()).singleElement()
 						.satisfies(methodHint -> assertThat(methodHint.getName()).isEqualTo("managed")));
 	}
 
@@ -130,7 +130,7 @@ class ReflectiveRuntimeHintsRegistrarTests {
 		assertThat(RuntimeHintsPredicates.reflection()
 				.onMethod(SampleCustomProcessor.class, "managed")).accepts(this.runtimeHints);
 		assertThat(RuntimeHintsPredicates.reflection().onType(String.class)
-				.withMemberCategory(MemberCategory.INVOKE_DECLARED_METHODS)).accepts(this.runtimeHints);
+				.withCategory(Category.INVOKE_DECLARED_METHODS)).accepts(this.runtimeHints);
 
 	}
 
@@ -279,8 +279,7 @@ class ReflectiveRuntimeHintsRegistrarTests {
 		@Override
 		protected void registerMethodHint(ReflectionHints hints, Method method) {
 			super.registerMethodHint(hints, method);
-			hints.registerType(method.getReturnType(), type ->
-					type.withMembers(MemberCategory.INVOKE_DECLARED_METHODS));
+			hints.registerInvoke().forDeclaredMethodsIn(method.getReturnType());
 		}
 
 	}

@@ -431,7 +431,7 @@ public class GenericApplicationContext extends AbstractApplicationContext implem
 				for (SmartInstantiationAwareBeanPostProcessor bpp : bpps) {
 					beanType = bpp.determineBeanType(beanType, beanName);
 					if (Proxy.isProxyClass(beanType)) {
-						runtimeHints.proxies().registerJdkProxy(beanType.getInterfaces());
+						runtimeHints.proxies().registerJavaProxy().forInterfaces(beanType.getInterfaces());
 					}
 				}
 			}

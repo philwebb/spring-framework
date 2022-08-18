@@ -74,7 +74,7 @@ class InjectionCodeGenerator {
 		AccessVisibility visibility = AccessVisibility.forMember(field);
 		if (visibility == AccessVisibility.PRIVATE
 				|| visibility == AccessVisibility.PROTECTED) {
-			this.hints.reflection().registerField(field);
+			this.hints.reflection().registerWrite().forField(field);
 			code.addStatement("$T field = $T.findField($T.class, $S)", Field.class,
 					ReflectionUtils.class, field.getDeclaringClass(), field.getName());
 			code.addStatement("$T.makeAccessible($L)", ReflectionUtils.class, "field");
@@ -97,7 +97,7 @@ class InjectionCodeGenerator {
 		AccessVisibility visibility = AccessVisibility.forMember(method);
 		if (visibility == AccessVisibility.PRIVATE
 				|| visibility == AccessVisibility.PROTECTED) {
-			this.hints.reflection().registerMethod(method);
+			this.hints.reflection().registerInvoke().forMethod(method);
 			code.addStatement("$T method = $T.findMethod($T.class, $S, $T.class)",
 					Method.class, ReflectionUtils.class, method.getDeclaringClass(),
 					method.getName(), method.getParameterTypes()[0]);

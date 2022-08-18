@@ -23,7 +23,6 @@ import org.junit.jupiter.api.Test;
 
 import org.springframework.aot.hint.ResourceHints;
 import org.springframework.aot.hint.ResourcePatternHint;
-import org.springframework.aot.hint.ResourcePatternHints;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
@@ -55,7 +54,7 @@ class FilePatternResourceHintsRegistrarTests {
 	void registerWithSinglePattern() {
 		new FilePatternResourceHintsRegistrar(List.of("test"), List.of(""), List.of(".txt"))
 				.registerHints(this.hints, null);
-		assertThat(this.hints.resourcePatterns()).singleElement()
+		assertThat(this.hints.includeResourcePatterns())
 				.satisfies(includes("test*.txt"));
 	}
 
@@ -63,7 +62,7 @@ class FilePatternResourceHintsRegistrarTests {
 	void registerWithMultipleNames() {
 		new FilePatternResourceHintsRegistrar(List.of("test", "another"), List.of(""), List.of(".txt"))
 				.registerHints(this.hints, null);
-		assertThat(this.hints.resourcePatterns()).singleElement()
+		assertThat(this.hints.includeResourcePatterns())
 				.satisfies(includes("test*.txt", "another*.txt"));
 	}
 
@@ -71,7 +70,7 @@ class FilePatternResourceHintsRegistrarTests {
 	void registerWithMultipleLocations() {
 		new FilePatternResourceHintsRegistrar(List.of("test"), List.of("", "META-INF"), List.of(".txt"))
 				.registerHints(this.hints, null);
-		assertThat(this.hints.resourcePatterns()).singleElement()
+		assertThat(this.hints.includeResourcePatterns())
 				.satisfies(includes("test*.txt", "META-INF/test*.txt"));
 	}
 
@@ -79,7 +78,7 @@ class FilePatternResourceHintsRegistrarTests {
 	void registerWithMultipleExtensions() {
 		new FilePatternResourceHintsRegistrar(List.of("test"), List.of(""), List.of(".txt", ".conf"))
 				.registerHints(this.hints, null);
-		assertThat(this.hints.resourcePatterns()).singleElement()
+		assertThat(this.hints.includeResourcePatterns())
 				.satisfies(includes("test*.txt", "test*.conf"));
 	}
 
@@ -87,7 +86,7 @@ class FilePatternResourceHintsRegistrarTests {
 	void registerWithLocationWithoutTrailingSlash() {
 		new FilePatternResourceHintsRegistrar(List.of("test"), List.of("META-INF"), List.of(".txt"))
 				.registerHints(this.hints, null);
-		assertThat(this.hints.resourcePatterns()).singleElement()
+		assertThat(this.hints.includeResourcePatterns())
 				.satisfies(includes("META-INF/test*.txt"));
 	}
 
@@ -95,7 +94,7 @@ class FilePatternResourceHintsRegistrarTests {
 	void registerWithLocationWithLeadingSlash() {
 		new FilePatternResourceHintsRegistrar(List.of("test"), List.of("/"), List.of(".txt"))
 				.registerHints(this.hints, null);
-		assertThat(this.hints.resourcePatterns()).singleElement()
+		assertThat(this.hints.includeResourcePatterns())
 				.satisfies(includes("test*.txt"));
 	}
 
@@ -103,7 +102,7 @@ class FilePatternResourceHintsRegistrarTests {
 	void registerWithLocationUsingResourceClasspathPrefix() {
 		new FilePatternResourceHintsRegistrar(List.of("test"), List.of("classpath:META-INF"), List.of(".txt"))
 				.registerHints(this.hints, null);
-		assertThat(this.hints.resourcePatterns()).singleElement()
+		assertThat(this.hints.includeResourcePatterns())
 				.satisfies(includes("META-INF/test*.txt"));
 	}
 
@@ -111,7 +110,7 @@ class FilePatternResourceHintsRegistrarTests {
 	void registerWithLocationUsingResourceClasspathPrefixAndTrailingSlash() {
 		new FilePatternResourceHintsRegistrar(List.of("test"), List.of("classpath:/META-INF"), List.of(".txt"))
 				.registerHints(this.hints, null);
-		assertThat(this.hints.resourcePatterns()).singleElement()
+		assertThat(this.hints.includeResourcePatterns())
 				.satisfies(includes("META-INF/test*.txt"));
 	}
 
@@ -120,16 +119,13 @@ class FilePatternResourceHintsRegistrarTests {
 		new FilePatternResourceHintsRegistrar(List.of("test"),
 				List.of("does-not-exist/", "another-does-not-exist/"),
 				List.of(".txt")).registerHints(this.hints, null);
-		assertThat(this.hints.resourcePatterns()).isEmpty();
+		assertThat(this.hints.includeResourcePatterns()).isEmpty();
 	}
 
 
-	private Consumer<ResourcePatternHints> includes(String... patterns) {
-		return hint -> {
-			assertThat(hint.getIncludes().stream().map(ResourcePatternHint::getPattern))
-					.containsExactlyInAnyOrder(patterns);
-			assertThat(hint.getExcludes()).isEmpty();
-		};
+	private Consumer<List<? extends ResourcePatternHint>> includes(String... patterns) {
+		return hints -> assertThat(hints.stream().map(ResourcePatternHint::getPattern))
+				.containsExactlyInAnyOrder(patterns);
 	}
 
 }

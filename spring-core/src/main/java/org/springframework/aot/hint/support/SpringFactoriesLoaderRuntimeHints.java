@@ -18,15 +18,12 @@ package org.springframework.aot.hint.support;
 
 import java.util.List;
 import java.util.Map;
-import java.util.function.Consumer;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.springframework.aot.hint.MemberCategory;
 import org.springframework.aot.hint.RuntimeHints;
 import org.springframework.aot.hint.RuntimeHintsRegistrar;
-import org.springframework.aot.hint.TypeHint;
 import org.springframework.core.io.support.SpringFactoriesLoader;
 import org.springframework.core.log.LogMessage;
 import org.springframework.lang.Nullable;
@@ -45,9 +42,6 @@ class SpringFactoriesLoaderRuntimeHints implements RuntimeHintsRegistrar {
 	private static final List<String> RESOURCE_LOCATIONS =
 			List.of(SpringFactoriesLoader.FACTORIES_RESOURCE_LOCATION);
 
-	private static final Consumer<TypeHint.Builder> HINT = builder ->
-			builder.withMembers(MemberCategory.INVOKE_DECLARED_CONSTRUCTORS);
-
 	private static final Log logger = LogFactory.getLog(SpringFactoriesLoaderRuntimeHints.class);
 
 
@@ -59,7 +53,7 @@ class SpringFactoriesLoaderRuntimeHints implements RuntimeHintsRegistrar {
 	}
 
 	private void registerHints(RuntimeHints hints, ClassLoader classLoader, String resourceLocation) {
-		hints.resources().registerPattern(resourceLocation);
+		hints.resources().registerInclude().forPattern(resourceLocation);
 		Map<String, List<String>> factories =
 				ExtendedSpringFactoriesLoader.accessLoadFactoriesResource(classLoader, resourceLocation);
 		factories.forEach((factoryClassName, implementationClassNames) ->
@@ -78,7 +72,7 @@ class SpringFactoriesLoaderRuntimeHints implements RuntimeHintsRegistrar {
 		if (logger.isTraceEnabled()) {
 			logger.trace(LogMessage.format("Processing factories for [%s]", factoryClassName));
 		}
-		hints.reflection().registerType(factoryClass, HINT);
+		hints.reflection().registerInvoke().forDeclaredConstructorsIn(factoryClass);
 		for (String implementationClassName : implementationClassNames) {
 			Class<?> implementationType = resolveClassName(classLoader, implementationClassName);
 			if (logger.isTraceEnabled()) {
@@ -87,7 +81,7 @@ class SpringFactoriesLoaderRuntimeHints implements RuntimeHintsRegistrar {
 						implementationClassName));
 			}
 			if (implementationType != null) {
-				hints.reflection().registerType(implementationType, HINT);
+				hints.reflection().registerInvoke().forDeclaredConstructorsIn(implementationType);
 			}
 		}
 	}

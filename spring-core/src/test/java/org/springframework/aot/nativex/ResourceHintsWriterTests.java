@@ -24,7 +24,6 @@ import org.skyscreamer.jsonassert.JSONAssert;
 import org.skyscreamer.jsonassert.JSONCompareMode;
 
 import org.springframework.aot.hint.ResourceHints;
-import org.springframework.aot.hint.TypeReference;
 
 /**
  * Tests for {@link ResourceHintsWriter}.
@@ -43,8 +42,7 @@ public class ResourceHintsWriterTests {
 	@Test
 	void registerExactMatch() throws JSONException {
 		ResourceHints hints = new ResourceHints();
-		hints.registerPattern("com/example/test.properties");
-		hints.registerPattern("com/example/another.properties");
+		hints.registerInclude().forPattern("com/example/test.properties", "com/example/another.properties");
 		assertEquals("""
 				{
 					"resources": {
@@ -59,7 +57,7 @@ public class ResourceHintsWriterTests {
 	@Test
 	void registerWildcardAtTheBeginningPattern() throws JSONException {
 		ResourceHints hints = new ResourceHints();
-		hints.registerPattern("*.properties");
+		hints.registerInclude().forPattern("*.properties");
 		assertEquals("""
 				{
 					"resources": {
@@ -73,7 +71,7 @@ public class ResourceHintsWriterTests {
 	@Test
 	void registerWildcardInTheMiddlePattern() throws JSONException {
 		ResourceHints hints = new ResourceHints();
-		hints.registerPattern("com/example/*.properties");
+		hints.registerInclude().forPattern("com/example/*.properties");
 		assertEquals("""
 				{
 					"resources": {
@@ -87,7 +85,7 @@ public class ResourceHintsWriterTests {
 	@Test
 	void registerWildcardAtTheEndPattern() throws JSONException {
 		ResourceHints hints = new ResourceHints();
-		hints.registerPattern("static/*");
+		hints.registerInclude().forPattern("static/*");
 		assertEquals("""
 				{
 					"resources": {
@@ -101,8 +99,8 @@ public class ResourceHintsWriterTests {
 	@Test
 	void registerPatternWithIncludesAndExcludes() throws JSONException {
 		ResourceHints hints = new ResourceHints();
-		hints.registerPattern(hint -> hint.includes("com/example/*.properties").excludes("com/example/to-ignore.properties"));
-		hints.registerPattern(hint -> hint.includes("org/other/*.properties").excludes("org/other/to-ignore.properties"));
+		hints.registerInclude().forPattern("com/example/*.properties", "org/other/*.properties");
+		hints.registerExclude().forPattern("com/example/to-ignore.properties", "org/other/to-ignore.properties");
 		assertEquals("""
 				{
 					"resources": {
@@ -121,7 +119,7 @@ public class ResourceHintsWriterTests {
 	@Test
 	void registerWithReachableTypeCondition() throws JSONException {
 		ResourceHints hints = new ResourceHints();
-		hints.registerPattern(builder -> builder.includes(TypeReference.of("com.example.Test"), "com/example/test.properties"));
+		hints.registerInclude().whenReachable("com.example.Test").forPattern("com/example/test.properties");
 		assertEquals("""
 				{
 					"resources": {
@@ -135,7 +133,7 @@ public class ResourceHintsWriterTests {
 	@Test
 	void registerType() throws JSONException {
 		ResourceHints hints = new ResourceHints();
-		hints.registerType(String.class);
+		hints.registerInclude().forClassBytecode(String.class);
 		assertEquals("""
 				{
 					"resources": {
@@ -149,8 +147,7 @@ public class ResourceHintsWriterTests {
 	@Test
 	void registerResourceBundle() throws JSONException {
 		ResourceHints hints = new ResourceHints();
-		hints.registerResourceBundle("com.example.message");
-		hints.registerResourceBundle("com.example.message2");
+		hints.registerBundle().forBaseName("com.example.message", "com.example.message2");
 		assertEquals("""
 				{
 					"bundles": [

@@ -20,7 +20,7 @@ import java.lang.reflect.Method;
 
 import org.junit.jupiter.api.Test;
 
-import org.springframework.aot.hint.MemberCategory;
+import org.springframework.aot.hint.JavaReflectionHint.Category;
 import org.springframework.aot.hint.ReflectionHints;
 import org.springframework.aot.hint.TypeReference;
 import org.springframework.http.HttpEntity;
@@ -42,145 +42,145 @@ public class RequestMappingReflectiveProcessorTests {
 	void registerReflectiveHintsForMethodWithResponseBody() throws NoSuchMethodException {
 		Method method = SampleController.class.getDeclaredMethod("get");
 		processor.registerReflectionHints(hints, method);
-		assertThat(hints.typeHints()).satisfiesExactlyInAnyOrder(
-				typeHint -> assertThat(typeHint.getType()).isEqualTo(TypeReference.of(SampleController.class)),
-				typeHint -> {
-					assertThat(typeHint.getType()).isEqualTo(TypeReference.of(Response.class));
-					assertThat(typeHint.getMemberCategories()).containsExactlyInAnyOrder(
-							MemberCategory.INVOKE_DECLARED_CONSTRUCTORS,
-							MemberCategory.DECLARED_FIELDS);
-					assertThat(typeHint.methods()).satisfiesExactlyInAnyOrder(
+		assertThat(hints.javaReflection()).satisfiesExactlyInAnyOrder(
+				javaReflectionHint -> assertThat(javaReflectionHint.getType()).isEqualTo(TypeReference.of(SampleController.class)),
+				javaReflectionHint -> {
+					assertThat(javaReflectionHint.getType()).isEqualTo(TypeReference.of(Response.class));
+					assertThat(javaReflectionHint.getCategories()).containsExactlyInAnyOrder(
+							Category.INVOKE_DECLARED_CONSTRUCTORS,
+							Category.DECLARED_FIELDS);
+					assertThat(javaReflectionHint.methods()).satisfiesExactlyInAnyOrder(
 							hint -> assertThat(hint.getName()).isEqualTo("getMessage"),
 							hint -> assertThat(hint.getName()).isEqualTo("setMessage"));
 				},
-				typeHint -> assertThat(typeHint.getType()).isEqualTo(TypeReference.of(String.class)));
+				javaReflectionHint -> assertThat(javaReflectionHint.getType()).isEqualTo(TypeReference.of(String.class)));
 	}
 
 	@Test
 	void registerReflectiveHintsForMethodWithRequestBody() throws NoSuchMethodException {
 		Method method = SampleController.class.getDeclaredMethod("post", Request.class);
 		processor.registerReflectionHints(hints, method);
-		assertThat(hints.typeHints()).satisfiesExactlyInAnyOrder(
-				typeHint -> assertThat(typeHint.getType()).isEqualTo(TypeReference.of(SampleController.class)),
-				typeHint -> {
-					assertThat(typeHint.getType()).isEqualTo(TypeReference.of(Request.class));
-					assertThat(typeHint.getMemberCategories()).containsExactlyInAnyOrder(
-							MemberCategory.INVOKE_DECLARED_CONSTRUCTORS,
-							MemberCategory.DECLARED_FIELDS);
-					assertThat(typeHint.methods()).satisfiesExactlyInAnyOrder(
+		assertThat(hints.javaReflection()).satisfiesExactlyInAnyOrder(
+				javaReflectionHint -> assertThat(javaReflectionHint.getType()).isEqualTo(TypeReference.of(SampleController.class)),
+				javaReflectionHint -> {
+					assertThat(javaReflectionHint.getType()).isEqualTo(TypeReference.of(Request.class));
+					assertThat(javaReflectionHint.getCategories()).containsExactlyInAnyOrder(
+							Category.INVOKE_DECLARED_CONSTRUCTORS,
+							Category.DECLARED_FIELDS);
+					assertThat(javaReflectionHint.methods()).satisfiesExactlyInAnyOrder(
 							hint -> assertThat(hint.getName()).isEqualTo("getMessage"),
 							hint -> assertThat(hint.getName()).isEqualTo("setMessage"));
 				},
-				typeHint -> assertThat(typeHint.getType()).isEqualTo(TypeReference.of(String.class)));
+				javaReflectionHint -> assertThat(javaReflectionHint.getType()).isEqualTo(TypeReference.of(String.class)));
 	}
 
 	@Test
 	void registerReflectiveHintsForMethodWithModelAttribute() throws NoSuchMethodException {
 		Method method = SampleController.class.getDeclaredMethod("postForm", Request.class);
 		processor.registerReflectionHints(hints, method);
-		assertThat(hints.typeHints()).satisfiesExactlyInAnyOrder(
-				typeHint -> assertThat(typeHint.getType()).isEqualTo(TypeReference.of(SampleController.class)),
-				typeHint -> {
-					assertThat(typeHint.getType()).isEqualTo(TypeReference.of(Request.class));
-					assertThat(typeHint.getMemberCategories()).containsExactlyInAnyOrder(
-							MemberCategory.INVOKE_DECLARED_CONSTRUCTORS,
-							MemberCategory.DECLARED_FIELDS);
-					assertThat(typeHint.methods()).satisfiesExactlyInAnyOrder(
+		assertThat(hints.javaReflection()).satisfiesExactlyInAnyOrder(
+				javaReflectionHint -> assertThat(javaReflectionHint.getType()).isEqualTo(TypeReference.of(SampleController.class)),
+				javaReflectionHint -> {
+					assertThat(javaReflectionHint.getType()).isEqualTo(TypeReference.of(Request.class));
+					assertThat(javaReflectionHint.getCategories()).containsExactlyInAnyOrder(
+							Category.INVOKE_DECLARED_CONSTRUCTORS,
+							Category.DECLARED_FIELDS);
+					assertThat(javaReflectionHint.methods()).satisfiesExactlyInAnyOrder(
 							hint -> assertThat(hint.getName()).isEqualTo("getMessage"),
 							hint -> assertThat(hint.getName()).isEqualTo("setMessage"));
 				},
-				typeHint -> assertThat(typeHint.getType()).isEqualTo(TypeReference.of(String.class)));
+				javaReflectionHint -> assertThat(javaReflectionHint.getType()).isEqualTo(TypeReference.of(String.class)));
 	}
 
 	@Test
 	void registerReflectiveHintsForMethodWithRestController() throws NoSuchMethodException {
 		Method method = SampleRestController.class.getDeclaredMethod("get");
 		processor.registerReflectionHints(hints, method);
-		assertThat(hints.typeHints()).satisfiesExactlyInAnyOrder(
-				typeHint -> assertThat(typeHint.getType()).isEqualTo(TypeReference.of(SampleRestController.class)),
-				typeHint -> {
-					assertThat(typeHint.getType()).isEqualTo(TypeReference.of(Response.class));
-					assertThat(typeHint.getMemberCategories()).containsExactlyInAnyOrder(
-							MemberCategory.INVOKE_DECLARED_CONSTRUCTORS,
-							MemberCategory.DECLARED_FIELDS);
-					assertThat(typeHint.methods()).satisfiesExactlyInAnyOrder(
+		assertThat(hints.javaReflection()).satisfiesExactlyInAnyOrder(
+				javaReflectionHint -> assertThat(javaReflectionHint.getType()).isEqualTo(TypeReference.of(SampleRestController.class)),
+				javaReflectionHint -> {
+					assertThat(javaReflectionHint.getType()).isEqualTo(TypeReference.of(Response.class));
+					assertThat(javaReflectionHint.getCategories()).containsExactlyInAnyOrder(
+							Category.INVOKE_DECLARED_CONSTRUCTORS,
+							Category.DECLARED_FIELDS);
+					assertThat(javaReflectionHint.methods()).satisfiesExactlyInAnyOrder(
 							hint -> assertThat(hint.getName()).isEqualTo("getMessage"),
 							hint -> assertThat(hint.getName()).isEqualTo("setMessage"));
 				},
-				typeHint -> assertThat(typeHint.getType()).isEqualTo(TypeReference.of(String.class)));
+				javaReflectionHint -> assertThat(javaReflectionHint.getType()).isEqualTo(TypeReference.of(String.class)));
 	}
 
 	@Test
 	void registerReflectiveHintsForMethodWithString() throws NoSuchMethodException {
 		Method method = SampleController.class.getDeclaredMethod("message");
 		processor.registerReflectionHints(hints, method);
-		assertThat(hints.typeHints()).satisfiesExactlyInAnyOrder(
-				typeHint -> assertThat(typeHint.getType()).isEqualTo(TypeReference.of(SampleController.class)),
-				typeHint -> {
-					assertThat(typeHint.getType()).isEqualTo(TypeReference.of(String.class));
-					assertThat(typeHint.constructors()).isEmpty();
-					assertThat(typeHint.fields()).isEmpty();
-					assertThat(typeHint.methods()).isEmpty();
+		assertThat(hints.javaReflection()).satisfiesExactlyInAnyOrder(
+				javaReflectionHint -> assertThat(javaReflectionHint.getType()).isEqualTo(TypeReference.of(SampleController.class)),
+				javaReflectionHint -> {
+					assertThat(javaReflectionHint.getType()).isEqualTo(TypeReference.of(String.class));
+					assertThat(javaReflectionHint.constructors()).isEmpty();
+					assertThat(javaReflectionHint.fields()).isEmpty();
+					assertThat(javaReflectionHint.methods()).isEmpty();
 				});
 	}
 
 	@Test
 	void registerReflectiveHintsForClassWithMapping() {
 		processor.registerReflectionHints(hints, SampleControllerWithClassMapping.class);
-		assertThat(hints.typeHints()).singleElement().satisfies(typeHint ->
-				assertThat(typeHint.getType()).isEqualTo(TypeReference.of(SampleControllerWithClassMapping.class)));
+		assertThat(hints.javaReflection()).singleElement().satisfies(javaReflectionHint ->
+				assertThat(javaReflectionHint.getType()).isEqualTo(TypeReference.of(SampleControllerWithClassMapping.class)));
 	}
 
 	@Test
 	void registerReflectiveHintsForMethodReturningHttpEntity() throws NoSuchMethodException {
 		Method method = SampleController.class.getDeclaredMethod("getHttpEntity");
 		processor.registerReflectionHints(hints, method);
-		assertThat(hints.typeHints()).satisfiesExactlyInAnyOrder(
-				typeHint -> assertThat(typeHint.getType()).isEqualTo(TypeReference.of(SampleController.class)),
-				typeHint -> {
-					assertThat(typeHint.getType()).isEqualTo(TypeReference.of(Response.class));
-					assertThat(typeHint.getMemberCategories()).containsExactlyInAnyOrder(
-							MemberCategory.INVOKE_DECLARED_CONSTRUCTORS,
-							MemberCategory.DECLARED_FIELDS);
-					assertThat(typeHint.methods()).satisfiesExactlyInAnyOrder(
+		assertThat(hints.javaReflection()).satisfiesExactlyInAnyOrder(
+				javaReflectionHint -> assertThat(javaReflectionHint.getType()).isEqualTo(TypeReference.of(SampleController.class)),
+				javaReflectionHint -> {
+					assertThat(javaReflectionHint.getType()).isEqualTo(TypeReference.of(Response.class));
+					assertThat(javaReflectionHint.getCategories()).containsExactlyInAnyOrder(
+							Category.INVOKE_DECLARED_CONSTRUCTORS,
+							Category.DECLARED_FIELDS);
+					assertThat(javaReflectionHint.methods()).satisfiesExactlyInAnyOrder(
 							hint -> assertThat(hint.getName()).isEqualTo("getMessage"),
 							hint -> assertThat(hint.getName()).isEqualTo("setMessage"));
 				},
-				typeHint -> assertThat(typeHint.getType()).isEqualTo(TypeReference.of(String.class)));
+				javaReflectionHint -> assertThat(javaReflectionHint.getType()).isEqualTo(TypeReference.of(String.class)));
 	}
 
 	@Test
 	void registerReflectiveHintsForMethodReturningRawHttpEntity() throws NoSuchMethodException {
 		Method method = SampleController.class.getDeclaredMethod("getRawHttpEntity");
 		processor.registerReflectionHints(hints, method);
-		assertThat(hints.typeHints()).singleElement().satisfies(
-				typeHint -> assertThat(typeHint.getType()).isEqualTo(TypeReference.of(SampleController.class)));
+		assertThat(hints.javaReflection()).singleElement().satisfies(
+				javaReflectionHint -> assertThat(javaReflectionHint.getType()).isEqualTo(TypeReference.of(SampleController.class)));
 	}
 
 	@Test
 	void registerReflectiveHintsForMethodWithHttpEntityParameter() throws NoSuchMethodException {
 		Method method = SampleController.class.getDeclaredMethod("postHttpEntity", HttpEntity.class);
 		processor.registerReflectionHints(hints, method);
-		assertThat(hints.typeHints()).satisfiesExactlyInAnyOrder(
-				typeHint -> assertThat(typeHint.getType()).isEqualTo(TypeReference.of(SampleController.class)),
-				typeHint -> {
-					assertThat(typeHint.getType()).isEqualTo(TypeReference.of(Request.class));
-					assertThat(typeHint.getMemberCategories()).containsExactlyInAnyOrder(
-							MemberCategory.INVOKE_DECLARED_CONSTRUCTORS,
-							MemberCategory.DECLARED_FIELDS);
-					assertThat(typeHint.methods()).satisfiesExactlyInAnyOrder(
+		assertThat(hints.javaReflection()).satisfiesExactlyInAnyOrder(
+				javaReflectionHint -> assertThat(javaReflectionHint.getType()).isEqualTo(TypeReference.of(SampleController.class)),
+				javaReflectionHint -> {
+					assertThat(javaReflectionHint.getType()).isEqualTo(TypeReference.of(Request.class));
+					assertThat(javaReflectionHint.getCategories()).containsExactlyInAnyOrder(
+							Category.INVOKE_DECLARED_CONSTRUCTORS,
+							Category.DECLARED_FIELDS);
+					assertThat(javaReflectionHint.methods()).satisfiesExactlyInAnyOrder(
 							hint -> assertThat(hint.getName()).isEqualTo("getMessage"),
 							hint -> assertThat(hint.getName()).isEqualTo("setMessage"));
 				},
-				typeHint -> assertThat(typeHint.getType()).isEqualTo(TypeReference.of(String.class)));
+				javaReflectionHint -> assertThat(javaReflectionHint.getType()).isEqualTo(TypeReference.of(String.class)));
 	}
 
 	@Test
 	void registerReflectiveHintsForMethodWithRawHttpEntityParameter() throws NoSuchMethodException {
 		Method method = SampleController.class.getDeclaredMethod("postRawHttpEntity", HttpEntity.class);
 		processor.registerReflectionHints(hints, method);
-		assertThat(hints.typeHints()).singleElement().satisfies(
-				typeHint -> assertThat(typeHint.getType()).isEqualTo(TypeReference.of(SampleController.class)));
+		assertThat(hints.javaReflection()).singleElement().satisfies(
+				javaReflectionHint -> assertThat(javaReflectionHint.getType()).isEqualTo(TypeReference.of(SampleController.class)));
 	}
 
 	static class SampleController {

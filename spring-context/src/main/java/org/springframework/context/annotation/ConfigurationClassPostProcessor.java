@@ -35,7 +35,6 @@ import org.springframework.aot.generate.GeneratedMethod;
 import org.springframework.aot.generate.GenerationContext;
 import org.springframework.aot.generate.MethodReference;
 import org.springframework.aot.hint.ResourceHints;
-import org.springframework.aot.hint.TypeReference;
 import org.springframework.beans.PropertyValues;
 import org.springframework.beans.factory.BeanClassLoaderAware;
 import org.springframework.beans.factory.BeanDefinitionStoreException;
@@ -538,8 +537,7 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 				beanFactoryInitializationCode
 						.addInitializer(MethodReference.of(generatedMethod.getName()));
 				ResourceHints hints = generationContext.getRuntimeHints().resources();
-				mappings.forEach(
-						(target, from) -> hints.registerType(TypeReference.of(from)));
+				mappings.forEach((target, from) -> hints.registerInclude().forClassBytecode(from));
 			}
 		}
 

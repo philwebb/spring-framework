@@ -20,10 +20,8 @@ import java.util.function.BiConsumer;
 
 import org.junit.jupiter.api.Test;
 
-import org.springframework.aot.hint.MemberCategory;
 import org.springframework.aot.hint.RuntimeHints;
 import org.springframework.aot.hint.RuntimeHintsRegistrar;
-import org.springframework.aot.hint.TypeReference;
 import org.springframework.aot.test.agent.EnabledIfRuntimeHintsAgent;
 import org.springframework.aot.test.agent.RuntimeHintsInvocations;
 import org.springframework.aot.test.agent.RuntimeHintsRecorder;
@@ -97,12 +95,12 @@ class ApplicationContextAotGeneratorRuntimeHintsTests {
 
 	// TODO: Remove once https://github.com/spring-projects/spring-framework/issues/28215 is fixed
 	static class InitDestroyIssueRegistrar implements RuntimeHintsRegistrar {
+
 		@Override
 		public void registerHints(RuntimeHints hints, ClassLoader classLoader) {
-			hints.reflection()
-					.registerType(TypeReference.of(InitDestroyComponent.class.getName()), typeHint ->
-							typeHint.withMembers(MemberCategory.INTROSPECT_PUBLIC_METHODS));
+			hints.reflection().registerIntrospect().forPublicMethodsIn(InitDestroyComponent.class);
 		}
+
 	}
 
 	@SuppressWarnings({"rawtypes", "unchecked"})

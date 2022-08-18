@@ -35,29 +35,28 @@ class KotlinBindingReflectionHintsRegistrarTests {
 	@Test
 	fun `Register type for Kotlinx serialization`() {
 		bindingRegistrar.registerReflectionHints(hints.reflection(), SampleSerializableClass::class.java)
-		assertThat(hints.reflection().typeHints()).satisfiesExactlyInAnyOrder(
-			ThrowingConsumer { typeHint: TypeHint ->
-				assertThat(typeHint.type).isEqualTo(TypeReference.of(String::class.java))
-				assertThat(typeHint.memberCategories).isEmpty()
-				assertThat(typeHint.constructors()).isEmpty()
-				assertThat(typeHint.fields()).isEmpty()
-				assertThat(typeHint.methods()).isEmpty()
+		assertThat(hints.reflection().javaReflection()).satisfiesExactlyInAnyOrder(
+			ThrowingConsumer { javaReflectionHint: JavaReflectionHint ->
+				assertThat(javaReflectionHint.type).isEqualTo(TypeReference.of(String::class.java))
+				assertThat(javaReflectionHint.categories).isEmpty()
+				assertThat(javaReflectionHint.constructors()).isEmpty()
+				assertThat(javaReflectionHint.fields()).isEmpty()
+				assertThat(javaReflectionHint.methods()).isEmpty()
 			},
-			ThrowingConsumer { typeHint: TypeHint ->
-				assertThat(typeHint.type).isEqualTo(TypeReference.of(SampleSerializableClass::class.java))
-				assertThat(typeHint.methods()).singleElement()
-					.satisfies(ThrowingConsumer { methodHint: ExecutableHint ->
+			ThrowingConsumer { javaReflectionHint: JavaReflectionHint ->
+				assertThat(javaReflectionHint.type).isEqualTo(TypeReference.of(SampleSerializableClass::class.java))
+				assertThat(javaReflectionHint.methods()).singleElement()
+					.satisfies(ThrowingConsumer { methodHint: JavaReflectionHint.ExecutableHint ->
 						assertThat(methodHint.name).isEqualTo("getName")
-						assertThat(methodHint.modes)
-							.containsOnly(ExecutableMode.INVOKE)
+						assertThat(methodHint.mode).isEqualTo(ExecutableMode.INVOKE)
 					})
 			},
-			ThrowingConsumer { typeHint: TypeHint ->
-				assertThat(typeHint.type).isEqualTo(TypeReference.of(SampleSerializableClass::class.qualifiedName + "\$Companion"))
-				assertThat(typeHint.methods()).singleElement()
-					.satisfies(ThrowingConsumer { methodHint: ExecutableHint ->
+			ThrowingConsumer { javaReflectionHint: JavaReflectionHint ->
+				assertThat(javaReflectionHint.type).isEqualTo(TypeReference.of(SampleSerializableClass::class.qualifiedName + "\$Companion"))
+				assertThat(javaReflectionHint.methods()).singleElement()
+					.satisfies(ThrowingConsumer { methodHint: JavaReflectionHint.ExecutableHint ->
 						assertThat(methodHint.name).isEqualTo("serializer")
-						assertThat(methodHint.modes).containsOnly(ExecutableMode.INVOKE)
+						assertThat(methodHint.mode).isEqualTo(ExecutableMode.INVOKE)
 					})
 			})
 	}

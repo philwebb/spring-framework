@@ -23,7 +23,7 @@ import java.util.Set;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.aot.hint.ExecutableMode;
-import org.springframework.aot.hint.MemberCategory;
+import org.springframework.aot.hint.JavaReflectionHint.Category;
 import org.springframework.aot.hint.RuntimeHints;
 import org.springframework.aot.hint.TypeReference;
 import org.springframework.core.ResolvableType;
@@ -44,40 +44,40 @@ public class BindingReflectionHintsRegistrarTests {
 	@Test
 	void registerTypeForSerializationWithEmptyClass() {
 		bindingRegistrar.registerReflectionHints(this.hints.reflection(), SampleEmptyClass.class);
-		assertThat(this.hints.reflection().typeHints()).singleElement()
-				.satisfies(typeHint -> {
-					assertThat(typeHint.getType()).isEqualTo(TypeReference.of(SampleEmptyClass.class));
-					assertThat(typeHint.getMemberCategories()).containsExactlyInAnyOrder(
-							MemberCategory.DECLARED_FIELDS, MemberCategory.INVOKE_DECLARED_CONSTRUCTORS);
-					assertThat(typeHint.constructors()).isEmpty();
-					assertThat(typeHint.fields()).isEmpty();
-					assertThat(typeHint.methods()).isEmpty();
+		assertThat(this.hints.reflection().javaReflection()).singleElement()
+				.satisfies(javaReflectionHint -> {
+					assertThat(javaReflectionHint.getType()).isEqualTo(TypeReference.of(SampleEmptyClass.class));
+					assertThat(javaReflectionHint.getCategories()).containsExactlyInAnyOrder(
+							Category.DECLARED_FIELDS, Category.INVOKE_DECLARED_CONSTRUCTORS);
+					assertThat(javaReflectionHint.constructors()).isEmpty();
+					assertThat(javaReflectionHint.fields()).isEmpty();
+					assertThat(javaReflectionHint.methods()).isEmpty();
 				});
 	}
 
 	@Test
 	void registerTypeForSerializationWithNoProperty() {
 		bindingRegistrar.registerReflectionHints(this.hints.reflection(), SampleClassWithNoProperty.class);
-		assertThat(this.hints.reflection().typeHints()).singleElement()
-				.satisfies(typeHint -> assertThat(typeHint.getType()).isEqualTo(TypeReference.of(SampleClassWithNoProperty.class)));
+		assertThat(this.hints.reflection().javaReflection()).singleElement()
+				.satisfies(javaReflectionHint -> assertThat(javaReflectionHint.getType()).isEqualTo(TypeReference.of(SampleClassWithNoProperty.class)));
 	}
 
 	@Test
 	void registerTypeForSerializationWithGetter() {
 		bindingRegistrar.registerReflectionHints(this.hints.reflection(), SampleClassWithGetter.class);
-		assertThat(this.hints.reflection().typeHints()).satisfiesExactlyInAnyOrder(
-				typeHint -> {
-					assertThat(typeHint.getType()).isEqualTo(TypeReference.of(String.class));
-					assertThat(typeHint.getMemberCategories()).isEmpty();
-					assertThat(typeHint.constructors()).isEmpty();
-					assertThat(typeHint.fields()).isEmpty();
-					assertThat(typeHint.methods()).isEmpty();
+		assertThat(this.hints.reflection().javaReflection()).satisfiesExactlyInAnyOrder(
+				javaReflectionHint -> {
+					assertThat(javaReflectionHint.getType()).isEqualTo(TypeReference.of(String.class));
+					assertThat(javaReflectionHint.getCategories()).isEmpty();
+					assertThat(javaReflectionHint.constructors()).isEmpty();
+					assertThat(javaReflectionHint.fields()).isEmpty();
+					assertThat(javaReflectionHint.methods()).isEmpty();
 				},
-				typeHint -> {
-					assertThat(typeHint.getType()).isEqualTo(TypeReference.of(SampleClassWithGetter.class));
-					assertThat(typeHint.methods()).singleElement().satisfies(methodHint -> {
+				javaReflectionHint -> {
+					assertThat(javaReflectionHint.getType()).isEqualTo(TypeReference.of(SampleClassWithGetter.class));
+					assertThat(javaReflectionHint.methods()).singleElement().satisfies(methodHint -> {
 						assertThat(methodHint.getName()).isEqualTo("getName");
-						assertThat(methodHint.getModes()).containsOnly(ExecutableMode.INVOKE);
+						assertThat(methodHint.getMode()).isEqualTo(ExecutableMode.INVOKE);
 					});
 				});
 	}
@@ -85,19 +85,19 @@ public class BindingReflectionHintsRegistrarTests {
 	@Test
 	void registerTypeForSerializationWithSetter() {
 		bindingRegistrar.registerReflectionHints(this.hints.reflection(), SampleClassWithSetter.class);
-		assertThat(this.hints.reflection().typeHints()).satisfiesExactlyInAnyOrder(
-				typeHint -> {
-					assertThat(typeHint.getType()).isEqualTo(TypeReference.of(String.class));
-					assertThat(typeHint.getMemberCategories()).isEmpty();
-					assertThat(typeHint.constructors()).isEmpty();
-					assertThat(typeHint.fields()).isEmpty();
-					assertThat(typeHint.methods()).isEmpty();
+		assertThat(this.hints.reflection().javaReflection()).satisfiesExactlyInAnyOrder(
+				javaReflectionHint -> {
+					assertThat(javaReflectionHint.getType()).isEqualTo(TypeReference.of(String.class));
+					assertThat(javaReflectionHint.getCategories()).isEmpty();
+					assertThat(javaReflectionHint.constructors()).isEmpty();
+					assertThat(javaReflectionHint.fields()).isEmpty();
+					assertThat(javaReflectionHint.methods()).isEmpty();
 				},
-				typeHint -> {
-					assertThat(typeHint.getType()).isEqualTo(TypeReference.of(SampleClassWithSetter.class));
-					assertThat(typeHint.methods()).singleElement().satisfies(methodHint -> {
+				javaReflectionHint -> {
+					assertThat(javaReflectionHint.getType()).isEqualTo(TypeReference.of(SampleClassWithSetter.class));
+					assertThat(javaReflectionHint.methods()).singleElement().satisfies(methodHint -> {
 						assertThat(methodHint.getName()).isEqualTo("setName");
-						assertThat(methodHint.getModes()).containsOnly(ExecutableMode.INVOKE);
+						assertThat(methodHint.getMode()).isEqualTo(ExecutableMode.INVOKE);
 					});
 				});
 	}
@@ -105,31 +105,31 @@ public class BindingReflectionHintsRegistrarTests {
 	@Test
 	void registerTypeForSerializationWithListProperty() {
 		bindingRegistrar.registerReflectionHints(this.hints.reflection(), SampleClassWithListProperty.class);
-		assertThat(this.hints.reflection().typeHints()).satisfiesExactlyInAnyOrder(
-				typeHint -> {
-					assertThat(typeHint.getType()).isEqualTo(TypeReference.of(String.class));
-					assertThat(typeHint.getMemberCategories()).isEmpty();
-					assertThat(typeHint.constructors()).isEmpty();
-					assertThat(typeHint.fields()).isEmpty();
-					assertThat(typeHint.methods()).isEmpty();
+		assertThat(this.hints.reflection().javaReflection()).satisfiesExactlyInAnyOrder(
+				javaReflectionHint -> {
+					assertThat(javaReflectionHint.getType()).isEqualTo(TypeReference.of(String.class));
+					assertThat(javaReflectionHint.getCategories()).isEmpty();
+					assertThat(javaReflectionHint.constructors()).isEmpty();
+					assertThat(javaReflectionHint.fields()).isEmpty();
+					assertThat(javaReflectionHint.methods()).isEmpty();
 				},
-				typeHint -> {
-					assertThat(typeHint.getType()).isEqualTo(TypeReference.of(List.class));
-					assertThat(typeHint.getMemberCategories()).isEmpty();
-					assertThat(typeHint.constructors()).isEmpty();
-					assertThat(typeHint.fields()).isEmpty();
-					assertThat(typeHint.methods()).isEmpty();
+				javaReflectionHint -> {
+					assertThat(javaReflectionHint.getType()).isEqualTo(TypeReference.of(List.class));
+					assertThat(javaReflectionHint.getCategories()).isEmpty();
+					assertThat(javaReflectionHint.constructors()).isEmpty();
+					assertThat(javaReflectionHint.fields()).isEmpty();
+					assertThat(javaReflectionHint.methods()).isEmpty();
 				},
-				typeHint -> {
-					assertThat(typeHint.getType()).isEqualTo(TypeReference.of(SampleClassWithListProperty.class));
-					assertThat(typeHint.methods()).satisfiesExactlyInAnyOrder(
+				javaReflectionHint -> {
+					assertThat(javaReflectionHint.getType()).isEqualTo(TypeReference.of(SampleClassWithListProperty.class));
+					assertThat(javaReflectionHint.methods()).satisfiesExactlyInAnyOrder(
 							methodHint -> {
 								assertThat(methodHint.getName()).isEqualTo("setNames");
-								assertThat(methodHint.getModes()).containsOnly(ExecutableMode.INVOKE);
+								assertThat(methodHint.getMode()).isEqualTo(ExecutableMode.INVOKE);
 							},
 							methodHint -> {
 								assertThat(methodHint.getName()).isEqualTo("getNames");
-								assertThat(methodHint.getModes()).containsOnly(ExecutableMode.INVOKE);
+								assertThat(methodHint.getMode()).isEqualTo(ExecutableMode.INVOKE);
 							});
 				});
 	}
@@ -137,50 +137,50 @@ public class BindingReflectionHintsRegistrarTests {
 	@Test
 	void registerTypeForSerializationWithCycles() {
 		bindingRegistrar.registerReflectionHints(this.hints.reflection(), SampleClassWithCycles.class);
-		assertThat(this.hints.reflection().typeHints()).satisfiesExactlyInAnyOrder(
-				typeHint -> assertThat(typeHint.getType()).isEqualTo(TypeReference.of(SampleClassWithCycles.class)),
-				typeHint -> assertThat(typeHint.getType()).isEqualTo(TypeReference.of(List.class)));
+		assertThat(this.hints.reflection().javaReflection()).satisfiesExactlyInAnyOrder(
+				javaReflectionHint -> assertThat(javaReflectionHint.getType()).isEqualTo(TypeReference.of(SampleClassWithCycles.class)),
+				javaReflectionHint -> assertThat(javaReflectionHint.getType()).isEqualTo(TypeReference.of(List.class)));
 	}
 
 	@Test
 	void registerTypeForSerializationWithResolvableType() {
 		bindingRegistrar.registerReflectionHints(this.hints.reflection(), SampleClassWithResolvableType.class);
-		assertThat(this.hints.reflection().typeHints()).satisfiesExactlyInAnyOrder(
-				typeHint -> {
-					assertThat(typeHint.getType()).isEqualTo(TypeReference.of(ResolvableType[].class));
-					assertThat(typeHint.getMemberCategories()).isEmpty();
-					assertThat(typeHint.constructors()).isEmpty();
-					assertThat(typeHint.fields()).isEmpty();
-					assertThat(typeHint.methods()).isEmpty();
+		assertThat(this.hints.reflection().javaReflection()).satisfiesExactlyInAnyOrder(
+				javaReflectionHint -> {
+					assertThat(javaReflectionHint.getType()).isEqualTo(TypeReference.of(ResolvableType[].class));
+					assertThat(javaReflectionHint.getCategories()).isEmpty();
+					assertThat(javaReflectionHint.constructors()).isEmpty();
+					assertThat(javaReflectionHint.fields()).isEmpty();
+					assertThat(javaReflectionHint.methods()).isEmpty();
 				},
-				typeHint -> {
-					assertThat(typeHint.getType()).isEqualTo(TypeReference.of(Type.class));
-					assertThat(typeHint.getMemberCategories()).isEmpty();
-					assertThat(typeHint.constructors()).isEmpty();
-					assertThat(typeHint.fields()).isEmpty();
-					assertThat(typeHint.methods()).isEmpty();
+				javaReflectionHint -> {
+					assertThat(javaReflectionHint.getType()).isEqualTo(TypeReference.of(Type.class));
+					assertThat(javaReflectionHint.getCategories()).isEmpty();
+					assertThat(javaReflectionHint.constructors()).isEmpty();
+					assertThat(javaReflectionHint.fields()).isEmpty();
+					assertThat(javaReflectionHint.methods()).isEmpty();
 				},
-				typeHint -> {
-					assertThat(typeHint.getType()).isEqualTo(TypeReference.of(Class.class));
-					assertThat(typeHint.getMemberCategories()).isEmpty();
-					assertThat(typeHint.constructors()).isEmpty();
-					assertThat(typeHint.fields()).isEmpty();
-					assertThat(typeHint.methods()).isEmpty();
+				javaReflectionHint -> {
+					assertThat(javaReflectionHint.getType()).isEqualTo(TypeReference.of(Class.class));
+					assertThat(javaReflectionHint.getCategories()).isEmpty();
+					assertThat(javaReflectionHint.constructors()).isEmpty();
+					assertThat(javaReflectionHint.fields()).isEmpty();
+					assertThat(javaReflectionHint.methods()).isEmpty();
 				},
-				typeHint -> {
-					assertThat(typeHint.getType()).isEqualTo(TypeReference.of(ResolvableType.class));
-					assertThat(typeHint.getMemberCategories()).containsExactlyInAnyOrder(
-							MemberCategory.DECLARED_FIELDS, MemberCategory.INVOKE_DECLARED_CONSTRUCTORS);
-					assertThat(typeHint.constructors()).isEmpty();
-					assertThat(typeHint.fields()).isEmpty();
-					assertThat(typeHint.methods()).hasSizeGreaterThan(1);
+				javaReflectionHint -> {
+					assertThat(javaReflectionHint.getType()).isEqualTo(TypeReference.of(ResolvableType.class));
+					assertThat(javaReflectionHint.getCategories()).containsExactlyInAnyOrder(
+							Category.DECLARED_FIELDS, Category.INVOKE_DECLARED_CONSTRUCTORS);
+					assertThat(javaReflectionHint.constructors()).isEmpty();
+					assertThat(javaReflectionHint.fields()).isEmpty();
+					assertThat(javaReflectionHint.methods()).hasSizeGreaterThan(1);
 				},
-				typeHint -> {
-					assertThat(typeHint.getType()).isEqualTo(TypeReference.of(SampleClassWithResolvableType.class));
-					assertThat(typeHint.methods()).singleElement().satisfies(
+				javaReflectionHint -> {
+					assertThat(javaReflectionHint.getType()).isEqualTo(TypeReference.of(SampleClassWithResolvableType.class));
+					assertThat(javaReflectionHint.methods()).singleElement().satisfies(
 							methodHint -> {
 								assertThat(methodHint.getName()).isEqualTo("getResolvableType");
-								assertThat(methodHint.getModes()).containsOnly(ExecutableMode.INVOKE);
+								assertThat(methodHint.getMode()).isEqualTo(ExecutableMode.INVOKE);
 							});
 				});
 	}
@@ -188,37 +188,37 @@ public class BindingReflectionHintsRegistrarTests {
 	@Test
 	void registerTypeForSerializationWithMultipleLevelsAndCollection() {
 		bindingRegistrar.registerReflectionHints(this.hints.reflection(), SampleClassA.class);
-		assertThat(this.hints.reflection().typeHints()).satisfiesExactlyInAnyOrder(
-				typeHint -> assertThat(typeHint.getType()).isEqualTo(TypeReference.of(SampleClassA.class)),
-				typeHint -> assertThat(typeHint.getType()).isEqualTo(TypeReference.of(SampleClassB.class)),
-				typeHint -> assertThat(typeHint.getType()).isEqualTo(TypeReference.of(SampleClassC.class)),
-				typeHint -> assertThat(typeHint.getType()).isEqualTo(TypeReference.of(String.class)),
-				typeHint -> assertThat(typeHint.getType()).isEqualTo(TypeReference.of(Set.class)));
+		assertThat(this.hints.reflection().javaReflection()).satisfiesExactlyInAnyOrder(
+				javaReflectionHint -> assertThat(javaReflectionHint.getType()).isEqualTo(TypeReference.of(SampleClassA.class)),
+				javaReflectionHint -> assertThat(javaReflectionHint.getType()).isEqualTo(TypeReference.of(SampleClassB.class)),
+				javaReflectionHint -> assertThat(javaReflectionHint.getType()).isEqualTo(TypeReference.of(SampleClassC.class)),
+				javaReflectionHint -> assertThat(javaReflectionHint.getType()).isEqualTo(TypeReference.of(String.class)),
+				javaReflectionHint -> assertThat(javaReflectionHint.getType()).isEqualTo(TypeReference.of(Set.class)));
 	}
 
 	@Test
 	void registerTypeForSerializationWithEnum() {
 		bindingRegistrar.registerReflectionHints(this.hints.reflection(), SampleEnum.class);
-		assertThat(this.hints.reflection().typeHints()).singleElement()
-				.satisfies(typeHint -> assertThat(typeHint.getType()).isEqualTo(TypeReference.of(SampleEnum.class)));
+		assertThat(this.hints.reflection().javaReflection()).singleElement()
+				.satisfies(javaReflectionHint -> assertThat(javaReflectionHint.getType()).isEqualTo(TypeReference.of(SampleEnum.class)));
 	}
 
 	@Test
 	void registerTypeForSerializationWithRecord() {
 		bindingRegistrar.registerReflectionHints(this.hints.reflection(), SampleRecord.class);
-		assertThat(this.hints.reflection().typeHints()).satisfiesExactlyInAnyOrder(
-				typeHint -> {
-					assertThat(typeHint.getType()).isEqualTo(TypeReference.of(String.class));
-					assertThat(typeHint.getMemberCategories()).isEmpty();
-					assertThat(typeHint.constructors()).isEmpty();
-					assertThat(typeHint.fields()).isEmpty();
-					assertThat(typeHint.methods()).isEmpty();
+		assertThat(this.hints.reflection().javaReflection()).satisfiesExactlyInAnyOrder(
+				javaReflectionHint -> {
+					assertThat(javaReflectionHint.getType()).isEqualTo(TypeReference.of(String.class));
+					assertThat(javaReflectionHint.getCategories()).isEmpty();
+					assertThat(javaReflectionHint.constructors()).isEmpty();
+					assertThat(javaReflectionHint.fields()).isEmpty();
+					assertThat(javaReflectionHint.methods()).isEmpty();
 				},
-				typeHint -> {
-					assertThat(typeHint.getType()).isEqualTo(TypeReference.of(SampleRecord.class));
-					assertThat(typeHint.methods()).singleElement().satisfies(methodHint -> {
+				javaReflectionHint -> {
+					assertThat(javaReflectionHint.getType()).isEqualTo(TypeReference.of(SampleRecord.class));
+					assertThat(javaReflectionHint.methods()).singleElement().satisfies(methodHint -> {
 						assertThat(methodHint.getName()).isEqualTo("name");
-						assertThat(methodHint.getModes()).containsOnly(ExecutableMode.INVOKE);
+						assertThat(methodHint.getMode()).isEqualTo(ExecutableMode.INVOKE);
 					});
 				});
 	}

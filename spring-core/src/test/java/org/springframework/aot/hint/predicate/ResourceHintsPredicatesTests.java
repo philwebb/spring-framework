@@ -45,37 +45,37 @@ class ResourceHintsPredicatesTests {
 
 	@Test
 	void resourcePatternMatchesResourceName() {
-		this.runtimeHints.resources().registerPattern("/test/*");
+		this.runtimeHints.resources().registerInclude().forPattern("/test/*");
 		assertPredicateMatches(resources.forResource("/test/spring.properties"));
 	}
 
 	@Test
 	void resourcePatternDoesNotMatchResourceName() {
-		this.runtimeHints.resources().registerPattern("/test/spring.*");
+		this.runtimeHints.resources().registerInclude().forPattern("/test/spring.*");
 		assertPredicateDoesNotMatch(resources.forResource("/test/other.properties"));
 	}
 
 	@Test
 	void resourcePatternMatchesTypeAndResourceName() {
-		this.runtimeHints.resources().registerPattern("/org/springframework/aot/hint/predicate/spring.*");
+		this.runtimeHints.resources().registerInclude().forPattern("/org/springframework/aot/hint/predicate/spring.*");
 		assertPredicateMatches(resources.forResource(TypeReference.of(getClass()), "spring.properties"));
 	}
 
 	@Test
 	void resourcePatternDoesNotMatchTypeAndResourceName() {
-		this.runtimeHints.resources().registerPattern("/spring.*");
+		this.runtimeHints.resources().registerInclude().forPattern("/spring.*");
 		assertPredicateDoesNotMatch(resources.forResource(TypeReference.of(getClass()), "spring.properties"));
 	}
 
 	@Test
 	void resourceBundleMatchesBundleName() {
-		this.runtimeHints.resources().registerResourceBundle("spring");
+		this.runtimeHints.resources().registerBundle().forBaseName("spring");
 		assertPredicateMatches(resources.forBundle("spring"));
 	}
 
 	@Test
 	void resourceBundleDoesNotMatchBundleName() {
-		this.runtimeHints.resources().registerResourceBundle("spring");
+		this.runtimeHints.resources().registerBundle().forBaseName("spring");
 		assertPredicateDoesNotMatch(resources.forBundle("other"));
 	}
 

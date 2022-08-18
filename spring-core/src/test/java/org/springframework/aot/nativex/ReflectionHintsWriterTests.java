@@ -18,7 +18,6 @@ package org.springframework.aot.nativex;
 
 import java.io.StringWriter;
 import java.nio.charset.Charset;
-import java.util.Collections;
 import java.util.List;
 
 import org.json.JSONException;
@@ -26,10 +25,8 @@ import org.junit.jupiter.api.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.skyscreamer.jsonassert.JSONCompareMode;
 
-import org.springframework.aot.hint.ExecutableMode;
-import org.springframework.aot.hint.MemberCategory;
+import org.springframework.aot.hint.JavaReflectionHint.Category;
 import org.springframework.aot.hint.ReflectionHints;
-import org.springframework.aot.hint.TypeReference;
 import org.springframework.core.codec.StringDecoder;
 import org.springframework.util.MimeType;
 
@@ -49,26 +46,13 @@ public class ReflectionHintsWriterTests {
 	@Test
 	void one() throws JSONException {
 		ReflectionHints hints = new ReflectionHints();
-		hints.registerType(StringDecoder.class, builder -> {
-			builder
-					.onReachableType(TypeReference.of(String.class))
-					.withMembers(MemberCategory.PUBLIC_FIELDS, MemberCategory.DECLARED_FIELDS,
-							MemberCategory.INTROSPECT_PUBLIC_CONSTRUCTORS, MemberCategory.INTROSPECT_DECLARED_CONSTRUCTORS,
-							MemberCategory.INVOKE_PUBLIC_CONSTRUCTORS, MemberCategory.INVOKE_DECLARED_CONSTRUCTORS,
-							MemberCategory.INTROSPECT_PUBLIC_METHODS, MemberCategory.INTROSPECT_DECLARED_METHODS,
-							MemberCategory.INVOKE_PUBLIC_METHODS, MemberCategory.INVOKE_DECLARED_METHODS,
-							MemberCategory.PUBLIC_CLASSES, MemberCategory.DECLARED_CLASSES)
-					.withField("DEFAULT_CHARSET", fieldBuilder -> {})
-					.withField("defaultCharset", fieldBuilder -> {
-						fieldBuilder.allowWrite(true);
-						fieldBuilder.allowUnsafeAccess(true);
-					})
-					.withConstructor(TypeReference.listOf(List.class, boolean.class, MimeType.class), constructorHint ->
-							constructorHint.withMode(ExecutableMode.INTROSPECT))
-					.withMethod("setDefaultCharset", List.of(TypeReference.of(Charset.class)), ctorBuilder -> {})
-					.withMethod("getDefaultCharset", Collections.emptyList(), constructorHint ->
-							constructorHint.withMode(ExecutableMode.INTROSPECT));
-		});
+		Class<StringDecoder> type = StringDecoder.class;
+		hints.register(Category.values()).whenReachable(String.class).forType(type);
+		hints.registerRead().forField(type, "DEFAULT_CHARSET");
+		hints.registerWrite().withAllowUnsafeAccess().forField(type, "defaultCharset");
+		hints.registerIntrospect().forConstructor(type, List.class, boolean.class, MimeType[].class);
+		hints.registerInvoke().forMethod(type, "setDefaultCharset", Charset.class);
+		hints.registerIntrospect().forMethod(type, "getDefaultCharset");
 		assertEquals("""
 				[
 					{
@@ -94,7 +78,7 @@ public class ReflectionHintsWriterTests {
 							{ "name": "setDefaultCharset", "parameterTypes": [ "java.nio.charset.Charset" ] }
 						],
 						"queriedMethods":  [
-							{ "name": "<init>", "parameterTypes": [ "java.util.List", "boolean", "org.springframework.util.MimeType" ] },
+							{ "name": "<init>", "parameterTypes": [ "java.util.List", "boolean", "org.springframework.util.MimeType[]" ] },
 							{ "name": "getDefaultCharset", "parameterTypes": [ ] }
 						]
 					}
@@ -104,11 +88,7 @@ public class ReflectionHintsWriterTests {
 	@Test
 	void two() throws JSONException {
 		ReflectionHints hints = new ReflectionHints();
-		hints.registerType(Integer.class, builder -> {
-		});
-		hints.registerType(Long.class, builder -> {
-		});
-
+		hints.register().forType(Integer.class, Long.class);
 		assertEquals("""
 				[
 					{ "name": "java.lang.Integer" },
@@ -119,9 +99,7 @@ public class ReflectionHintsWriterTests {
 	@Test
 	void queriedMethods() throws JSONException {
 		ReflectionHints hints = new ReflectionHints();
-		hints.registerType(Integer.class, builder -> builder.withMethod("parseInt",
-				TypeReference.listOf(String.class), b -> b.withMode(ExecutableMode.INTROSPECT)));
-
+		hints.registerIntrospect().forMethod(Integer.class, "parseInt", String.class);
 		assertEquals("""
 				[
 					{
@@ -140,9 +118,7 @@ public class ReflectionHintsWriterTests {
 	@Test
 	void methods() throws JSONException {
 		ReflectionHints hints = new ReflectionHints();
-		hints.registerType(Integer.class, builder -> builder.withMethod("parseInt",
-				TypeReference.listOf(String.class), b -> b.withMode(ExecutableMode.INVOKE)));
-
+		hints.registerInvoke().forMethod(Integer.class, "parseInt", String.class);
 		assertEquals("""
 				[
 					{
@@ -161,13 +137,11 @@ public class ReflectionHintsWriterTests {
 	@Test
 	void methodWithInnerClassParameter() throws JSONException {
 		ReflectionHints hints = new ReflectionHints();
-		hints.registerType(Integer.class, builder -> builder.withMethod("test",
-				TypeReference.listOf(Inner.class), b -> b.withMode(ExecutableMode.INVOKE)));
-
+		hints.registerInvoke().forMethod(Example.class, "test", Inner.class);
 		assertEquals("""
 				[
 					{
-						"name": "java.lang.Integer",
+						"name": "org.springframework.aot.nativex.ReflectionHintsWriterTests$Example",
 						"methods": [
 							{
 								"name": "test",
@@ -182,21 +156,12 @@ public class ReflectionHintsWriterTests {
 	@Test
 	void methodAndQueriedMethods() throws JSONException {
 		ReflectionHints hints = new ReflectionHints();
-		hints.registerType(Integer.class, builder -> builder.withMethod("parseInt",
-				TypeReference.listOf(String.class), b -> b.withMode(ExecutableMode.INVOKE)));
-		hints.registerType(Integer.class, builder -> builder.withMethod("parseInt",
-				TypeReference.listOf(String.class), b -> b.withMode(ExecutableMode.INTROSPECT)));
-
+		hints.registerInvoke().forMethod(Integer.class, "parseInt", String.class);
+		hints.registerIntrospect().forMethod(Integer.class, "parseInt", String.class);
 		assertEquals("""
 				[
 					{
 						"name": "java.lang.Integer",
-						"queriedMethods": [
-							{
-								"name": "parseInt",
-								"parameterTypes": ["java.lang.String"]
-							}
-						],
 						"methods": [
 							{
 								"name": "parseInt",
@@ -215,6 +180,13 @@ public class ReflectionHintsWriterTests {
 		JSONAssert.assertEquals(expectedString, out.toString(), JSONCompareMode.NON_EXTENSIBLE);
 	}
 
+
+	static class Example {
+
+		void test(Inner inner) {
+		}
+
+	}
 
 	static class Inner {
 

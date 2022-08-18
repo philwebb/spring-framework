@@ -26,8 +26,8 @@ import org.junit.jupiter.api.Test;
 
 import org.springframework.aot.generate.GeneratedFiles.Kind;
 import org.springframework.aot.generate.GenerationContext;
-import org.springframework.aot.hint.JdkProxyHint;
-import org.springframework.aot.hint.MemberCategory;
+import org.springframework.aot.hint.JavaProxyHint;
+import org.springframework.aot.hint.JavaReflectionHint.Category;
 import org.springframework.aot.hint.RuntimeHints;
 import org.springframework.aot.hint.TypeReference;
 import org.springframework.aot.hint.predicate.RuntimeHintsPredicates;
@@ -114,8 +114,8 @@ class ApplicationContextAotGeneratorTests {
 			ResourceLoader resourceLoader = bean.getResourceLoader();
 			assertThat(resourceLoader).isNotInstanceOf(Proxy.class);
 			RuntimeHints runtimeHints = generationContext.getRuntimeHints();
-			assertThat(runtimeHints.proxies().jdkProxies()).satisfies(doesNotHaveProxyFor(ResourceLoader.class));
-			assertThat(runtimeHints.proxies().jdkProxies()).anySatisfy(proxyHint ->
+			assertThat(runtimeHints.proxies().javaProxies()).satisfies(doesNotHaveProxyFor(ResourceLoader.class));
+			assertThat(runtimeHints.proxies().javaProxies()).anySatisfy(proxyHint ->
 					assertThat(proxyHint.getProxiedInterfaces()).isEqualTo(TypeReference.listOf(
 							environment.getClass().getInterfaces())));
 
@@ -130,8 +130,8 @@ class ApplicationContextAotGeneratorTests {
 			ResourceLoader resourceLoader = bean.getResourceLoader();
 			assertThat(resourceLoader).isInstanceOf(Proxy.class);
 			RuntimeHints runtimeHints = generationContext.getRuntimeHints();
-			assertThat(runtimeHints.proxies().jdkProxies()).satisfies(doesNotHaveProxyFor(Environment.class));
-			assertThat(runtimeHints.proxies().jdkProxies()).anySatisfy(proxyHint ->
+			assertThat(runtimeHints.proxies().javaProxies()).satisfies(doesNotHaveProxyFor(Environment.class));
+			assertThat(runtimeHints.proxies().javaProxies()).anySatisfy(proxyHint ->
 					assertThat(proxyHint.getProxiedInterfaces()).isEqualTo(TypeReference.listOf(
 							resourceLoader.getClass().getInterfaces())));
 		});
@@ -145,8 +145,8 @@ class ApplicationContextAotGeneratorTests {
 			ResourceLoader resourceLoader = bean.getResourceLoader();
 			assertThat(resourceLoader).isNotInstanceOf(Proxy.class);
 			RuntimeHints runtimeHints = generationContext.getRuntimeHints();
-			assertThat(runtimeHints.proxies().jdkProxies()).satisfies(doesNotHaveProxyFor(ResourceLoader.class));
-			assertThat(runtimeHints.proxies().jdkProxies()).anySatisfy(proxyHint ->
+			assertThat(runtimeHints.proxies().javaProxies()).satisfies(doesNotHaveProxyFor(ResourceLoader.class));
+			assertThat(runtimeHints.proxies().javaProxies()).anySatisfy(proxyHint ->
 					assertThat(proxyHint.getProxiedInterfaces()).isEqualTo(TypeReference.listOf(
 							environment.getClass().getInterfaces())));
 		});
@@ -162,8 +162,8 @@ class ApplicationContextAotGeneratorTests {
 			ResourceLoader resourceLoader = bean.getResourceLoader();
 			assertThat(resourceLoader).isNotInstanceOf(Proxy.class);
 			RuntimeHints runtimeHints = generationContext.getRuntimeHints();
-			assertThat(runtimeHints.proxies().jdkProxies()).satisfies(doesNotHaveProxyFor(ResourceLoader.class));
-			assertThat(runtimeHints.proxies().jdkProxies()).anySatisfy(proxyHint ->
+			assertThat(runtimeHints.proxies().javaProxies()).satisfies(doesNotHaveProxyFor(ResourceLoader.class));
+			assertThat(runtimeHints.proxies().javaProxies()).anySatisfy(proxyHint ->
 					assertThat(proxyHint.getProxiedInterfaces()).isEqualTo(TypeReference.listOf(
 							environment.getClass().getInterfaces())));
 		});
@@ -276,10 +276,10 @@ class ApplicationContextAotGeneratorTests {
 		assertThat(context.getGeneratedFiles()
 				.getGeneratedFileContent(Kind.CLASS, proxyClassName.replace('.', '/') + ".class")).isNotNull();
 		assertThat(RuntimeHintsPredicates.reflection().onType(TypeReference.of(proxyClassName))
-				.withMemberCategory(MemberCategory.INVOKE_DECLARED_CONSTRUCTORS)).accepts(context.getRuntimeHints());
+				.withCategory(Category.INVOKE_DECLARED_CONSTRUCTORS)).accepts(context.getRuntimeHints());
 	}
 
-	private Consumer<List<? extends JdkProxyHint>> doesNotHaveProxyFor(Class<?> target) {
+	private Consumer<List<? extends JavaProxyHint>> doesNotHaveProxyFor(Class<?> target) {
 		return hints -> assertThat(hints).noneMatch(hint -> hint.getProxiedInterfaces().get(0).equals(target));
 	}
 

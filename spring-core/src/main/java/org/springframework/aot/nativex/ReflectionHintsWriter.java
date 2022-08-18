@@ -23,12 +23,13 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Stream;
 
-import org.springframework.aot.hint.ExecutableHint;
 import org.springframework.aot.hint.ExecutableMode;
-import org.springframework.aot.hint.FieldHint;
-import org.springframework.aot.hint.MemberCategory;
+import org.springframework.aot.hint.FieldMode;
+import org.springframework.aot.hint.JavaReflectionHint;
+import org.springframework.aot.hint.JavaReflectionHint.Category;
+import org.springframework.aot.hint.JavaReflectionHint.ExecutableHint;
+import org.springframework.aot.hint.JavaReflectionHint.FieldHint;
 import org.springframework.aot.hint.ReflectionHints;
-import org.springframework.aot.hint.TypeHint;
 import org.springframework.lang.Nullable;
 
 /**
@@ -46,20 +47,20 @@ class ReflectionHintsWriter {
 	public static final ReflectionHintsWriter INSTANCE = new ReflectionHintsWriter();
 
 	public void write(BasicJsonWriter writer, ReflectionHints hints) {
-		writer.writeArray(hints.typeHints().map(this::toAttributes).toList());
+		writer.writeArray(hints.javaReflection().sorted().map(this::toAttributes).toList());
 	}
 
-	private Map<String, Object> toAttributes(TypeHint hint) {
+	private Map<String, Object> toAttributes(JavaReflectionHint hint) {
 		Map<String, Object> attributes = new LinkedHashMap<>();
 		attributes.put("name", hint.getType());
 		handleCondition(attributes, hint);
-		handleCategories(attributes, hint.getMemberCategories());
+		handleCategories(attributes, hint.getCategories());
 		handleFields(attributes, hint.fields());
 		handleExecutables(attributes, Stream.concat(hint.constructors(), hint.methods()).toList());
 		return attributes;
 	}
 
-	private void handleCondition(Map<String, Object> attributes, TypeHint hint) {
+	private void handleCondition(Map<String, Object> attributes, JavaReflectionHint hint) {
 		if (hint.getReachableType() != null) {
 			Map<String, Object> conditionAttributes = new LinkedHashMap<>();
 			conditionAttributes.put("typeReachable", hint.getReachableType());
@@ -74,8 +75,8 @@ class ReflectionHintsWriter {
 	private Map<String, Object> toAttributes(FieldHint hint) {
 		Map<String, Object> attributes = new LinkedHashMap<>();
 		attributes.put("name", hint.getName());
-		if (hint.isAllowWrite()) {
-			attributes.put("allowWrite", hint.isAllowWrite());
+		if (hint.getMode() == FieldMode.WRITE) {
+			attributes.put("allowWrite", true);
 		}
 		if (hint.isAllowUnsafeAccess()) {
 			attributes.put("allowUnsafeAccess", hint.isAllowUnsafeAccess());
@@ -85,10 +86,10 @@ class ReflectionHintsWriter {
 
 	private void handleExecutables(Map<String, Object> attributes, List<ExecutableHint> hints) {
 		addIfNotEmpty(attributes, "methods", hints.stream()
-				.filter(h -> h.getModes().contains(ExecutableMode.INVOKE) || h.getModes().isEmpty())
+				.filter(hint -> hint.getMode() == ExecutableMode.INVOKE)
 				.map(this::toAttributes).toList());
 		addIfNotEmpty(attributes, "queriedMethods", hints.stream()
-				.filter(h -> h.getModes().contains(ExecutableMode.INTROSPECT))
+				.filter(hint -> hint.getMode() == ExecutableMode.INTROSPECT)
 				.map(this::toAttributes).toList());
 	}
 
@@ -99,7 +100,7 @@ class ReflectionHintsWriter {
 		return attributes;
 	}
 
-	private void handleCategories(Map<String, Object> attributes, Set<MemberCategory> categories) {
+	private void handleCategories(Map<String, Object> attributes, Set<Category> categories) {
 		categories.forEach(category -> {
 					switch (category) {
 						case PUBLIC_FIELDS -> attributes.put("allPublicFields", true);

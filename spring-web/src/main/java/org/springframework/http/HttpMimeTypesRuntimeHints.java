@@ -31,6 +31,6 @@ class HttpMimeTypesRuntimeHints implements RuntimeHintsRegistrar {
 
 	@Override
 	public void registerHints(RuntimeHints hints, @Nullable ClassLoader classLoader) {
-		hints.resources().registerPattern("org/springframework/http/mime.types");
+		hints.resources().registerInclude().forPattern("org/springframework/http/mime.types");
 	}
 }

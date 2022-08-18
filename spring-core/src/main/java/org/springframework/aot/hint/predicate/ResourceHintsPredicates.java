@@ -16,8 +16,6 @@
 
 package org.springframework.aot.hint.predicate;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 
@@ -72,10 +70,7 @@ public class ResourceHintsPredicates {
 		if (resourceName.startsWith("/")) {
 			return resourceName;
 		}
-		else {
-			return "/" + type.getPackageName().replace('.', '/')
-					+ "/" + resourceName;
-		}
+		return "/" + type.getPackageName().replace('.', '/') + "/" + resourceName;
 	}
 
 	/**
@@ -85,31 +80,10 @@ public class ResourceHintsPredicates {
 	 * @return the {@link RuntimeHints} predicate
 	 */
 	public Predicate<RuntimeHints> forResource(String resourceName) {
-		return hints -> {
-			AggregatedResourcePatternHints aggregatedResourcePatternHints = AggregatedResourcePatternHints.of(
-					hints.resources());
-			boolean isExcluded = aggregatedResourcePatternHints.excludes().stream().anyMatch(excluded ->
-					CACHED_RESOURCE_PATTERNS.get(excluded).matcher(resourceName).matches());
-			if (isExcluded) {
-				return false;
-			}
-			return aggregatedResourcePatternHints.includes().stream().anyMatch(included ->
-					CACHED_RESOURCE_PATTERNS.get(included).matcher(resourceName).matches());
-		};
-	}
-
-	private record AggregatedResourcePatternHints(List<ResourcePatternHint> includes, List<ResourcePatternHint> excludes) {
-
-		static AggregatedResourcePatternHints of(ResourceHints resourceHints) {
-			List<ResourcePatternHint> includes = new ArrayList<>();
-			List<ResourcePatternHint> excludes = new ArrayList<>();
-			resourceHints.resourcePatterns().forEach(resourcePatternHint -> {
-				includes.addAll(resourcePatternHint.getIncludes());
-				excludes.addAll(resourcePatternHint.getExcludes());
-			});
-			return new AggregatedResourcePatternHints(includes, excludes);
-		}
-
+		Predicate<ResourcePatternHint> test = hint -> CACHED_RESOURCE_PATTERNS.get(hint)
+				.matcher(resourceName).matches();
+		return hints -> !hints.resources().excludeResourcePatterns().anyMatch(test)
+				&& hints.resources().includeResourcePatterns().anyMatch(test);
 	}
 
 }

@@ -31,7 +31,7 @@ class JavaMailMimeTypesRuntimeHints implements RuntimeHintsRegistrar {
 
 	@Override
 	public void registerHints(RuntimeHints hints, @Nullable ClassLoader classLoader) {
-		hints.resources().registerPattern("org/springframework/mail/javamail/mime.types");
+		hints.resources().registerInclude().forPattern("org/springframework/mail/javamail/mime.types");
 	}
 
 }
