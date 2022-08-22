@@ -20,6 +20,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextInitializer;
+import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.ContextConfigurationAttributes;
 import org.springframework.test.context.ContextLoader;
@@ -230,18 +232,9 @@ public abstract class AbstractDelegatingSmartContextLoader implements AotContext
 	}
 
 	@Override
-	public ApplicationContext createContextForAotRuntime(MergedContextConfiguration mergedConfig) {
-		return getAotContextLoader(mergedConfig, "create").createContextForAotRuntime(mergedConfig);
-	}
-
-	@Override
-	public void prepareContextForAotRuntime(ApplicationContext context, MergedContextConfiguration mergedConfig) {
-		getAotContextLoader(mergedConfig, "prepare").prepareContextForAotRuntime(context, mergedConfig);
-	}
-
-	@Override
-	public void customizeContextForAotRuntime(ApplicationContext context, MergedContextConfiguration mergedConfig) {
-		getAotContextLoader(mergedConfig, "customize").customizeContextForAotRuntime(context, mergedConfig);
+	public GenericApplicationContext loadContextForAotRuntime(MergedContextConfiguration mergedConfig,
+			ApplicationContextInitializer<GenericApplicationContext> initializer) throws Exception {
+		return getAotContextLoader(mergedConfig, "load").loadContextForAotRuntime(mergedConfig, initializer);
 	}
 
 	/**

@@ -17,6 +17,8 @@
 package org.springframework.test.context.aot;
 
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextInitializer;
+import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.test.context.MergedContextConfiguration;
 import org.springframework.test.context.SmartContextLoader;
 
@@ -52,53 +54,24 @@ public interface AotContextLoader extends SmartContextLoader {
 	ApplicationContext loadContextForAotProcessing(MergedContextConfiguration mergedConfig) throws Exception;
 
 	/**
-	 * Create a new {@link ApplicationContext} for AOT run-time execution, based
-	 * on the supplied {@link MergedContextConfiguration}.
-	 * <p>This method must simply instantiate the context. It should not configure
-	 * the context, register any beans, refresh it, etc.
-	 * <p>As of Spring Framework 6.0, the context created by this method must be
-	 * a {@link org.springframework.context.support.GenericApplicationContext
-	 * GenericApplicationContext} or subclass of {@code GenericApplicationContext}.
-	 * @param mergedConfig the merged context configuration to use to create the
+	 * Load a new {@link ApplicationContext} for AOT run-time execution based on
+	 * the supplied {@link MergedContextConfiguration} and
+	 * {@link ApplicationContextInitializer}.
+	 * <p>This method must instantiate, initialize and
+	 * {@linkplain org.springframework.context.ConfigurableApplicationContext#refresh()
+	 * refresh} the {@code ApplicationContext}.
+	 * @param mergedConfig the merged context configuration to use to load the
 	 * application context
-	 * @return a new application context
-	 * @see #prepareContextForAotRuntime(ApplicationContext, MergedContextConfiguration)
-	 * @see #customizeContextForAotRuntime(ApplicationContext, MergedContextConfiguration)
-	 */
-	ApplicationContext createContextForAotRuntime(MergedContextConfiguration mergedConfig);
-
-	/**
-	 * Prepare the supplied {@link ApplicationContext} for AOT run-time execution,
-	 * based on the supplied {@link MergedContextConfiguration}.
-	 * <p>This method will be invoked before beans have been registered in the
-	 * context.
-	 * <p>This method must not register any application beans or refresh the context.
-	 * <p>The supplied context will be one
-	 * {@linkplain #createContextForAotRuntime(MergedContextConfiguration) created}
-	 * by this {@code AotContextLoader}.
-	 * @param context the {@code ApplicationContext} to prepare
-	 * @param mergedConfig the merged context configuration to use to prepare the
-	 * application context
+	 * @param initializer the {@link ApplicationContextInitializer} that should
+	 * be applied in order to re-create bean definitions
+	 * @return a new generic application context
+	 * @throws Exception if context loading failed
 	 * @see #createContextForAotRuntime(MergedContextConfiguration)
-	 * @see #customizeContextForAotRuntime(ApplicationContext, MergedContextConfiguration)
+	 * @see #prepareContextForAotRuntime(ApplicationContext,
+	 * MergedContextConfiguration)
+	 * @see #customizeContextForAotRuntime(ApplicationContext,
+	 * MergedContextConfiguration)
 	 */
-	void prepareContextForAotRuntime(ApplicationContext context, MergedContextConfiguration mergedConfig);
-
-	/**
-	 * Customize the supplied {@link ApplicationContext} for AOT run-time execution,
-	 * based on the supplied {@link MergedContextConfiguration}.
-	 * <p>This method will be invoked after beans have been registered in the
-	 * context.
-	 * <p>This method must not refresh the context.
-	 * <p>The supplied context will be one
-	 * {@linkplain #createContextForAotRuntime(MergedContextConfiguration) created}
-	 * by this {@code AotContextLoader}.
-	 * @param context the {@code ApplicationContext} to customize
-	 * @param mergedConfig the merged context configuration to use to customize
-	 * the application context
-	 * @see #createContextForAotRuntime(MergedContextConfiguration)
-	 * @see #prepareContextForAotRuntime(ApplicationContext, MergedContextConfiguration)
-	 */
-	void customizeContextForAotRuntime(ApplicationContext context, MergedContextConfiguration mergedConfig);
-
+	GenericApplicationContext loadContextForAotRuntime(MergedContextConfiguration mergedConfig,
+			ApplicationContextInitializer<GenericApplicationContext> initializer) throws Exception;
 }

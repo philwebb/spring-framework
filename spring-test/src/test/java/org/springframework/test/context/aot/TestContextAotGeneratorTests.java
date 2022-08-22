@@ -91,18 +91,18 @@ class TestContextAotGeneratorTests extends AbstractAotTests {
 		List<String> sourceFiles = generatedFiles.getGeneratedFiles(Kind.SOURCE).keySet().stream().toList();
 		assertThat(sourceFiles).containsExactlyInAnyOrder(expectedSourceFilesForBasicSpringTests);
 
-		TestCompiler.forSystem().withFiles(generatedFiles).compile(compiled -> {
+		TestCompiler.forSystem().withFiles(generatedFiles).compile(ThrowingConsumer.of(compiled -> {
 			AotTestMappings aotTestMappings = new AotTestMappings();
-			testClasses.forEach(testClass -> {
+			for (Class<?> testClass : testClasses) {
 				MergedContextConfiguration mergedConfig = generator.buildMergedContextConfiguration(testClass);
 				ApplicationContextInitializer<GenericApplicationContext> contextInitializer =
 						aotTestMappings.getContextInitializer(testClass);
 				assertThat(contextInitializer).isNotNull();
-				AotRuntimeContextLoader aotRuntimeContextLoader = new AotRuntimeContextLoader();
-				GenericApplicationContext context = aotRuntimeContextLoader.loadContext(mergedConfig, contextInitializer);
+				GenericApplicationContext context = ((AotContextLoader) mergedConfig.getContextLoader())
+						.loadContextForAotRuntime(mergedConfig, contextInitializer);
 				assertContextForBasicTests(context);
-			});
-		});
+			}
+		}));
 	}
 
 	@Test
@@ -169,16 +169,16 @@ class TestContextAotGeneratorTests extends AbstractAotTests {
 		InMemoryGeneratedFiles generatedFiles = new InMemoryGeneratedFiles();
 		TestContextAotGenerator generator = new TestContextAotGenerator(generatedFiles);
 		List<Mapping> mappings = processAheadOfTime(generator, testClasses);
-		TestCompiler.forSystem().withFiles(generatedFiles).compile(compiled -> {
-			mappings.forEach(mapping -> {
+		TestCompiler.forSystem().withFiles(generatedFiles).compile(ThrowingConsumer.of(compiled -> {
+			for (Mapping mapping : mappings) {
 				MergedContextConfiguration mergedConfig = mapping.mergedConfig();
 				ApplicationContextInitializer<GenericApplicationContext> contextInitializer =
 						compiled.getInstance(ApplicationContextInitializer.class, mapping.className().reflectionName());
-				AotRuntimeContextLoader aotRuntimeContextLoader = new AotRuntimeContextLoader();
-				GenericApplicationContext context = aotRuntimeContextLoader.loadContext(mergedConfig, contextInitializer);
+				GenericApplicationContext context = ((AotContextLoader) mergedConfig.getContextLoader())
+						.loadContextForAotRuntime(mergedConfig, contextInitializer);
 				result.accept(context);
-			});
-		});
+			}
+		}));
 	}
 
 	private List<Mapping> processAheadOfTime(TestContextAotGenerator generator, Set<Class<?>> testClasses) {

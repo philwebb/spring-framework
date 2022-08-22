@@ -23,13 +23,14 @@ import org.springframework.aot.AotDetector;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.support.GenericApplicationContext;
+import org.springframework.core.log.LogMessage;
 import org.springframework.lang.Nullable;
 import org.springframework.test.annotation.DirtiesContext.HierarchyMode;
 import org.springframework.test.context.CacheAwareContextLoaderDelegate;
 import org.springframework.test.context.ContextLoader;
 import org.springframework.test.context.MergedContextConfiguration;
 import org.springframework.test.context.SmartContextLoader;
-import org.springframework.test.context.aot.AotRuntimeContextLoader;
+import org.springframework.test.context.aot.AotContextLoader;
 import org.springframework.test.context.aot.AotTestMappings;
 import org.springframework.util.Assert;
 
@@ -54,8 +55,6 @@ public class DefaultCacheAwareContextLoaderDelegate implements CacheAwareContext
 	static final ContextCache defaultContextCache = new DefaultContextCache();
 
 	private final AotTestMappings aotTestMappings = getAotTestMappings();
-
-	private final AotRuntimeContextLoader aotRuntimeContextLoader = new AotRuntimeContextLoader();
 
 	private final ContextCache contextCache;
 
@@ -167,7 +166,13 @@ public class DefaultCacheAwareContextLoaderDelegate implements CacheAwareContext
 		Assert.state(contextInitializer != null,
 				() -> "Failed to load AOT ApplicationContextInitializer for test class [%s]"
 						.formatted(testClass.getName()));
-		return this.aotRuntimeContextLoader.loadContext(mergedConfig, contextInitializer);
+		logger.info(LogMessage.format("Loading ApplicationContext in AOT mode for %s", mergedConfig));
+		ContextLoader contextLoader = mergedConfig.getContextLoader();
+		Assert.isInstanceOf(AotContextLoader.class, contextLoader);
+		GenericApplicationContext context = ((AotContextLoader) contextLoader)
+				.loadContextForAotRuntime(mergedConfig, contextInitializer);
+		context.registerShutdownHook();
+		return context;
 	}
 
 	/**

@@ -22,6 +22,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.support.BeanDefinitionReader;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigUtils;
 import org.springframework.context.support.GenericApplicationContext;
@@ -62,26 +63,17 @@ public abstract class AbstractGenericContextLoader extends AbstractContextLoader
 	protected static final Log logger = LogFactory.getLog(AbstractGenericContextLoader.class);
 
 	@Override
-	public ApplicationContext createContextForAotRuntime(MergedContextConfiguration mergedConfig) {
-		return createContext();
-	}
+	public GenericApplicationContext loadContextForAotRuntime(MergedContextConfiguration mergedConfig,
+			ApplicationContextInitializer<GenericApplicationContext> initializer) throws Exception {
 
-	@Override
-	public void prepareContextForAotRuntime(ApplicationContext context, MergedContextConfiguration mergedConfig) {
-		if (!(context instanceof GenericApplicationContext gac)) {
-			throw new IllegalArgumentException("Can only prepare a GenericApplicationContext for AOT runtime.");
-		}
-		prepareContext(gac);
-		prepareContext(gac, mergedConfig);
-	}
-
-	@Override
-	public void customizeContextForAotRuntime(ApplicationContext context, MergedContextConfiguration mergedConfig) {
-		if (!(context instanceof GenericApplicationContext gac)) {
-			throw new IllegalArgumentException("Can only customize a GenericApplicationContext for AOT runtime.");
-		}
-		customizeContext(gac);
-		customizeContext(gac, mergedConfig);
+		GenericApplicationContext context = createContext();
+		prepareContext(context);
+		prepareContext(context, mergedConfig);
+		initializer.initialize(context);
+		customizeContext(context);
+		customizeContext(context, mergedConfig);
+		context.refresh();
+		return context;
 	}
 
 	/**
