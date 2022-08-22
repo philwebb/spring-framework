@@ -22,6 +22,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.support.GenericApplicationContext;
+import org.springframework.core.log.LogMessage;
 import org.springframework.test.context.ContextLoader;
 import org.springframework.test.context.MergedContextConfiguration;
 
@@ -42,9 +43,7 @@ public class AotRuntimeContextLoader {
 			ApplicationContextInitializer<GenericApplicationContext> contextInitializer)
 			throws TestContextAotException {
 
-		if (logger.isInfoEnabled()) {
-			logger.info("Loading ApplicationContext in AOT mode for " + mergedConfig);
-		}
+		logger.info(LogMessage.format("Loading ApplicationContext in AOT mode for %s", mergedConfig));
 
 		ContextLoader contextLoader = mergedConfig.getContextLoader();
 		if (!((contextLoader instanceof AotContextLoader aotContextLoader) &&

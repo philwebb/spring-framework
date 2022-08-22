@@ -34,6 +34,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.aot.ApplicationContextAotGenerator;
 import org.springframework.context.support.GenericApplicationContext;
+import org.springframework.core.log.LogMessage;
 import org.springframework.javapoet.ClassName;
 import org.springframework.test.context.BootstrapUtils;
 import org.springframework.test.context.ContextLoader;
@@ -100,34 +101,33 @@ class TestContextAotGenerator {
 	 * @throws TestContextAotException if an error occurs during AOT processing
 	 */
 	public void processAheadOfTime(Stream<Class<?>> testClasses) throws TestContextAotException {
-		MultiValueMap<ClassName, Class<?>> classNameMappings = new LinkedMultiValueMap<>();
-		MultiValueMap<MergedContextConfiguration, Class<?>> mergedConfigMappings = new LinkedMultiValueMap<>();
-		testClasses.forEach(testClass -> mergedConfigMappings.add(buildMergedContextConfiguration(testClass), testClass));
+		MultiValueMap<MergedContextConfiguration, Class<?>> mergedConfigs = new LinkedMultiValueMap<>();
+		testClasses.forEach(testClass -> mergedConfigs.add(buildMergedContextConfiguration(testClass), testClass));
+		processAheadOfTime(mergedConfigs);
+	}
 
-		mergedConfigMappings.forEach((mergedConfig, classes) -> {
-			if (logger.isDebugEnabled()) {
-				logger.debug("Generating AOT artifacts for test classes %s"
-						.formatted(classes.stream().map(Class::getCanonicalName).toList()));
-			}
+	private void processAheadOfTime(MultiValueMap<MergedContextConfiguration, Class<?>> mergedConfigs) {
+		MultiValueMap<ClassName, Class<?>> initializerTestClasses = new LinkedMultiValueMap<>();
+		mergedConfigs.forEach((mergedConfig, testClasses) -> {
+			logger.debug(LogMessage.format("Generating AOT artifacts for test classes %s",
+					testClasses.stream().map(Class::getCanonicalName).toList()));
 			try {
 				// Use first test class discovered for a given unique MergedContextConfiguration.
-				Class<?> testClass = classes.get(0);
+				Class<?> testClass = testClasses.get(0);
 				DefaultGenerationContext generationContext = createGenerationContext(testClass);
-				ClassName className = processAheadOfTime(mergedConfig, generationContext);
-				Assert.state(!classNameMappings.containsKey(className),
-						() -> "ClassName [%s] already encountered".formatted(className.reflectionName()));
-				classNameMappings.addAll(className, classes);
+				ClassName initializer = processAheadOfTime(mergedConfig, generationContext);
+				Assert.state(!initializerTestClasses.containsKey(initializer),
+						() -> "ClassName [%s] already encountered".formatted(initializer.reflectionName()));
+				initializerTestClasses.addAll(initializer, testClasses);
 				generationContext.writeGeneratedContent();
 			}
 			catch (Exception ex) {
-				if (logger.isWarnEnabled()) {
-					logger.warn("Failed to generate AOT artifacts for test classes [%s]"
-							.formatted(classes.stream().map(Class::getCanonicalName).toList()), ex);
-				}
+				logger.warn(LogMessage.format("Failed to generate AOT artifacts for test classes [%s]",
+						testClasses.stream().map(Class::getCanonicalName).toList()), ex);
 			}
 		});
 
-		generateAotTestMappings(classNameMappings);
+		generateAotTestMappings(initializerTestClasses);
 	}
 
 	/**

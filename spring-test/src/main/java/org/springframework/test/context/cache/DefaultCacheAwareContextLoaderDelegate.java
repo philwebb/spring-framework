@@ -96,12 +96,9 @@ public class DefaultCacheAwareContextLoaderDelegate implements CacheAwareContext
 			ApplicationContext context = this.contextCache.get(mergedContextConfiguration);
 			if (context == null) {
 				try {
-					if (runningInAotMode(mergedContextConfiguration.getTestClass())) {
-						context = loadContextInAotMode(mergedContextConfiguration);
-					}
-					else {
-						context = loadContextInternal(mergedContextConfiguration);
-					}
+					context = !runningInAotMode(mergedContextConfiguration.getTestClass())
+							? loadContextInternal(mergedContextConfiguration)
+							: loadContextInAotMode(mergedContextConfiguration);
 					if (logger.isDebugEnabled()) {
 						logger.debug(String.format("Storing ApplicationContext [%s] in cache under key [%s]",
 								System.identityHashCode(context), mergedContextConfiguration));

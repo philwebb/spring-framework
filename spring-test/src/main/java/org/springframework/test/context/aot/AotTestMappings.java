@@ -22,6 +22,7 @@ import java.util.function.Supplier;
 
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.support.GenericApplicationContext;
+import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.ReflectionUtils;
 
@@ -42,6 +43,7 @@ import org.springframework.util.ReflectionUtils;
  */
 public class AotTestMappings {
 
+	// FIXME Same issue as we have in Boot where we're relying on the generated name
 	static final String GENERATED_MAPPINGS_CLASS_NAME = AotTestMappings.class.getName() + "__Generated";
 
 	static final String GENERATED_MAPPINGS_METHOD_NAME = "getContextInitializers";
@@ -94,9 +96,7 @@ public class AotTestMappings {
 		try {
 			Class<?> clazz = ClassUtils.forName(className, null);
 			Method method = ReflectionUtils.findMethod(clazz, methodName);
-			if (method == null) {
-				throw new IllegalStateException("No %s() method found in %s".formatted(methodName, clazz.getName()));
-			}
+			Assert.state(method != null, () -> "No %s() method found in %s".formatted(methodName, clazz.getName()));
 			return (Map<String, Supplier<ApplicationContextInitializer<GenericApplicationContext>>>)
 					ReflectionUtils.invokeMethod(method, null);
 		}
