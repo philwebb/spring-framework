@@ -129,11 +129,17 @@ public final class TypeHint implements ConditionalHint {
 	/**
 	 * Return a {@link Consumer} that applies the given {@link MemberCategory
 	 * MemberCategories} to the accepted {@link Builder}.
-	 * @param memberCategories the memberCategories to apply
+	 * @param memberCategory the member category to apply
+	 * @param additionalMemberCategories any additional member categories to apply
 	 * @return a consumer to apply the member categories
 	 */
-	public static Consumer<Builder> builtWith(MemberCategory... memberCategories) {
-		return builder -> builder.withMembers(memberCategories);
+	public static Consumer<Builder> builtWith(MemberCategory memberCategory,
+			MemberCategory... additionalMemberCategories) {
+
+		return builder -> {
+			builder.withMembers(memberCategory);
+			builder.withMembers(additionalMemberCategories);
+		};
 	}
 
 

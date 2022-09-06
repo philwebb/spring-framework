@@ -90,22 +90,28 @@ public class ReflectionHints {
 	 * Register or customize reflection hints for the specified type
 	 * using the specified {@link MemberCategory MemberCategories}.
 	 * @param type the type to customize
-	 * @param memberCategories the member categories to apply
+	 * @param memberCategory the member category to apply
+	 * @param additionalMemberCategories any additional member categories to apply
 	 * @return {@code this}, to facilitate method chaining
 	 */
-	public ReflectionHints registerType(Class<?> type, MemberCategory... memberCategories) {
-		return registerType(TypeReference.of(type), memberCategories);
+	public ReflectionHints registerType(Class<?> type, MemberCategory memberCategory,
+			MemberCategory... additionalMemberCategories) {
+
+		return registerType(TypeReference.of(type), memberCategory, additionalMemberCategories);
 	}
 
 	/**
 	 * Register or customize reflection hints for the specified type
 	 * using the specified {@link MemberCategory MemberCategories}.
 	 * @param type the type to customize
-	 * @param memberCategories the member categories to apply
+	 * @param memberCategory the member category to apply
+	 * @param additionalMemberCategories any additional member categories to apply
 	 * @return {@code this}, to facilitate method chaining
 	 */
-	public ReflectionHints registerType(TypeReference type , MemberCategory... memberCategories) {
-		return registerType(type, TypeHint.builtWith(memberCategories));
+	public ReflectionHints registerType(TypeReference type, MemberCategory memberCategory,
+			MemberCategory... additionalMemberCategories) {
+
+		return registerType(type, TypeHint.builtWith(memberCategory, additionalMemberCategories));
 	}
 
 	/**

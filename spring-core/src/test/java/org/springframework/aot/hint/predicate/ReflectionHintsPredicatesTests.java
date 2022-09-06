@@ -66,19 +66,22 @@ class ReflectionHintsPredicatesTests {
 
 		@Test
 		void reflectionOnClassShouldMatchIntrospection() {
-			runtimeHints.reflection().registerType(SampleClass.class);
+			runtimeHints.reflection().registerType(SampleClass.class, typeHint -> {
+			});
 			assertPredicateMatches(reflection.onType(SampleClass.class));
 		}
 
 		@Test
 		void reflectionOnTypeReferenceShouldMatchIntrospection() {
-			runtimeHints.reflection().registerType(SampleClass.class);
+			runtimeHints.reflection().registerType(SampleClass.class, typeHint -> {
+			});
 			assertPredicateMatches(reflection.onType(TypeReference.of(SampleClass.class)));
 		}
 
 		@Test
 		void reflectionOnDifferentClassShouldNotMatchIntrospection() {
-			runtimeHints.reflection().registerType(Integer.class);
+			runtimeHints.reflection().registerType(Integer.class, typeHint -> {
+			});
 			assertPredicateDoesNotMatch(reflection.onType(TypeReference.of(SampleClass.class)));
 		}
 

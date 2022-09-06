@@ -56,13 +56,15 @@ class InstrumentedMethodTests {
 		void classForNameShouldMatchReflectionOnType() {
 			RecordedInvocation invocation = RecordedInvocation.of(InstrumentedMethod.CLASS_FORNAME)
 					.withArgument("java.lang.String").returnValue(String.class).build();
-			hints.reflection().registerType(String.class);
+			hints.reflection().registerType(String.class, typeHint -> {
+			});
 			assertThatInvocationMatches(InstrumentedMethod.CLASS_FORNAME, invocation);
 		}
 
 		@Test
 		void classGetClassesShouldNotMatchReflectionOnType() {
-			hints.reflection().registerType(String.class);
+			hints.reflection().registerType(String.class, typeHint -> {
+			});
 			assertThatInvocationDoesNotMatch(InstrumentedMethod.CLASS_GETCLASSES, this.stringGetClasses);
 		}
 
@@ -95,7 +97,8 @@ class InstrumentedMethodTests {
 			RecordedInvocation invocation = RecordedInvocation.of(InstrumentedMethod.CLASSLOADER_LOADCLASS)
 					.onInstance(ClassLoader.getSystemClassLoader())
 					.withArgument(PublicField.class.getCanonicalName()).returnValue(PublicField.class).build();
-			hints.reflection().registerType(PublicField.class);
+			hints.reflection().registerType(PublicField.class, typeHint -> {
+			});
 			assertThatInvocationMatches(InstrumentedMethod.CLASSLOADER_LOADCLASS, invocation);
 		}
 
