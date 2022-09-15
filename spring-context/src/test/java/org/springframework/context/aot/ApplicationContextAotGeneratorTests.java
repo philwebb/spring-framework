@@ -32,6 +32,7 @@ import org.springframework.aot.hint.RuntimeHints;
 import org.springframework.aot.hint.TypeReference;
 import org.springframework.aot.hint.predicate.RuntimeHintsPredicates;
 import org.springframework.aot.test.generate.TestGenerationContext;
+import org.springframework.aot.test.generate.compile.CompileWithTargetClassAccess;
 import org.springframework.aot.test.generate.compile.Compiled;
 import org.springframework.aot.test.generate.compile.TestCompiler;
 import org.springframework.beans.BeansException;
@@ -283,6 +284,7 @@ class ApplicationContextAotGeneratorTests {
 	}
 
 	@Test
+	@CompileWithTargetClassAccess
 	void processAheadOfTimeWhenHasCglibProxyUseProxy() {
 		GenericApplicationContext applicationContext = new AnnotationConfigApplicationContext();
 		applicationContext.registerBean(CglibConfiguration.class);
