@@ -64,6 +64,7 @@ import static java.util.Map.entry;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.InstanceOfAssertFactories.map;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -82,6 +83,39 @@ public class AssertableMockMvcIntegrationTests {
 
 	AssertableMockMvcIntegrationTests(WebApplicationContext wac) {
 		this.mockMvc = AssertableMockMvc.from(wac);
+	}
+
+	@Test
+	void hacking() {
+		assertThat(perform(get("/foo").accept(MediaType.APPLICATION_JSON)))
+				.satisfies((result) -> {
+					assertThat(result).hasStatusOk();
+					assertThat(result).cookies().containsCookie("foo");
+					assertThat(result).cookies().containsCookie("bar");
+				});
+
+		assertThat(perform(get("/foo").accept(MediaType.APPLICATION_JSON)))
+				.hasStatusOk()
+				.cookies((cookies) -> {
+					cookies.containsCookie("foo");
+					cookies.containsCookie("bar");
+				});
+
+		assertThat(perform(get("/foo").accept(MediaType.APPLICATION_JSON)))
+				.and(result -> {
+					result.hasStatusOk();
+					result.cookies().containsCookie("foo");
+					result.cookies().containsCookie("bar");
+				});
+	}
+
+	@Test
+	void hacking2() {
+		AssertableMvcResult result = perform(get("/foo").accept(MediaType.APPLICATION_JSON));
+		assertThat(result).hasStatusOk();
+		assertThat(result).cookies().containsCookie("foo");
+		assertThat(result).cookies().containsCookie("bar");
+		assertThat(result).headers().containsHeader("foo");
 	}
 
 	@Nested

@@ -27,6 +27,7 @@ import org.assertj.core.api.AbstractThrowableAssert;
 import org.assertj.core.api.Assertions;
 import org.assertj.core.api.MapAssert;
 import org.assertj.core.api.ObjectAssert;
+import org.assertj.core.api.ThrowingConsumer;
 import org.assertj.core.error.BasicErrorMessageFactory;
 import org.assertj.core.internal.Failures;
 
@@ -53,6 +54,10 @@ public class MvcResultAssert extends AbstractMockHttpServletResponseAssert<MvcRe
 
 	MvcResultAssert(AssertableMvcResult mvcResult, @Nullable GenericHttpMessageConverter<Object> jsonMessageConverter) {
 		super(jsonMessageConverter, mvcResult, MvcResultAssert.class);
+	}
+
+	public void and(ThrowingConsumer<MvcResultAssert> result) {
+		result.accept(this);
 	}
 
 	@Override
@@ -88,6 +93,12 @@ public class MvcResultAssert extends AbstractMockHttpServletResponseAssert<MvcRe
 		checkHasNotFailedUnexpectedly();
 		return new CookieMapAssert(this.actual.getResponse().getCookies());
 	}
+
+	public MvcResultAssert cookies(ThrowingConsumer<CookieMapAssert> cookies) {
+		cookies.accept(cookies());
+		return this.myself;
+	}
+
 
 	/**
 	 * Return a new {@linkplain MediaTypeAssert assertion} object that uses the
