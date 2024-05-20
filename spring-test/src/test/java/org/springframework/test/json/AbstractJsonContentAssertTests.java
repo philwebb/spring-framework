@@ -38,7 +38,6 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.skyscreamer.jsonassert.JSONCompareMode;
 import org.skyscreamer.jsonassert.comparator.DefaultComparator;
-import org.skyscreamer.jsonassert.comparator.JSONComparator;
 
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.io.ByteArrayResource;
@@ -79,7 +78,7 @@ class AbstractJsonContentAssertTests {
 	private static final MappingJackson2HttpMessageConverter jsonHttpMessageConverter =
 			new MappingJackson2HttpMessageConverter(new ObjectMapper());
 
-	private static final JSONComparator comparator = new DefaultComparator(JSONCompareMode.LENIENT);
+	private static final JsonComparator comparator = JsonAssert.comparator(new DefaultComparator(JSONCompareMode.LENIENT));
 
 	@Test
 	void isNullWhenActualIsNullShouldPass() {
@@ -364,29 +363,29 @@ class AbstractJsonContentAssertTests {
 		void isEqualToWhenExpectedIsNullShouldFail() {
 			CharSequence actual = null;
 			assertThatExceptionOfType(AssertionError.class)
-					.isThrownBy(() -> assertThat(forJson(SOURCE)).isEqualTo(actual, JSONCompareMode.LENIENT));
+					.isThrownBy(() -> assertThat(forJson(SOURCE)).isEqualTo(actual, JsonCompareMode.LENIENT));
 		}
 
 		@Test
 		void isEqualToWhenStringIsMatchingAndLenientShouldPass() {
-			assertThat(forJson(SOURCE)).isEqualTo(LENIENT_SAME, JSONCompareMode.LENIENT);
+			assertThat(forJson(SOURCE)).isEqualTo(LENIENT_SAME, JsonCompareMode.LENIENT);
 		}
 
 		@Test
 		void isEqualToWhenStringIsNotMatchingAndLenientShouldFail() {
 			assertThatExceptionOfType(AssertionError.class)
-					.isThrownBy(() -> assertThat(forJson(SOURCE)).isEqualTo(DIFFERENT, JSONCompareMode.LENIENT));
+					.isThrownBy(() -> assertThat(forJson(SOURCE)).isEqualTo(DIFFERENT, JsonCompareMode.LENIENT));
 		}
 
 		@Test
 		void isEqualToWhenResourcePathIsMatchingAndLenientShouldPass() {
-			assertThat(forJson(SOURCE)).isEqualTo("lenient-same.json", JSONCompareMode.LENIENT);
+			assertThat(forJson(SOURCE)).isEqualTo("lenient-same.json", JsonCompareMode.LENIENT);
 		}
 
 		@Test
 		void isEqualToWhenResourcePathIsNotMatchingAndLenientShouldFail() {
 			assertThatExceptionOfType(AssertionError.class)
-					.isThrownBy(() -> assertThat(forJson(SOURCE)).isEqualTo("different.json", JSONCompareMode.LENIENT));
+					.isThrownBy(() -> assertThat(forJson(SOURCE)).isEqualTo("different.json", JsonCompareMode.LENIENT));
 		}
 
 		Stream<Arguments> source() {
@@ -416,14 +415,14 @@ class AbstractJsonContentAssertTests {
 		@ParameterizedTest
 		@MethodSource("lenientSame")
 		void isEqualToWhenResourceIsMatchingAndLenientSameShouldPass(Resource expected) {
-			assertThat(forJson(SOURCE)).isEqualTo(expected, JSONCompareMode.LENIENT);
+			assertThat(forJson(SOURCE)).isEqualTo(expected, JsonCompareMode.LENIENT);
 		}
 
 		@ParameterizedTest
 		@MethodSource("different")
 		void isEqualToWhenResourceIsNotMatchingAndLenientShouldFail(Resource expected) {
 			assertThatExceptionOfType(AssertionError.class).isThrownBy(
-					() -> assertThat(forJson(SOURCE)).isEqualTo(expected, JSONCompareMode.LENIENT));
+					() -> assertThat(forJson(SOURCE)).isEqualTo(expected, JsonCompareMode.LENIENT));
 		}
 
 		@Test
@@ -568,36 +567,36 @@ class AbstractJsonContentAssertTests {
 		@Test
 		void isNotEqualToWhenStringIsMatchingAndLenientShouldFail() {
 			assertThatExceptionOfType(AssertionError.class)
-					.isThrownBy(() -> assertThat(forJson(SOURCE)).isNotEqualTo(LENIENT_SAME, JSONCompareMode.LENIENT));
+					.isThrownBy(() -> assertThat(forJson(SOURCE)).isNotEqualTo(LENIENT_SAME, JsonCompareMode.LENIENT));
 		}
 
 		@Test
 		void isNotEqualToWhenStringIsNotMatchingAndLenientShouldPass() {
-			assertThat(forJson(SOURCE)).isNotEqualTo(DIFFERENT, JSONCompareMode.LENIENT);
+			assertThat(forJson(SOURCE)).isNotEqualTo(DIFFERENT, JsonCompareMode.LENIENT);
 		}
 
 		@Test
 		void isNotEqualToWhenResourcePathIsMatchingAndLenientShouldFail() {
 			assertThatExceptionOfType(AssertionError.class).isThrownBy(
-					() -> assertThat(forJson(SOURCE)).isNotEqualTo("lenient-same.json", JSONCompareMode.LENIENT));
+					() -> assertThat(forJson(SOURCE)).isNotEqualTo("lenient-same.json", JsonCompareMode.LENIENT));
 		}
 
 		@Test
 		void isNotEqualToWhenResourcePathIsNotMatchingAndLenientShouldPass() {
-			assertThat(forJson(SOURCE)).isNotEqualTo("different.json", JSONCompareMode.LENIENT);
+			assertThat(forJson(SOURCE)).isNotEqualTo("different.json", JsonCompareMode.LENIENT);
 		}
 
 		@ParameterizedTest
 		@MethodSource("lenientSame")
 		void isNotEqualToWhenResourceIsMatchingAndLenientShouldFail(Resource expected) {
 			assertThatExceptionOfType(AssertionError.class).isThrownBy(() -> assertThat(forJson(SOURCE))
-					.isNotEqualTo(expected, JSONCompareMode.LENIENT));
+					.isNotEqualTo(expected, JsonCompareMode.LENIENT));
 		}
 
 		@ParameterizedTest
 		@MethodSource("different")
 		void isNotEqualToWhenResourceIsNotMatchingAndLenientShouldPass(Resource expected) {
-			assertThat(forJson(SOURCE)).isNotEqualTo(expected, JSONCompareMode.LENIENT);
+			assertThat(forJson(SOURCE)).isNotEqualTo(expected, JsonCompareMode.LENIENT);
 		}
 
 		@Test
