@@ -230,6 +230,10 @@ class ConfigurationClassBeanDefinitionReader {
 			beanDef.setUniqueFactoryMethodName(methodName);
 		}
 
+		if (metadata.getDeclaringClassName().contains("autoconfig")) {
+			beanDef.setTargetType(ClassUtils.resolveClassName(metadata.getReturnTypeName(), null));
+		}
+
 		if (metadata instanceof StandardMethodMetadata smm &&
 				configClass.getMetadata() instanceof StandardAnnotationMetadata sam) {
 			Method method = ClassUtils.getMostSpecificMethod(smm.getIntrospectedMethod(), sam.getIntrospectedClass());
@@ -442,8 +446,12 @@ class ConfigurationClassBeanDefinitionReader {
 
 		@Override
 		public boolean isFactoryMethod(Method candidate) {
-			return (super.isFactoryMethod(candidate) && BeanAnnotationHelper.isBeanAnnotated(candidate) &&
+			long start = System.nanoTime();
+			boolean result = (super.isFactoryMethod(candidate) && BeanAnnotationHelper.isBeanAnnotated(candidate) &&
 					BeanAnnotationHelper.determineBeanNameFor(candidate).equals(this.derivedBeanName));
+			long time = System.nanoTime() - start;
+			Timings.isFactoryMethod += time;
+			return result;
 		}
 
 		@Override

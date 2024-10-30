@@ -164,6 +164,7 @@ class ConfigurationClassParser {
 
 
 	public void parse(Set<BeanDefinitionHolder> configCandidates) {
+		long start = System.nanoTime();
 		for (BeanDefinitionHolder holder : configCandidates) {
 			BeanDefinition bd = holder.getBeanDefinition();
 			try {
@@ -187,6 +188,8 @@ class ConfigurationClassParser {
 		}
 
 		this.deferredImportSelectorHandler.process();
+		long time = System.nanoTime() - start;
+		Timings.parseConfigClass += time;
 	}
 
 	private void parse(AnnotatedBeanDefinition beanDef, String beanName) {
@@ -440,6 +443,7 @@ class ConfigurationClassParser {
 	 * Retrieve the metadata for all <code>@Bean</code> methods.
 	 */
 	private Set<MethodMetadata> retrieveBeanMethodMetadata(SourceClass sourceClass) {
+		long start = System.nanoTime();
 		AnnotationMetadata original = sourceClass.getMetadata();
 		Set<MethodMetadata> beanMethods = original.getAnnotatedMethods(Bean.class.getName());
 		if (beanMethods.size() > 1 && original instanceof StandardAnnotationMetadata) {
@@ -474,6 +478,8 @@ class ConfigurationClassParser {
 				// No worries, let's continue with the reflection metadata we started with...
 			}
 		}
+		long time = System.nanoTime() - start;
+		Timings.retrieveBeanMethodMetadata += time;
 		return beanMethods;
 	}
 

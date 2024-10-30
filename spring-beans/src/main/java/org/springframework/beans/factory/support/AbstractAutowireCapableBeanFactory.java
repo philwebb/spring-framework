@@ -121,6 +121,12 @@ import org.springframework.util.function.ThrowingSupplier;
 public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFactory
 		implements AutowireCapableBeanFactory {
 
+	public static long predictBeanType;
+
+	public static long getTypeForFactoryMethod;
+
+	public static long doCreateBean;
+
 	/** Strategy for creating bean instances. */
 	private InstantiationStrategy instantiationStrategy;
 
@@ -554,6 +560,10 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	protected Object doCreateBean(String beanName, RootBeanDefinition mbd, @Nullable Object[] args)
 			throws BeanCreationException {
 
+		long start = System.nanoTime();
+
+		try {
+
 		// Instantiate the bean.
 		BeanWrapper instanceWrapper = null;
 		if (mbd.isSingleton()) {
@@ -646,11 +656,18 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		}
 
 		return exposedObject;
+		}
+		finally {
+			long time = System.nanoTime() - start;
+			doCreateBean += time;
+			// System.out.println(">>> "+ time+ " " + beanName);
+		}
 	}
 
 	@Override
 	@Nullable
 	protected Class<?> predictBeanType(String beanName, RootBeanDefinition mbd, Class<?>... typesToMatch) {
+		long start = System.nanoTime();
 		Class<?> targetType = determineTargetType(beanName, mbd, typesToMatch);
 		// Apply SmartInstantiationAwareBeanPostProcessors to predict the
 		// eventual type after a before-instantiation shortcut.
@@ -664,6 +681,8 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 				}
 			}
 		}
+		long time = System.nanoTime() - start;
+		predictBeanType += time;
 		return targetType;
 	}
 
@@ -711,6 +730,8 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	 */
 	@Nullable
 	protected Class<?> getTypeForFactoryMethod(String beanName, RootBeanDefinition mbd, Class<?>... typesToMatch) {
+		long start = System.nanoTime();
+		try {
 		ResolvableType cachedReturnType = mbd.factoryMethodReturnType;
 		if (cachedReturnType != null) {
 			return cachedReturnType.resolve();
@@ -827,6 +848,10 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 						(uniqueCandidate != null ? uniqueCandidate : commonType), err);
 			}
 			return null;
+		}
+		} finally {
+			long time = System.nanoTime() - start;
+			getTypeForFactoryMethod += time;
 		}
 	}
 

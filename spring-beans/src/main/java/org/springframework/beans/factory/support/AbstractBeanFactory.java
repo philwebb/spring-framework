@@ -114,6 +114,8 @@ import org.springframework.util.StringValueResolver;
  */
 public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport implements ConfigurableBeanFactory {
 
+	public static long isFactoryBean = 0;
+
 	/** Parent bean factory, for bean inheritance support. */
 	@Nullable
 	private BeanFactory parentBeanFactory;
@@ -1153,6 +1155,8 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 
 	@Override
 	public boolean isFactoryBean(String name) throws NoSuchBeanDefinitionException {
+		long start = System.nanoTime();
+		try {
 		String beanName = transformedBeanName(name);
 		Object beanInstance = getSingleton(beanName, false);
 		if (beanInstance != null) {
@@ -1164,6 +1168,10 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 			return cbf.isFactoryBean(name);
 		}
 		return isFactoryBean(beanName, getMergedLocalBeanDefinition(beanName));
+		} finally {
+			long time = System.nanoTime() - start;
+			isFactoryBean += time;
+		}
 	}
 
 	@Override

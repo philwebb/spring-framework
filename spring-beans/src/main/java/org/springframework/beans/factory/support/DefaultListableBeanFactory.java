@@ -128,6 +128,8 @@ import org.springframework.util.StringUtils;
 public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFactory
 		implements ConfigurableListableBeanFactory, BeanDefinitionRegistry, Serializable {
 
+	public static long getBeanNamesForType = 0;
+
 	@Nullable
 	private static Class<?> jakartaInjectProviderClass;
 
@@ -560,6 +562,8 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 
 	@Override
 	public String[] getBeanNamesForType(@Nullable Class<?> type, boolean includeNonSingletons, boolean allowEagerInit) {
+		long start = System.nanoTime();
+		try {
 		if (!isConfigurationFrozen() || type == null || !allowEagerInit) {
 			return doGetBeanNamesForType(ResolvableType.forRawClass(type), includeNonSingletons, allowEagerInit);
 		}
@@ -574,6 +578,10 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 			cache.put(type, resolvedBeanNames);
 		}
 		return resolvedBeanNames;
+		} finally {
+			long time = System.nanoTime() - start;
+			getBeanNamesForType += time;
+		}
 	}
 
 	private String[] doGetBeanNamesForType(ResolvableType type, boolean includeNonSingletons, boolean allowEagerInit) {

@@ -18,7 +18,11 @@ package org.springframework.core.type.classreading;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.JarURLConnection;
+import java.net.URLConnection;
+import java.util.jar.JarEntry;
 
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
@@ -33,6 +37,8 @@ import org.springframework.util.ClassUtils;
  * @since 2.5
  */
 public class SimpleMetadataReaderFactory implements MetadataReaderFactory {
+
+	public static long readBytes;
 
 	private final ResourceLoader resourceLoader;
 
@@ -78,6 +84,15 @@ public class SimpleMetadataReaderFactory implements MetadataReaderFactory {
 			String resourcePath = ResourceLoader.CLASSPATH_URL_PREFIX +
 					ClassUtils.convertClassNameToResourcePath(className) + ClassUtils.CLASS_FILE_SUFFIX;
 			Resource resource = this.resourceLoader.getResource(resourcePath);
+			long start = System.nanoTime();
+			if(resource instanceof ClassPathResource) {
+				JarURLConnection connection = (JarURLConnection) resource.getURL().openConnection();
+				JarEntry jarEntry = connection.getJarEntry();
+				byte[] bytes = new byte[(int) jarEntry.getSize()];
+				connection.getInputStream().readNBytes(bytes, 0, bytes.length);
+			}
+			long time = System.nanoTime() - start;
+			readBytes += time;
 			return getMetadataReader(resource);
 		}
 		catch (FileNotFoundException ex) {
