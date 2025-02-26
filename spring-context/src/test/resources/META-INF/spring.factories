@@ -1,2 +1,2 @@
-org.springframework.beans.factory.support.ProxyInstanceSupplierFactory=\
-example.proxyfactory.EchoProxyInstanceSupplierFactory
+org.springframework.context.annotation.ScannedComponentProxyFactory=\
+example.proxyfactory.EchoScannedComponentProxyFactory

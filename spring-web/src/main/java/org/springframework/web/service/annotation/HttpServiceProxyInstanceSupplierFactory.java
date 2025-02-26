@@ -20,41 +20,43 @@ import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.ListableBeanFactory;
 import org.springframework.beans.factory.support.InstanceSupplier;
 import org.springframework.beans.factory.support.RegisteredBean;
-import org.springframework.context.annotation.ProxyInstanceSupplierFactory;
+import org.springframework.context.annotation.ScannedComponentProxyFactory;
 import org.springframework.core.annotation.MergedAnnotation;
 import org.springframework.core.annotation.MergedAnnotations;
+import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.lang.Nullable;
+import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.service.invoker.HttpServiceProxyCreator;
 import org.springframework.web.service.invoker.HttpServiceProxyFactory;
 
 /**
- * {@link ProxyInstanceSupplierFactory} for {@link HttpService @HttpService} annotated
+ * {@link ScannedComponentProxyFactory} for {@link HttpService @HttpService} annotated
  * interfaces.
  *
  * @author Phillip Webb
  * @since 7.0
  */
-class HttpServiceProxyInstanceSupplierFactory implements ProxyInstanceSupplierFactory {
+class HttpServiceProxyInstanceSupplierFactory implements ScannedComponentProxyFactory {
 
 	@Override
 	@Nullable
-	public <T> InstanceSupplier<T> createProxyInstanceSupplier(Class<T> type) {
-		MergedAnnotation<HttpService> annotation = MergedAnnotations.from(type).get(HttpService.class);
+	public InstanceSupplier<?> createProxyInstanceSupplier(AnnotationMetadata type) {
+		MergedAnnotation<HttpService> annotation = type.getAnnotations().get(HttpService.class);
 		return (!annotation.isPresent()) ? null
-				: new HttpServiceProxyInstanceSupplier<>(type, annotation.getString("createdBy"));
+				: new HttpServiceProxyInstanceSupplier<>(type.getClassName(), annotation.getString("createdBy"));
 	}
 
 	private static class HttpServiceProxyInstanceSupplier<T> implements InstanceSupplier<T> {
 
 		// FIXME make reusable
 
-		private final Class<T> type;
+		private final String typeName;
 
 		private final String createdBy;
 
-		HttpServiceProxyInstanceSupplier(Class<T> type, String createdBy) {
-			this.type = type;
+		HttpServiceProxyInstanceSupplier(String typeName, String createdBy) {
+			this.typeName = typeName;
 			this.createdBy = createdBy;
 		}
 
@@ -65,15 +67,16 @@ class HttpServiceProxyInstanceSupplierFactory implements ProxyInstanceSupplierFa
 
 		private T get(ListableBeanFactory beanFactory) {
 			try {
+				Class<T> type = (Class<T>) ClassUtils.forName(typeName, null);
 				if (!StringUtils.hasLength(this.createdBy)) {
-					return get(beanFactory.getBean(HttpServiceProxyFactory.class));
+					return get(type, beanFactory.getBean(HttpServiceProxyFactory.class));
 				}
 				Object bean = beanFactory.getBean(this.createdBy);
 				if (bean instanceof HttpServiceProxyFactory factory) {
-					return get(factory);
+					return get(type, factory);
 				}
 				if (bean instanceof HttpServiceProxyCreator creator) {
-					return get(creator.serviceProxyFactory());
+					return get(type, creator.serviceProxyFactory());
 				}
 				throw new IllegalStateException("The bean '" + this.createdBy
 						+ "' is not a HttpServiceProxyFactory or HttpServiceProxyCreator");
@@ -83,8 +86,8 @@ class HttpServiceProxyInstanceSupplierFactory implements ProxyInstanceSupplierFa
 			}
 		}
 
-		private T get(HttpServiceProxyFactory proxyFactory) {
-			return proxyFactory.serviceProxy(this.type);
+		private T get(Class<T> type, HttpServiceProxyFactory proxyFactory) {
+			return proxyFactory.serviceProxy(type);
 		}
 
 	}

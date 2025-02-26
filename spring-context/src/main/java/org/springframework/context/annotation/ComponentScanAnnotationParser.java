@@ -129,7 +129,7 @@ class ComponentScanAnnotationParser {
 			}
 		});
 
-		ProxyInstanceSupplierFactory proxyFactory = getProxyFactory(componentScan);
+		ScannedComponentProxyFactory proxyFactory = getProxyFactory(componentScan);
 		if (proxyFactory != null) {
 			scanner.setProxyFactory(proxyFactory);
 		}
@@ -137,18 +137,18 @@ class ComponentScanAnnotationParser {
 		return scanner.doScan(StringUtils.toStringArray(basePackages));
 	}
 
-	private ProxyInstanceSupplierFactory getProxyFactory(AnnotationAttributes componentScan) {
-		Class<? extends ProxyInstanceSupplierFactory> proxyFactory = componentScan.getClass("proxyFactory");
-		if (ProxyInstanceSupplierFactory.None.class.equals(proxyFactory)) {
+	private ScannedComponentProxyFactory getProxyFactory(AnnotationAttributes componentScan) {
+		Class<? extends ScannedComponentProxyFactory> proxyFactory = componentScan.getClass("proxyFactory");
+		if (ScannedComponentProxyFactory.None.class.equals(proxyFactory)) {
 			return null;
 		}
 		SpringFactoriesLoader loader = getSpringFactoriesLoader(proxyFactory);
-		List<ProxyInstanceSupplierFactory> factories = loader.load(ProxyInstanceSupplierFactory.class, this::resolveProxyFactoryArgument);
-		return ProxyInstanceSupplierFactory.composite(factories);
+		List<ScannedComponentProxyFactory> factories = loader.load(ScannedComponentProxyFactory.class, this::resolveProxyFactoryArgument);
+		return ScannedComponentProxyFactory.composite(factories);
 	}
 
 	private SpringFactoriesLoader getSpringFactoriesLoader(Class<?> proxyFactory) {
-		return (ProxyInstanceSupplierFactory.class != proxyFactory) ? SpringFactoriesLoader.of(proxyFactory)
+		return (ScannedComponentProxyFactory.class != proxyFactory) ? SpringFactoriesLoader.of(proxyFactory)
 				: SpringFactoriesLoader.forDefaultResourceLocation();
 	}
 

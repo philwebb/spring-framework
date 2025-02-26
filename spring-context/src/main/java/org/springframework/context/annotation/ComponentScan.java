@@ -166,7 +166,7 @@ public @interface ComponentScan {
 	boolean lazyInit() default false;
 
 	/**
-	 * Specifies if registered {@link ProxyInstanceSupplierFactory} implementations should
+	 * Specifies if registered {@link ScannedComponentProxyFactory} implementations should
 	 * be used to create proxies for scanned beans.
 	 * @since 7.0
 	 */
@@ -174,12 +174,12 @@ public @interface ComponentScan {
 
 	/**
 	 * Specifies the factory that should be used to create proxies for scanned beans. By
-	 * default all {@link ProxyInstanceSupplierFactory} beans found in
+	 * default all {@link ScannedComponentProxyFactory} beans found in
 	 * {@code spring.factories} will be used. To disabled proxy creation use
 	 * {@code ProxyInstanceSupplierFactory.None.class}
 	 * @since 7.0
 	 */
-	Class<? extends ProxyInstanceSupplierFactory> proxyFactory() default ProxyInstanceSupplierFactory.class;
+	Class<? extends ScannedComponentProxyFactory> proxyFactory() default ScannedComponentProxyFactory.class;
 
 	/**
 	 * Declares the type filter to be used as an {@linkplain ComponentScan#includeFilters

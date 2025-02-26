@@ -22,8 +22,11 @@ import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.support.InstanceSupplier;
 import org.springframework.beans.factory.support.RegisteredBean;
-import org.springframework.context.annotation.ProxyInstanceSupplierFactory;
+import org.springframework.context.annotation.ScannedComponentProxyFactory;
 import org.springframework.core.io.support.SpringFactoriesLoader;
+import org.springframework.core.type.AnnotationMetadata;
+import org.springframework.core.type.classreading.MetadataReader;
+import org.springframework.core.type.classreading.SimpleMetadataReaderFactory;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
@@ -32,11 +35,16 @@ class EchoComponentTests {
 
 	@Test
 	void echoComponentProxyCreated() throws Exception {
-		List<ProxyInstanceSupplierFactory> factories = SpringFactoriesLoader.forDefaultResourceLocation().load(ProxyInstanceSupplierFactory.class);
-		InstanceSupplier<Example> supplier = ProxyInstanceSupplierFactory.composite(factories)
-			.createProxyInstanceSupplier(Example.class);
+		List<ScannedComponentProxyFactory> factories = SpringFactoriesLoader.forDefaultResourceLocation()
+			.load(ScannedComponentProxyFactory.class);
+		SimpleMetadataReaderFactory metadataReaderFactory = new SimpleMetadataReaderFactory();
+		MetadataReader metadataReader = metadataReaderFactory.getMetadataReader(Example.class.getName());
+		AnnotationMetadata metadata = metadataReader.getAnnotationMetadata();
+		InstanceSupplier<?> supplier = ScannedComponentProxyFactory.composite(factories)
+			.createProxyInstanceSupplier(metadata);
 		RegisteredBean registeredBean = mock(RegisteredBean.class);
-		assertThat(supplier.get(registeredBean).hello()).isEqualTo("hello");
+		Example bean = (Example) supplier.get(registeredBean);
+		assertThat(bean.hello()).isEqualTo("hello");
 	}
 
 	@EchoComponent

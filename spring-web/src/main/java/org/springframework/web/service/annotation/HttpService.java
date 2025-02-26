@@ -22,7 +22,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.springframework.context.annotation.ProxyInstanceSupplierFactory;
+import org.springframework.context.annotation.ScannedComponentProxyFactory;
 import org.springframework.core.annotation.AliasFor;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Indexed;
@@ -30,7 +30,7 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
 
 /**
  * Indicates that an annotated interface is a HTTP Service component supported by a
- * registered {@link ProxyInstanceSupplierFactory}.
+ * registered {@link ScannedComponentProxyFactory}.
  *
  * @author Phillip Webb
  * @since 7.0

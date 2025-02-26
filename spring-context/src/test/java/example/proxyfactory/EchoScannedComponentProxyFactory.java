@@ -22,31 +22,32 @@ import java.lang.reflect.Proxy;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.InstanceSupplier;
 import org.springframework.beans.factory.support.RegisteredBean;
-import org.springframework.context.annotation.ProxyInstanceSupplierFactory;
-import org.springframework.core.annotation.MergedAnnotations;
+import org.springframework.context.annotation.ScannedComponentProxyFactory;
+import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.util.ClassUtils;
 
-class EchoProxyInstanceSupplierFactory implements ProxyInstanceSupplierFactory {
+class EchoScannedComponentProxyFactory implements ScannedComponentProxyFactory {
 
 	@Override
-	public <T> InstanceSupplier<T> createProxyInstanceSupplier(Class<T> type) {
-		return (!MergedAnnotations.from(type).isPresent(EchoComponent.class)) ? null
-				: new EchoProxyInstanceSupplier<>(type);
+	public InstanceSupplier<?> createProxyInstanceSupplier(AnnotationMetadata metadata) {
+		return (!metadata.getAnnotations().isPresent(EchoComponent.class)) ? null
+				: new EchoProxyInstanceSupplier<>(metadata.getClassName());
 	}
 
 	static class EchoProxyInstanceSupplier<T> implements InstanceSupplier<T> {
 
-		private final Class<T> type;
+		private final String typeName;
 
-		EchoProxyInstanceSupplier(Class<T> type) {
-			this.type = type;
+		EchoProxyInstanceSupplier(String typeName) {
+			this.typeName = typeName;
 		}
 
 		@Override
 		@SuppressWarnings("unchecked")
 		public T get(RegisteredBean registeredBean) throws Exception {
-			return (T) Proxy.newProxyInstance(getClassLoader(registeredBean), new Class<?>[] { this.type },
-					this::invoke);
+			ClassLoader beanClassLoader = registeredBean.getBeanFactory().getBeanClassLoader();
+			Class<?> type = ClassUtils.forName(this.typeName, beanClassLoader);
+			return (T) Proxy.newProxyInstance(getClassLoader(registeredBean), new Class<?>[] { type }, this::invoke);
 		}
 
 		private ClassLoader getClassLoader(RegisteredBean registeredBean) {

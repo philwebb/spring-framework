@@ -612,6 +612,6 @@ class ComponentScanWithProxyCreation {
 }
 
 @Configuration
-@ComponentScan(basePackages = "example.scannable_proxy", proxyFactory = ProxyInstanceSupplierFactory.None.class)
+@ComponentScan(basePackages = "example.scannable_proxy", proxyFactory = ScannedComponentProxyFactory.None.class)
 class ComponentScanWithProxyCreationDisabled {
 }

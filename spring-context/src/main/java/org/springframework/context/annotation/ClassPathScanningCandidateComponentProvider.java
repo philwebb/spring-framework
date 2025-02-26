@@ -33,6 +33,7 @@ import org.springframework.beans.factory.annotation.AnnotatedBeanDefinition;
 import org.springframework.beans.factory.annotation.Lookup;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
+import org.springframework.beans.factory.support.InstanceSupplier;
 import org.springframework.context.ResourceLoaderAware;
 import org.springframework.context.index.CandidateComponentsIndex;
 import org.springframework.context.index.CandidateComponentsIndexLoader;
@@ -130,7 +131,7 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 	private MetadataReaderFactory metadataReaderFactory;
 
 	@Nullable
-	private ProxyInstanceSupplierFactory proxyFactory;
+	private ScannedComponentProxyFactory proxyFactory;
 
 	@Nullable
 	private CandidateComponentsIndex componentsIndex;
@@ -328,13 +329,13 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 	}
 
 	/**
-	 * Set the {@link ProxyInstanceSupplierFactory} that should be used to create proxy
+	 * Set the {@link ScannedComponentProxyFactory} that should be used to create proxy
 	 * instances suppliers.
 	 * <p>Default is a {@code null} which means that proxies will not be created.
 	 * @param proxyFactory the proxy factory or {@code null}
 	 * @since 7.0
 	 */
-	public void setProxyFactory(@Nullable ProxyInstanceSupplierFactory proxyFactory) {
+	public void setProxyFactory(@Nullable ScannedComponentProxyFactory proxyFactory) {
 		this.proxyFactory = proxyFactory;
 	}
 
@@ -421,7 +422,8 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 				}
 				ScannedGenericBeanDefinition sbd = new ScannedGenericBeanDefinition(metadataReader);
 				sbd.setSource(metadataReader.getResource());
-				if (!isCandidateComponent(sbd)) {
+				applyProxyFactory(sbd);
+				if (sbd.getInstanceSupplier() == null && !isCandidateComponent(sbd)) {
 					logger.debug(LogMessage.format("Ignored because not a candidate component based on bean definition: %s", type));
 					continue;
 				}
@@ -456,7 +458,8 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 					}
 					ScannedGenericBeanDefinition sbd = new ScannedGenericBeanDefinition(metadataReader);
 					sbd.setSource(resource);
-					if (!isCandidateComponent(sbd)) {
+					applyProxyFactory(sbd);
+					if (sbd.getInstanceSupplier() == null && !isCandidateComponent(sbd)) {
 						logger.debug(LogMessage.format("Ignored because not a candidate component based on bean definition: ", resource));
 						continue;
 					}
@@ -485,6 +488,13 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 		return candidates;
 	}
 
+	private void applyProxyFactory(ScannedGenericBeanDefinition sbd) {
+		InstanceSupplier<?> instanceSupplier = (this.proxyFactory != null)
+				? this.proxyFactory.createProxyInstanceSupplier(sbd.getMetadata()) : null;
+		if (instanceSupplier != null) {
+			sbd.setInstanceSupplier(instanceSupplier);
+		}
+	}
 
 	/**
 	 * Resolve the specified base package into a pattern specification for
@@ -534,16 +544,19 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 
 	/**
 	 * Determine whether the given bean definition qualifies as a candidate component.
-	 * <p>The default implementation checks whether the class is not dependent on an
-	 * enclosing class as well as whether the class is either concrete (and therefore
-	 * not an interface) or has {@link Lookup @Lookup} methods.
+	 * <p>
+	 * The default implementation checks whether the class is not dependent on an
+	 * enclosing class as well as whether the class is either concrete (and therefore not
+	 * an interface) or has {@link Lookup @Lookup} methods.
 	 * <p>Can be overridden in subclasses.
+	 * <p>This method is ignored if a {@link #setProxyFactory(ScannedComponentProxyFactory)
+	 * set proxy factory} returns an {@link InstanceSupplier}.
 	 * @param beanDefinition the bean definition to check
 	 * @return whether the bean definition qualifies as a candidate component
 	 */
 	protected boolean isCandidateComponent(AnnotatedBeanDefinition beanDefinition) {
 		AnnotationMetadata metadata = beanDefinition.getMetadata();
-		return (metadata.isIndependent() && (metadata.isConcrete() || this.proxyFactory != null ||
+		return (metadata.isIndependent() && (metadata.isConcrete() ||
 				(metadata.isAbstract() && metadata.hasAnnotatedMethods(Lookup.class.getName()))));
 	}
 
