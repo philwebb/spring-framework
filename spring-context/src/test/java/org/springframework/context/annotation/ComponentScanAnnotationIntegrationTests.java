@@ -44,6 +44,7 @@ import org.springframework.beans.factory.annotation.CustomAutowireConfigurer;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
+import org.springframework.beans.factory.support.ProxyInstanceSupplierFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.context.ResourceLoaderAware;
@@ -335,6 +336,11 @@ class ComponentScanAnnotationIntegrationTests {
 		assertThat(bean.world()).isEqualTo("world");
 	}
 
+	@Test
+	void withProxyCreationDisabled() {
+		ApplicationContext ctx = new AnnotationConfigApplicationContext(ComponentScanWithProxyCreationDisabled.class);
+		assertThat(ctx.getBeanNamesForType(HelloWorldEchoBean.class)).isEmpty();
+	}
 
 	private static void assertContextContainsBean(ApplicationContext ctx, String beanName) {
 		assertThat(ctx.containsBean(beanName)).as("context should contain bean " + beanName).isTrue();
@@ -604,4 +610,9 @@ class ComponentScanWithBasePackagesAndValueAlias {}
 @Configuration
 @ComponentScan(basePackages = "example.scannable_proxy")
 class ComponentScanWithProxyCreation {
+}
+
+@Configuration
+@ComponentScan(basePackages = "example.scannable_proxy", proxyFactory = ProxyInstanceSupplierFactory.None.class)
+class ComponentScanWithProxyCreationDisabled {
 }

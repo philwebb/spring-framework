@@ -17,6 +17,7 @@
 package org.springframework.core.io.support;
 
 import java.io.File;
+import java.io.InputStream;
 import java.lang.reflect.Modifier;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -55,6 +56,8 @@ import static org.mockito.Mockito.verify;
  */
 class SpringFactoriesLoaderTests {
 
+	static boolean checkCacheAfter = true;
+
 	@BeforeAll
 	static void clearCache() {
 		SpringFactoriesLoader.cache.clear();
@@ -63,7 +66,9 @@ class SpringFactoriesLoaderTests {
 
 	@AfterAll
 	static void checkCache() {
-		assertThat(SpringFactoriesLoader.cache).hasSize(3);
+		if (checkCacheAfter) {
+			assertThat(SpringFactoriesLoader.cache).hasSize(3);
+		}
 		SpringFactoriesLoader.cache.clear();
 	}
 
@@ -167,6 +172,15 @@ class SpringFactoriesLoaderTests {
 		SpringFactoriesLoader forNull = SpringFactoriesLoader.forDefaultResourceLocation(null);
 		SpringFactoriesLoader forDefault = SpringFactoriesLoader.forDefaultResourceLocation(ClassUtils.getDefaultClassLoader());
 		assertThat(forNull).isSameAs(forDefault);
+	}
+
+	@Test
+	void ofUsesDefinedClasses() {
+		checkCacheAfter = false;
+		SpringFactoriesLoader loader = SpringFactoriesLoader.of(MyDummyFactory1.class, MyDummyFactory2.class,
+				InputStream.class, Object.class);
+		List<DummyFactory> factories = loader.load(DummyFactory.class);
+		assertThat(factories.stream().map(DummyFactory::getString)).containsExactly("Foo", "Bar");
 	}
 
 

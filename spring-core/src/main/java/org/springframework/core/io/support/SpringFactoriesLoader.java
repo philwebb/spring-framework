@@ -53,6 +53,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.ConcurrentReferenceHashMap;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.util.StringUtils;
+import org.springframework.util.function.ThrowingSupplier;
 
 /**
  * General purpose factory loading mechanism for internal use within the framework.
@@ -109,6 +110,9 @@ public class SpringFactoriesLoader {
 
 	private final Map<String, List<String>> factories;
 
+	@Nullable
+	private final List<Class<?>> implementations;
+
 
 	/**
 	 * Create a new {@link SpringFactoriesLoader} instance.
@@ -119,6 +123,18 @@ public class SpringFactoriesLoader {
 	protected SpringFactoriesLoader(@Nullable ClassLoader classLoader, Map<String, List<String>> factories) {
 		this.classLoader = classLoader;
 		this.factories = factories;
+		this.implementations = null;
+	}
+
+	/**
+	 * Create a new {@link SpringFactoriesLoader} instance.
+	 * @param implementations the pre-loaded factory implementation classes
+	 * @since 7.0
+	 */
+	protected SpringFactoriesLoader(List<Class<?>> implementations) {
+		this.classLoader = null;
+		this.factories = Collections.emptyMap();
+		this.implementations = implementations;
 	}
 
 
@@ -198,12 +214,12 @@ public class SpringFactoriesLoader {
 			@Nullable FailureHandler failureHandler) {
 
 		Assert.notNull(factoryType, "'factoryType' must not be null");
-		List<String> implementationNames = loadFactoryNames(factoryType);
-		logger.trace(LogMessage.format("Loaded [%s] names: %s", factoryType.getName(), implementationNames));
-		List<T> result = new ArrayList<>(implementationNames.size());
+		List<?> implementations = loadImplementations(factoryType);
+		logger.trace(LogMessage.format("Loaded [%s] names: %s", factoryType.getName(), implementations));
+		List<T> result = new ArrayList<>(implementations.size());
 		FailureHandler failureHandlerToUse = (failureHandler != null) ? failureHandler : THROWING_FAILURE_HANDLER;
-		for (String implementationName : implementationNames) {
-			T factory = instantiateFactory(implementationName, factoryType, argumentResolver, failureHandlerToUse);
+		for (Object implementation : implementations) {
+			T factory = instantiateFactory(implementation, factoryType, argumentResolver, failureHandlerToUse);
 			if (factory != null) {
 				result.add(factory);
 			}
@@ -212,16 +228,43 @@ public class SpringFactoriesLoader {
 		return result;
 	}
 
-	private List<String> loadFactoryNames(Class<?> factoryType) {
+	private List<?> loadImplementations(Class<?> factoryType) {
+		return (this.implementations != null)
+				? this.implementations.stream().filter(factoryType::isAssignableFrom).toList()
+				: loadImplementationNames(factoryType);
+	}
+
+	private List<String> loadImplementationNames(Class<?> factoryType) {
 		return this.factories.getOrDefault(factoryType.getName(), Collections.emptyList());
+	}
+
+	@Nullable
+	private <T> T instantiateFactory(Object implementation, Class<T> type,
+			@Nullable ArgumentResolver argumentResolver, FailureHandler failureHandler) {
+		if (implementation instanceof String implementationName) {
+			return instantiateFactory(implementationName, type, argumentResolver, failureHandler);
+		}
+		if (implementation instanceof Class implementationClass) {
+			return instantiateFactory(implementationClass.getName(), () -> implementationClass,
+					type, argumentResolver, failureHandler);
+		}
+		throw new IllegalStateException("Unexpected implementation type");
 	}
 
 	@Nullable
 	protected <T> T instantiateFactory(String implementationName, Class<T> type,
 			@Nullable ArgumentResolver argumentResolver, FailureHandler failureHandler) {
 
+		return instantiateFactory(implementationName, () -> ClassUtils.forName(implementationName, this.classLoader),
+				type, argumentResolver, failureHandler);
+	}
+
+	@Nullable
+	private <T> T instantiateFactory(String implementationName, ThrowingSupplier<Class<?>> implementationClassSupplier,
+			Class<T> type, @Nullable ArgumentResolver argumentResolver, FailureHandler failureHandler) {
+
 		try {
-			Class<?> factoryImplementationClass = ClassUtils.forName(implementationName, this.classLoader);
+			Class<?> factoryImplementationClass = implementationClassSupplier.getWithException();
 			Assert.isTrue(type.isAssignableFrom(factoryImplementationClass), () ->
 					"Class [%s] is not assignable to factory type [%s]".formatted(implementationName, type.getName()));
 			FactoryInstantiator<T> factoryInstantiator = FactoryInstantiator.forClass(factoryImplementationClass);
@@ -270,7 +313,7 @@ public class SpringFactoriesLoader {
 	 */
 	@Deprecated(since = "6.0")
 	public static List<String> loadFactoryNames(Class<?> factoryType, @Nullable ClassLoader classLoader) {
-		return forDefaultResourceLocation(classLoader).loadFactoryNames(factoryType);
+		return forDefaultResourceLocation(classLoader).loadImplementationNames(factoryType);
 	}
 
 	/**
@@ -331,6 +374,17 @@ public class SpringFactoriesLoader {
 				resourceClassLoader, key -> new ConcurrentReferenceHashMap<>());
 		return loaders.computeIfAbsent(resourceLocation, key ->
 				new SpringFactoriesLoader(classLoader, loadFactoriesResource(resourceClassLoader, resourceLocation)));
+	}
+
+	/**
+	 * Create a {@link SpringFactoriesLoader} instance pre-loaded with the given factory
+	 * implementations.
+	 * @param implementations
+	 * @return
+	 * @since 7.0
+	 */
+	public static SpringFactoriesLoader of(Class<?>... implementations) {
+		return new SpringFactoriesLoader(List.of(implementations));
 	}
 
 	protected static Map<String, List<String>> loadFactoriesResource(ClassLoader classLoader, String resourceLocation) {

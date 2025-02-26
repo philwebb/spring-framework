@@ -27,6 +27,7 @@ import org.springframework.beans.factory.support.BeanDefinitionDefaults;
 import org.springframework.beans.factory.support.BeanDefinitionReaderUtils;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.BeanNameGenerator;
+import org.springframework.beans.factory.support.ProxyInstanceSupplierFactory;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.EnvironmentCapable;
 import org.springframework.core.env.StandardEnvironment;
@@ -243,6 +244,14 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
 		this.includeAnnotationConfig = includeAnnotationConfig;
 	}
 
+
+	/**
+	 * @param proxyFactory
+	 */
+	public void setProxyFactory(ProxyInstanceSupplierFactory proxyFactory) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Auto-generated method stub");
+	}
 
 	/**
 	 * Perform a scan within the specified base packages.

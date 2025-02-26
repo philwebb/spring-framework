@@ -22,8 +22,9 @@ import org.springframework.core.io.support.SpringFactoriesLoader;
 import org.springframework.lang.Nullable;
 
 /**
- * Factory that can be registered in {@code spring.factories} in order to support creation
- * of a proxy {@link InstanceSupplier} for a given {@link Class}.
+ * Factory used to create an {@link InstanceSupplier} that provides a generated proxy
+ * based on the provided type. Typically used in combination with component scanning
+ * either directly or using instances found in {@code spring.factories}.
  *
  * @author Phillip Webb
  * @since 7.0
@@ -41,16 +42,7 @@ public interface ProxyInstanceSupplierFactory {
 	@Nullable
 	<T> InstanceSupplier<T> createProxyInstanceSupplier(Class<T> type);
 
-
-	static ProxyInstanceSupplierFactory fromFactories() {
-		return fromFactories(SpringFactoriesLoader.forDefaultResourceLocation());
-	}
-
-	static ProxyInstanceSupplierFactory fromFactories(SpringFactoriesLoader factoriesLoader) {
-		return fromFactories(factoriesLoader.load(ProxyInstanceSupplierFactory.class));
-	}
-
-	static ProxyInstanceSupplierFactory fromFactories(List<? extends ProxyInstanceSupplierFactory> factories) {
+	static ProxyInstanceSupplierFactory of(List<? extends ProxyInstanceSupplierFactory> factories) {
 		return new ProxyInstanceSupplierFactory() {
 
 			@Override
@@ -63,8 +55,9 @@ public interface ProxyInstanceSupplierFactory {
 						continue;
 					}
 					if (result != null) {
-						throw new IllegalStateException("Multiple ProxyInstanceSupplierFactory [%s, %s] instances accept %s"
-							.formatted(resultFactory.getClass().getName(), factories.getClass().getName(), type));
+						throw new IllegalStateException(
+								"Multiple ProxyInstanceSupplierFactory [%s, %s] instances accept %s".formatted(
+										resultFactory.getClass().getName(), factories.getClass().getName(), type));
 					}
 					result = supplier;
 					resultFactory = factory;
@@ -73,6 +66,18 @@ public interface ProxyInstanceSupplierFactory {
 			}
 
 		};
+	}
+
+	/**
+	 * {@link ProxyInstanceSupplierFactory} that always returns no {@link InstanceSupplier}.
+	 */
+	public static class None implements ProxyInstanceSupplierFactory {
+
+		@Override
+		public <T> InstanceSupplier<T> createProxyInstanceSupplier(Class<T> type) {
+			return null;
+		}
+
 	}
 
 }

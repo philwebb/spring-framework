@@ -173,8 +173,14 @@ public @interface ComponentScan {
 	 */
 	boolean createProxies() default true;
 
-	// FIXME this should be a ProxyFactoryClass and we should offer a Disable option I guess
-	// FIXME we need to inject at the annotation so we can have a custom one
+	/**
+	 * Specifies the factory that should be used to create proxies for scanned beans. By
+	 * default all {@link ProxyInstanceSupplierFactory} beans found in
+	 * {@code spring.factories} will be used. To disabled proxy creation use
+	 * {@code ProxyInstanceSupplierFactory.None.class}
+	 * @since 7.0
+	 */
+	Class<? extends ProxyInstanceSupplierFactory> proxyFactory() default ProxyInstanceSupplierFactory.class;
 
 	/**
 	 * Declares the type filter to be used as an {@linkplain ComponentScan#includeFilters

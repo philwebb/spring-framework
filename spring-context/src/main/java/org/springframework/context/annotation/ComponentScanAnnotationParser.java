@@ -25,10 +25,13 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.config.BeanDefinitionHolder;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.BeanNameGenerator;
+import org.springframework.beans.factory.support.ProxyInstanceSupplierFactory;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.core.io.support.SpringFactoriesLoader;
+import org.springframework.core.io.support.SpringFactoriesLoader.ArgumentResolver;
 import org.springframework.core.type.filter.AbstractTypeHierarchyTraversingFilter;
 import org.springframework.core.type.filter.TypeFilter;
 import org.springframework.util.ClassUtils;
@@ -64,7 +67,9 @@ class ComponentScanAnnotationParser {
 		this.registry = registry;
 	}
 
-
+	// FIXME rather than AnnotationAttributes we should use MergedAnnotation<ComponentScan>
+	// to allow it to be injected. Factories can then use `getRoot` to support their own attributes
+	// This method is really package-private so it's fine to change
 	public Set<BeanDefinitionHolder> parse(AnnotationAttributes componentScan, String declaringClass) {
 		ClassPathBeanDefinitionScanner scanner = new ClassPathBeanDefinitionScanner(this.registry,
 				componentScan.getBoolean("useDefaultFilters"), this.environment, this.resourceLoader);
@@ -125,7 +130,44 @@ class ComponentScanAnnotationParser {
 				return declaringClass.equals(className);
 			}
 		});
+
+		ProxyInstanceSupplierFactory proxyFactory = getProxyFactory(componentScan);
+		if (proxyFactory != null) {
+			scanner.setProxyFactory(proxyFactory);
+		}
+
 		return scanner.doScan(StringUtils.toStringArray(basePackages));
 	}
+
+	private ProxyInstanceSupplierFactory getProxyFactory(AnnotationAttributes componentScan) {
+		Class<? extends ProxyInstanceSupplierFactory> proxyFactory = componentScan.getClass("proxyFactory");
+		if (ProxyInstanceSupplierFactory.None.class.equals(proxyFactory)) {
+			return null;
+		}
+		if (ProxyInstanceSupplierFactory.class.equals(proxyFactory)) {
+			return getDefaultProxyFactory();
+		}
+		return null;
+	}
+
+	private ProxyInstanceSupplierFactory getDefaultProxyFactory() {
+		ArgumentResolver argy = null;
+		SpringFactoriesLoader.forDefaultResourceLocation().load(ProxyInstanceSupplierFactory.class, argy);
+
+
+
+		throw new UnsupportedOperationException("Auto-generated method stub");
+	}
+
+
+
+//	static ProxyInstanceSupplierFactory fromFactories() {
+//		return fromFactories(SpringFactoriesLoader.forDefaultResourceLocation());
+//	}
+//
+//	static ProxyInstanceSupplierFactory fromFactories(SpringFactoriesLoader factoriesLoader) {
+//		return fromFactories(factoriesLoader.load(ProxyInstanceSupplierFactory.class));
+//	}
+
 
 }
