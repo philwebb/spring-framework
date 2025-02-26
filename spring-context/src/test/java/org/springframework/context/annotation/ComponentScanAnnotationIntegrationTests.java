@@ -30,6 +30,7 @@ import example.scannable.MessageBean;
 import example.scannable.ScopedProxyTestBean;
 import example.scannable_implicitbasepackage.ComponentScanAnnotatedConfigWithImplicitBasePackage;
 import example.scannable_implicitbasepackage.ConfigurableComponent;
+import example.scannable_proxy.HelloWorldEchoBean;
 import example.scannable_scoped.CustomScopeAnnotationBean;
 import example.scannable_scoped.MyScope;
 import org.junit.jupiter.api.Test;
@@ -62,6 +63,7 @@ import org.springframework.core.type.classreading.MetadataReaderFactory;
 import org.springframework.core.type.filter.TypeFilter;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.beans.factory.support.BeanDefinitionBuilder.genericBeanDefinition;
 
 /**
@@ -323,6 +325,14 @@ class ComponentScanAnnotationIntegrationTests {
 		ApplicationContext ctx = new AnnotationConfigApplicationContext(ComponentScanWithBasePackagesAndValueAlias.class);
 
 		assertContextContainsBean(ctx, "fooServiceImpl");
+	}
+
+	@Test
+	void withProxyCreation() {
+		ApplicationContext ctx = new AnnotationConfigApplicationContext(ComponentScanWithProxyCreation.class);
+		HelloWorldEchoBean bean = ctx.getBean(HelloWorldEchoBean.class);
+		assertThat(bean.hello()).isEqualTo("hello");
+		assertThat(bean.world()).isEqualTo("world");
 	}
 
 
@@ -590,3 +600,8 @@ class ComponentScanWithMultipleAnnotationIncludeFilters3 {
 		basePackages = "example.scannable",
 		basePackageClasses = example.scannable.PackageMarker.class)
 class ComponentScanWithBasePackagesAndValueAlias {}
+
+@Configuration
+@ComponentScan(basePackages = "example.scannable_proxy")
+class ComponentScanWithProxyCreation {
+}

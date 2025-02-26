@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.springframework.web.service.annotation;
+package example.proxyfactory;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -22,43 +22,16 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.springframework.beans.factory.support.ProxyInstanceSupplierFactory;
 import org.springframework.core.annotation.AliasFor;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Indexed;
-import org.springframework.web.service.invoker.HttpServiceProxyFactory;
 
-/**
- * Indicates that an annotated interface is a HTTP Service component supported by a
- * registered {@link ProxyInstanceSupplierFactory}.
- *
- * @author Phillip Webb
- * @since 7.0
- */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Component
-public @interface HttpService {
+public @interface EchoComponent {
 
-	/**
-	 * Alias for {@link Component#name()}
-	 */
-	@AliasFor(annotation = Component.class, attribute = "name")
+	@AliasFor(annotation = Component.class)
 	String value() default "";
-
-	/**
-	 * Alias for {@link Component#name()}
-	 */
-	@AliasFor(annotation = Component.class, attribute = "name")
-	String name() default "";
-
-	/**
-	 * A reference to the {@link HttpServiceProxyFactory} or
-	 * {@link HttpServiceProxyCreator} bean that will establish the HTTP client
-	 * connection. If not specified, a single {@link HttpServiceProxyFactory} bean must be
-	 * registered in the application context.
-	 */
-	String createdBy() default "";
 
 }

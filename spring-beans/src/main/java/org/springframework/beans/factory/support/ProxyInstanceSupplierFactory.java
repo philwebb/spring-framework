@@ -16,12 +16,14 @@
 
 package org.springframework.beans.factory.support;
 
+import java.util.List;
+
+import org.springframework.core.io.support.SpringFactoriesLoader;
 import org.springframework.lang.Nullable;
 
 /**
- * Factory that can be registered in {@code spring.factories} in order to
- * support creation of a proxy {@link InstanceSupplier} for a given
- * {@link Class}.
+ * Factory that can be registered in {@code spring.factories} in order to support creation
+ * of a proxy {@link InstanceSupplier} for a given {@link Class}.
  *
  * @author Phillip Webb
  * @since 7.0
@@ -38,5 +40,39 @@ public interface ProxyInstanceSupplierFactory {
 	 */
 	@Nullable
 	<T> InstanceSupplier<T> createProxyInstanceSupplier(Class<T> type);
+
+
+	static ProxyInstanceSupplierFactory fromFactories() {
+		return fromFactories(SpringFactoriesLoader.forDefaultResourceLocation());
+	}
+
+	static ProxyInstanceSupplierFactory fromFactories(SpringFactoriesLoader factoriesLoader) {
+		return fromFactories(factoriesLoader.load(ProxyInstanceSupplierFactory.class));
+	}
+
+	static ProxyInstanceSupplierFactory fromFactories(List<? extends ProxyInstanceSupplierFactory> factories) {
+		return new ProxyInstanceSupplierFactory() {
+
+			@Override
+			public <T> InstanceSupplier<T> createProxyInstanceSupplier(Class<T> type) {
+				InstanceSupplier<T> result = null;
+				ProxyInstanceSupplierFactory resultFactory = null;
+				for (ProxyInstanceSupplierFactory factory : factories) {
+					InstanceSupplier<T> supplier = factory.createProxyInstanceSupplier(type);
+					if (supplier == null) {
+						continue;
+					}
+					if (result != null) {
+						throw new IllegalStateException("Multiple ProxyInstanceSupplierFactory [%s, %s] instances accept %s"
+							.formatted(resultFactory.getClass().getName(), factories.getClass().getName(), type));
+					}
+					result = supplier;
+					resultFactory = factory;
+				}
+				return result;
+			}
+
+		};
+	}
 
 }

@@ -1,0 +1,2 @@
+org.springframework.beans.factory.support.ProxyInstanceSupplierFactory=\
+example.proxyfactory.EchoProxyInstanceSupplierFactory

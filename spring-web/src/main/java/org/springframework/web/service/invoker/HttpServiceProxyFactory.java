@@ -79,8 +79,9 @@ public final class HttpServiceProxyFactory {
 	 * @param serviceType the HTTP service to create a proxy for
 	 * @param <S> the HTTP service type
 	 * @return the created proxy
+	 * @deprecated since 7.0 in favor of {@link #serviceProxy(Class)}
 	 */
-	@Deprecated
+	@Deprecated(since="7.0", forRemoval = true)
 	public <S> S createClient(Class<S> serviceType) {
 		return serviceProxy(serviceType);
 	}

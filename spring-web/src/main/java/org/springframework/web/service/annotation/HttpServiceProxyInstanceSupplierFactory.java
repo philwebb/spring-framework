@@ -16,6 +16,7 @@
 
 package org.springframework.web.service.annotation;
 
+import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.ListableBeanFactory;
 import org.springframework.beans.factory.support.InstanceSupplier;
 import org.springframework.beans.factory.support.ProxyInstanceSupplierFactory;
@@ -28,8 +29,8 @@ import org.springframework.web.service.invoker.HttpServiceProxyCreator;
 import org.springframework.web.service.invoker.HttpServiceProxyFactory;
 
 /**
- * {@link ProxyInstanceSupplierFactory} for {@link HttpService @HttpService}
- * annotated interfaces.
+ * {@link ProxyInstanceSupplierFactory} for {@link HttpService @HttpService} annotated
+ * interfaces.
  *
  * @author Phillip Webb
  * @since 7.0
@@ -39,43 +40,51 @@ class HttpServiceProxyInstanceSupplierFactory implements ProxyInstanceSupplierFa
 	@Override
 	@Nullable
 	public <T> InstanceSupplier<T> createProxyInstanceSupplier(Class<T> type) {
-		MergedAnnotation<HttpService> annotation = MergedAnnotations.from(type)
-				.get(HttpService.class);
-		return (!annotation.isPresent()) ? null : new HttpServiceProxyInstanceSupplier<>(
-				type, annotation.getString("connection"));
+		MergedAnnotation<HttpService> annotation = MergedAnnotations.from(type).get(HttpService.class);
+		return (!annotation.isPresent()) ? null
+				: new HttpServiceProxyInstanceSupplier<>(type, annotation.getString("createdBy"));
 	}
 
-	private static class HttpServiceProxyInstanceSupplier<T>
-			implements InstanceSupplier<T> {
+	private static class HttpServiceProxyInstanceSupplier<T> implements InstanceSupplier<T> {
+
+		// FIXME make reusable
 
 		private final Class<T> type;
 
-		private final String connection;
+		private final String createdBy;
 
-		HttpServiceProxyInstanceSupplier(Class<T> type, String connection) {
+		HttpServiceProxyInstanceSupplier(Class<T> type, String createdBy) {
 			this.type = type;
-			this.connection = connection;
+			this.createdBy = createdBy;
 		}
 
 		@Override
 		public T get(RegisteredBean registeredBean) throws Exception {
-			ListableBeanFactory beanFactory = registeredBean.getBeanFactory();
-			if (!StringUtils.hasLength(this.connection)) {
-				return createProxy(beanFactory.getBean(HttpServiceProxyFactory.class));
-			}
-			Object bean = beanFactory.getBean(this.connection);
-			if (bean instanceof HttpServiceProxyFactory factory) {
-				return createProxy(factory);
-			}
-			if (bean instanceof HttpServiceProxyCreator creator) {
-				return createProxy(creator.serviceProxyFactory());
-			}
-			throw new IllegalStateException("The bean '" + this.connection
-					+ "' is not a HttpServiceProxyFactory or HttpServiceProxyCreator");
+			return get(registeredBean.getBeanFactory());
 		}
 
-		private T createProxy(HttpServiceProxyFactory factory) {
-			return factory.createClient(this.type);
+		private T get(ListableBeanFactory beanFactory) {
+			try {
+				if (!StringUtils.hasLength(this.createdBy)) {
+					return get(beanFactory.getBean(HttpServiceProxyFactory.class));
+				}
+				Object bean = beanFactory.getBean(this.createdBy);
+				if (bean instanceof HttpServiceProxyFactory factory) {
+					return get(factory);
+				}
+				if (bean instanceof HttpServiceProxyCreator creator) {
+					return get(creator.serviceProxyFactory());
+				}
+				throw new IllegalStateException("The bean '" + this.createdBy
+						+ "' is not a HttpServiceProxyFactory or HttpServiceProxyCreator");
+			}
+			catch (Exception ex) {
+				throw new BeanCreationException("Unable to create HTTP service proxy for " + this.type, ex);
+			}
+		}
+
+		private T get(HttpServiceProxyFactory proxyFactory) {
+			return proxyFactory.serviceProxy(this.type);
 		}
 
 	}

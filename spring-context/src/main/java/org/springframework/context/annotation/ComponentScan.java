@@ -24,6 +24,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 import org.springframework.beans.factory.support.BeanNameGenerator;
+import org.springframework.beans.factory.support.ProxyInstanceSupplierFactory;
 import org.springframework.core.annotation.AliasFor;
 import org.springframework.core.type.filter.TypeFilter;
 
@@ -165,6 +166,15 @@ public @interface ComponentScan {
 	 */
 	boolean lazyInit() default false;
 
+	/**
+	 * Specifies if registered {@link ProxyInstanceSupplierFactory} implementations should
+	 * be used to create proxies for scanned beans.
+	 * @since 7.0
+	 */
+	boolean createProxies() default true;
+
+	// FIXME this should be a ProxyFactoryClass and we should offer a Disable option I guess
+	// FIXME we need to inject at the annotation so we can have a custom one
 
 	/**
 	 * Declares the type filter to be used as an {@linkplain ComponentScan#includeFilters
