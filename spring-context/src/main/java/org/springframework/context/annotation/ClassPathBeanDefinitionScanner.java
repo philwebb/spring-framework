@@ -244,15 +244,6 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
 		this.includeAnnotationConfig = includeAnnotationConfig;
 	}
 
-
-	/**
-	 * @param proxyFactory
-	 */
-	public void setProxyFactory(ProxyInstanceSupplierFactory proxyFactory) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Auto-generated method stub");
-	}
-
 	/**
 	 * Perform a scan within the specified base packages.
 	 * @param basePackages the packages to check for annotated classes

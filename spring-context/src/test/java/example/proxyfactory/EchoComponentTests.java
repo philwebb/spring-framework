@@ -16,11 +16,14 @@
 
 package example.proxyfactory;
 
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.support.InstanceSupplier;
 import org.springframework.beans.factory.support.ProxyInstanceSupplierFactory;
 import org.springframework.beans.factory.support.RegisteredBean;
+import org.springframework.core.io.support.SpringFactoriesLoader;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
@@ -29,7 +32,8 @@ class EchoComponentTests {
 
 	@Test
 	void echoComponentProxyCreated() throws Exception {
-		InstanceSupplier<Example> supplier = ProxyInstanceSupplierFactory.fromFactories()
+		List<ProxyInstanceSupplierFactory> factories = SpringFactoriesLoader.forDefaultResourceLocation().load(ProxyInstanceSupplierFactory.class);
+		InstanceSupplier<Example> supplier = ProxyInstanceSupplierFactory.composite(factories)
 			.createProxyInstanceSupplier(Example.class);
 		RegisteredBean registeredBean = mock(RegisteredBean.class);
 		assertThat(supplier.get(registeredBean).hello()).isEqualTo("hello");

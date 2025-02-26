@@ -16,10 +16,11 @@
 
 package org.springframework.beans.factory.support;
 
+import java.util.Collection;
 import java.util.List;
 
-import org.springframework.core.io.support.SpringFactoriesLoader;
 import org.springframework.lang.Nullable;
+import org.springframework.util.CollectionUtils;
 
 /**
  * Factory used to create an {@link InstanceSupplier} that provides a generated proxy
@@ -32,6 +33,8 @@ import org.springframework.lang.Nullable;
 @FunctionalInterface
 public interface ProxyInstanceSupplierFactory {
 
+	public static final ProxyInstanceSupplierFactory.None NONE = new None();
+
 	/**
 	 * Return an {@link InstanceSupplier} that will create the proxy instance or
 	 * {@code null} if the given class is not supported by this factory.
@@ -42,7 +45,13 @@ public interface ProxyInstanceSupplierFactory {
 	@Nullable
 	<T> InstanceSupplier<T> createProxyInstanceSupplier(Class<T> type);
 
-	static ProxyInstanceSupplierFactory of(List<? extends ProxyInstanceSupplierFactory> factories) {
+	static ProxyInstanceSupplierFactory composite(@Nullable Collection<? extends ProxyInstanceSupplierFactory> factories) {
+		if (CollectionUtils.isEmpty(factories)) {
+			return NONE;
+		}
+		if(factories.size() == 1) {
+			return factories.iterator().next();
+		}
 		return new ProxyInstanceSupplierFactory() {
 
 			@Override

@@ -31,7 +31,6 @@ import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.io.support.SpringFactoriesLoader;
-import org.springframework.core.io.support.SpringFactoriesLoader.ArgumentResolver;
 import org.springframework.core.type.filter.AbstractTypeHierarchyTraversingFilter;
 import org.springframework.core.type.filter.TypeFilter;
 import org.springframework.util.ClassUtils;
@@ -144,30 +143,22 @@ class ComponentScanAnnotationParser {
 		if (ProxyInstanceSupplierFactory.None.class.equals(proxyFactory)) {
 			return null;
 		}
-		if (ProxyInstanceSupplierFactory.class.equals(proxyFactory)) {
-			return getDefaultProxyFactory();
+		SpringFactoriesLoader loader = getSpringFactoriesLoader(proxyFactory);
+		List<ProxyInstanceSupplierFactory> factories = loader.load(ProxyInstanceSupplierFactory.class, this::resolveProxyFactoryArgument);
+		return ProxyInstanceSupplierFactory.composite(factories);
+	}
+
+	private SpringFactoriesLoader getSpringFactoriesLoader(Class<?> proxyFactory) {
+		return (ProxyInstanceSupplierFactory.class != proxyFactory) ? SpringFactoriesLoader.of(proxyFactory)
+				: SpringFactoriesLoader.forDefaultResourceLocation();
+	}
+
+	@SuppressWarnings("unchecked")
+	private <T> T resolveProxyFactoryArgument(Class<T> type) {
+		if (Environment.class.isAssignableFrom(type)) {
+			return (T) this.environment;
 		}
 		return null;
 	}
-
-	private ProxyInstanceSupplierFactory getDefaultProxyFactory() {
-		ArgumentResolver argy = null;
-		SpringFactoriesLoader.forDefaultResourceLocation().load(ProxyInstanceSupplierFactory.class, argy);
-
-
-
-		throw new UnsupportedOperationException("Auto-generated method stub");
-	}
-
-
-
-//	static ProxyInstanceSupplierFactory fromFactories() {
-//		return fromFactories(SpringFactoriesLoader.forDefaultResourceLocation());
-//	}
-//
-//	static ProxyInstanceSupplierFactory fromFactories(SpringFactoriesLoader factoriesLoader) {
-//		return fromFactories(factoriesLoader.load(ProxyInstanceSupplierFactory.class));
-//	}
-
 
 }

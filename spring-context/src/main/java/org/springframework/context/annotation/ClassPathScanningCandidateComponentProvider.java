@@ -33,6 +33,7 @@ import org.springframework.beans.factory.annotation.AnnotatedBeanDefinition;
 import org.springframework.beans.factory.annotation.Lookup;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
+import org.springframework.beans.factory.support.ProxyInstanceSupplierFactory;
 import org.springframework.context.ResourceLoaderAware;
 import org.springframework.context.index.CandidateComponentsIndex;
 import org.springframework.context.index.CandidateComponentsIndexLoader;
@@ -128,6 +129,9 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 
 	@Nullable
 	private MetadataReaderFactory metadataReaderFactory;
+
+	@Nullable
+	private ProxyInstanceSupplierFactory proxyFactory;
 
 	@Nullable
 	private CandidateComponentsIndex componentsIndex;
@@ -324,6 +328,16 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 		return this.metadataReaderFactory;
 	}
 
+	/**
+	 * Set the {@link ProxyInstanceSupplierFactory} that should be used to create proxy
+	 * instances suppliers.
+	 * <p>Default is a {@code null} which means that proxies will not be created.
+	 * @param proxyFactory the proxy factory or {@code null}
+	 * @since 7.0
+	 */
+	public void setProxyFactory(@Nullable ProxyInstanceSupplierFactory proxyFactory) {
+		this.proxyFactory = proxyFactory;
+	}
 
 	/**
 	 * Scan the component index or class path for candidate components.
