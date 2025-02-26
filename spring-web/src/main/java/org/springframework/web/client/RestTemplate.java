@@ -25,6 +25,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -73,6 +74,9 @@ import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.MimeTypeUtils;
+import org.springframework.web.service.invoker.HttpServiceProxyCreator;
+import org.springframework.web.service.invoker.HttpServiceProxyFactory;
+import org.springframework.web.service.invoker.HttpServiceProxyFactory.Builder;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 import org.springframework.web.util.DefaultUriBuilderFactory.EncodingMode;
 import org.springframework.web.util.UriTemplateHandler;
@@ -118,7 +122,7 @@ import org.springframework.web.util.UriTemplateHandler;
  * @see ResponseExtractor
  * @see ResponseErrorHandler
  */
-public class RestTemplate extends InterceptingHttpAccessor implements RestOperations {
+public class RestTemplate extends InterceptingHttpAccessor implements RestOperations, HttpServiceProxyCreator {
 
 	private static final boolean romePresent;
 
@@ -839,6 +843,11 @@ public class RestTemplate extends InterceptingHttpAccessor implements RestOperat
 			@Nullable ResponseExtractor<T> responseExtractor) throws RestClientException {
 
 		return doExecute(url, null, method, requestCallback, responseExtractor);
+	}
+
+	@Override
+	public HttpServiceProxyFactory serviceProxyFactory(Consumer<Builder> builderCustomizer) {
+		return HttpServiceProxyFactory.of(new RestTemplateHttpExchangeAdapter(this), builderCustomizer);
 	}
 
 	/**

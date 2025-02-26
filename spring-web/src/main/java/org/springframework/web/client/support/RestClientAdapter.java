@@ -43,7 +43,9 @@ import org.springframework.web.util.UriBuilderFactory;
  * @author Olga Maciaszek-Sharma
  * @author Rossen Stoyanchev
  * @since 6.1
+ * @deprecated since 7.0 in favor of {@link RestClient#serviceProxyFactory()}
  */
+@Deprecated(since = "7.0", forRemoval = true)
 public final class RestClientAdapter implements HttpExchangeAdapter {
 
 	private final RestClient restClient;

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.springframework.web.client.support;
+package org.springframework.web.client;
 
 import java.net.URI;
 import java.util.ArrayList;
@@ -28,8 +28,6 @@ import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
-import org.springframework.web.client.RestClient;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.service.invoker.HttpExchangeAdapter;
 import org.springframework.web.service.invoker.HttpRequestValues;
 import org.springframework.web.service.invoker.HttpServiceProxyFactory;
@@ -39,21 +37,16 @@ import org.springframework.web.util.UriBuilderFactory;
  * {@link HttpExchangeAdapter} that enables an {@link HttpServiceProxyFactory}
  * to use {@link RestTemplate} for request execution.
  *
- * <p>Use static factory methods in this class to create an
- * {@link HttpServiceProxyFactory} configured with the given {@link RestTemplate}.
- *
  * @author Olga Maciaszek-Sharma
  * @author Brian Clozel
- * @since 6.1
- * @deprecated since 7.0 in favor of {@link RestClient#serviceProxyFactory()}
+ * @since 7.0
  */
-@Deprecated
-public final class RestTemplateAdapter implements HttpExchangeAdapter {
+final class RestTemplateHttpExchangeAdapter implements HttpExchangeAdapter {
 
 	private final RestTemplate restTemplate;
 
 
-	private RestTemplateAdapter(RestTemplate restTemplate) {
+	RestTemplateHttpExchangeAdapter(RestTemplate restTemplate) {
 		this.restTemplate = restTemplate;
 	}
 
@@ -128,14 +121,6 @@ public final class RestTemplateAdapter implements HttpExchangeAdapter {
 		}
 
 		return builder.build();
-	}
-
-
-	/**
-	 * Create a {@link RestTemplateAdapter} for the given {@link RestTemplate}.
-	 */
-	public static RestTemplateAdapter create(RestTemplate restTemplate) {
-		return new RestTemplateAdapter(restTemplate);
 	}
 
 }

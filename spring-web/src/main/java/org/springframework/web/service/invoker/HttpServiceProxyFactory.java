@@ -21,6 +21,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -47,6 +48,7 @@ import org.springframework.web.service.annotation.HttpExchange;
  * {@link Builder Builder}.
  *
  * @author Rossen Stoyanchev
+ * @author Phillip Webb
  * @since 6.0
  * @see org.springframework.web.client.support.RestClientAdapter
  * @see org.springframework.web.reactive.function.client.support.WebClientAdapter
@@ -71,7 +73,6 @@ public final class HttpServiceProxyFactory {
 		this.embeddedValueResolver = embeddedValueResolver;
 	}
 
-
 	/**
 	 * Return a proxy that implements the given HTTP service interface to perform
 	 * HTTP requests and retrieve responses through an HTTP client.
@@ -79,15 +80,28 @@ public final class HttpServiceProxyFactory {
 	 * @param <S> the HTTP service type
 	 * @return the created proxy
 	 */
+	@Deprecated
 	public <S> S createClient(Class<S> serviceType) {
+		return serviceProxy(serviceType);
+	}
+
+	/**
+	 * Return a proxy that implements the given HTTP service interface to perform
+	 * HTTP requests and retrieve responses through an HTTP client.
+	 * @param type the HTTP service to create a proxy for
+	 * @param <S> the HTTP service type
+	 * @return the created proxy
+	 */
+	public <S> S serviceProxy(Class<S> type) {
 
 		List<HttpServiceMethod> httpServiceMethods =
-				MethodIntrospector.selectMethods(serviceType, this::isExchangeMethod).stream()
-						.map(method -> createHttpServiceMethod(serviceType, method))
+				MethodIntrospector.selectMethods(type, this::isExchangeMethod).stream()
+						.map(method -> createHttpServiceMethod(type, method))
 						.toList();
 
-		return ProxyFactory.getProxy(serviceType, new HttpServiceMethodInterceptor(httpServiceMethods));
+		return ProxyFactory.getProxy(type, new HttpServiceMethodInterceptor(httpServiceMethods));
 	}
+
 
 	private boolean isExchangeMethod(Method method) {
 		return AnnotatedElementUtils.hasAnnotation(method, HttpExchange.class);
@@ -105,14 +119,54 @@ public final class HttpServiceProxyFactory {
 	/**
 	 * Return a builder that's initialized with the given client.
 	 * @since 6.1
+	 * @deprecated since 7.0 in favor of {@link #builder(HttpExchangeAdapter)}
 	 */
+	@Deprecated(since = "7.0", forRemoval = true)
 	public static Builder builderFor(HttpExchangeAdapter exchangeAdapter) {
-		return new Builder().exchangeAdapter(exchangeAdapter);
+		return builder(exchangeAdapter);
+	}
+
+	/**
+	 * Factory method that can be used to create a new {@link HttpServiceProxyFactory}
+	 * backed by the given {@link HttpExchangeAdapter}.
+	 * @param exchangeAdapter the exchange adapter
+	 * @return a new {@link HttpServiceProxyFactory}
+	 * @since 7.0
+	 */
+	public static HttpServiceProxyFactory of(HttpExchangeAdapter exchangeAdapter) {
+		return of(exchangeAdapter, (builder) -> {
+		});
+	}
+
+	/**
+	 * Factory method that can be used to create a new {@link HttpServiceProxyFactory}
+	 * backed by the given {@link HttpExchangeAdapter}.
+	 * @param exchangeAdapter the exchange adapter
+	 * @param builderCustomizer callback used to customize the {@link Builder}
+	 * @return a new {@link HttpServiceProxyFactory}
+	 * @since 7.0
+	 */
+	public static HttpServiceProxyFactory of(HttpExchangeAdapter exchangeAdapter, Consumer<Builder> builderCustomizer) {
+		// FIXME might be nice if the customizer took something that can't build
+		Builder builder = HttpServiceProxyFactory.builder(exchangeAdapter);
+		builderCustomizer.accept(builder);
+		return builder.build();
 	}
 
 	/**
 	 * Return an empty builder, with the client to be provided to builder.
+	 * @since 7.0.0
 	 */
+	public static Builder builder(HttpExchangeAdapter exchangeAdapter) {
+		return new Builder(exchangeAdapter);
+	}
+
+	/**
+	 * Return an empty builder, with the client to be provided to builder.
+	 * @deprecated since 7.0 in favor of {@link #builder(HttpExchangeAdapter)} with a
+	 * mandatory {@link HttpExchangeAdapter}
+	 */
+	@Deprecated(since = "7.0", forRemoval = true)
 	public static Builder builder() {
 		return new Builder();
 	}
@@ -134,7 +188,12 @@ public final class HttpServiceProxyFactory {
 		@Nullable
 		private StringValueResolver embeddedValueResolver;
 
+		@Deprecated(since = "7.0", forRemoval = true)
 		private Builder() {
+		}
+
+		private Builder(HttpExchangeAdapter exchangeAdapter) {
+			this.exchangeAdapter = exchangeAdapter;
 		}
 
 		/**
@@ -142,7 +201,9 @@ public final class HttpServiceProxyFactory {
 		 * @param adapter a client adapted to {@link HttpExchangeAdapter}
 		 * @return this same builder instance
 		 * @since 6.1
+		 * @deprecated since 7.0 in favor of {@link HttpServiceProxyFactory#builder(HttpExchangeAdapter)}
 		 */
+		@Deprecated(since = "7.0", forRemoval = true)
 		public Builder exchangeAdapter(HttpExchangeAdapter adapter) {
 			this.exchangeAdapter = adapter;
 			return this;

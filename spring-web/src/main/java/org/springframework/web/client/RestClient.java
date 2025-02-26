@@ -47,6 +47,7 @@ import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.lang.CheckReturnValue;
 import org.springframework.lang.Nullable;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.service.invoker.HttpServiceProxyCreator;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 import org.springframework.web.util.UriBuilder;
 import org.springframework.web.util.UriBuilderFactory;
@@ -78,7 +79,7 @@ import org.springframework.web.util.UriBuilderFactory;
  * @author Sebastien Deleuze
  * @since 6.1
  */
-public interface RestClient {
+public interface RestClient extends HttpServiceProxyCreator {
 
 	/**
 	 * Start building an HTTP GET request.

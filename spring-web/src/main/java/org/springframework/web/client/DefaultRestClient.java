@@ -66,6 +66,7 @@ import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.service.invoker.HttpServiceProxyFactory;
 import org.springframework.web.util.UriBuilder;
 import org.springframework.web.util.UriBuilderFactory;
 
@@ -202,6 +203,11 @@ final class DefaultRestClient implements RestClient {
 	@Override
 	public Builder mutate() {
 		return new DefaultRestClientBuilder(this.builder);
+	}
+
+	@Override
+	public HttpServiceProxyFactory serviceProxyFactory(Consumer<HttpServiceProxyFactory.Builder> builderCustomizer) {
+		return HttpServiceProxyFactory.of(new RestClientHttpExchangeAdapter(this), builderCustomizer);
 	}
 
 	@Nullable
