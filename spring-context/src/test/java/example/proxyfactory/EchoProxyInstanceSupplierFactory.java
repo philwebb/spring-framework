@@ -21,8 +21,8 @@ import java.lang.reflect.Proxy;
 
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.InstanceSupplier;
-import org.springframework.beans.factory.support.ProxyInstanceSupplierFactory;
 import org.springframework.beans.factory.support.RegisteredBean;
+import org.springframework.context.annotation.ProxyInstanceSupplierFactory;
 import org.springframework.core.annotation.MergedAnnotations;
 import org.springframework.util.ClassUtils;
 

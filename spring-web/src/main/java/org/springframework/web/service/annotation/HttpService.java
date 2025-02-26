@@ -22,7 +22,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.springframework.beans.factory.support.ProxyInstanceSupplierFactory;
+import org.springframework.context.annotation.ProxyInstanceSupplierFactory;
 import org.springframework.core.annotation.AliasFor;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Indexed;

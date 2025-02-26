@@ -33,7 +33,6 @@ import org.springframework.beans.factory.annotation.AnnotatedBeanDefinition;
 import org.springframework.beans.factory.annotation.Lookup;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
-import org.springframework.beans.factory.support.ProxyInstanceSupplierFactory;
 import org.springframework.context.ResourceLoaderAware;
 import org.springframework.context.index.CandidateComponentsIndex;
 import org.springframework.context.index.CandidateComponentsIndexLoader;

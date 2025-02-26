@@ -21,8 +21,8 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.support.InstanceSupplier;
-import org.springframework.beans.factory.support.ProxyInstanceSupplierFactory;
 import org.springframework.beans.factory.support.RegisteredBean;
+import org.springframework.context.annotation.ProxyInstanceSupplierFactory;
 import org.springframework.core.io.support.SpringFactoriesLoader;
 
 import static org.assertj.core.api.Assertions.assertThat;

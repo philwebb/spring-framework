@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
-package org.springframework.beans.factory.support;
+package org.springframework.context.annotation;
 
 import java.util.Collection;
 import java.util.List;
 
+import org.springframework.beans.factory.support.InstanceSupplier;
 import org.springframework.lang.Nullable;
 import org.springframework.util.CollectionUtils;
 

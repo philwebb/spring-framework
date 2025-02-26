@@ -24,7 +24,6 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 import org.springframework.beans.factory.support.BeanNameGenerator;
-import org.springframework.beans.factory.support.ProxyInstanceSupplierFactory;
 import org.springframework.core.annotation.AliasFor;
 import org.springframework.core.type.filter.TypeFilter;
 
