@@ -46,6 +46,7 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternUtils;
+import org.springframework.core.log.LogMessage;
 import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.core.type.classreading.CachingMetadataReaderFactory;
 import org.springframework.core.type.classreading.ClassFormatException;
@@ -221,41 +222,27 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 	 * pre-Jakarta {@code javax.annotation.ManagedBean} and {@code javax.inject.Named}
 	 * equivalents), if available.
 	 */
-	@SuppressWarnings("unchecked")
 	protected void registerDefaultFilters() {
 		this.includeFilters.add(new AnnotationTypeFilter(Component.class));
-		ClassLoader cl = ClassPathScanningCandidateComponentProvider.class.getClassLoader();
+		registerDefaultFilters("jakarta.annotation.ManagedBean",
+				"JSR-250 'jakarta.annotation.ManagedBean' found and supported for component scanning");
+		registerDefaultFilters("javax.annotation.ManagedBean",
+				"JSR-250 'javax.annotation.ManagedBean' found and supported for component scanning");
+		registerDefaultFilters("jakarta.inject.Named",
+				"JSR-330 'jakarta.inject.Named' annotation found and supported for component scanning");
+		registerDefaultFilters("javax.inject.Named",
+				"JSR-330 'javax.inject.Named' annotation found and supported for component scanning");
+	}
+
+	@SuppressWarnings("unchecked")
+	private void registerDefaultFilters(String annotationTypeName, String message) throws LinkageError {
 		try {
-			this.includeFilters.add(new AnnotationTypeFilter(
-					((Class<? extends Annotation>) ClassUtils.forName("jakarta.annotation.ManagedBean", cl)), false));
-			logger.trace("JSR-250 'jakarta.annotation.ManagedBean' found and supported for component scanning");
+			ClassLoader classloader = ClassPathScanningCandidateComponentProvider.class.getClassLoader();
+			Class<?> annotationType = ClassUtils.forName(annotationTypeName, classloader);
+			this.includeFilters.add(new AnnotationTypeFilter((Class<? extends Annotation>) annotationType, false));
+			logger.trace(message);
 		}
 		catch (ClassNotFoundException ex) {
-			// JSR-250 1.1 API (as included in Jakarta EE) not available - simply skip.
-		}
-		try {
-			this.includeFilters.add(new AnnotationTypeFilter(
-					((Class<? extends Annotation>) ClassUtils.forName("javax.annotation.ManagedBean", cl)), false));
-			logger.trace("JSR-250 'javax.annotation.ManagedBean' found and supported for component scanning");
-		}
-		catch (ClassNotFoundException ex) {
-			// JSR-250 1.1 API not available - simply skip.
-		}
-		try {
-			this.includeFilters.add(new AnnotationTypeFilter(
-					((Class<? extends Annotation>) ClassUtils.forName("jakarta.inject.Named", cl)), false));
-			logger.trace("JSR-330 'jakarta.inject.Named' annotation found and supported for component scanning");
-		}
-		catch (ClassNotFoundException ex) {
-			// JSR-330 API (as included in Jakarta EE) not available - simply skip.
-		}
-		try {
-			this.includeFilters.add(new AnnotationTypeFilter(
-					((Class<? extends Annotation>) ClassUtils.forName("javax.inject.Named", cl)), false));
-			logger.trace("JSR-330 'javax.inject.Named' annotation found and supported for component scanning");
-		}
-		catch (ClassNotFoundException ex) {
-			// JSR-330 API not available - simply skip.
 		}
 	}
 
@@ -347,9 +334,7 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 		if (this.componentsIndex != null && indexSupportsIncludeFilters()) {
 			return addCandidateComponentsFromIndex(this.componentsIndex, basePackage);
 		}
-		else {
-			return scanCandidateComponents(basePackage);
-		}
+		return scanCandidateComponents(basePackage);
 	}
 
 	/**
@@ -412,35 +397,23 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 			Set<String> types = new HashSet<>();
 			for (TypeFilter filter : this.includeFilters) {
 				String stereotype = extractStereotype(filter);
-				if (stereotype == null) {
-					throw new IllegalArgumentException("Failed to extract stereotype from " + filter);
-				}
+				Assert.notNull(stereotype, () -> "Failed to extract stereotype from " + filter);
 				types.addAll(index.getCandidateTypes(basePackage, stereotype));
 			}
-			boolean traceEnabled = logger.isTraceEnabled();
-			boolean debugEnabled = logger.isDebugEnabled();
 			for (String type : types) {
 				MetadataReader metadataReader = getMetadataReaderFactory().getMetadataReader(type);
-				if (isCandidateComponent(metadataReader)) {
-					ScannedGenericBeanDefinition sbd = new ScannedGenericBeanDefinition(metadataReader);
-					sbd.setSource(metadataReader.getResource());
-					if (isCandidateComponent(sbd)) {
-						if (debugEnabled) {
-							logger.debug("Using candidate component class from index: " + type);
-						}
-						candidates.add(sbd);
-					}
-					else {
-						if (debugEnabled) {
-							logger.debug("Ignored because not a concrete top-level class: " + type);
-						}
-					}
+				if (!isCandidateComponent(metadataReader)) {
+					logger.trace(LogMessage.format("Ignored because not a candidate component based on metadata: %s", type));
+					continue;
 				}
-				else {
-					if (traceEnabled) {
-						logger.trace("Ignored because matching an exclude filter: " + type);
-					}
+				ScannedGenericBeanDefinition sbd = new ScannedGenericBeanDefinition(metadataReader);
+				sbd.setSource(metadataReader.getResource());
+				if (!isCandidateComponent(sbd)) {
+					logger.debug(LogMessage.format("Ignored because not a candidate component based on bean definition: %s", type));
+					continue;
 				}
+				logger.debug(LogMessage.format("Using candidate component class from index: %s", type));
+				candidates.add(sbd);
 			}
 		}
 		catch (IOException ex) {
@@ -455,56 +428,38 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 			String packageSearchPath = ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX +
 					resolveBasePackage(basePackage) + '/' + this.resourcePattern;
 			Resource[] resources = getResourcePatternResolver().getResources(packageSearchPath);
-			boolean traceEnabled = logger.isTraceEnabled();
-			boolean debugEnabled = logger.isDebugEnabled();
 			for (Resource resource : resources) {
 				String filename = resource.getFilename();
 				if (filename != null && filename.contains(ClassUtils.CGLIB_CLASS_SEPARATOR)) {
 					// Ignore CGLIB-generated classes in the classpath
 					continue;
 				}
-				if (traceEnabled) {
-					logger.trace("Scanning " + resource);
-				}
+				logger.trace(LogMessage.format("Scanning %s", resource));
 				try {
 					MetadataReader metadataReader = getMetadataReaderFactory().getMetadataReader(resource);
-					if (isCandidateComponent(metadataReader)) {
-						ScannedGenericBeanDefinition sbd = new ScannedGenericBeanDefinition(metadataReader);
-						sbd.setSource(resource);
-						if (isCandidateComponent(sbd)) {
-							if (debugEnabled) {
-								logger.debug("Identified candidate component class: " + resource);
-							}
-							candidates.add(sbd);
-						}
-						else {
-							if (debugEnabled) {
-								logger.debug("Ignored because not a concrete top-level class: " + resource);
-							}
-						}
+					if (!isCandidateComponent(metadataReader)) {
+						logger.trace(LogMessage.format("Ignored because not a candidate component based on metadata: %s", resource));
+						continue;
 					}
-					else {
-						if (traceEnabled) {
-							logger.trace("Ignored because not matching any filter: " + resource);
-						}
+					ScannedGenericBeanDefinition sbd = new ScannedGenericBeanDefinition(metadataReader);
+					sbd.setSource(resource);
+					if (!isCandidateComponent(sbd)) {
+						logger.debug(LogMessage.format("Ignored because not a candidate component based on bean definition: ", resource));
+						continue;
 					}
+					logger.debug(LogMessage.format("Identified candidate component class: %s", resource));
+					candidates.add(sbd);
 				}
 				catch (FileNotFoundException ex) {
-					if (traceEnabled) {
-						logger.trace("Ignored non-readable " + resource + ": " + ex.getMessage());
-					}
+					logger.trace(LogMessage.format("Ignored non-readable %s: %s", resource, ex.getMessage()));
 				}
 				catch (ClassFormatException ex) {
-					if (shouldIgnoreClassFormatException) {
-						if (debugEnabled) {
-							logger.debug("Ignored incompatible class format in " + resource + ": " + ex.getMessage());
-						}
-					}
-					else {
+					if (!shouldIgnoreClassFormatException) {
 						throw new BeanDefinitionStoreException("Incompatible class format in " + resource +
 								": set system property 'spring.classformat.ignore' to 'true' " +
 								"if you mean to ignore such files during classpath scanning", ex);
 					}
+					logger.trace(LogMessage.format("Ignored incompatible class format in %s: %s", resource, ex.getMessage()));
 				}
 				catch (Throwable ex) {
 					throw new BeanDefinitionStoreException("Failed to read candidate component class: " + resource, ex);
