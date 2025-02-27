@@ -31,6 +31,9 @@ import org.springframework.util.CollectionUtils;
  * standard {@link ComponentScan @ComponentScan} calls. In such cases, there must be a
  * unique way to identify when a proxy should be created (for example, by checking for a
  * specific annotation).
+ * <p>
+ * Implementations of this interface may also return an {@link InstanceSupplier} based on
+ * a proxy factory bean that the user has specified.
  *
  * @author Phillip Webb
  * @since 7.0
@@ -45,11 +48,14 @@ public interface ScannedComponentProxyFactory {
 	/**
 	 * Return an {@link InstanceSupplier} that will create the proxy instance or
 	 * {@code null} if the given metadata is not supported by this factory.
-	 * @param metadata the metadata of the scanned component
+	 * @param scannedComponentMetadata the metadata of the scanned component
+	 * @param bean the bean that should be used to create the proxy or {@code null}
+	 * @param beanName the name bean that being passed in {@code bean} or {@code null}
 	 * @return an {@link InstanceSupplier} or {@code null}
 	 */
 	@Nullable
-	InstanceSupplier<?> createProxyInstanceSupplier(AnnotationMetadata metadata);
+	InstanceSupplier<?> createProxyInstanceSupplier(AnnotationMetadata scannedComponentMetadata, @Nullable Object bean,
+			@Nullable String beanName);
 
 	/**
 	 * Create a composite {@link ScannedComponentProxyFactory} based on the provided
@@ -65,28 +71,26 @@ public interface ScannedComponentProxyFactory {
 		if (factories.size() == 1) {
 			return factories.iterator().next();
 		}
-		return new ScannedComponentProxyFactory() {
-
-			@Override
-			public InstanceSupplier<?> createProxyInstanceSupplier(AnnotationMetadata metadata) {
-				InstanceSupplier<?> result = null;
-				ScannedComponentProxyFactory resultFactory = null;
-				for (ScannedComponentProxyFactory factory : factories) {
-					InstanceSupplier<?> supplier = factory.createProxyInstanceSupplier(metadata);
-					if (supplier == null) {
-						continue;
-					}
-					if (result != null) {
-						throw new IllegalStateException(
-								"Multiple ProxyInstanceSupplierFactory [%s, %s] instances accept %s".formatted(
-										resultFactory.getClass().getName(), factories.getClass().getName(), metadata.getClassName()));
-					}
-					result = supplier;
-					resultFactory = factory;
+		return (scannedComponentMetadata, proxyFactoryBean, proxyFactoryBeanName) -> {
+			InstanceSupplier<?> result = null;
+			ScannedComponentProxyFactory resultFactory = null;
+			for (ScannedComponentProxyFactory factory : factories) {
+				InstanceSupplier<?> supplier = factory.createProxyInstanceSupplier(scannedComponentMetadata,
+						proxyFactoryBean, proxyFactoryBeanName);
+				if (supplier == null) {
+					continue;
 				}
-				return result;
+				if (result != null) {
+					throw new IllegalStateException(
+							"Multiple ProxyInstanceSupplierFactory [%s, %s] instances accept %s%s".formatted(
+									resultFactory.getClass().getName(), factories.getClass().getName(),
+									scannedComponentMetadata.getClassName(),
+									(proxyFactoryBeanName != null) ? " (" + proxyFactoryBeanName + ")" : ""));
+				}
+				result = supplier;
+				resultFactory = factory;
 			}
-
+			return result;
 		};
 	}
 
@@ -97,7 +101,8 @@ public interface ScannedComponentProxyFactory {
 	public static class None implements ScannedComponentProxyFactory {
 
 		@Override
-		public InstanceSupplier<?> createProxyInstanceSupplier(AnnotationMetadata metadata) {
+		public InstanceSupplier<?> createProxyInstanceSupplier(AnnotationMetadata scannedComponentMetadata,
+				@Nullable Object bean, @Nullable String beanName) {
 			return null;
 		}
 

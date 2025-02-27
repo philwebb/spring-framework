@@ -29,9 +29,10 @@ import org.springframework.util.ClassUtils;
 class EchoScannedComponentProxyFactory implements ScannedComponentProxyFactory {
 
 	@Override
-	public InstanceSupplier<?> createProxyInstanceSupplier(AnnotationMetadata metadata) {
-		return (!metadata.getAnnotations().isPresent(EchoComponent.class)) ? null
-				: new EchoProxyInstanceSupplier<>(metadata.getClassName());
+	public InstanceSupplier<?> createProxyInstanceSupplier(AnnotationMetadata scannedComponentMetadata, Object bean,
+			String beanName) {
+		return (!scannedComponentMetadata.getAnnotations().isPresent(EchoComponent.class)) ? null
+				: new EchoProxyInstanceSupplier<>(scannedComponentMetadata.getClassName());
 	}
 
 	static class EchoProxyInstanceSupplier<T> implements InstanceSupplier<T> {
@@ -45,7 +46,8 @@ class EchoScannedComponentProxyFactory implements ScannedComponentProxyFactory {
 		@Override
 		@SuppressWarnings("unchecked")
 		public T get(RegisteredBean registeredBean) throws Exception {
-			ClassLoader beanClassLoader = registeredBean.getBeanFactory().getBeanClassLoader();
+			ConfigurableListableBeanFactory beanFactory = registeredBean.getBeanFactory();
+			ClassLoader beanClassLoader = (beanFactory != null) ? beanFactory.getBeanClassLoader() : null;
 			Class<?> type = ClassUtils.forName(this.typeName, beanClassLoader);
 			return (T) Proxy.newProxyInstance(getClassLoader(registeredBean), new Class<?>[] { type }, this::invoke);
 		}

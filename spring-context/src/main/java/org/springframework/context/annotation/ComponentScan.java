@@ -175,11 +175,18 @@ public @interface ComponentScan {
 	/**
 	 * Specifies the factory that should be used to create proxies for scanned beans. By
 	 * default all {@link ScannedComponentProxyFactory} beans found in
-	 * {@code spring.factories} will be used. To disabled proxy creation use
+	 * {@code spring.factories} will be considered. To disabled proxy creation use
 	 * {@code ProxyInstanceSupplierFactory.None.class}
 	 * @since 7.0
 	 */
 	Class<? extends ScannedComponentProxyFactory> proxyFactory() default ScannedComponentProxyFactory.class;
+
+	/**
+	 * Specifies the name of the bean that should be resolved and passed to
+	 * {@link ScannedComponentProxyFactory} for proxy creation.
+	 * @since 7.0
+	 */
+	String proxyFactoryBean() default "";
 
 	/**
 	 * Declares the type filter to be used as an {@linkplain ComponentScan#includeFilters

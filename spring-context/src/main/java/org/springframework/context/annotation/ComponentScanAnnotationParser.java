@@ -20,18 +20,24 @@ import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Function;
+
+import jakarta.validation.constraints.Null;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.config.BeanDefinitionHolder;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.BeanNameGenerator;
+import org.springframework.beans.factory.support.InstanceSupplier;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.io.support.SpringFactoriesLoader;
+import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.core.type.filter.AbstractTypeHierarchyTraversingFilter;
 import org.springframework.core.type.filter.TypeFilter;
+import org.springframework.lang.Nullable;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
 
@@ -129,27 +135,43 @@ class ComponentScanAnnotationParser {
 			}
 		});
 
-		ScannedComponentProxyFactory proxyFactory = getProxyFactory(componentScan);
-		if (proxyFactory != null) {
-			scanner.setProxyFactory(proxyFactory);
-		}
+		scanner.setProxyFactory(getProxyFactory(componentScan));
 
 		return scanner.doScan(StringUtils.toStringArray(basePackages));
 	}
 
-	private ScannedComponentProxyFactory getProxyFactory(AnnotationAttributes componentScan) {
+	@Nullable
+	private Function<AnnotationMetadata, InstanceSupplier<?>> getProxyFactory(AnnotationAttributes componentScan) {
 		Class<? extends ScannedComponentProxyFactory> proxyFactory = componentScan.getClass("proxyFactory");
 		if (ScannedComponentProxyFactory.None.class.equals(proxyFactory)) {
 			return null;
 		}
 		SpringFactoriesLoader loader = getSpringFactoriesLoader(proxyFactory);
-		List<ScannedComponentProxyFactory> factories = loader.load(ScannedComponentProxyFactory.class, this::resolveProxyFactoryArgument);
-		return ScannedComponentProxyFactory.composite(factories);
+		List<ScannedComponentProxyFactory> factories = loader.load(ScannedComponentProxyFactory.class,
+				this::resolveProxyFactoryArgument);
+		ScannedComponentProxyFactory composite = ScannedComponentProxyFactory.composite(factories);
+		return asProxyFactoryFunction(composite, componentScan.getString("proxyFactoryBean"));
 	}
 
 	private SpringFactoriesLoader getSpringFactoriesLoader(Class<?> proxyFactory) {
 		return (ScannedComponentProxyFactory.class != proxyFactory) ? SpringFactoriesLoader.of(proxyFactory)
 				: SpringFactoriesLoader.forDefaultResourceLocation();
+	}
+
+	private Function<AnnotationMetadata, InstanceSupplier<?>> asProxyFactoryFunction(
+			ScannedComponentProxyFactory proxyFactory, String beanName) {
+		if (StringUtils.hasLength(beanName)) {
+			return (scannedComponentMetadata) -> asProxyFactoryFunctionWithBean(scannedComponentMetadata, proxyFactory, beanName);
+		}
+		return (scannedComponentMetadata) -> proxyFactory.createProxyInstanceSupplier(scannedComponentMetadata, null, null);
+	}
+
+	private InstanceSupplier<?> asProxyFactoryFunctionWithBean(AnnotationMetadata metadata,
+			ScannedComponentProxyFactory proxyFactory, String beanName) {
+		return (registeredBean) -> {
+			Object bean = registeredBean.getBeanFactory().getBean(beanName);
+			return proxyFactory.createProxyInstanceSupplier(metadata, bean, beanName);
+		};
 	}
 
 	@SuppressWarnings("unchecked")

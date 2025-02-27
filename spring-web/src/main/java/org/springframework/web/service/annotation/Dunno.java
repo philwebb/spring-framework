@@ -16,14 +16,18 @@
 
 package org.springframework.web.service.annotation;
 
+import org.springframework.context.annotation.ComponentScan;
+
 /**
  *
  * @author pwebb
  * @since 7.0
  */
+@ComponentScan(proxyFactory = HttpServiceProxyFactory.class, proxyFactoryBean = "myBean")
 class Dunno extends Dunno2 {
 
 	Dunno() {
+		super("google")
 	}
 
 }

@@ -39,9 +39,9 @@ class EchoComponentTests {
 			.load(ScannedComponentProxyFactory.class);
 		SimpleMetadataReaderFactory metadataReaderFactory = new SimpleMetadataReaderFactory();
 		MetadataReader metadataReader = metadataReaderFactory.getMetadataReader(Example.class.getName());
-		AnnotationMetadata metadata = metadataReader.getAnnotationMetadata();
+		AnnotationMetadata scannedComponentMetadata = metadataReader.getAnnotationMetadata();
 		InstanceSupplier<?> supplier = ScannedComponentProxyFactory.composite(factories)
-			.createProxyInstanceSupplier(metadata);
+			.createProxyInstanceSupplier(scannedComponentMetadata, null, null);
 		RegisteredBean registeredBean = mock(RegisteredBean.class);
 		Example bean = (Example) supplier.get(registeredBean);
 		assertThat(bean.hello()).isEqualTo("hello");

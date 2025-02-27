@@ -24,6 +24,7 @@ import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Function;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -131,7 +132,7 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 	private MetadataReaderFactory metadataReaderFactory;
 
 	@Nullable
-	private ScannedComponentProxyFactory proxyFactory;
+	private Function<AnnotationMetadata, InstanceSupplier<?>> proxyFactory;
 
 	@Nullable
 	private CandidateComponentsIndex componentsIndex;
@@ -329,13 +330,12 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 	}
 
 	/**
-	 * Set the {@link ScannedComponentProxyFactory} that should be used to create proxy
-	 * instances suppliers.
+	 * Set the {@link Function} that should be used to create proxy instances suppliers.
 	 * <p>Default is a {@code null} which means that proxies will not be created.
 	 * @param proxyFactory the proxy factory or {@code null}
 	 * @since 7.0
 	 */
-	public void setProxyFactory(@Nullable ScannedComponentProxyFactory proxyFactory) {
+	public void setProxyFactory(@Nullable Function<AnnotationMetadata, InstanceSupplier<?>> proxyFactory) {
 		this.proxyFactory = proxyFactory;
 	}
 
@@ -422,7 +422,7 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 				}
 				ScannedGenericBeanDefinition sbd = new ScannedGenericBeanDefinition(metadataReader);
 				sbd.setSource(metadataReader.getResource());
-				applyProxyFactory(sbd);
+				applyProxyFactoryInstanceSupplier(sbd);
 				if (sbd.getInstanceSupplier() == null && !isCandidateComponent(sbd)) {
 					logger.debug(LogMessage.format("Ignored because not a candidate component based on bean definition: %s", type));
 					continue;
@@ -458,7 +458,7 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 					}
 					ScannedGenericBeanDefinition sbd = new ScannedGenericBeanDefinition(metadataReader);
 					sbd.setSource(resource);
-					applyProxyFactory(sbd);
+					applyProxyFactoryInstanceSupplier(sbd);
 					if (sbd.getInstanceSupplier() == null && !isCandidateComponent(sbd)) {
 						logger.debug(LogMessage.format("Ignored because not a candidate component based on bean definition: ", resource));
 						continue;
@@ -488,9 +488,9 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 		return candidates;
 	}
 
-	private void applyProxyFactory(ScannedGenericBeanDefinition sbd) {
+	private void applyProxyFactoryInstanceSupplier(ScannedGenericBeanDefinition sbd) {
 		InstanceSupplier<?> instanceSupplier = (this.proxyFactory != null)
-				? this.proxyFactory.createProxyInstanceSupplier(sbd.getMetadata()) : null;
+				? this.proxyFactory.apply(sbd.getMetadata()) : null;
 		if (instanceSupplier != null) {
 			sbd.setInstanceSupplier(instanceSupplier);
 		}
