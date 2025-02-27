@@ -89,7 +89,7 @@ class HttpServiceScannedComponentProxyFactory implements ScannedComponentProxyFa
 			return factory.serviceProxy(type);
 		}
 		if (bean instanceof HttpServiceProxyCreator creator) {
-			return creator.serviceProxyFactory().serviceProxy(type);
+			return creator.serviceProxy(type);
 		}
 		throw new IllegalStateException("The bean '%s' is not a HttpServiceProxyFactory or HttpServiceProxyCreator"
 			.formatted((beanName != null) ? beanName : bean.getClass().getName()));

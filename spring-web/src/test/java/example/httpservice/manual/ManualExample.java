@@ -20,12 +20,10 @@ import java.util.Map;
 
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestClient;
 
 @Configuration(proxyBeanMethods = false)
-@ComponentScan
 public class ManualExample {
 
 	@Bean

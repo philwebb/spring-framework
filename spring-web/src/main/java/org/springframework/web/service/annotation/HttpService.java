@@ -41,6 +41,9 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
 @Component
 public @interface HttpService {
 
+	// HTTP service is def of contract
+	// Client is the client side of the contract
+
 	/**
 	 * Alias for {@link Component#name()}
 	 */
