@@ -1,0 +1,2 @@
+org.springframework.context.annotation.ScannedComponentProxyFactory=\
+org.springframework.web.service.annotation.HttpServiceScannedComponentProxyFactory

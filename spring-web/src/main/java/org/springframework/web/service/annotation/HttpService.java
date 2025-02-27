@@ -25,7 +25,7 @@ import java.lang.annotation.Target;
 import org.springframework.context.annotation.ScannedComponentProxyFactory;
 import org.springframework.core.annotation.AliasFor;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Indexed;
+import org.springframework.web.service.invoker.HttpServiceProxyCreator;
 import org.springframework.web.service.invoker.HttpServiceProxyFactory;
 
 /**
@@ -44,13 +44,13 @@ public @interface HttpService {
 	/**
 	 * Alias for {@link Component#name()}
 	 */
-	@AliasFor(annotation = Component.class, attribute = "name")
+	@AliasFor(annotation = Component.class, attribute = "value")
 	String value() default "";
 
 	/**
 	 * Alias for {@link Component#name()}
 	 */
-	@AliasFor(annotation = Component.class, attribute = "name")
+	@AliasFor(annotation = Component.class, attribute = "value")
 	String name() default "";
 
 	/**

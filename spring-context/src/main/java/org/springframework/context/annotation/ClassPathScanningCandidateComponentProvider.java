@@ -525,7 +525,7 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 				return isConditionMatch(metadataReader);
 			}
 		}
-		return false;
+		return this.includeFilters.isEmpty();
 	}
 
 	/**

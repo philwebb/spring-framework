@@ -23,24 +23,35 @@ import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.InstanceSupplier;
 import org.springframework.beans.factory.support.RegisteredBean;
 import org.springframework.context.annotation.ScannedComponentProxyFactory;
+import org.springframework.core.annotation.MergedAnnotations;
 import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.util.ClassUtils;
 
-class EchoScannedComponentProxyFactory implements ScannedComponentProxyFactory {
+public class EchoScannedComponentProxyFactory implements ScannedComponentProxyFactory {
 
 	@Override
 	public InstanceSupplier<?> createProxyInstanceSupplier(AnnotationMetadata scannedComponentMetadata, Object bean,
 			String beanName) {
-		return (!scannedComponentMetadata.getAnnotations().isPresent(EchoComponent.class)) ? null
-				: new EchoProxyInstanceSupplier<>(scannedComponentMetadata.getClassName());
+		MergedAnnotations annotations = scannedComponentMetadata.getAnnotations();
+		if (isSupported(bean, annotations)) {
+			return new EchoProxyInstanceSupplier<>(scannedComponentMetadata, bean);
+		}
+		return null;
+	}
+
+	protected boolean isSupported(Object bean, MergedAnnotations annotations) {
+		return bean instanceof EchoMessage || annotations.isPresent(EchoComponent.class);
 	}
 
 	static class EchoProxyInstanceSupplier<T> implements InstanceSupplier<T> {
 
 		private final String typeName;
 
-		EchoProxyInstanceSupplier(String typeName) {
-			this.typeName = typeName;
+		private final String suffix;
+
+		EchoProxyInstanceSupplier(AnnotationMetadata scannedComponentMetadata, Object suffix) {
+			this.typeName = scannedComponentMetadata.getClassName();
+			this.suffix = (suffix != null) ? " " + suffix : "";
 		}
 
 		@Override
@@ -58,9 +69,16 @@ class EchoScannedComponentProxyFactory implements ScannedComponentProxyFactory {
 		}
 
 		private Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-			return (!String.class.equals(method.getReturnType())) ? null : method.getName();
+			return (!String.class.equals(method.getReturnType())) ? null : method.getName() + this.suffix;
 		}
 
 	}
 
+	public static class Always extends EchoScannedComponentProxyFactory {
+
+		@Override
+		protected boolean isSupported(Object bean, MergedAnnotations annotations) {
+			return true;
+		}
+	}
 }

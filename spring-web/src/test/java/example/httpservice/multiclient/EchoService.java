@@ -14,13 +14,18 @@
  * limitations under the License.
  */
 
-package org.springframework.web.service.annotation;
+package example.httpservice.multiclient;
 
-/**
- * 
- * @author pwebb
- * @since 7.0
- */
-public class Dunno2 {
+import java.util.Map;
+
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.service.annotation.GetExchange;
+import org.springframework.web.service.annotation.HttpService;
+
+@HttpService(createdBy = "echo")
+public interface EchoService {
+
+	@GetExchange
+	Map<?,?> echo(@RequestBody Map<String,String> message);
 
 }

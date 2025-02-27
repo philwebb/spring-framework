@@ -16,6 +16,7 @@
 
 package org.springframework.web.service.annotation;
 
+import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.InstanceSupplier;
 import org.springframework.context.annotation.ScannedComponentProxyFactory;
@@ -39,7 +40,7 @@ class HttpServiceScannedComponentProxyFactory implements ScannedComponentProxyFa
 	@Override
 	public InstanceSupplier<?> createProxyInstanceSupplier(AnnotationMetadata scannedComponentMetadata, Object bean,
 			String beanName) {
-		if (bean != null) {
+		if (bean instanceof HttpServiceProxyFactory || bean instanceof HttpServiceProxyCreator) {
 			return createProxyInstanceSupplierForBean(scannedComponentMetadata, bean, beanName);
 		}
 		MergedAnnotation<HttpService> annotation = scannedComponentMetadata.getAnnotations().get(HttpService.class);
@@ -53,7 +54,7 @@ class HttpServiceScannedComponentProxyFactory implements ScannedComponentProxyFa
 			Object bean, String beanName) {
 		return (registeredBean) -> {
 			ConfigurableListableBeanFactory beanFactory = registeredBean.getBeanFactory();
-			return createProxy(beanFactory, scannedComponentMetadata, bean, beanName);
+			return createProxy(beanFactory.getBeanClassLoader(), scannedComponentMetadata, bean, beanName);
 		};
 	}
 
@@ -62,16 +63,28 @@ class HttpServiceScannedComponentProxyFactory implements ScannedComponentProxyFa
 		return (registeredBean) -> {
 			ConfigurableListableBeanFactory beanFactory = registeredBean.getBeanFactory();
 			String beanName = annotation.getString("createdBy");
-			Object bean = !StringUtils.hasLength(beanName) ? beanFactory.getBean(HttpServiceProxyFactory.class)
-					: beanFactory.getBean(beanName);
-			return createProxy(beanFactory, scannedComponentMetadata, bean, beanName);
+			Object bean = !StringUtils.hasLength(beanName) ? deduceBean(beanFactory) : beanFactory.getBean(beanName);
+			return createProxy(beanFactory.getBeanClassLoader(), scannedComponentMetadata, bean, beanName);
 		};
 	}
 
+	private Object deduceBean(ConfigurableListableBeanFactory beanFactory) {
+		try {
+			return beanFactory.getBean(HttpServiceProxyFactory.class);
+		} catch (NoSuchBeanDefinitionException ex) {
+		}
+		try {
+			return beanFactory.getBean(HttpServiceProxyCreator.class);
+		} catch (NoSuchBeanDefinitionException ex) {
+		}
+		throw new NoSuchBeanDefinitionException(HttpServiceProxyFactory.class,
+				"No HttpServiceProxyFactory or HttpServiceProxyCreator bean available");
+	}
+
 	@Nullable
-	private Object createProxy(ConfigurableListableBeanFactory beanFactory, AnnotationMetadata scannedComponentMetadata,
-			Object bean, String beanName) throws ClassNotFoundException, LinkageError {
-		Class<?> type = ClassUtils.forName(scannedComponentMetadata.getClassName(), beanFactory.getBeanClassLoader());
+	private Object createProxy(ClassLoader classLoader, AnnotationMetadata scannedComponentMetadata, Object bean,
+			String beanName) throws ClassNotFoundException, LinkageError {
+		Class<?> type = ClassUtils.forName(scannedComponentMetadata.getClassName(), classLoader);
 		if (bean instanceof HttpServiceProxyFactory factory) {
 			return factory.serviceProxy(type);
 		}

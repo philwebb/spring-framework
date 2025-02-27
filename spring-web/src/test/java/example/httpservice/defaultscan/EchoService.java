@@ -14,20 +14,18 @@
  * limitations under the License.
  */
 
-package org.springframework.web.service.annotation;
+package example.httpservice.defaultscan;
 
-import org.springframework.context.annotation.ComponentScan;
+import java.util.Map;
 
-/**
- *
- * @author pwebb
- * @since 7.0
- */
-@ComponentScan(proxyFactory = HttpServiceProxyFactory.class, proxyFactoryBean = "myBean")
-class Dunno extends Dunno2 {
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.service.annotation.GetExchange;
+import org.springframework.web.service.annotation.HttpService;
 
-	Dunno() {
-		super("google")
-	}
+@HttpService
+public interface EchoService {
+
+	@GetExchange
+	Map<?,?> echo(@RequestBody Map<String,String> message);
 
 }

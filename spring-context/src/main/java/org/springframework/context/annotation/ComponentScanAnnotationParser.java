@@ -22,8 +22,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.Function;
 
-import jakarta.validation.constraints.Null;
-
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.config.BeanDefinitionHolder;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
@@ -71,12 +69,13 @@ class ComponentScanAnnotationParser {
 		this.registry = registry;
 	}
 
-	// FIXME rather than AnnotationAttributes we should use MergedAnnotation<ComponentScan>
-	// to allow it to be injected. Factories can then use `getRoot` to support their own attributes
-	// This method is really package-private so it's fine to change
 	public Set<BeanDefinitionHolder> parse(AnnotationAttributes componentScan, String declaringClass) {
+		boolean useDefaultFilters = componentScan.getBoolean("useDefaultFilters");
+		// FIXME if we have a proxyFactory then useDefault to false?
+		// FIXME what if we have a proxyFactoryBean?
+
 		ClassPathBeanDefinitionScanner scanner = new ClassPathBeanDefinitionScanner(this.registry,
-				componentScan.getBoolean("useDefaultFilters"), this.environment, this.resourceLoader);
+				useDefaultFilters, this.environment, this.resourceLoader);
 
 		Class<? extends BeanNameGenerator> generatorClass = componentScan.getClass("nameGenerator");
 		boolean useInheritedGenerator = (BeanNameGenerator.class == generatorClass);
@@ -170,7 +169,7 @@ class ComponentScanAnnotationParser {
 			ScannedComponentProxyFactory proxyFactory, String beanName) {
 		return (registeredBean) -> {
 			Object bean = registeredBean.getBeanFactory().getBean(beanName);
-			return proxyFactory.createProxyInstanceSupplier(metadata, bean, beanName);
+			return proxyFactory.createProxyInstanceSupplier(metadata, bean, beanName).get(registeredBean);
 		};
 	}
 
@@ -181,5 +180,4 @@ class ComponentScanAnnotationParser {
 		}
 		return null;
 	}
-
 }

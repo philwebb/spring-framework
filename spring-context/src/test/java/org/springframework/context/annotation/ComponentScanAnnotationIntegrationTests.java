@@ -22,6 +22,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.util.Set;
 
+import example.proxyfactory.EchoMessage;
+import example.proxyfactory.EchoScannedComponentProxyFactory;
 import example.scannable.CustomComponent;
 import example.scannable.CustomStereotype;
 import example.scannable.DefaultNamedComponent;
@@ -31,6 +33,7 @@ import example.scannable.ScopedProxyTestBean;
 import example.scannable_implicitbasepackage.ComponentScanAnnotatedConfigWithImplicitBasePackage;
 import example.scannable_implicitbasepackage.ConfigurableComponent;
 import example.scannable_proxy.HelloWorldEchoBean;
+import example.scannable_proxy.VanillaInterfaceEchoBean;
 import example.scannable_scoped.CustomScopeAnnotationBean;
 import example.scannable_scoped.MyScope;
 import org.junit.jupiter.api.Test;
@@ -63,7 +66,6 @@ import org.springframework.core.type.classreading.MetadataReaderFactory;
 import org.springframework.core.type.filter.TypeFilter;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.beans.factory.support.BeanDefinitionBuilder.genericBeanDefinition;
 
 /**
@@ -328,17 +330,40 @@ class ComponentScanAnnotationIntegrationTests {
 	}
 
 	@Test
-	void withProxyCreation() {
-		ApplicationContext ctx = new AnnotationConfigApplicationContext(ComponentScanWithProxyCreation.class);
+	void withProxyCreationFromSpringFactories() {
+		ApplicationContext ctx = new AnnotationConfigApplicationContext(ComponentScanWithProxyCreationFromSpringFactories.class);
 		HelloWorldEchoBean bean = ctx.getBean(HelloWorldEchoBean.class);
 		assertThat(bean.hello()).isEqualTo("hello");
 		assertThat(bean.world()).isEqualTo("world");
 	}
 
 	@Test
-	void withProxyCreationDisabled() {
-		ApplicationContext ctx = new AnnotationConfigApplicationContext(ComponentScanWithProxyCreationDisabled.class);
+	void withProxyCreationNone() {
+		ApplicationContext ctx = new AnnotationConfigApplicationContext(ComponentScanWithProxyCreationNone.class);
 		assertThat(ctx.getBeanNamesForType(HelloWorldEchoBean.class)).isEmpty();
+	}
+
+	@Test
+	void withOnlyProxyBean() {
+		ApplicationContext ctx = new AnnotationConfigApplicationContext(ComponentScanWithOnlyProxyBean.class);
+		HelloWorldEchoBean bean = ctx.getBean(HelloWorldEchoBean.class);
+		assertThat(bean.hello()).isEqualTo("hello EchoMessage[message=spring]");
+		assertThat(bean.world()).isEqualTo("world EchoMessage[message=spring]");
+	}
+
+	@Test
+	void withProxyFactoryAndProxyBean() {
+		ApplicationContext ctx = new AnnotationConfigApplicationContext(ComponentScanWithProxyFactoryAndProxyBean.class);
+		HelloWorldEchoBean bean = ctx.getBean(HelloWorldEchoBean.class);
+		assertThat(bean.hello()).isEqualTo("hello spring");
+		assertThat(bean.world()).isEqualTo("world spring");
+	}
+
+	@Test
+	void withProxyFactory() {
+		ApplicationContext ctx = new AnnotationConfigApplicationContext(ComponentScanWithProxyFactory.class);
+		VanillaInterfaceEchoBean bean = ctx.getBean(VanillaInterfaceEchoBean.class);
+		assertThat(bean.vanilla()).isEqualTo("vanilla");
 	}
 
 	private static void assertContextContainsBean(ApplicationContext ctx, String beanName) {
@@ -608,10 +633,35 @@ class ComponentScanWithBasePackagesAndValueAlias {}
 
 @Configuration
 @ComponentScan(basePackages = "example.scannable_proxy")
-class ComponentScanWithProxyCreation {
+class ComponentScanWithProxyCreationFromSpringFactories {
 }
 
 @Configuration
 @ComponentScan(basePackages = "example.scannable_proxy", proxyFactory = ScannedComponentProxyFactory.None.class)
-class ComponentScanWithProxyCreationDisabled {
+class ComponentScanWithProxyCreationNone {
+}
+
+@Configuration
+@ComponentScan(useDefaultFilters = false, basePackages = "example.scannable_proxy", proxyFactory = EchoScannedComponentProxyFactory.Always.class)
+class ComponentScanWithProxyFactory {
+}
+
+@Configuration
+@ComponentScan(basePackages = "example.scannable_proxy", proxyFactory = EchoScannedComponentProxyFactory.class, proxyFactoryBean = "springMessage")
+class ComponentScanWithProxyFactoryAndProxyBean {
+
+	@Bean(name = "springMessage")
+	String springMessage() {
+		return "spring";
+	}
+}
+
+@Configuration
+@ComponentScan(basePackages = "example.scannable_proxy", proxyFactoryBean = "springMessage")
+class ComponentScanWithOnlyProxyBean {
+
+	@Bean(name = "springMessage")
+	EchoMessage springMessage() {
+		return new EchoMessage("spring");
+	}
 }
