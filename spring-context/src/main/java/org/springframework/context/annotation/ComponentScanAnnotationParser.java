@@ -31,6 +31,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.core.io.support.SpringFactoriesLoader;
 import org.springframework.core.type.filter.AbstractTypeHierarchyTraversingFilter;
 import org.springframework.core.type.filter.TypeFilter;
 import org.springframework.util.ClassUtils;
@@ -134,9 +135,18 @@ class ComponentScanAnnotationParser {
 
 	private @Nullable ComponentProxyFactory getProxyFactory(AnnotationAttributes componentScan) {
 		Class<? extends ComponentProxyFactory> proxyFactoryClass = componentScan.getClass("proxyFactory");
-		if (proxyFactoryClass == ComponentProxyFactory.class) {
+		if (proxyFactoryClass == ComponentProxyFactory.None.class) {
 			return null;
 		}
-		return BeanUtils.instantiateClass(proxyFactoryClass);
+		SpringFactoriesLoader loader = getSpringFactoriesLoader(proxyFactoryClass);
+		List<ComponentProxyFactory> factories = loader.load(ComponentProxyFactory.class);
+		return ComponentProxyFactory.of(factories);
+	}
+
+	private SpringFactoriesLoader getSpringFactoriesLoader(Class<? extends ComponentProxyFactory> proxyFactoryClass) {
+		if (proxyFactoryClass == ComponentProxyFactory.class) {
+			return SpringFactoriesLoader.forDefaultResourceLocation(this.resourceLoader.getClassLoader());
+		}
+		return SpringFactoriesLoader.of(proxyFactoryClass);
 	}
 }
