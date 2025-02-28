@@ -21,6 +21,8 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.jspecify.annotations.Nullable;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.config.BeanDefinitionHolder;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
@@ -119,6 +121,8 @@ class ComponentScanAnnotationParser {
 			basePackages.add(ClassUtils.getPackageName(declaringClass));
 		}
 
+		scanner.setProxyFactory(getProxyFactory(componentScan));
+
 		scanner.addExcludeFilter(new AbstractTypeHierarchyTraversingFilter(false, false) {
 			@Override
 			protected boolean matchClassName(String className) {
@@ -128,4 +132,11 @@ class ComponentScanAnnotationParser {
 		return scanner.doScan(StringUtils.toStringArray(basePackages));
 	}
 
+	private @Nullable ComponentProxyFactory getProxyFactory(AnnotationAttributes componentScan) {
+		Class<? extends ComponentProxyFactory> proxyFactoryClass = componentScan.getClass("proxyFactory");
+		if (proxyFactoryClass == ComponentProxyFactory.class) {
+			return null;
+		}
+		return BeanUtils.instantiateClass(proxyFactoryClass);
+	}
 }
