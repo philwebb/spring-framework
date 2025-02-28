@@ -1,0 +1,2 @@
+org.springframework.context.annotation.ComponentProxyFactory=\
+example.proxyfactory.EchoClientProxyFactory

@@ -31,6 +31,7 @@ import example.scannable.MessageBean;
 import example.scannable.ScopedProxyTestBean;
 import example.scannable_implicitbasepackage.ComponentScanAnnotatedConfigWithImplicitBasePackage;
 import example.scannable_implicitbasepackage.ConfigurableComponent;
+import example.scannable_proxy.AnnoatedEchoBean;
 import example.scannable_proxy.SimpleEchoBean;
 import example.scannable_scoped.CustomScopeAnnotationBean;
 import example.scannable_scoped.MyScope;
@@ -333,6 +334,23 @@ class ComponentScanAnnotationIntegrationTests {
 		SimpleEchoBean bean = ctx.getBean(SimpleEchoBean.class);
 		assertThat(bean.hello()).isEqualTo("hello");
 		assertThat(bean.world()).isEqualTo("world");
+		AnnoatedEchoBean annotatedBean = ctx.getBean(AnnoatedEchoBean.class);
+		assertThat(annotatedBean.spring()).isEqualTo("spring");
+	}
+
+	@Test
+	void withProxyFactoryDefault() {
+		ApplicationContext ctx = new AnnotationConfigApplicationContext(ComponentScanWithProxyFactoryDefault.class);
+		assertThat(ctx.getBeanNamesForType(SimpleEchoBean.class)).isEmpty();
+		AnnoatedEchoBean annotatedBean = ctx.getBean(AnnoatedEchoBean.class);
+		assertThat(annotatedBean.spring()).isEqualTo("spring");
+	}
+
+	@Test
+	void withProxyFactoryNone() {
+		ApplicationContext ctx = new AnnotationConfigApplicationContext(ComponentScanWithProxyFactoryNone.class);
+		assertThat(ctx.getBeanNamesForType(SimpleEchoBean.class)).isEmpty();
+		assertThat(ctx.getBeanNamesForType(AnnoatedEchoBean.class)).isEmpty();
 	}
 
 	private static void assertContextContainsBean(ApplicationContext ctx, String beanName) {
@@ -606,4 +624,19 @@ class ComponentScanWithBasePackagesAndValueAlias {}
 		basePackages = "example.scannable_proxy",
 		proxyFactory = EchoComponentProxyFactory.class)
 class ComponentScanWithProxyFactory {
+}
+
+@Configuration
+@ComponentScan(
+		useDefaultFilters = false,
+		basePackages = "example.scannable_proxy")
+class ComponentScanWithProxyFactoryDefault {
+}
+
+@Configuration
+@ComponentScan(
+		useDefaultFilters = false,
+		basePackages = "example.scannable_proxy",
+		proxyFactory = EchoComponentProxyFactory.None.class)
+class ComponentScanWithProxyFactoryNone {
 }

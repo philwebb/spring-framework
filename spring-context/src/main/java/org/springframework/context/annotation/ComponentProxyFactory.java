@@ -40,15 +40,15 @@ public interface ComponentProxyFactory {
 	/**
 	 * A {@link ComponentProxyFactory} that always returns {@code null}.
 	 */
-	static ComponentProxyFactory NONE = componentMetadata -> null;
+	static ComponentProxyFactory NONE = new None();
 
 	/**
 	 * Return an {@link InstanceSupplier} that will create the proxy instance or
 	 * {@code null} if the given metadata is not supported by this factory.
-	 * @param metadata the metadata of the component
+	 * @param componentMetadata the metadata of the component
 	 * @return an {@link InstanceSupplier} or {@code null}
 	 */
-	@Nullable InstanceSupplier<?> createProxyInstanceSupplier(AnnotationMetadata metadata);
+	@Nullable InstanceSupplier<?> createProxyInstanceSupplier(AnnotationMetadata componentMetadata);
 
 	/**
 	 * Create a new {@link ComponentProxyFactory} composed of the given {@code factories}.
@@ -90,5 +90,19 @@ public interface ComponentProxyFactory {
 			}
 			return result;
 		};
+	}
+
+	/**
+	 * {@link ComponentProxyFactory} that always returns no {@link InstanceSupplier}. This
+	 * class is public so that it can be used with annotation attributes.
+	 *
+	 * @see ComponentProxyFactory#NONE
+	 */
+	public static class None implements ComponentProxyFactory {
+
+		@Override
+		public @Nullable InstanceSupplier<?> createProxyInstanceSupplier(AnnotationMetadata componentMetadata) {
+			return null;
+		}
 	}
 }

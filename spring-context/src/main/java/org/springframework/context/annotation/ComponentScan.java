@@ -166,7 +166,10 @@ public @interface ComponentScan {
 	boolean lazyInit() default false;
 
 	/**
-	 * Specifies the factory that should be used to create proxies for scanned beans.
+	 * Specifies the factory that should be used to create proxies for scanned beans. By
+	 * default all {@link ComponentProxyFactory} beans found in {@code spring.factories}
+	 * will be considered. To disabled default proxy creation set this attribute to
+	 * {@code ComponentProxyFactory.None.class}
 	 * @since 7.0
 	 */
 	Class<? extends ComponentProxyFactory> proxyFactory() default ComponentProxyFactory.class;
