@@ -33,7 +33,9 @@ import org.springframework.beans.factory.BeanDefinitionStoreException;
 import org.springframework.beans.factory.annotation.AnnotatedBeanDefinition;
 import org.springframework.beans.factory.annotation.Lookup;
 import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.beans.factory.support.AbstractBeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
+import org.springframework.beans.factory.support.InstanceSupplier;
 import org.springframework.context.ResourceLoaderAware;
 import org.springframework.context.index.CandidateComponentsIndex;
 import org.springframework.context.index.CandidateComponentsIndexLoader;
@@ -124,6 +126,8 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 	private @Nullable ResourcePatternResolver resourcePatternResolver;
 
 	private @Nullable MetadataReaderFactory metadataReaderFactory;
+
+	private @Nullable ComponentProxyFactory proxyFactory;
 
 	private @Nullable CandidateComponentsIndex componentsIndex;
 
@@ -306,6 +310,16 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 	}
 
 	/**
+	 * Set the {@link ComponentProxyFactory} to use.
+	 * <p>Default is a {@code null} which means that proxies will not be created.
+	 * @param proxyFactory the proxy factory or {@code null}
+	 * @since 7.0
+	 */
+	public void setProxyFactory(@Nullable ComponentProxyFactory proxyFactory) {
+		this.proxyFactory = proxyFactory;
+	}
+
+	/**
 	 * Return the MetadataReaderFactory used by this component provider.
 	 */
 	public final MetadataReaderFactory getMetadataReaderFactory() {
@@ -392,12 +406,16 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 			}
 			for (String type : types) {
 				MetadataReader metadataReader = getMetadataReaderFactory().getMetadataReader(type);
-				if (!isCandidateComponent(metadataReader)) {
+				boolean candidateForProxySupplier = isCandidateComponent(metadataReader, this.proxyFactory);
+				if (!isCandidateComponent(metadataReader) && !candidateForProxySupplier) {
 					logger.trace(LogMessage.format("Ignored because not a candidate component based on metadata: %s", type));
 					continue;
 				}
-				ScannedGenericBeanDefinition sbd = new ScannedGenericBeanDefinition(metadataReader);
-				sbd.setSource(metadataReader.getResource());
+				ScannedGenericBeanDefinition sbd = createBeanDefinition(metadataReader, metadataReader.getResource());
+				if (candidateForProxySupplier && !isSuppliedByProxyFactory(sbd)) {
+					logger.trace(LogMessage.format("Ignored because no proxy created not a candidate component based on metadata: %s", type));
+					continue;
+				}
 				if (!isCandidateComponent(sbd)) {
 					logger.debug(LogMessage.format("Ignored because not a candidate component based on bean definition: %s", type));
 					continue;
@@ -427,12 +445,16 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 				logger.trace(LogMessage.format("Scanning %s", resource));
 				try {
 					MetadataReader metadataReader = getMetadataReaderFactory().getMetadataReader(resource);
-					if (!isCandidateComponent(metadataReader)) {
+					boolean candidateForProxySupplier = isCandidateComponent(metadataReader, this.proxyFactory);
+					if (!isCandidateComponent(metadataReader) && !candidateForProxySupplier) {
 						logger.trace(LogMessage.format("Ignored because not a candidate component based on metadata: %s", resource));
 						continue;
 					}
-					ScannedGenericBeanDefinition sbd = new ScannedGenericBeanDefinition(metadataReader);
-					sbd.setSource(resource);
+					ScannedGenericBeanDefinition sbd = createBeanDefinition(metadataReader, resource);
+					if (candidateForProxySupplier && !isSuppliedByProxyFactory(sbd)) {
+						logger.trace(LogMessage.format("Ignored because no proxy created not a candidate component based on metadata: %s", resource));
+						continue;
+					}
 					if (!isCandidateComponent(sbd)) {
 						logger.debug(LogMessage.format("Ignored because not a candidate component based on bean definition: ", resource));
 						continue;
@@ -462,6 +484,16 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 		return candidates;
 	}
 
+	private ScannedGenericBeanDefinition createBeanDefinition(MetadataReader metadataReader, Resource resource) {
+		ScannedGenericBeanDefinition beanDefinition = new ScannedGenericBeanDefinition(metadataReader);
+		beanDefinition.setSource(resource);
+		InstanceSupplier<?> supplier = (this.proxyFactory != null)
+				? this.proxyFactory.createProxyInstanceSupplier(beanDefinition.getMetadata()) : null;
+		if (supplier != null) {
+			beanDefinition.setInstanceSupplier(supplier);
+		}
+		return beanDefinition;
+	}
 
 	/**
 	 * Resolve the specified base package into a pattern specification for
@@ -496,6 +528,19 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 	}
 
 	/**
+	 * Determine whether the given class is a candidate component when
+	 * considered with the given proxy factory. By default this method will
+	 * return true when a proxy factory is set without any include filters.
+	 * @param metadataReader the ASM ClassReader for the class
+	 * @param proxyFactory the proxy factory or {@code null}
+	 * @return whether the class qualifies as a candidate component
+	 */
+	protected boolean isCandidateComponent(MetadataReader metadataReader,
+			@Nullable ComponentProxyFactory proxyFactory) throws IOException {
+		return this.includeFilters.isEmpty() && proxyFactory != null;
+	}
+
+	/**
 	 * Determine whether the given class is a candidate component based on any
 	 * {@code @Conditional} annotations.
 	 * @param metadataReader the ASM ClassReader for the class
@@ -520,10 +565,23 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 	 */
 	protected boolean isCandidateComponent(AnnotatedBeanDefinition beanDefinition) {
 		AnnotationMetadata metadata = beanDefinition.getMetadata();
-		return (metadata.isIndependent() && (metadata.isConcrete() ||
-				(metadata.isAbstract() && metadata.hasAnnotatedMethods(Lookup.class.getName()))));
+		return isConcreteAndIndependent(metadata) || isAbstractWithLookupMethod(metadata)
+				|| isSuppliedByProxyFactory(beanDefinition);
 	}
 
+	private boolean isConcreteAndIndependent(AnnotationMetadata metadata) {
+		return metadata.isIndependent() && metadata.isConcrete();
+	}
+
+	private boolean isAbstractWithLookupMethod(AnnotationMetadata metadata) {
+		return metadata.isAbstract() && metadata.hasAnnotatedMethods(Lookup.class.getName());
+	}
+
+	private boolean isSuppliedByProxyFactory(AnnotatedBeanDefinition beanDefinition) {
+		return this.proxyFactory != null
+				&& beanDefinition instanceof AbstractBeanDefinition abd
+				&& abd.getInstanceSupplier() != null;
+	}
 
 	/**
 	 * Clear the local metadata cache, if any, removing all cached class metadata.

@@ -49,11 +49,14 @@ import org.aspectj.lang.annotation.Aspect;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.beans.factory.support.InstanceSupplier;
+import org.springframework.beans.factory.support.RegisteredBean;
 import org.springframework.context.testfixture.index.CandidateComponentsTestClassLoader;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.StandardEnvironment;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.DefaultResourceLoader;
+import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
 import org.springframework.core.type.filter.AssignableTypeFilter;
 import org.springframework.core.type.filter.RegexPatternTypeFilter;
@@ -287,10 +290,29 @@ class ClassPathScanningCandidateComponentProviderTests {
 	}
 
 	@Test
-	void withNoFilters() {
+	void withNoFiltersWhenNoProxy() {
 		ClassPathScanningCandidateComponentProvider provider = new ClassPathScanningCandidateComponentProvider(false);
 		Set<BeanDefinition> candidates = provider.findCandidateComponents(TEST_BASE_PACKAGE);
 		assertThat(candidates).isEmpty();
+	}
+
+	@Test
+	void withNoFiltersWhenProxyReturnsNoInstanceSupplier() {
+		ClassPathScanningCandidateComponentProvider provider = new ClassPathScanningCandidateComponentProvider(false);
+		provider.setProxyFactory(componentMetadata -> null);
+		Set<BeanDefinition> candidates = provider.findCandidateComponents(TEST_BASE_PACKAGE);
+		assertThat(candidates).isEmpty();
+	}
+
+	@Test
+	void withNoFiltersWhenProxyReturnsInstanceSupplier() {
+		ClassPathScanningCandidateComponentProvider provider = new ClassPathScanningCandidateComponentProvider(false);
+		provider.setProxyFactory(this::createProxyInstanceSupplierForFooService);
+		Set<BeanDefinition> candidates = provider.findCandidateComponents(TEST_BASE_PACKAGE);
+		assertThat(candidates).isNotEmpty();
+		ScannedGenericBeanDefinition candidate = (ScannedGenericBeanDefinition) candidates.iterator().next();
+		TestInstanceSupplier<?> instanceSupplier = (TestInstanceSupplier<?>) candidate.getInstanceSupplier();
+		assertThat(instanceSupplier.name()).isEqualTo("foo");
 	}
 
 	@Test
@@ -511,6 +533,13 @@ class ClassPathScanningCandidateComponentProviderTests {
 	}
 
 
+	private <T> InstanceSupplier<T> createProxyInstanceSupplierForFooService(AnnotationMetadata scannedComponentMetadata) {
+		if (scannedComponentMetadata.isInterface() && scannedComponentMetadata.getClassName().contains("FooService")) {
+			return new TestInstanceSupplier<>("foo");
+		}
+		return null;
+	}
+
 	private static void assertBeanTypes(Set<BeanDefinition> candidates, Class<?>... expectedTypes) {
 		assertBeanTypes(candidates, Arrays.stream(expectedTypes));
 	}
@@ -556,6 +585,14 @@ class ClassPathScanningCandidateComponentProviderTests {
 	@Profile("dev")
 	@Retention(RetentionPolicy.RUNTIME)
 	@interface DevProfile {
+	}
+
+	record TestInstanceSupplier<T>(String name) implements InstanceSupplier<T> {
+
+		@Override
+		public T get(RegisteredBean registeredBean) throws Exception {
+			return null;
+		}
 	}
 
 }
