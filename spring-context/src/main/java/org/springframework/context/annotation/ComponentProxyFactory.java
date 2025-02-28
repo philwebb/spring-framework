@@ -16,10 +16,14 @@
 
 package org.springframework.context.annotation;
 
+import java.util.Collection;
+import java.util.List;
+
 import org.jspecify.annotations.Nullable;
 
 import org.springframework.beans.factory.support.InstanceSupplier;
 import org.springframework.core.type.AnnotationMetadata;
+import org.springframework.util.CollectionUtils;
 
 /**
  * Factory used to create proxy instances for components. Typically used to create
@@ -34,6 +38,11 @@ import org.springframework.core.type.AnnotationMetadata;
 public interface ComponentProxyFactory {
 
 	/**
+	 * A {@link ComponentProxyFactory} that always returns {@code null}.
+	 */
+	static ComponentProxyFactory NONE = componentMetadata -> null;
+
+	/**
 	 * Return an {@link InstanceSupplier} that will create the proxy instance or
 	 * {@code null} if the given metadata is not supported by this factory.
 	 * @param metadata the metadata of the component
@@ -41,4 +50,45 @@ public interface ComponentProxyFactory {
 	 */
 	@Nullable InstanceSupplier<?> createProxyInstanceSupplier(AnnotationMetadata metadata);
 
+	/**
+	 * Create a new {@link ComponentProxyFactory} composed of the given {@code factories}.
+	 * @param factories the source factories
+	 * @return a composite factory
+	 */
+	static ComponentProxyFactory of(ComponentProxyFactory... factories) {
+		return of(List.of(factories));
+	}
+
+	/**
+	 * Create a new {@link ComponentProxyFactory} composed of the given {@code factories}.
+	 * @param factories the source factories
+	 * @return a composite factory
+	 */
+	static ComponentProxyFactory of(@Nullable Collection<? extends ComponentProxyFactory> factories) {
+		if (CollectionUtils.isEmpty(factories)) {
+			return NONE;
+		}
+		if (factories.size() == 1) {
+			return factories.iterator().next();
+		}
+		return componentMetadata -> {
+			InstanceSupplier<?> result = null;
+			ComponentProxyFactory resultFactory = NONE;
+			for (ComponentProxyFactory factory : factories) {
+				InstanceSupplier<?> supplier = factory.createProxyInstanceSupplier(componentMetadata);
+				if (supplier == null) {
+					continue;
+				}
+				if (result != null) {
+					throw new IllegalStateException(
+							"Multiple ComponentProxyFactories [%s, %s] accept %s".formatted(
+									resultFactory.getClass().getName(), factories.getClass().getName(),
+									componentMetadata.getClassName()));
+				}
+				result = supplier;
+				resultFactory = factory;
+			}
+			return result;
+		};
+	}
 }
