@@ -22,6 +22,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.util.Set;
 
+import example.proxyfactory.EchoComponentProxyFactory;
 import example.scannable.CustomComponent;
 import example.scannable.CustomStereotype;
 import example.scannable.DefaultNamedComponent;
@@ -30,6 +31,7 @@ import example.scannable.MessageBean;
 import example.scannable.ScopedProxyTestBean;
 import example.scannable_implicitbasepackage.ComponentScanAnnotatedConfigWithImplicitBasePackage;
 import example.scannable_implicitbasepackage.ConfigurableComponent;
+import example.scannable_proxy.SimpleEchoBean;
 import example.scannable_scoped.CustomScopeAnnotationBean;
 import example.scannable_scoped.MyScope;
 import org.junit.jupiter.api.Test;
@@ -325,6 +327,13 @@ class ComponentScanAnnotationIntegrationTests {
 		assertContextContainsBean(ctx, "fooServiceImpl");
 	}
 
+	@Test
+	void withProxyFactory() {
+		ApplicationContext ctx = new AnnotationConfigApplicationContext(ComponentScanWithProxyFactory.class);
+		SimpleEchoBean bean = ctx.getBean(SimpleEchoBean.class);
+		assertThat(bean.hello()).isEqualTo("hello");
+		assertThat(bean.world()).isEqualTo("world");
+	}
 
 	private static void assertContextContainsBean(ApplicationContext ctx, String beanName) {
 		assertThat(ctx.containsBean(beanName)).as("context should contain bean " + beanName).isTrue();
@@ -590,3 +599,11 @@ class ComponentScanWithMultipleAnnotationIncludeFilters3 {
 		basePackages = "example.scannable",
 		basePackageClasses = example.scannable.PackageMarker.class)
 class ComponentScanWithBasePackagesAndValueAlias {}
+
+@Configuration
+@ComponentScan(
+		useDefaultFilters = false,
+		basePackages = "example.scannable_proxy",
+		proxyFactory = EchoComponentProxyFactory.class)
+class ComponentScanWithProxyFactory {
+}

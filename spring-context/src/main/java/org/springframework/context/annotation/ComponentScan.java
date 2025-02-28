@@ -165,6 +165,11 @@ public @interface ComponentScan {
 	 */
 	boolean lazyInit() default false;
 
+	/**
+	 * Specifies the factory that should be used to create proxies for scanned beans.
+	 * @since 7.0
+	 */
+	Class<? extends ComponentProxyFactory> proxyFactory() default ComponentProxyFactory.class;
 
 	/**
 	 * Declares the type filter to be used as an {@linkplain ComponentScan#includeFilters
