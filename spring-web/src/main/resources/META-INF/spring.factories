@@ -1,0 +1,2 @@
+org.springframework.context.annotation.ComponentProxyFactory=\
+org.springframework.web.service.invoker.annotation.HttpServiceClientComponentProxyFactory
