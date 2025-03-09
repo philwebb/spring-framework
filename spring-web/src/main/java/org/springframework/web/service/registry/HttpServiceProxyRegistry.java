@@ -16,46 +16,90 @@
 
 package org.springframework.web.service.registry;
 
-import java.util.Map;
+import java.util.function.BiFunction;
+import java.util.function.Supplier;
 
-import org.jspecify.annotations.Nullable;
+import org.springframework.beans.factory.BeanRegistry;
+import org.springframework.web.service.invoker.HttpExchangeAdapter;
+import org.springframework.web.service.invoker.HttpServiceProxyFactory;
+import org.springframework.web.service.registry.HttpServiceProxyRegistry.Spec;
 
 /**
- * Registry for access to HTTP Service proxies grouped by target URL.
+ * Programmatic HTTP service proxy bean registration capabilities using
+ * {@link HttpServiceProxyFactory.Builder} beans.
  *
- * <p>To create an instance, see
- * {@link org.springframework.web.client.support.RestClientHttpServiceProxyRegistry}, or
- * {@link org.springframework.web.reactive.function.client.support.WebClientHttpServiceProxyRegistry}.
- *
- * @author Rossen Stoyanchev
+ * @author Phillip Webb
  * @since 7.0
- * @param <G> the type of HttpServiceGroup supported by the registry
  */
-public interface HttpServiceProxyRegistry<G extends HttpServiceGroup<G, ?>> {
+public class HttpServiceProxyRegistry extends AbstractHttpServiceProxyRegistry<Spec, HttpServiceProxyFactory.Builder> {
 
 	/**
-	 * Return a client proxy of the given type from any HTTP Service group as
-	 * long as there is only one proxy of the given type across all groups.
-	 * @param httpServiceType the type of HTTP Service to return
-	 * @return the proxy instance or {@code null} if not found
-	 * @param <P> the proxy type
-	 * @throws IllegalArgumentException if there is more than one proxy of
-	 * the given type
+	 * Create a new {@link HttpServiceProxyRegistry} instance for the given
+	 * {@link BeanRegistry} without any group support.
+	 * @param beanRegistry the bean registry used to register beans
 	 */
-	<P> @Nullable P getClientProxy(Class<P> httpServiceType);
+	public <B> HttpServiceProxyRegistry(BeanRegistry beanRegistry) {
+		super(beanRegistry, ClientSupplier.usingBean());
+	}
 
 	/**
-	 * Return a client proxy from the identified HTTP Service group.
-	 * @param groupId identifier of the group
-	 * @param httpServiceType the type of HTTP Service to return
-	 * @return the proxy instance or {@code null} if not found
-	 * @param <P> the proxy type
+	 * Create a new {@link HttpServiceProxyRegistry} instance with group support provided
+	 * by the given type and lookup function.
+	 * @param <B>
+	 * @param beanRegistry the bean registry used to register beans
+	 * @param groupLookup a function that given the group lookup bean and a group ID will
+	 * return the client
 	 */
-	<P> @Nullable P getClientProxy(String groupId, Class<P> httpServiceType);
+	public <B> HttpServiceProxyRegistry(BeanRegistry beanRegistry, Class<B> beanType,
+			BiFunction<B, String, HttpServiceProxyFactory.Builder> lookup) {
+		super(beanRegistry, beanType, lookup);
+	}
 
 	/**
-	 * Get all registered HTTP Service groups.
+	 * Create a new {@link HttpServiceProxyRegistry} instance with group support provided
+	 * by the given client supplier.
+	 * @param beanRegistry the bean registry used to register beans
+	 * @param clientSupplier the supplier that will return clients
 	 */
-	Map<String, G> getGroups();
+	public HttpServiceProxyRegistry(BeanRegistry beanRegistry,
+			ClientSupplier<HttpServiceProxyFactory.Builder> clientSupplier) {
+		super(beanRegistry, clientSupplier);
+	}
+
+	@Override
+	protected Spec createSpec(ClientSupplier<HttpServiceProxyFactory.Builder> clientSupplier) {
+		return new SpecifiedProxySupplier(clientSupplier);
+	}
+
+	/**
+	 * Specification for customizing the way that proxies are created.
+	 */
+	public interface Spec extends AbstractHttpServiceProxyRegistry.Spec<Spec> {
+
+	}
+
+	/**
+	 * A {@link ProxySupplier} based around a configured {@link Spec}.
+	 */
+	static class SpecifiedProxySupplier
+			extends AbstractHttpServiceProxyRegistry.SpecifiedProxySupplier<Spec, HttpServiceProxyFactory.Builder>
+			implements Spec {
+
+		SpecifiedProxySupplier(ClientSupplier<HttpServiceProxyFactory.Builder> clientSupplier) {
+			super(clientSupplier, HttpServiceProxyFactory.Builder.class);
+		}
+
+		@Override
+		protected HttpServiceProxyFactory.Builder getProxyFactoryBuilder(
+				Supplier<HttpServiceProxyFactory.Builder> clientSupplier) {
+			return clientSupplier.get();
+		}
+
+		@Override
+		protected HttpExchangeAdapter getHttpExchangeAdapter(Supplier<HttpServiceProxyFactory.Builder> clientSupplier) {
+			throw new IllegalStateException("HttpExchangeAdapter is not available for HttpServiceProxyFactory");
+		}
+
+	}
 
 }
