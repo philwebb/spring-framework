@@ -38,13 +38,13 @@ import org.springframework.core.annotation.AliasFor;
 @Documented
 public @interface ImportHttpServices {
 
-	@AliasFor("group")
-	String value() default HttpServiceGroup.DEFAULT_GROUP_NAME;
+	@AliasFor("types")
+	Class<?>[] value() default {};
 
 	@AliasFor("value")
-	String group() default HttpServiceGroup.DEFAULT_GROUP_NAME;
+	Class<?>[] types() default {};
 
-	Class<?>[] httpServiceTypes() default {};
+	String group() default HttpServiceGroup.DEFAULT_GROUP_NAME;
 
 	String[] basePackages() default {};
 

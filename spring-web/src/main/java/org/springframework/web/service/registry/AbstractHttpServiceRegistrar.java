@@ -55,19 +55,21 @@ import org.springframework.web.service.annotation.HttpExchange;
  * {@link HttpServiceGroup}.
  *
  * <p>Subclasses need to implement {@link #registerHttpServices} to register
- * HTTP Services of interest.
+ * HTTP Services of interest. A built-in extension of this class supports
+ * declaring HTTP Services through {@link ImportHttpServices} annotations.
+ * You can also extend this class to perform direct HTTP Service registrations.
  *
- * <p>Applications can autowire HTTP Service proxies directly, or alternatively
- * they can also autowire the {@link HttpServiceProxyRegistry} with all proxies.
- *
- * <p>If more than one registrar instances of this type are imported, subsequent
+ * <p>If more than one registrar instance of this type is imported, subsequent
  * imports will update the existing {@code HttpServiceProxyRegistryFactoryBean}
  * bean definition rather than creating a new one, and it will merge any HTTP
  * Service group definitions that are registered by multiple registrars.
  *
+ * <p>Applications can autowire HTTP Service proxies directly, or alternatively
+ * they can also autowire the {@link HttpServiceProxyRegistry} with all proxies.
+ *
  * @author Rossen Stoyanchev
  * @since 7.0
- * @see AnnotationHttpServiceRegistrar
+ * @see ImportHttpServices
  */
 public abstract class AbstractHttpServiceRegistrar implements
 		ImportBeanDefinitionRegistrar, EnvironmentAware, ResourceLoaderAware, BeanFactoryAware {
@@ -273,6 +275,14 @@ public abstract class AbstractHttpServiceRegistrar implements
 		GroupSpec forGroup(String name, HttpServiceGroup.ClientType clientType);
 
 		/**
+		 * Perform HTTP Service registrations for the
+		 * {@link HttpServiceGroup#DEFAULT_GROUP_NAME} group.
+		 */
+		default GroupSpec forDefaultGroup() {
+			return forGroup(HttpServiceGroup.DEFAULT_GROUP_NAME);
+		}
+
+		/**
 		 * Spec to list or scan for HTTP Service types.
 		 */
 		interface GroupSpec {
@@ -280,7 +290,7 @@ public abstract class AbstractHttpServiceRegistrar implements
 			/**
 			 * List HTTP Service types to create proxies for.
 			 */
-			GroupSpec registerHttpServiceTypes(Class<?>... serviceTypes);
+			GroupSpec register(Class<?>... serviceTypes);
 
 			/**
 			 * Detect HTTP Service types in the given packages, looking for
@@ -324,7 +334,7 @@ public abstract class AbstractHttpServiceRegistrar implements
 			}
 
 			@Override
-			public GroupSpec registerHttpServiceTypes(Class<?>... serviceTypes) {
+			public GroupSpec register(Class<?>... serviceTypes) {
 				registerHttpServiceType(groupName, clientType, serviceTypes);
 				return this;
 			}

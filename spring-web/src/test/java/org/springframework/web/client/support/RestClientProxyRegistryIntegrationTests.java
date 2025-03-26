@@ -36,6 +36,7 @@ import org.springframework.web.client.support.echo.EchoB;
 import org.springframework.web.client.support.greeting.GreetingA;
 import org.springframework.web.client.support.greeting.GreetingB;
 import org.springframework.web.service.registry.AbstractHttpServiceRegistrar;
+import org.springframework.web.service.registry.HttpServiceGroup;
 import org.springframework.web.service.registry.HttpServiceProxyRegistry;
 import org.springframework.web.service.registry.ImportHttpServices;
 
@@ -122,8 +123,8 @@ public class RestClientProxyRegistryIntegrationTests {
 
 
 	@Configuration(proxyBeanMethods = false)
-	@ImportHttpServices(group = "echo", httpServiceTypes = {EchoA.class, EchoB.class})
-	@ImportHttpServices(group = "greeting", httpServiceTypes = {GreetingA.class, GreetingB.class})
+	@ImportHttpServices(group = "echo", types = {EchoA.class, EchoB.class})
+	@ImportHttpServices(group = "greeting", types = {GreetingA.class, GreetingB.class})
 	private static class ListingConfig extends ClientConfig {
 	}
 
@@ -144,8 +145,8 @@ public class RestClientProxyRegistryIntegrationTests {
 
 		@Override
 		protected void registerHttpServices(HttpServiceRegistry registry, AnnotationMetadata metadata) {
-			registry.forGroup("echo").registerHttpServiceTypes(EchoA.class, EchoB.class);
-			registry.forGroup("greeting").registerHttpServiceTypes(GreetingA.class, GreetingB.class);
+			registry.forGroup("echo").register(EchoA.class, EchoB.class);
+			registry.forGroup("greeting").register(GreetingA.class, GreetingB.class);
 		}
 	}
 

@@ -125,8 +125,8 @@ public class WebClientProxyRegistryIntegrationTests {
 
 	@Configuration(proxyBeanMethods = false)
 	@HttpServiceGroups(clientType = ClientType.WEB_CLIENT, groups = {
-			@ImportHttpServices(group = "echo", httpServiceTypes = {EchoA.class, EchoB.class}),
-			@ImportHttpServices(group = "greeting", httpServiceTypes = {GreetingA.class, GreetingB.class})
+			@ImportHttpServices(group = "echo", types = {EchoA.class, EchoB.class}),
+			@ImportHttpServices(group = "greeting", types = {GreetingA.class, GreetingB.class})
 	})
 	private static class ListingConfig extends BaseEchoConfig {
 	}
@@ -154,8 +154,8 @@ public class WebClientProxyRegistryIntegrationTests {
 
 		@Override
 		protected void registerHttpServices(HttpServiceRegistry registry, AnnotationMetadata metadata) {
-			registry.forGroup("echo").registerHttpServiceTypes(EchoA.class, EchoB.class);
-			registry.forGroup("greeting").registerHttpServiceTypes(GreetingA.class, GreetingB.class);
+			registry.forGroup("echo").register(EchoA.class, EchoB.class);
+			registry.forGroup("greeting").register(GreetingA.class, GreetingB.class);
 		}
 	}
 

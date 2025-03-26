@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -206,6 +207,11 @@ public final class HttpServiceProxyRegistryFactoryBean
 		public HttpServiceGroupConfigurer.Groups<CB> filter(Predicate<HttpServiceGroup> predicate) {
 			this.filter = (this.filter != null ? this.filter.or(predicate) : predicate);
 			return this;
+		}
+
+		@Override
+		public void configureClient(Consumer<CB> clientConfigurer) {
+			configureClient((group, builder) -> clientConfigurer.accept(builder));
 		}
 
 		@Override

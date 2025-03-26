@@ -17,6 +17,7 @@
 package org.springframework.web.service.registry;
 
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 import org.springframework.web.service.invoker.HttpServiceProxyFactory;
@@ -42,6 +43,8 @@ public interface HttpServiceGroupConfigurer<CB> {
 		Groups<CB> filterByName(String... groupNames);
 
 		Groups<CB> filter(Predicate<HttpServiceGroup> predicate);
+
+		void configureClient(Consumer<CB> clientConfigurer);
 
 		void configureClient(BiConsumer<HttpServiceGroup, CB> clientConfigurer);
 
