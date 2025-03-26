@@ -20,6 +20,7 @@ import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.service.invoker.HttpExchangeAdapter;
+import org.springframework.web.service.registry.HttpServiceGroup;
 import org.springframework.web.service.registry.HttpServiceGroupAdapter;
 import org.springframework.web.service.registry.HttpServiceGroupConfigurer;
 
@@ -31,18 +32,13 @@ import org.springframework.web.service.registry.HttpServiceGroupConfigurer;
 public class RestClientHttpServiceGroupAdapter implements HttpServiceGroupAdapter<RestClient.Builder> {
 
 	@Override
-	public RestClient.Builder getBaseClientBuilder(ApplicationContext applicationContext) {
+	public RestClient.Builder getBaseClientBuilder(HttpServiceGroup group, ApplicationContext context) {
 		try {
-			return applicationContext.getBean(RestClient.Builder.class);
+			return context.getBean(RestClient.Builder.class).clone();
 		}
 		catch (BeansException ex) {
 			return RestClient.builder();
 		}
-	}
-
-	@Override
-	public RestClient.Builder cloneBaseClientBuilder(RestClient.Builder baseClientBuilder) {
-		return baseClientBuilder.clone();
 	}
 
 	@Override

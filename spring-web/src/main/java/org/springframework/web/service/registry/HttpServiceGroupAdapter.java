@@ -27,9 +27,7 @@ import org.springframework.web.service.invoker.HttpExchangeAdapter;
  */
 public interface HttpServiceGroupAdapter<CB> {
 
-	CB getBaseClientBuilder(ApplicationContext applicationContext);
-
-	CB cloneBaseClientBuilder(CB baseClientBuilder);
+	CB getBaseClientBuilder(HttpServiceGroup group, ApplicationContext applicationContext);
 
 	Class<? extends HttpServiceGroupConfigurer<CB>> getConfigurerType();
 

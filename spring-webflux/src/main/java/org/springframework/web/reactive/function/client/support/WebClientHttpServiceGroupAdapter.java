@@ -20,6 +20,7 @@ import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.service.invoker.HttpExchangeAdapter;
+import org.springframework.web.service.registry.HttpServiceGroup;
 import org.springframework.web.service.registry.HttpServiceGroupAdapter;
 import org.springframework.web.service.registry.HttpServiceGroupConfigurer;
 
@@ -31,18 +32,13 @@ import org.springframework.web.service.registry.HttpServiceGroupConfigurer;
 public class WebClientHttpServiceGroupAdapter implements HttpServiceGroupAdapter<WebClient.Builder> {
 
 	@Override
-	public WebClient.Builder getBaseClientBuilder(ApplicationContext applicationContext) {
+	public WebClient.Builder getBaseClientBuilder(HttpServiceGroup group, ApplicationContext applicationContext) {
 		try {
-			return applicationContext.getBean(WebClient.Builder.class);
+			return applicationContext.getBean(WebClient.Builder.class).clone();
 		}
 		catch (BeansException ex) {
 			return WebClient.builder();
 		}
-	}
-
-	@Override
-	public WebClient.Builder cloneBaseClientBuilder(WebClient.Builder baseClientBuilder) {
-		return baseClientBuilder.clone();
 	}
 
 	@Override

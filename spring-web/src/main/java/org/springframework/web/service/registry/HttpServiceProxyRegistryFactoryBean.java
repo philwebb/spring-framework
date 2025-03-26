@@ -97,11 +97,11 @@ public final class HttpServiceProxyRegistryFactoryBean
 
 		// Set client builders
 		groupAdapters.forEach((clientType, groupAdapter) -> {
-			Object baseClientBuilder = groupAdapter.getBaseClientBuilder(this.applicationContext);
-
 			this.groupSet.stream()
 					.filter(group -> group.clientType().equals(clientType))
-					.forEach(group -> group.initialize(baseClientBuilder, groupAdapter));
+					.forEach(group -> group.initialize(
+							groupAdapter.getBaseClientBuilder(group, applicationContext),
+							groupAdapter));
 		});
 
 		// Apply group configurers
@@ -158,9 +158,8 @@ public final class HttpServiceProxyRegistryFactoryBean
 			return this.declaredGroup.clientType();
 		}
 
-		@SuppressWarnings("unchecked")
-		public <CB> void initialize(Object baseClientBuilder, HttpServiceGroupAdapter<?> adapter) {
-			this.clientBuilder = ((HttpServiceGroupAdapter<CB>) adapter).cloneBaseClientBuilder((CB) baseClientBuilder);
+		public <CB> void initialize(Object clientBuilder, HttpServiceGroupAdapter<?> adapter) {
+			this.clientBuilder = clientBuilder;
 			this.groupAdapter = adapter;
 		}
 

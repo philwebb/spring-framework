@@ -49,27 +49,31 @@ import org.springframework.util.ClassUtils;
 import org.springframework.web.service.annotation.HttpExchange;
 
 /**
- * Registers bean definitions for HTTP Service client proxies together with the
- * {@link HttpServiceProxyRegistryFactoryBean} to create those proxies after
- * initializing the underlying {@code RestClient} or {@code WebClient} for each
- * {@link HttpServiceGroup}.
+ * Registrar that imports the following:
+ * <ul>
+ * <li>Bean definitions for HTTP Service client proxies by {@link HttpServiceGroup}.
+ * <li>{@link HttpServiceProxyRegistryFactoryBean} to initialize the
+ * {@code RestClient} or {@code WebClient} for each group, and create the proxies.
+ * </ul>
  *
- * <p>Subclasses need to implement {@link #registerHttpServices} to register
- * HTTP Services of interest. A built-in extension of this class supports
+ * <p>Subclasses determine the HTTP Services of interest and register those by
+ * implementing {@link #registerHttpServices}. There is built-in support for
  * declaring HTTP Services through {@link ImportHttpServices} annotations.
- * You can also extend this class to perform direct HTTP Service registrations.
+ * It is also possible extend this class to perform HTTP Service registrations
+ * directly or sourced in any other way.
  *
- * <p>If more than one registrar instance of this type is imported, subsequent
- * imports will update the existing {@code HttpServiceProxyRegistryFactoryBean}
- * bean definition rather than creating a new one, and it will merge any HTTP
- * Service group definitions that are registered by multiple registrars.
+ * <p>If more than one registrar instance of this type is imported, subsequently
+ * imported registrars update the existing {@code HttpServiceProxyRegistryFactoryBean}
+ * definition, and likewise merge HTTP Service group definitions that overlap.
  *
- * <p>Applications can autowire HTTP Service proxies directly, or alternatively
- * they can also autowire the {@link HttpServiceProxyRegistry} with all proxies.
+ * <p>Applications can autowire HTTP Service client proxies directly, or
+ * alternatively they can also autowire the {@link HttpServiceProxyRegistry}
+ * that contains all proxies.
  *
  * @author Rossen Stoyanchev
  * @since 7.0
  * @see ImportHttpServices
+ * @see HttpServiceProxyRegistryFactoryBean
  */
 public abstract class AbstractHttpServiceRegistrar implements
 		ImportBeanDefinitionRegistrar, EnvironmentAware, ResourceLoaderAware, BeanFactoryAware {
