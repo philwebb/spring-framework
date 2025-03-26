@@ -18,6 +18,7 @@ package org.springframework.web.service.registry;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,6 +30,7 @@ import java.util.stream.Collectors;
 
 import org.jspecify.annotations.Nullable;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.InitializingBean;
@@ -39,6 +41,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.service.invoker.HttpExchangeAdapter;
 import org.springframework.web.service.invoker.HttpServiceProxyFactory;
+import org.springframework.web.service.registry.HttpServiceGroup.ClientType;
 
 /**
  * {@link FactoryBean} for {@link HttpServiceProxyRegistry} responsible for
@@ -57,34 +60,20 @@ public final class HttpServiceProxyRegistryFactoryBean
 
 	private final Set<ProxyHttpServiceGroup> groupSet;
 
-	private final Map<HttpServiceGroup.ClientType, HttpServiceGroupAdapter<?>> groupAdapters;
+	private final HttpServiceGroup.ClientType defaultClientType;
 
 	private @Nullable ApplicationContext applicationContext;
 
 	private @Nullable HttpServiceProxyRegistry proxyRegistry;
 
 
-	HttpServiceProxyRegistryFactoryBean(
-			Map<String, HttpServiceGroup> groupMap,
-			Map<HttpServiceGroup.ClientType, HttpServiceGroupAdapter<?>> groupAdapters) {
+	HttpServiceProxyRegistryFactoryBean(Map<String, HttpServiceGroup> groupMap,
+			HttpServiceGroup.ClientType defaultClientType) {
 
 		this.groupSet = groupMap.values().stream().map(ProxyHttpServiceGroup::new).collect(Collectors.toSet());
-		this.groupAdapters = new LinkedHashMap<>(groupAdapters);
-
-		this.groupAdapters.putIfAbsent(
-				HttpServiceGroup.ClientType.UNSPECIFIED,
-				groupAdapters.get(HttpServiceGroup.ClientType.REST_CLIENT));
+		this.defaultClientType = defaultClientType;
 	}
 
-
-	/**
-	 * Set the {@code HttpServiceGroupAdapter} for the given {@code ClientType}.
-	 */
-	public void setGroupAdapter(HttpServiceGroup.ClientType clientType, HttpServiceGroupAdapter<?> customAdapter) {
-		HttpServiceGroupAdapter<?> previous = this.groupAdapters.put(clientType, customAdapter);
-		this.groupAdapters.compute(HttpServiceGroup.ClientType.UNSPECIFIED,
-				(ct, defaultAdapter) -> (defaultAdapter == previous ? customAdapter : defaultAdapter));
-	}
 
 	@Override
 	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
@@ -102,15 +91,16 @@ public final class HttpServiceProxyRegistryFactoryBean
 		Assert.notNull(this.applicationContext, "ApplicationContext not initialized");
 
 		// Set client builders
-		this.groupAdapters.forEach((clientType, groupAdapter) ->
-			this.groupSet.stream()
-					.filter(group -> group.clientType().equals(clientType))
-					.forEach(group -> group.initialize(
-							groupAdapter.getBaseClientBuilderForGroup(group, this.applicationContext),
-							groupAdapter)));
+		Map<ClientType, HttpServiceGroupAdapter<?>> groupAdapters = new HashMap<>();
+		this.groupSet.forEach(group -> {
+			ClientType clientType = group.clientType().orElse(this.defaultClientType);
+			HttpServiceGroupAdapter<?> groupAdapter = groupAdapters.computeIfAbsent(clientType, this::getGroupAdapter);
+			Object clientBuilder = groupAdapter.getBaseClientBuilderForGroup(group, this.applicationContext);
+			group.initialize(clientBuilder, groupAdapter);
+		});
 
 		// Apply group configurers
-		this.groupAdapters.forEach((clientType, groupAdapter) ->
+		groupAdapters.forEach((clientType, groupAdapter) ->
 			this.applicationContext.getBeanProvider(groupAdapter.getConfigurerType()).orderedStream()
 				.forEach(configurer -> configurer.configureGroups(new DefaultGroups<>(clientType))));
 
@@ -121,6 +111,12 @@ public final class HttpServiceProxyRegistryFactoryBean
 		this.proxyRegistry = new DefaultHttpServiceProxyRegistry(groupProxyMap);
 	}
 
+	private HttpServiceGroupAdapter<?> getGroupAdapter(ClientType clientType) {
+		Class<? extends HttpServiceGroupAdapter<?>> groupAdapterType = clientType.getGroupAdapterType();
+		HttpServiceGroupAdapter<?> groupAdapter = (this.applicationContext != null) ?
+				this.applicationContext.getBeanProvider(groupAdapterType).getIfUnique() : null;
+		return (groupAdapter != null) ? groupAdapter : BeanUtils.instantiateClass(groupAdapterType);
+	}
 
 	@Override
 	public HttpServiceProxyRegistry getObject() {

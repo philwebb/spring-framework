@@ -18,6 +18,11 @@ package org.springframework.web.service.registry;
 
 import java.util.Set;
 
+import org.jspecify.annotations.Nullable;
+
+import org.springframework.util.Assert;
+import org.springframework.util.ClassUtils;
+
 /**
  * A group of HTTP Service interfaces that share the same
  * {@link org.springframework.web.service.invoker.HttpServiceProxyFactory} and
@@ -59,12 +64,12 @@ public interface HttpServiceGroup {
 		/**
 		 * A group backed by {@link org.springframework.web.client.RestClient}.
 		 */
-		REST_CLIENT,
+		REST_CLIENT("org.springframework.web.client.support.RestClientHttpServiceGroupAdapter"),
 
 		/**
 		 * A group backed by {@link org.springframework.web.reactive.function.client.WebClient}.
 		 */
-		WEB_CLIENT,
+		WEB_CLIENT("org.springframework.web.reactive.function.client.support.WebClientHttpServiceGroupAdapter"),
 
 		/**
 		 * Not specified, falling back on a default.
@@ -72,7 +77,46 @@ public interface HttpServiceGroup {
 		 * @see HttpServiceGroups#clientType()
 		 * @see AbstractHttpServiceRegistrar#setDefaultClientType
 		 */
-		UNSPECIFIED
+		UNSPECIFIED(null);
+
+
+		private final @Nullable String groupAdapterClassName;
+
+		private final @Nullable Class<? extends HttpServiceGroupAdapter<?>> groupAdapterType;
+
+
+		private ClientType(@Nullable String groupAdapterClassName) {
+			this.groupAdapterClassName = groupAdapterClassName;
+			this.groupAdapterType = resolveIfPresent(groupAdapterClassName);
+		}
+
+		@SuppressWarnings("unchecked")
+		static @Nullable Class<? extends HttpServiceGroupAdapter<?>> resolveIfPresent(@Nullable String type) {
+			try {
+				if (type != null) {
+					return (Class<? extends HttpServiceGroupAdapter<?>>) ClassUtils.forName(type,
+							HttpServiceGroup.class.getClassLoader());
+				}
+			}
+			catch (ClassNotFoundException ex) {
+			}
+			return null;
+		}
+
+		ClientType orElse(ClientType clientType) {
+			return (this != UNSPECIFIED) ? this : clientType;
+		}
+
+		Class<? extends HttpServiceGroupAdapter<?>> getGroupAdapterType() {
+			if (this == UNSPECIFIED) {
+				return REST_CLIENT.getGroupAdapterType();
+			}
+			Assert.state(this.groupAdapterType != null,
+					() -> "HttpServiceGroup client type %s could not resolve class %s".formatted(name(),
+							this.groupAdapterClassName));
+			return this.groupAdapterType;
+		}
+
 	}
 
 }

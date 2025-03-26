@@ -47,6 +47,7 @@ import org.springframework.core.type.filter.AnnotationTypeFilter;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.web.service.annotation.HttpExchange;
+import org.springframework.web.service.registry.HttpServiceGroup.ClientType;
 
 /**
  * Abstract registrar class that imports:
@@ -79,20 +80,6 @@ import org.springframework.web.service.annotation.HttpExchange;
  */
 public abstract class AbstractHttpServiceRegistrar implements
 		ImportBeanDefinitionRegistrar, EnvironmentAware, ResourceLoaderAware, BeanFactoryAware {
-
-	private static final HttpServiceGroupAdapter<?> restClientAdapter;
-
-	private static final @Nullable HttpServiceGroupAdapter<?> webClientAdapter;
-
-	static {
-		String className = "org.springframework.web.client.support.RestClientHttpServiceGroupAdapter";
-		HttpServiceGroupAdapter<?> groupAdapter = instantiateAdapter(className);
-		Assert.state(groupAdapter != null, "Failed to load " + className);
-		restClientAdapter = groupAdapter;
-
-		className = "org.springframework.web.reactive.function.client.support.WebClientHttpServiceGroupAdapter";
-		webClientAdapter = instantiateAdapter(className);
-	}
 
 
 	private HttpServiceGroup.ClientType defaultClientType = HttpServiceGroup.ClientType.UNSPECIFIED;
@@ -149,15 +136,15 @@ public abstract class AbstractHttpServiceRegistrar implements
 			proxyRegistryBeanDef.setBeanClass(HttpServiceProxyRegistryFactoryBean.class);
 			ConstructorArgumentValues args = proxyRegistryBeanDef.getConstructorArgumentValues();
 			args.addIndexedArgumentValue(0, new LinkedHashMap<String, HttpServiceGroup>());
-			args.addIndexedArgumentValue(1, new LinkedHashMap<HttpServiceGroup.ClientType, HttpServiceGroupAdapter<?>>());
+			args.addIndexedArgumentValue(1, ClientType.UNSPECIFIED);
 			beanRegistry.registerBeanDefinition(proxyRegistryBeanName, proxyRegistryBeanDef);
 		}
 		else {
 			proxyRegistryBeanDef = (GenericBeanDefinition) beanRegistry.getBeanDefinition(proxyRegistryBeanName);
 		}
 
-		updateGroups(getArg(0, proxyRegistryBeanDef));
-		updateGroupAdapters(getArg(1, proxyRegistryBeanDef));
+		updateGroups(getMapArg(0, proxyRegistryBeanDef));
+		updateDefaultClientType(getValueHolder(1, proxyRegistryBeanDef, ClientType.class));
 
 		this.groupMap.forEach((groupName, group) -> group.httpServiceTypes().forEach(type -> {
 			GenericBeanDefinition proxyBeanDef = new GenericBeanDefinition();
@@ -196,13 +183,20 @@ public abstract class AbstractHttpServiceRegistrar implements
 	}
 
 	@SuppressWarnings("unchecked")
-	private static <K, V> Map<K, V> getArg(int index, GenericBeanDefinition registryBeanDef) {
+	private static <K, V> Map<K, V> getMapArg(int index, GenericBeanDefinition registryBeanDef) {
+		ConstructorArgumentValues.ValueHolder valueHolder = getValueHolder(index, registryBeanDef, Map.class);
+		Map<K, V> map = (Map<K, V>) valueHolder.getValue();
+		Assert.state(map!= null, "No constructor argument value");
+		return map;
+	}
+
+	private static <T> ConstructorArgumentValues.ValueHolder getValueHolder(int index,
+			GenericBeanDefinition registryBeanDef, Class<T> type) {
+
 		ConstructorArgumentValues args = registryBeanDef.getConstructorArgumentValues();
-		ConstructorArgumentValues.ValueHolder valueHolder = args.getArgumentValue(index, Map.class);
-		Assert.state(valueHolder != null, "Expected Map constructor argument at index " + index);
-		Map<String, V> map = (Map<String, V>) valueHolder.getValue();
-		Assert.state(map != null, "No constructor argument value");
-		return (Map<K, V>) map;
+		ConstructorArgumentValues.ValueHolder valueHolder = args.getArgumentValue(index, type);
+		Assert.state(valueHolder != null, () -> "Expected %s constructor argument at index %s".formatted(type, index));
+		return valueHolder;
 	}
 
 	private void updateGroups(Map<String, HttpServiceGroup> target) {
@@ -225,22 +219,11 @@ public abstract class AbstractHttpServiceRegistrar implements
 				clientTypeB == HttpServiceGroup.ClientType.UNSPECIFIED);
 	}
 
-	private void updateGroupAdapters(Map<HttpServiceGroup.ClientType, HttpServiceGroupAdapter<?>> target) {
-		updateGroupAdapter(HttpServiceGroup.ClientType.REST_CLIENT, restClientAdapter, target);
-		if (webClientAdapter != null) {
-			updateGroupAdapter(HttpServiceGroup.ClientType.WEB_CLIENT, webClientAdapter, target);
-		}
-	}
-
-	private void updateGroupAdapter(
-			HttpServiceGroup.ClientType clientType, HttpServiceGroupAdapter<?> adapter,
-			Map<HttpServiceGroup.ClientType, HttpServiceGroupAdapter<?>> target) {
-
-		target.put(clientType, adapter);
-		if (this.defaultClientType == clientType) {
-			HttpServiceGroupAdapter<?> prev = target.putIfAbsent(HttpServiceGroup.ClientType.UNSPECIFIED, adapter);
-			Assert.isTrue(prev == null || prev == adapter, "Default ClientType conflict");
-		}
+	private void updateDefaultClientType(ConstructorArgumentValues.ValueHolder target) {
+		HttpServiceGroup.ClientType current = (ClientType) target.getValue();
+		Assert.state(current == ClientType.UNSPECIFIED || current == this.defaultClientType,
+				"Default ClientType conflict");
+		target.setValue(this.defaultClientType);
 	}
 
 	private Object getProxyInstance(String registryBeanName, String groupName, Class<?> type) {
