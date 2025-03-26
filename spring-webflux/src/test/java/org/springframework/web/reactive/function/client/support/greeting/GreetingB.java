@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-package org.springframework.web.reactive.function.client.support;
+package org.springframework.web.reactive.function.client.support.greeting;
 
 
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.service.annotation.GetExchange;
 
-public interface EchoB {
+public interface GreetingB {
 
-	@GetExchange("/echoB")
+	@GetExchange("/greetingB")
 	String handle(@RequestParam String input);
 
 }

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.springframework.web.client.support;
+package org.springframework.web.reactive.function.client.support;
 
 import java.io.IOException;
 
@@ -31,11 +31,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.type.AnnotationMetadata;
-import org.springframework.web.client.support.echo.EchoA;
-import org.springframework.web.client.support.echo.EchoB;
-import org.springframework.web.client.support.greeting.GreetingA;
-import org.springframework.web.client.support.greeting.GreetingB;
+import org.springframework.web.reactive.function.client.support.echo.EchoA;
+import org.springframework.web.reactive.function.client.support.echo.EchoB;
+import org.springframework.web.reactive.function.client.support.greeting.GreetingA;
+import org.springframework.web.reactive.function.client.support.greeting.GreetingB;
 import org.springframework.web.service.registry.AbstractHttpServiceRegistrar;
+import org.springframework.web.service.registry.HttpServiceGroup.ClientType;
+import org.springframework.web.service.registry.HttpServiceGroups;
 import org.springframework.web.service.registry.HttpServiceProxyRegistry;
 import org.springframework.web.service.registry.ImportHttpServices;
 
@@ -45,7 +47,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  *
  * @author Rossen Stoyanchev
  */
-public class RestClientRegistryIntegrationTests {
+public class WebClientProxyRegistryIntegrationTests {
 
 	private final MockWebServer server = new MockWebServer();
 
@@ -111,10 +113,10 @@ public class RestClientRegistryIntegrationTests {
 	}
 
 
-	private static class ClientConfig {
+	private static class BaseEchoConfig {
 
 		@Bean
-		public RestClientHttpServiceGroupConfigurer groupConfigurer() {
+		public WebClientHttpServiceGroupConfigurer groupConfigurer() {
 			return groups -> groups.filterByName("echo", "greeting")
 					.configureClient((group, builder) -> builder.baseUrl("http://localhost:9090"));
 		}
@@ -122,25 +124,33 @@ public class RestClientRegistryIntegrationTests {
 
 
 	@Configuration(proxyBeanMethods = false)
-	@ImportHttpServices(group = "echo", httpServiceTypes = {EchoA.class, EchoB.class})
-	@ImportHttpServices(group = "greeting", httpServiceTypes = {GreetingA.class, GreetingB.class})
-	private static class ListingConfig extends ClientConfig {
+	@HttpServiceGroups(clientType = ClientType.WEB_CLIENT, groups = {
+			@ImportHttpServices(group = "echo", httpServiceTypes = {EchoA.class, EchoB.class}),
+			@ImportHttpServices(group = "greeting", httpServiceTypes = {GreetingA.class, GreetingB.class})
+	})
+	private static class ListingConfig extends BaseEchoConfig {
 	}
 
 
 	@Configuration(proxyBeanMethods = false)
-	@ImportHttpServices(group = "echo", basePackageClasses = EchoA.class)
-	@ImportHttpServices(group = "greeting", basePackageClasses = GreetingA.class)
-	private static class DetectConfig extends ClientConfig {
+	@HttpServiceGroups(clientType = ClientType.WEB_CLIENT, groups = {
+			@ImportHttpServices(group = "echo", basePackageClasses = EchoA.class),
+			@ImportHttpServices(group = "greeting", basePackageClasses = GreetingA.class)
+	})
+	private static class DetectConfig extends BaseEchoConfig {
 	}
 
 
 	@Configuration(proxyBeanMethods = false)
 	@Import(ManualListingRegistrar.class)
-	private static class ManualListingConfig extends ClientConfig {
+	private static class ManualListingConfig extends BaseEchoConfig {
 	}
 
 	private static class ManualListingRegistrar extends AbstractHttpServiceRegistrar {
+
+		public ManualListingRegistrar() {
+			setDefaultClientType(ClientType.WEB_CLIENT);
+		}
 
 		@Override
 		protected void registerHttpServices(HttpServiceRegistry registry, AnnotationMetadata metadata) {
@@ -152,11 +162,14 @@ public class RestClientRegistryIntegrationTests {
 
 	@Configuration(proxyBeanMethods = false)
 	@Import(ManualDetectionRegistrar.class)
-	@ImportHttpServices(group = "echo", httpServiceTypes = {EchoA.class, EchoB.class})
-	private static class ManualDetectionConfig extends ClientConfig {
+	private static class ManualDetectionConfig extends BaseEchoConfig {
 	}
 
 	private static class ManualDetectionRegistrar extends AbstractHttpServiceRegistrar {
+
+		public ManualDetectionRegistrar() {
+			setDefaultClientType(ClientType.WEB_CLIENT);
+		}
 
 		@Override
 		protected void registerHttpServices(HttpServiceRegistry registry, AnnotationMetadata metadata) {

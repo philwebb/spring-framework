@@ -36,7 +36,7 @@ public class AnnotationHttpServiceRegistrar extends AbstractHttpServiceRegistrar
 			}
 		}
 
-		importMetadata.getAnnotations().stream(ImportHttpServices.Container.class).forEach(baseAnnot -> {
+		importMetadata.getAnnotations().stream(HttpServiceGroups.class).forEach(baseAnnot -> {
 			HttpServiceGroup.ClientType clientType = baseAnnot.getEnum("clientType", HttpServiceGroup.ClientType.class);
 			for (MergedAnnotation<?> annot : baseAnnot.getAnnotationArray("value", ImportHttpServices.class)) {
 				processAnnotation(annot, registry, clientType);

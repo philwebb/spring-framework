@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.springframework.web.reactive.function.client.support;
+package org.springframework.web.client.support;
 
 import java.io.IOException;
 
@@ -31,8 +31,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.type.AnnotationMetadata;
+import org.springframework.web.client.support.echo.EchoA;
+import org.springframework.web.client.support.echo.EchoB;
+import org.springframework.web.client.support.greeting.GreetingA;
+import org.springframework.web.client.support.greeting.GreetingB;
 import org.springframework.web.service.registry.AbstractHttpServiceRegistrar;
-import org.springframework.web.service.registry.HttpServiceGroup.ClientType;
 import org.springframework.web.service.registry.HttpServiceProxyRegistry;
 import org.springframework.web.service.registry.ImportHttpServices;
 
@@ -42,7 +45,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  *
  * @author Rossen Stoyanchev
  */
-public class WebClientRegistryIntegrationTests {
+public class RestClientProxyRegistryIntegrationTests {
 
 	private final MockWebServer server = new MockWebServer();
 
@@ -69,13 +72,20 @@ public class WebClientRegistryIntegrationTests {
 		EchoA echoA = context.getBean(EchoA.class);
 		EchoB echoB = context.getBean(EchoB.class);
 
+		GreetingA greetingA = context.getBean(GreetingA.class);
+		GreetingB greetingB = context.getBean(GreetingB.class);
+
 		HttpServiceProxyRegistry registry = context.getBean(HttpServiceProxyRegistry.class);
 
 		assertThat(registry.getClient(EchoA.class)).isSameAs(echoA);
 		assertThat(registry.getClient(EchoB.class)).isSameAs(echoB);
 
-		this.server.enqueue(new MockResponse().setBody("echo"));
-		this.server.enqueue(new MockResponse().setBody("echo"));
+		assertThat(registry.getClient(GreetingA.class)).isSameAs(greetingA);
+		assertThat(registry.getClient(GreetingB.class)).isSameAs(greetingB);
+
+		for (int i = 0; i < 4; i++) {
+			this.server.enqueue(new MockResponse().setBody("body"));
+		}
 
 		echoA.handle("a");
 		echoB.handle("b");
@@ -87,62 +97,71 @@ public class WebClientRegistryIntegrationTests {
 		request = this.server.takeRequest();
 		assertThat(request.getMethod()).isEqualTo("GET");
 		assertThat(request.getPath()).isEqualTo("/echoB?input=b");
+
+		greetingA.handle("a");
+		greetingB.handle("b");
+
+		request = this.server.takeRequest();
+		assertThat(request.getMethod()).isEqualTo("GET");
+		assertThat(request.getPath()).isEqualTo("/greetingA?input=a");
+
+		request = this.server.takeRequest();
+		assertThat(request.getMethod()).isEqualTo("GET");
+		assertThat(request.getPath()).isEqualTo("/greetingB?input=b");
 	}
 
 
-	private static class BaseEchoConfig {
+	private static class ClientConfig {
 
 		@Bean
-		public WebClientHttpServiceGroupConfigurer groupConfigurer() {
-			return groups -> groups.filterByName("echo")
+		public RestClientHttpServiceGroupConfigurer groupConfigurer() {
+			return groups -> groups.filterByName("echo", "greeting")
 					.configureClient((group, builder) -> builder.baseUrl("http://localhost:9090"));
 		}
 	}
 
 
 	@Configuration(proxyBeanMethods = false)
-	@ImportHttpServices(
-			group = "echo",
-			httpServiceTypes = {EchoA.class, EchoB.class},
-			clientType = ClientType.WEB_CLIENT)
-	private static class ListingConfig extends BaseEchoConfig {
+	@ImportHttpServices(group = "echo", httpServiceTypes = {EchoA.class, EchoB.class})
+	@ImportHttpServices(group = "greeting", httpServiceTypes = {GreetingA.class, GreetingB.class})
+	private static class ListingConfig extends ClientConfig {
 	}
 
 
 	@Configuration(proxyBeanMethods = false)
-	@ImportHttpServices(
-			group = "echo",
-			basePackageClasses = WebClientRegistryIntegrationTests.class,
-			clientType = ClientType.WEB_CLIENT)
-	private static class DetectConfig extends BaseEchoConfig {
+	@ImportHttpServices(group = "echo", basePackageClasses = EchoA.class)
+	@ImportHttpServices(group = "greeting", basePackageClasses = GreetingA.class)
+	private static class DetectConfig extends ClientConfig {
 	}
 
 
 	@Configuration(proxyBeanMethods = false)
 	@Import(ManualListingRegistrar.class)
-	private static class ManualListingConfig extends BaseEchoConfig {
+	private static class ManualListingConfig extends ClientConfig {
 	}
 
 	private static class ManualListingRegistrar extends AbstractHttpServiceRegistrar {
 
 		@Override
 		protected void registerHttpServices(HttpServiceRegistry registry, AnnotationMetadata metadata) {
-			registry.forGroup("echo", ClientType.WEB_CLIENT)
-					.registerHttpServiceTypes(EchoA.class, EchoB.class);
+			registry.forGroup("echo").registerHttpServiceTypes(EchoA.class, EchoB.class);
+			registry.forGroup("greeting").registerHttpServiceTypes(GreetingA.class, GreetingB.class);
 		}
 	}
 
+
 	@Configuration(proxyBeanMethods = false)
 	@Import(ManualDetectionRegistrar.class)
-	private static class ManualDetectionConfig extends BaseEchoConfig {
+	@ImportHttpServices(group = "echo", httpServiceTypes = {EchoA.class, EchoB.class})
+	private static class ManualDetectionConfig extends ClientConfig {
 	}
 
 	private static class ManualDetectionRegistrar extends AbstractHttpServiceRegistrar {
 
 		@Override
 		protected void registerHttpServices(HttpServiceRegistry registry, AnnotationMetadata metadata) {
-			registry.forGroup("echo", ClientType.WEB_CLIENT)
-					.detectInBasePackages(WebClientRegistryIntegrationTests.class);
+			registry.forGroup("echo").detectInBasePackages(EchoA.class);
+			registry.forGroup("greeting").detectInBasePackages(GreetingA.class);
 		}
 	}
 

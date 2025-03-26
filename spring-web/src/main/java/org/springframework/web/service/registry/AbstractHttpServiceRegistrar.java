@@ -188,29 +188,30 @@ public abstract class AbstractHttpServiceRegistrar implements
 		});
 	}
 
-	private void updateGroupAdapters(Map<HttpServiceGroup.ClientType, HttpServiceGroupAdapter<?>> target) {
-		HttpServiceGroupAdapter<?> previousDefault = null;
-		target.put(HttpServiceGroup.ClientType.REST_CLIENT, restClientAdapter);
-		if (this.defaultClientType == HttpServiceGroup.ClientType.WEB_CLIENT) {
-			previousDefault = target.putIfAbsent(HttpServiceGroup.ClientType.UNSPECIFIED, restClientAdapter);
-			Assert.isTrue(previousDefault == restClientAdapter, "defaultClientType conflict");
-		}
-		if (webClientAdapter == null) {
-			return;
-		}
-		target.put(HttpServiceGroup.ClientType.WEB_CLIENT, webClientAdapter);
-		if (this.defaultClientType == HttpServiceGroup.ClientType.WEB_CLIENT) {
-			 previousDefault = target.putIfAbsent(HttpServiceGroup.ClientType.UNSPECIFIED, webClientAdapter);
-			Assert.isTrue(previousDefault == webClientAdapter, "defaultClientType conflict");
-		}
-	}
-
 	private static boolean compatibleClientTypes(
 			HttpServiceGroup.ClientType clientTypeA, HttpServiceGroup.ClientType clientTypeB) {
 
 		return (clientTypeA == clientTypeB ||
 				clientTypeA == HttpServiceGroup.ClientType.UNSPECIFIED ||
 				clientTypeB == HttpServiceGroup.ClientType.UNSPECIFIED);
+	}
+
+	private void updateGroupAdapters(Map<HttpServiceGroup.ClientType, HttpServiceGroupAdapter<?>> target) {
+		updateGroupAdapter(HttpServiceGroup.ClientType.REST_CLIENT, restClientAdapter, target);
+		if (webClientAdapter != null) {
+			updateGroupAdapter(HttpServiceGroup.ClientType.WEB_CLIENT, webClientAdapter, target);
+		}
+	}
+
+	private void updateGroupAdapter(
+			HttpServiceGroup.ClientType clientType, HttpServiceGroupAdapter<?> adapter,
+			Map<HttpServiceGroup.ClientType, HttpServiceGroupAdapter<?>> target) {
+
+		target.put(clientType, adapter);
+		if (this.defaultClientType == clientType) {
+			HttpServiceGroupAdapter<?> prev = target.putIfAbsent(HttpServiceGroup.ClientType.UNSPECIFIED, adapter);
+			Assert.isTrue(prev == null || prev == adapter, "Default ClientType conflict");
+		}
 	}
 
 	private Object getProxyInstance(String registryBeanName, String groupName, Class<?> type) {

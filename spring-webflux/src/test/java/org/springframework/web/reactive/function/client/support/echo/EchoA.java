@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.springframework.web.reactive.function.client.support;
+package org.springframework.web.reactive.function.client.support.echo;
 
 
 import org.springframework.web.bind.annotation.RequestParam;

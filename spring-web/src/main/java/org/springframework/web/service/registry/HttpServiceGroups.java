@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2025 the original author or authors.
+ * Copyright 2002-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,6 @@ package org.springframework.web.service.registry;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
-import java.lang.annotation.Repeatable;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
@@ -27,35 +26,22 @@ import org.springframework.context.annotation.Import;
 import org.springframework.core.annotation.AliasFor;
 
 /**
- *
+ * 
  * @author Rossen Stoyanchev
  * @since 7.0
  */
-@Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-@Repeatable(HttpServiceGroups.class)
-@Import(AnnotationHttpServiceRegistrar.class)
+@Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface ImportHttpServices {
+@Import(AnnotationHttpServiceRegistrar.class)
+public @interface HttpServiceGroups {
 
-	@AliasFor("group")
-	String value() default HttpServiceGroup.DEFAULT_GROUP_NAME;
+	@AliasFor("groups")
+	ImportHttpServices[] value() default {};
 
 	@AliasFor("value")
-	String group() default HttpServiceGroup.DEFAULT_GROUP_NAME;
+	ImportHttpServices[] groups() default {};
 
-	Class<?>[] httpServiceTypes() default {};
-
-	String[] basePackages() default {};
-
-	Class<?>[] basePackageClasses() default {};
-
-	/**
-	 * Specify the type of client to use for the group.
-	 * <p>By default, this is {@link HttpServiceGroup.ClientType#UNSPECIFIED}
-	 * in which case {@code RestClient} is used, but this default can be reset
-	 * via {@link AbstractHttpServiceRegistrar#setDefaultClientType}.
-	 */
 	HttpServiceGroup.ClientType clientType() default HttpServiceGroup.ClientType.UNSPECIFIED;
 
 }
