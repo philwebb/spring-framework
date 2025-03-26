@@ -154,6 +154,7 @@ public class WebClientProxyRegistryIntegrationTests {
 
 		@Override
 		protected void registerHttpServices(HttpServiceRegistry registry, AnnotationMetadata metadata) {
+			setDefaultClientType(ClientType.WEB_CLIENT);
 			registry.forGroup("echo").register(EchoA.class, EchoB.class);
 			registry.forGroup("greeting").register(GreetingA.class, GreetingB.class);
 		}
@@ -167,12 +168,9 @@ public class WebClientProxyRegistryIntegrationTests {
 
 	private static class ManualDetectionRegistrar extends AbstractHttpServiceRegistrar {
 
-		public ManualDetectionRegistrar() {
-			setDefaultClientType(ClientType.WEB_CLIENT);
-		}
-
 		@Override
 		protected void registerHttpServices(HttpServiceRegistry registry, AnnotationMetadata metadata) {
+			setDefaultClientType(ClientType.WEB_CLIENT);
 			registry.forGroup("echo").detectInBasePackages(EchoA.class);
 			registry.forGroup("greeting").detectInBasePackages(GreetingA.class);
 		}

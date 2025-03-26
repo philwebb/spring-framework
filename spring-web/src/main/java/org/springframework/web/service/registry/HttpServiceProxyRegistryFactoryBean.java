@@ -71,6 +71,15 @@ public final class HttpServiceProxyRegistryFactoryBean
 	}
 
 
+	/**
+	 * Set the {@code HttpServiceGroupAdapter} for the given {@code ClientType}.
+	 */
+	public void setGroupAdapter(HttpServiceGroup.ClientType clientType, HttpServiceGroupAdapter<?> customAdapter) {
+		HttpServiceGroupAdapter<?> previous = this.groupAdapters.put(clientType, customAdapter);
+		this.groupAdapters.compute(HttpServiceGroup.ClientType.UNSPECIFIED,
+				(ct, defaultAdapter) -> (defaultAdapter == previous ? customAdapter : defaultAdapter));
+	}
+
 	@Override
 	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
 		this.applicationContext = applicationContext;
