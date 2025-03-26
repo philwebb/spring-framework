@@ -27,7 +27,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.core.annotation.AliasFor;
 
 /**
- * Annotation to declare HTTP Service types by {@link HttpServiceGroup}
+ * Annotation to declare HTTP Service types by {@link HttpServiceGroup}.
  *
  * @author Rossen Stoyanchev
  * @since 7.0

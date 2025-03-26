@@ -26,7 +26,7 @@ import org.springframework.web.service.registry.HttpServiceGroupConfigurer;
 
 /**
  * Adapter for groups backed by {@link RestClient}.
- * 
+ *
  * @author Rossen Stoyanchev
  * @since 7.0
  */

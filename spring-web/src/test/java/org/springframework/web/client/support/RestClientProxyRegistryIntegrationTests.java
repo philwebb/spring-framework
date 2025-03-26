@@ -36,7 +36,6 @@ import org.springframework.web.client.support.echo.EchoB;
 import org.springframework.web.client.support.greeting.GreetingA;
 import org.springframework.web.client.support.greeting.GreetingB;
 import org.springframework.web.service.registry.AbstractHttpServiceRegistrar;
-import org.springframework.web.service.registry.HttpServiceGroup;
 import org.springframework.web.service.registry.HttpServiceProxyRegistry;
 import org.springframework.web.service.registry.ImportHttpServices;
 
