@@ -23,6 +23,7 @@ import java.util.function.Predicate;
 import org.springframework.web.service.invoker.HttpServiceProxyFactory;
 
 /**
+ * Callback to configure the set of declared {@link HttpServiceGroup}s.
  *
  * @author Rossen Stoyanchev
  * @since 7.0
@@ -32,24 +33,49 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
 public interface HttpServiceGroupConfigurer<CB> {
 
 	/**
-	 * Callback to configure the underlying HTTP client and
-	 * {@link HttpServiceProxyFactory} for all groups.
+	 * Configure the underlying infrastructure for all group.
 	 */
 	void configureGroups(Groups<CB> groups);
 
 
+	/**
+	 * Contract to help iterate and configure the set of groups.
+	 * @param <CB> the type of client builder, i.e. {@code RestClient} or {@code WebClient} builder.
+	 */
 	interface Groups<CB> {
 
+		/**
+		 * Select groups to configure by name.
+		 */
 		Groups<CB> filterByName(String... groupNames);
 
+		/**
+		 * Select groups to configure through a {@link Predicate}.
+		 */
 		Groups<CB> filter(Predicate<HttpServiceGroup> predicate);
 
+		/**
+		 * Configure the client for the selected groups.
+		 * This is called once for each selected group.
+		 */
 		void configureClient(Consumer<CB> clientConfigurer);
 
+		/**
+		 * Variant of {@link #configureClient(Consumer)} with access to the
+		 * group being configured.
+		 */
 		void configureClient(BiConsumer<HttpServiceGroup, CB> clientConfigurer);
 
+		/**
+		 * Configure the {@link HttpServiceProxyFactory} for the selected groups.
+		 * This is called once for each selected group.
+		 */
 		void configureProxyFactory(BiConsumer<HttpServiceGroup, HttpServiceProxyFactory.Builder> proxyFactoryConfigurer);
 
+		/**
+		 * Configure the client and {@link HttpServiceProxyFactory} for the selected groups.
+		 * This is called once for each selected group.
+		 */
 		void configure(BiConsumer<HttpServiceGroup, CB> clientConfigurer,
 				BiConsumer<HttpServiceGroup, HttpServiceProxyFactory.Builder> proxyFactoryConfigurer);
 	}

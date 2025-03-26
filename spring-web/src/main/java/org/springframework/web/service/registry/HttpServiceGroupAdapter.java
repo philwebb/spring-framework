@@ -20,6 +20,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.web.service.invoker.HttpExchangeAdapter;
 
 /**
+ * Adapter that helps to configure a group independent of its client builder type.
  *
  * @author Rossen Stoyanchev
  * @since 7.0
@@ -27,10 +28,24 @@ import org.springframework.web.service.invoker.HttpExchangeAdapter;
  */
 public interface HttpServiceGroupAdapter<CB> {
 
-	CB getBaseClientBuilder(HttpServiceGroup group, ApplicationContext applicationContext);
+	/**
+	 * Return the client builder to use for a group.
+	 * @param group the group
+	 * @param applicationContext the ApplicationContext for access to Spring beans
+	 * @return client builder instance to use
+	 */
+	CB getBaseClientBuilderForGroup(HttpServiceGroup group, ApplicationContext applicationContext);
 
+	/**
+	 * Return the type of configurer that is compatible with this group.
+	 */
 	Class<? extends HttpServiceGroupConfigurer<CB>> getConfigurerType();
 
+	/**
+	 * Use the client builder to create an {@link HttpExchangeAdapter} to use to
+	 * initialize the {@link org.springframework.web.service.invoker.HttpServiceProxyFactory}
+	 * for the group.
+	 */
 	HttpExchangeAdapter createExchangeAdapter(CB clientBuilder);
 
 }

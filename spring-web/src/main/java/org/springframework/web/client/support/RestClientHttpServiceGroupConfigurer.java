@@ -20,6 +20,8 @@ import org.springframework.web.client.RestClient;
 import org.springframework.web.service.registry.HttpServiceGroupConfigurer;
 
 /**
+ * Extension of {@link HttpServiceGroupConfigurer} to configure groups
+ * with a {@link RestClient}.
  *
  * @author Rossen Stoyanchev
  * @since 7.0

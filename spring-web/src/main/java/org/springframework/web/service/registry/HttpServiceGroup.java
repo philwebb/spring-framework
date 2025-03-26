@@ -19,39 +19,60 @@ package org.springframework.web.service.registry;
 import java.util.Set;
 
 /**
- * A grouping of HTTP service types that share a client with the same setup.
+ * A group of HTTP Service interfaces that share the same
+ * {@link org.springframework.web.service.invoker.HttpServiceProxyFactory} and
+ * HTTP client setup.
  *
  * @author Rossen Stoyanchev
  * @since 7.0
  */
 public interface HttpServiceGroup {
 
+	/**
+	 * The name of the group to add HTTP Services to when a group isn't specified.
+	 */
 	String DEFAULT_GROUP_NAME = "default";
 
 
 	/**
-	 * Return the name of the HTTP Service group.
+	 * The name of the HTTP Service group.
 	 */
 	String name();
 
 	/**
-	 * Return the configured HTTP Service types.
+	 * The HTTP Services in the group.
 	 */
 	Set<Class<?>> httpServiceTypes();
 
 	/**
-	 * Return the type of client to use for the group.
+	 * The client type to use for the group.
+	 * <p>By default, {@link ClientType#REST_CLIENT} remains unspecified.
 	 */
 	ClientType clientType();
 
 
 	/**
-	 *
+	 * Enum to specify the client type to use for an HTTP Service group.
 	 */
 	enum ClientType {
 
-		REST_CLIENT, WEB_CLIENT, UNSPECIFIED;
+		/**
+		 * A group backed by {@link org.springframework.web.client.RestClient}.
+		 */
+		REST_CLIENT,
 
+		/**
+		 * A group backed by {@link org.springframework.web.reactive.function.client.WebClient}.
+		 */
+		WEB_CLIENT,
+
+		/**
+		 * Not specified, falling back on a default.
+		 * @see ImportHttpServices#clientType()
+		 * @see HttpServiceGroups#clientType() 
+		 * @see AbstractHttpServiceRegistrar#setDefaultClientType
+		 */
+		UNSPECIFIED;
 	}
 
 }

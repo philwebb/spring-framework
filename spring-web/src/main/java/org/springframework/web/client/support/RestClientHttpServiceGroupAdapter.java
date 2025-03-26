@@ -25,6 +25,7 @@ import org.springframework.web.service.registry.HttpServiceGroupAdapter;
 import org.springframework.web.service.registry.HttpServiceGroupConfigurer;
 
 /**
+ * Adapter for groups backed by {@link RestClient}.
  * 
  * @author Rossen Stoyanchev
  * @since 7.0
@@ -32,7 +33,7 @@ import org.springframework.web.service.registry.HttpServiceGroupConfigurer;
 public class RestClientHttpServiceGroupAdapter implements HttpServiceGroupAdapter<RestClient.Builder> {
 
 	@Override
-	public RestClient.Builder getBaseClientBuilder(HttpServiceGroup group, ApplicationContext context) {
+	public RestClient.Builder getBaseClientBuilderForGroup(HttpServiceGroup group, ApplicationContext context) {
 		try {
 			return context.getBean(RestClient.Builder.class).clone();
 		}
@@ -48,8 +49,7 @@ public class RestClientHttpServiceGroupAdapter implements HttpServiceGroupAdapte
 
 	@Override
 	public HttpExchangeAdapter createExchangeAdapter(RestClient.Builder clientBuilder) {
-		RestClient client = clientBuilder.build();
-		return RestClientAdapter.create(client);
+		return RestClientAdapter.create(clientBuilder.build());
 	}
 
 }

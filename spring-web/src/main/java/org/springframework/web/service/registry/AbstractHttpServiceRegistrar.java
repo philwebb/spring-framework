@@ -49,26 +49,28 @@ import org.springframework.util.ClassUtils;
 import org.springframework.web.service.annotation.HttpExchange;
 
 /**
- * Registrar that imports the following:
+ * Abstract registrar class that imports:
  * <ul>
- * <li>Bean definitions for HTTP Service client proxies by {@link HttpServiceGroup}.
- * <li>{@link HttpServiceProxyRegistryFactoryBean} to initialize the
- * {@code RestClient} or {@code WebClient} for each group, and create the proxies.
+ * <li>Bean definitions for HTTP Service client proxies organized by
+ * {@link HttpServiceGroup}.
+ * <li>Bean definition for an {@link HttpServiceProxyRegistryFactoryBean} that
+ * initializes the infrastructure for each group, {@code RestClient} or
+ * {@code WebClient} and a proxy factory, necessary to create the proxies.
  * </ul>
  *
- * <p>Subclasses determine the HTTP Services of interest and register those by
- * implementing {@link #registerHttpServices}. There is built-in support for
- * declaring HTTP Services through {@link ImportHttpServices} annotations.
- * It is also possible extend this class to perform HTTP Service registrations
- * directly or sourced in any other way.
+ * <p>Subclasses determine the HTTP Services to register by implementing
+ * {@link #registerHttpServices}.
  *
- * <p>If more than one registrar instance of this type is imported, subsequently
- * imported registrars update the existing {@code HttpServiceProxyRegistryFactoryBean}
- * definition, and likewise merge HTTP Service group definitions that overlap.
+ * <p>There is built-in support for declaring HTTP Services through
+ * {@link ImportHttpServices} annotations. It is also possible to perform
+ * registrations directly, sourced in another way, by extending this class.
  *
- * <p>Applications can autowire HTTP Service client proxies directly, or
- * alternatively they can also autowire the {@link HttpServiceProxyRegistry}
- * that contains all proxies.
+ * <p>It is possible to import multiple instances of this registrar type.
+ * Subsequent imports update the existing registry {@code FactoryBean}
+ * definition, and likewise merge HTTP Service group definitions.
+ *
+ * <p>An application can autowire HTTP Service proxy beans, or autowire the
+ * {@link HttpServiceProxyRegistry} from which to obtain proxies.
  *
  * @author Rossen Stoyanchev
  * @since 7.0
@@ -109,9 +111,8 @@ public abstract class AbstractHttpServiceRegistrar implements
 	/**
 	 * Set the client type to use when the client type for an HTTP Service group
 	 * remains {@link HttpServiceGroup.ClientType#UNSPECIFIED}.
-	 * <p>By default, when if this property is not set, then {@code REST_CLIENT}
-	 * is used for any HTTP Service group whose client type is unspecified.
-	 * @param defaultClientType the client type to use
+	 * <p>By default, when this property is not set, then {@code REST_CLIENT}
+	 * is used for any HTTP Service group whose client type remains unspecified.
 	 */
 	public void setDefaultClientType(HttpServiceGroup.ClientType defaultClientType) {
 		this.defaultClientType = defaultClientType;

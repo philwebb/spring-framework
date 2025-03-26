@@ -27,6 +27,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.core.annotation.AliasFor;
 
 /**
+ * Annotation to declare HTTP Service types by {@link HttpServiceGroup}
  *
  * @author Rossen Stoyanchev
  * @since 7.0
@@ -38,17 +39,37 @@ import org.springframework.core.annotation.AliasFor;
 @Documented
 public @interface ImportHttpServices {
 
+	/**
+	 * An alias for {@link #types()}.
+	 */
 	@AliasFor("types")
 	Class<?>[] value() default {};
 
+	/**
+	 * A list of HTTP Service types to include in the group.
+	 */
 	@AliasFor("value")
 	Class<?>[] types() default {};
 
+	/**
+	 * The name of the HTTP Service group.
+	 * <p>If not specified, declared HTTP Services are grouped under the
+	 * {@link HttpServiceGroup#DEFAULT_GROUP_NAME}.
+	 */
 	String group() default HttpServiceGroup.DEFAULT_GROUP_NAME;
 
-	String[] basePackages() default {};
-
+	/**
+	 * Detect HTTP Services in the packages of the specified classes by looking
+	 * for interfaces with type or method level
+	 * {@link org.springframework.web.service.annotation.HttpExchange @HttpExchange}.
+	 */
 	Class<?>[] basePackageClasses() default {};
+
+	/**
+	 * Variant of {@link #basePackageClasses()} with a list of packages
+	 * specified by package name.
+	 */
+	String[] basePackages() default {};
 
 	/**
 	 * Specify the type of client to use for the group.

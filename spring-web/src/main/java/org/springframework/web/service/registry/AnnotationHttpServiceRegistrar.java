@@ -20,8 +20,9 @@ import org.springframework.core.annotation.MergedAnnotation;
 import org.springframework.core.type.AnnotationMetadata;
 
 /**
- * Subclass of {@link AbstractHttpServiceRegistrar} that performs registrations
- * from {@link ImportHttpServices} annotations on the importing config class.
+ * Built-in implementation {@link AbstractHttpServiceRegistrar} that uses
+ * {@link ImportHttpServices} annotations on the importing configuration class
+ * to determine the HTTP services and groups to register.
  *
  * @author Rossen Stoyanchev
  * @since 7.0

@@ -26,7 +26,8 @@ import org.springframework.context.annotation.Import;
 import org.springframework.core.annotation.AliasFor;
 
 /**
- * 
+ * Container annotation for {@link ImportHttpServices} repeatable annotations.
+ *
  * @author Rossen Stoyanchev
  * @since 7.0
  */
@@ -36,12 +37,21 @@ import org.springframework.core.annotation.AliasFor;
 @Import(AnnotationHttpServiceRegistrar.class)
 public @interface HttpServiceGroups {
 
+	/**
+	 * Alias for {@link #groups()}.
+	 */
 	@AliasFor("groups")
 	ImportHttpServices[] value() default {};
 
+	/**
+	 * Nested annotations that declare HTTP Services by group.
+	 */
 	@AliasFor("value")
 	ImportHttpServices[] groups() default {};
 
+	/**
+	 * The client type to be applied to all nested groups.
+	 */
 	HttpServiceGroup.ClientType clientType() default HttpServiceGroup.ClientType.UNSPECIFIED;
 
 }

@@ -42,6 +42,12 @@ import org.springframework.web.service.invoker.HttpExchangeAdapter;
 import org.springframework.web.service.invoker.HttpServiceProxyFactory;
 
 /**
+ * {@link FactoryBean} for {@link HttpServiceProxyRegistry} responsible for
+ * initializing {@link HttpServiceGroup}s, and creating the HTTP Service client
+ * proxies for each group.
+ *
+ * <p>This class is imported as a bean definition through an
+ * {@link AbstractHttpServiceRegistrar}, and given .
  *
  * @author Rossen Stoyanchev
  * @since 7.0
@@ -59,7 +65,8 @@ public final class HttpServiceProxyRegistryFactoryBean
 	private @Nullable HttpServiceProxyRegistry proxyRegistry;
 
 
-	HttpServiceProxyRegistryFactoryBean(Map<String, HttpServiceGroup> groupMap,
+	HttpServiceProxyRegistryFactoryBean(
+			Map<String, HttpServiceGroup> groupMap,
 			Map<HttpServiceGroup.ClientType, HttpServiceGroupAdapter<?>> groupAdapters) {
 
 		this.groupSet = groupMap.values().stream().map(ProxyHttpServiceGroup::new).collect(Collectors.toSet());
@@ -100,7 +107,7 @@ public final class HttpServiceProxyRegistryFactoryBean
 			this.groupSet.stream()
 					.filter(group -> group.clientType().equals(clientType))
 					.forEach(group -> group.initialize(
-							groupAdapter.getBaseClientBuilder(group, applicationContext),
+							groupAdapter.getBaseClientBuilderForGroup(group, applicationContext),
 							groupAdapter));
 		});
 
@@ -129,6 +136,9 @@ public final class HttpServiceProxyRegistryFactoryBean
 	}
 
 
+	/**
+	 * {@link HttpServiceGroup} that creates client proxies.
+	 */
 	private static final class ProxyHttpServiceGroup implements HttpServiceGroup {
 
 		private final HttpServiceGroup declaredGroup;
@@ -191,11 +201,14 @@ public final class HttpServiceProxyRegistryFactoryBean
 
 		@Override
 		public String toString() {
-			return "ProxyHttpServiceGroup[id=" + name() + "]";
+			return getClass().getSimpleName() + "[id=" + name() + "]";
 		}
 	}
 
 
+	/**
+	 * Default implementation of Groups that helps to configure the set of declared groups.
+	 */
 	private final class DefaultGroups<CB> implements HttpServiceGroupConfigurer.Groups<CB> {
 
 		private final HttpServiceGroup.ClientType clientType;
@@ -247,6 +260,9 @@ public final class HttpServiceProxyRegistryFactoryBean
 	}
 
 
+	/**
+	 * Default {@link HttpServiceProxyRegistry} with a map of proxies.
+	 */
 	private static final class DefaultHttpServiceProxyRegistry implements HttpServiceProxyRegistry {
 
 		private final Map<String, Map<Class<?>, Object>> groupProxyMap;
