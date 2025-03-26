@@ -21,6 +21,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
 
 import org.jspecify.annotations.Nullable;
 
@@ -203,20 +204,10 @@ public abstract class AbstractHttpServiceRegistrar implements
 		this.groupMap.forEach((name, group) -> {
 			HttpServiceGroup previousGroup = target.putIfAbsent(name, group);
 			if (previousGroup != null) {
-				if (!compatibleClientTypes(group.clientType(), previousGroup.clientType())) {
-					throw new IllegalArgumentException("ClientType conflict for group '" + name + "'");
-				}
+				assertCompatibleClientTypes(group, previousGroup.clientType());
 				previousGroup.httpServiceTypes().addAll(group.httpServiceTypes());
 			}
 		});
-	}
-
-	private static boolean compatibleClientTypes(
-			HttpServiceGroup.ClientType clientTypeA, HttpServiceGroup.ClientType clientTypeB) {
-
-		return (clientTypeA == clientTypeB ||
-				clientTypeA == HttpServiceGroup.ClientType.UNSPECIFIED ||
-				clientTypeB == HttpServiceGroup.ClientType.UNSPECIFIED);
 	}
 
 	private void updateDefaultClientType(ConstructorArgumentValues.ValueHolder target) {
@@ -246,21 +237,23 @@ public abstract class AbstractHttpServiceRegistrar implements
 		return null;
 	}
 
+	private static void assertCompatibleClientTypes(HttpServiceGroup group, HttpServiceGroup.ClientType clientType) {
+		Assert.state(compatibleClientTypes(group.clientType(), clientType),
+				() -> "ClientType conflict for group '%s'".formatted(group.name()));
+	}
+
+	private static boolean compatibleClientTypes(
+			HttpServiceGroup.ClientType clientTypeA, HttpServiceGroup.ClientType clientTypeB) {
+
+		return (clientTypeA == clientTypeB ||
+				clientTypeA == HttpServiceGroup.ClientType.UNSPECIFIED ||
+				clientTypeB == HttpServiceGroup.ClientType.UNSPECIFIED);
+	}
 
 	/**
 	 * Registry API to allow subclasses to register HTTP Services.
 	 */
 	protected interface HttpServiceRegistry {
-
-		/**
-		 * Perform HTTP Service registrations for the given group.
-		 */
-		GroupSpec forGroup(String name);
-
-		/**
-		 * Variant of {@link #forGroup(String)} with a client type.
-		 */
-		GroupSpec forGroup(String name, HttpServiceGroup.ClientType clientType);
 
 		/**
 		 * Perform HTTP Service registrations for the
@@ -269,6 +262,37 @@ public abstract class AbstractHttpServiceRegistrar implements
 		default GroupSpec forDefaultGroup() {
 			return forGroup(HttpServiceGroup.DEFAULT_GROUP_NAME);
 		}
+
+		/**
+		 * Perform HTTP Service registrations for the given group.
+		 */
+		default GroupSpec forGroup(String name) {
+			return forGroup(name, HttpServiceGroup.ClientType.UNSPECIFIED);
+		}
+
+		/**
+		 * Perform HTTP Service registrations for the given provided group.
+		 * @param nameProvider a function that gives the name for a given service type
+		 */
+		default GroupSpec forGroup(Function<Class<?>, String> nameProvider) {
+			return forGroup(nameProvider, serviceType -> HttpServiceGroup.ClientType.UNSPECIFIED);
+		}
+
+		/**
+		 * Variant of {@link #forGroup(String)} with a client type.
+		 */
+		default GroupSpec forGroup(String name, HttpServiceGroup.ClientType clientType) {
+			return forGroup(serviceType -> name, serviceType -> clientType);
+		}
+
+		/**
+		 * Variant of {@link #forGroup(Function)} with a provided client type.
+		 * @param nameProvider a function that gives the name for a given service type
+		 * @param clientTypeProvider a function that gives the client type for a given service type
+		 */
+		GroupSpec forGroup(Function<Class<?>, String> nameProvider,
+				Function<Class<?>, HttpServiceGroup.ClientType> clientTypeProvider);
+
 
 		/**
 		 * Spec to list or scan for HTTP Service types.
@@ -301,68 +325,62 @@ public abstract class AbstractHttpServiceRegistrar implements
 	private class DefaultHttpServiceRegistry implements HttpServiceRegistry {
 
 		@Override
-		public GroupSpec forGroup(String name) {
-			return forGroup(name, HttpServiceGroup.ClientType.UNSPECIFIED);
-		}
+		public GroupSpec forGroup(Function<Class<?>, String> nameProvider,
+				Function<Class<?>, HttpServiceGroup.ClientType> clientTypeProvider) {
 
-		@Override
-		public GroupSpec forGroup(String name, HttpServiceGroup.ClientType clientType) {
-			return new DefaultGroupSpec(name, clientType);
+			return new DefaultGroupSpec(nameProvider, clientTypeProvider);
 		}
 
 		private class DefaultGroupSpec implements GroupSpec {
 
-			private final String groupName;
+			private final Function<Class<?>, String> nameProvider;
 
-			private final HttpServiceGroup.ClientType clientType;
+			private final Function<Class<?>, HttpServiceGroup.ClientType> clientTypeProvide;
 
-			public DefaultGroupSpec(String groupName, HttpServiceGroup.ClientType clientType) {
-				this.groupName = groupName;
-				this.clientType = clientType;
+			public DefaultGroupSpec(Function<Class<?>, String> nameProvider,
+					Function<Class<?>, HttpServiceGroup.ClientType> clientTypeProvide) {
+
+				this.nameProvider = nameProvider;
+				this.clientTypeProvide = clientTypeProvide;
 			}
 
 			@Override
 			public GroupSpec register(Class<?>... serviceTypes) {
-				registerHttpServiceType(this.groupName, this.clientType, serviceTypes);
+				for (Class<?> serviceType : serviceTypes) {
+					String groupName = this.nameProvider.apply(serviceType);
+					HttpServiceGroup.ClientType clientType = this.clientTypeProvide.apply(serviceType);
+					HttpServiceGroup group = groupMap.computeIfAbsent(groupName,
+							k -> new RegisteredGroup(groupName, new LinkedHashSet<>(), clientType));
+					assertCompatibleClientTypes(group, clientType);
+					group.httpServiceTypes().add(serviceType);
+				}
 				return this;
 			}
 
 			@Override
 			public GroupSpec detectInBasePackages(Class<?>... packageClasses) {
-				for (Class<?> packageClass : packageClasses) {
-					detect(this.groupName, this.clientType, packageClass.getPackageName());
-				}
+				Arrays.stream(packageClasses).map(Class::getPackageName).forEach(this::detect);
 				return this;
 			}
 
 			@Override
 			public GroupSpec detectInBasePackages(String... packageNames) {
-				for (String packageName : packageNames) {
-					detect(this.groupName, this.clientType, packageName);
-				}
+				Arrays.stream(packageNames).forEach(this::detect);
 				return this;
 			}
 
-			private void detect(String groupName, HttpServiceGroup.ClientType clientType, String packageName) {
+			private void detect(String packageName) {
 				for (BeanDefinition definition : getScanner().findCandidateComponents(packageName)) {
 					String className = definition.getBeanClassName();
 					if (className != null) {
 						try {
-							Class<?> clazz = ClassUtils.forName(className, getClass().getClassLoader());
-							registerHttpServiceType(groupName, clientType, clazz);
+							register(ClassUtils.forName(className, getClass().getClassLoader()));
 						}
 						catch (ClassNotFoundException ex) {
 							throw new IllegalStateException("Failed to load '" + className + "'", ex);
 						}
 					}
 				}
-			}
-
-			private void registerHttpServiceType(
-					String groupName, HttpServiceGroup.ClientType clientType, Class<?>... serviceTypes) {
-
-				groupMap.computeIfAbsent(groupName, name -> new RegisteredGroup(name, new LinkedHashSet<>(), clientType))
-						.httpServiceTypes().addAll(Arrays.asList(serviceTypes));
 			}
 		}
 
