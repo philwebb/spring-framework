@@ -49,9 +49,25 @@ import org.springframework.util.ClassUtils;
 import org.springframework.web.service.annotation.HttpExchange;
 
 /**
+ * Registers bean definitions for HTTP Service client proxies together with the
+ * {@link HttpServiceProxyRegistryFactoryBean} to create those proxies after
+ * initializing the underlying {@code RestClient} or {@code WebClient} for each
+ * {@link HttpServiceGroup}.
+ *
+ * <p>Subclasses need to implement {@link #registerHttpServices} to register
+ * HTTP Services of interest.
+ *
+ * <p>Applications can autowire HTTP Service proxies directly, or alternatively
+ * they can also autowire the {@link HttpServiceProxyRegistry} with all proxies.
+ *
+ * <p>If more than one registrar instances of this type are imported, subsequent
+ * imports will update the existing {@code HttpServiceProxyRegistryFactoryBean}
+ * bean definition rather than creating a new one, and it will merge any HTTP
+ * Service group definitions that are registered by multiple registrars.
  *
  * @author Rossen Stoyanchev
  * @since 7.0
+ * @see AnnotationHttpServiceRegistrar
  */
 public abstract class AbstractHttpServiceRegistrar implements
 		ImportBeanDefinitionRegistrar, EnvironmentAware, ResourceLoaderAware, BeanFactoryAware {
@@ -62,9 +78,9 @@ public abstract class AbstractHttpServiceRegistrar implements
 
 	static {
 		String className = "org.springframework.web.client.support.RestClientHttpServiceGroupAdapter";
-		HttpServiceGroupAdapter<?> adapter = instantiateAdapter(className);
-		Assert.state(adapter != null, "Failed to load " + className);
-		restClientAdapter = adapter;
+		HttpServiceGroupAdapter<?> groupAdapter = instantiateAdapter(className);
+		Assert.state(groupAdapter != null, "Failed to load " + className);
+		restClientAdapter = groupAdapter;
 
 		className = "org.springframework.web.reactive.function.client.support.WebClientHttpServiceGroupAdapter";
 		webClientAdapter = instantiateAdapter(className);
@@ -85,9 +101,11 @@ public abstract class AbstractHttpServiceRegistrar implements
 
 
 	/**
-	 * Set a default client type to use when it is unspecified.
-	 * <p>By default, {@link HttpServiceGroup.ClientType#REST_CLIENT} is used.
-	 * @param defaultClientType the default client type
+	 * Set the client type to use when the client type for an HTTP Service group
+	 * remains {@link HttpServiceGroup.ClientType#UNSPECIFIED}.
+	 * <p>By default, when if this property is not set, then {@code REST_CLIENT}
+	 * is used for any HTTP Service group whose client type is unspecified.
+	 * @param defaultClientType the client type to use
 	 */
 	public void setDefaultClientType(HttpServiceGroup.ClientType defaultClientType) {
 		this.defaultClientType = defaultClientType;
@@ -139,7 +157,9 @@ public abstract class AbstractHttpServiceRegistrar implements
 			proxyBeanDef.setBeanClass(type);
 			proxyBeanDef.setInstanceSupplier(() -> getProxyInstance(proxyRegistryBeanName, groupName, type));
 			String beanName = (groupName + "." + beanNameGenerator.generateBeanName(proxyBeanDef, beanRegistry));
-			beanRegistry.registerBeanDefinition(beanName, proxyBeanDef);
+			if (!beanRegistry.containsBeanDefinition(beanName)) {
+				beanRegistry.registerBeanDefinition(beanName, proxyBeanDef);
+			}
 		}));
 	}
 
@@ -148,8 +168,10 @@ public abstract class AbstractHttpServiceRegistrar implements
 	}
 
 	/**
-	 * Register HTTP Service types by group.
-	 * @param registry the registry to perform HTTP Service registrations with
+	 * This method is called before any bean definition registrations are made.
+	 * Subclasses must implement it to register the HTTP Services for which bean
+	 * definitions for which proxies need to be created.
+	 * @param registry to perform HTTP Service registrations with
 	 * @param importingClassMetadata annotation metadata of the importing class
 	 */
 	protected abstract void registerHttpServices(
@@ -236,7 +258,7 @@ public abstract class AbstractHttpServiceRegistrar implements
 
 
 	/**
-	 * Interface to register HTTP Service types by group.
+	 * Registry API to allow subclasses to register HTTP Services.
 	 */
 	protected interface HttpServiceRegistry {
 
@@ -251,18 +273,18 @@ public abstract class AbstractHttpServiceRegistrar implements
 		GroupSpec forGroup(String name, HttpServiceGroup.ClientType clientType);
 
 		/**
-		 * Spec to add HTTP Service registrations.
+		 * Spec to list or scan for HTTP Service types.
 		 */
 		interface GroupSpec {
 
 			/**
-			 * Provide a list of HTTP Service types to register.
+			 * List HTTP Service types to create proxies for.
 			 */
 			GroupSpec registerHttpServiceTypes(Class<?>... serviceTypes);
 
 			/**
-			 * Detect HTTP Services in the given packages. An HTTP Service is an
-			 * interface with type and/or method {@link HttpExchange} annotations.
+			 * Detect HTTP Service types in the given packages, looking for
+			 * interfaces with a type and/or method {@link HttpExchange} annotation.
 			 */
 			GroupSpec detectInBasePackages(Class<?>... packageClasses);
 
@@ -353,7 +375,7 @@ public abstract class AbstractHttpServiceRegistrar implements
 
 
 	/**
-	 * Scanner for HTTP Service interfaces.
+	 * Extension of ClassPathScanningCandidateComponentProvider to look for HTTP Services.
 	 */
 	private static class HttpExchangeClassPathScanningCandidateComponentProvider
 			extends ClassPathScanningCandidateComponentProvider {

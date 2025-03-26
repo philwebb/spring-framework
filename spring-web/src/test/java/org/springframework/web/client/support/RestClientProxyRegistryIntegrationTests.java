@@ -152,7 +152,6 @@ public class RestClientProxyRegistryIntegrationTests {
 
 	@Configuration(proxyBeanMethods = false)
 	@Import(ManualDetectionRegistrar.class)
-	@ImportHttpServices(group = "echo", httpServiceTypes = {EchoA.class, EchoB.class})
 	private static class ManualDetectionConfig extends ClientConfig {
 	}
 

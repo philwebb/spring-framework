@@ -21,6 +21,12 @@ import org.springframework.core.annotation.MergedAnnotation;
 import org.springframework.core.type.AnnotationMetadata;
 
 /**
+ * Subclass of {@link AbstractHttpServiceRegistrar} that performs registrations
+ * from {@link ImportHttpServices} annotations on the importing config class.
+ *
+ * <p>If necessary you can extend this class to perform further registrations via
+ * {@link #extendRegistrations}. The extension class can then be imported through
+ * {@link Import}.
  *
  * @author Rossen Stoyanchev
  * @since 7.0
@@ -36,15 +42,16 @@ public class AnnotationHttpServiceRegistrar extends AbstractHttpServiceRegistrar
 			}
 		}
 
-		importMetadata.getAnnotations().stream(HttpServiceGroups.class).forEach(baseAnnot -> {
-			HttpServiceGroup.ClientType clientType = baseAnnot.getEnum("clientType", HttpServiceGroup.ClientType.class);
-			for (MergedAnnotation<?> annot : baseAnnot.getAnnotationArray("value", ImportHttpServices.class)) {
-				processAnnotation(annot, registry, clientType);
+		MergedAnnotation<?> groupsAnnot = importMetadata.getAnnotations().get(HttpServiceGroups.class);
+		if (groupsAnnot.isPresent()) {
+			HttpServiceGroup.ClientType clientType = groupsAnnot.getEnum("clientType", HttpServiceGroup.ClientType.class);
+			for (MergedAnnotation<?> annot : groupsAnnot.getAnnotationArray("value", ImportHttpServices.class)) {
+				processImportAnnotation(annot, registry, clientType);
 			}
-		});
+		}
 
 		importMetadata.getAnnotations().stream(ImportHttpServices.class).forEach(annot ->
-				processAnnotation(annot, registry, HttpServiceGroup.ClientType.UNSPECIFIED));
+				processImportAnnotation(annot, registry, HttpServiceGroup.ClientType.UNSPECIFIED));
 
 		extendRegistrations(registry, importMetadata);
 	}
@@ -60,7 +67,7 @@ public class AnnotationHttpServiceRegistrar extends AbstractHttpServiceRegistrar
 		});
 	}
 
-	private void processAnnotation(
+	private void processImportAnnotation(
 			MergedAnnotation<?> annotation, HttpServiceRegistry httpServiceRegistry,
 			HttpServiceGroup.ClientType containerClientType) {
 
@@ -76,11 +83,12 @@ public class AnnotationHttpServiceRegistrar extends AbstractHttpServiceRegistrar
 	}
 
 	/**
-	 *
-	 * @param httpServiceRegistry
-	 * @param metadata
+	 * Use this method to make further registrations besides those from
+	 * {@link ImportHttpServices} annotations.
+	 * @param registry to perform HTTP Service registrations with
+	 * @param importingClassMetadata annotation metadata of the importing class
 	 */
-	protected void extendRegistrations(HttpServiceRegistry httpServiceRegistry, AnnotationMetadata metadata) {
+	protected void extendRegistrations(HttpServiceRegistry registry, AnnotationMetadata importingClassMetadata) {
 	}
 
 }
