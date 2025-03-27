@@ -20,8 +20,11 @@ import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 import org.jspecify.annotations.Nullable;
 
@@ -92,8 +95,6 @@ public abstract class AbstractHttpServiceRegistrar implements
 	private @Nullable BeanFactory beanFactory;
 
 	private final Map<String, HttpServiceGroup> groupMap = new LinkedHashMap<>();
-
-	private @Nullable ClassPathScanningCandidateComponentProvider scanner;
 
 
 	/**
@@ -171,17 +172,6 @@ public abstract class AbstractHttpServiceRegistrar implements
 	 */
 	protected abstract void registerHttpServices(
 			HttpServiceRegistry registry, AnnotationMetadata importingClassMetadata);
-
-	private ClassPathScanningCandidateComponentProvider getScanner() {
-		if (this.scanner == null) {
-			Assert.state(this.environment != null, "Environment has not been set");
-			Assert.state(this.resourceLoader != null, "ResourceLoader has not been set");
-			this.scanner = new HttpExchangeClassPathScanningCandidateComponentProvider();
-			this.scanner.setEnvironment(this.environment);
-			this.scanner.setResourceLoader(this.resourceLoader);
-		}
-		return this.scanner;
-	}
 
 	@SuppressWarnings("unchecked")
 	private static <K, V> Map<K, V> getMapArg(int index, GenericBeanDefinition registryBeanDef) {
@@ -315,6 +305,17 @@ public abstract class AbstractHttpServiceRegistrar implements
 			 */
 			GroupSpec detectInBasePackages(String... packageNames);
 
+			/**
+			 * Detect HTTP Service types in the given packages, looking for
+			 * interfaces with a type and/or method {@link HttpExchange} annotation.
+			 */
+			GroupSpec detectInBasePackages(Predicate<AnnotationMetadata> filter, Class<?>... packageClasses);
+
+			/**
+			 * Variant of {@link #detectInBasePackages(Class[])} with a String package name.
+			 */
+			GroupSpec detectInBasePackages(Predicate<AnnotationMetadata> filter, String... packageNames);
+
 		}
 	}
 
@@ -359,29 +360,31 @@ public abstract class AbstractHttpServiceRegistrar implements
 
 			@Override
 			public GroupSpec detectInBasePackages(Class<?>... packageClasses) {
-				Arrays.stream(packageClasses).map(Class::getPackageName).forEach(this::detect);
-				return this;
+				return detectInBasePackages(type -> true, packageClasses);
 			}
 
 			@Override
 			public GroupSpec detectInBasePackages(String... packageNames) {
-				Arrays.stream(packageNames).forEach(this::detect);
+				return detectInBasePackages(type -> true, packageNames);
+			}
+
+			@Override
+			public GroupSpec detectInBasePackages(Predicate<AnnotationMetadata> filter, Class<?>... packageClasses) {
+				return detect(new Scanner(filter),
+						Arrays.stream(packageClasses).map(Class::getPackageName));
+			}
+
+			@Override
+			public GroupSpec detectInBasePackages(Predicate<AnnotationMetadata> filter, String... packageNames) {
+				return detect(new Scanner(filter),
+						Arrays.stream(packageNames));
+			}
+
+			private GroupSpec detect(Scanner scanner, Stream<String> packageNames) {
+				packageNames.flatMap(scanner::scan).forEach(this::register);
 				return this;
 			}
 
-			private void detect(String packageName) {
-				for (BeanDefinition definition : getScanner().findCandidateComponents(packageName)) {
-					String className = definition.getBeanClassName();
-					if (className != null) {
-						try {
-							register(ClassUtils.forName(className, getClass().getClassLoader()));
-						}
-						catch (ClassNotFoundException ex) {
-							throw new IllegalStateException("Failed to load '" + className + "'", ex);
-						}
-					}
-				}
-			}
 		}
 
 		private record RegisteredGroup(
@@ -393,18 +396,42 @@ public abstract class AbstractHttpServiceRegistrar implements
 	/**
 	 * Extension of ClassPathScanningCandidateComponentProvider to look for HTTP Services.
 	 */
-	private static class HttpExchangeClassPathScanningCandidateComponentProvider
-			extends ClassPathScanningCandidateComponentProvider {
+	private class Scanner extends ClassPathScanningCandidateComponentProvider {
 
-		public HttpExchangeClassPathScanningCandidateComponentProvider() {
+		private final Predicate<AnnotationMetadata> filter;
+
+		public Scanner(Predicate<AnnotationMetadata> filter) {
+			Assert.state(environment != null, "Environment has not been set");
+			Assert.state(resourceLoader != null, "ResourceLoader has not been set");
+			setEnvironment(environment);
+			setResourceLoader(resourceLoader);
+			this.filter = filter;
 			addIncludeFilter(new HttpExchangeFilter());
 		}
 
 		@Override
 		protected boolean isCandidateComponent(AnnotatedBeanDefinition beanDefinition) {
 			AnnotationMetadata metadata = beanDefinition.getMetadata();
-			return (metadata.isIndependent() && !metadata.isAnnotation());
+			return (metadata.isIndependent() && !metadata.isAnnotation() && this.filter.test(metadata));
 		}
+
+		private Stream<Class<?>> scan(String basePackageName) {
+			return findCandidateComponents(basePackageName)
+				.stream()
+				.map(BeanDefinition::getBeanClassName)
+				.filter(Objects::nonNull)
+				.map(this::resolveClass);
+		}
+
+		private Class<?> resolveClass(String className) {
+			try {
+				return ClassUtils.forName(className, getClass().getClassLoader());
+			}
+			catch (ClassNotFoundException | LinkageError ex) {
+				throw new IllegalStateException("Failed to load '" + className + "'", ex);
+			}
+		}
+
 
 		/**
 		 * Find interfaces with type and/or method {@code @HttpExchange}.
