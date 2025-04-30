@@ -31,6 +31,7 @@ import org.jspecify.annotations.Nullable;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.BeanClassLoaderAware;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
@@ -57,7 +58,8 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
  * @see AbstractHttpServiceRegistrar
  */
 public final class HttpServiceProxyRegistryFactoryBean
-		implements ApplicationContextAware, InitializingBean, FactoryBean<HttpServiceProxyRegistry> {
+		implements ApplicationContextAware, BeanClassLoaderAware, InitializingBean,
+		FactoryBean<HttpServiceProxyRegistry> {
 
 	private static final Map<HttpServiceGroup.ClientType, HttpServiceGroupAdapter<?>> groupAdapters =
 			GroupAdapterInitializer.initGroupAdapters();
@@ -67,11 +69,13 @@ public final class HttpServiceProxyRegistryFactoryBean
 
 	private @Nullable ApplicationContext applicationContext;
 
+	private @Nullable ClassLoader beanClassLoader;
+
 	private @Nullable HttpServiceProxyRegistry proxyRegistry;
 
 
 	HttpServiceProxyRegistryFactoryBean(GroupsMetadata groupsMetadata) {
-		this.groupSet = groupsMetadata.groups().stream()
+		this.groupSet = groupsMetadata.groups(this.beanClassLoader).stream()
 				.map(group -> {
 					HttpServiceGroupAdapter<?> adapter = groupAdapters.get(group.clientType());
 					Assert.state(adapter != null, "No HttpServiceGroupAdapter for type " + group.clientType());
@@ -84,6 +88,11 @@ public final class HttpServiceProxyRegistryFactoryBean
 	@Override
 	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
 		this.applicationContext = applicationContext;
+	}
+
+	@Override
+	public void setBeanClassLoader(ClassLoader beanClassLoader) {
+		this.beanClassLoader = beanClassLoader;
 	}
 
 	@Override
