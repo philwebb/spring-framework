@@ -18,6 +18,7 @@ package org.springframework.web.service.registry;
 
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.function.Function;
 
 import org.jspecify.annotations.Nullable;
 
@@ -44,6 +45,8 @@ import org.springframework.core.type.filter.AnnotationTypeFilter;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.web.service.annotation.HttpExchange;
+import org.springframework.web.service.registry.AbstractHttpServiceRegistrar.GroupRegistry.GroupSpec;
+import org.springframework.web.service.registry.HttpServiceGroup.ClientType;
 
 /**
  * Abstract registrar class that imports:
@@ -228,7 +231,16 @@ public abstract class AbstractHttpServiceRegistrar implements
 		/**
 		 * Variant of {@link #forGroup(String)} with a client type.
 		 */
-		GroupSpec forGroup(String name, HttpServiceGroup.ClientType clientType);
+		default GroupSpec forGroup(String name, HttpServiceGroup.ClientType clientType) {
+			return forGroup(serviceType -> name, serviceType -> clientType);
+		}
+
+		/**
+		 * Variant of {@link #forGroup(String, HttpServiceGroup.ClientType)} using
+		 * functions that provider values for a given HTTP Service type.
+		 */
+		GroupSpec forGroup(Function<Class<?>, @Nullable String> nameProvider,
+				Function<Class<?>, HttpServiceGroup.ClientType> clientTypeProvider);
 
 		/**
 		 * Perform HTTP Service registrations for the
@@ -268,16 +280,20 @@ public abstract class AbstractHttpServiceRegistrar implements
 	 */
 	private class DefaultGroupSpec implements GroupRegistry.GroupSpec {
 
-		private final GroupsMetadata.Registration registration;
+		private final Function<Class<?>, @Nullable String> nameProvider;
 
-		DefaultGroupSpec(String groupName, HttpServiceGroup.ClientType clientType) {
-			clientType = (clientType != HttpServiceGroup.ClientType.UNSPECIFIED ? clientType : defaultClientType);
-			this.registration = groupsMetadata.getOrCreateGroup(groupName, clientType);
+		private final Function<Class<?>, HttpServiceGroup.ClientType> clientTypeProvider;
+
+
+		DefaultGroupSpec(Function<Class<?>, @Nullable String> nameProvider, Function<Class<?>, ClientType> clientTypeProvider) {
+			this.nameProvider = nameProvider;
+			this.clientTypeProvider = clientTypeProvider;
 		}
+
 
 		@Override
 		public GroupRegistry.GroupSpec register(Class<?>... serviceTypes) {
-			Arrays.stream(serviceTypes).map(Class::getName).forEach(this::register);
+			Arrays.stream(serviceTypes).forEach(this::register);
 			return this;
 		}
 
@@ -298,11 +314,17 @@ public abstract class AbstractHttpServiceRegistrar implements
 				.stream()
 				.map(BeanDefinition::getBeanClassName)
 				.filter(Objects::nonNull)
+				.map(serviceTypeName -> ClassUtils.resolveClassName(serviceTypeName, beanClassLoader))
 				.forEach(this::register);
 		}
 
-		private void register(String httpServiceTypeName) {
-			this.registration.httpServiceTypeNames().add(httpServiceTypeName);
+		private void register(Class<?> httpServiceType) {
+			String name = this.nameProvider.apply(httpServiceType);
+			if (name != null) {
+				ClientType clientType = this.clientTypeProvider.apply(httpServiceType);
+				clientType = (clientType != HttpServiceGroup.ClientType.UNSPECIFIED ? clientType : defaultClientType);
+				groupsMetadata.getOrCreateGroup(name, clientType).httpServiceTypeNames().add(httpServiceType.getName());
+			}
 		}
 	}
 
