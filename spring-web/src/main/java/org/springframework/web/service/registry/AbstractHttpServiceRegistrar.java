@@ -16,6 +16,10 @@
 
 package org.springframework.web.service.registry;
 
+import java.util.Arrays;
+import java.util.Objects;
+import java.util.function.Function;
+
 import org.jspecify.annotations.Nullable;
 
 import org.springframework.beans.BeansException;
@@ -41,6 +45,8 @@ import org.springframework.core.type.filter.AnnotationTypeFilter;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.web.service.annotation.HttpExchange;
+import org.springframework.web.service.registry.AbstractHttpServiceRegistrar.GroupRegistry.GroupSpec;
+import org.springframework.web.service.registry.HttpServiceGroup.ClientType;
 
 /**
  * Abstract registrar class that imports:
@@ -141,7 +147,7 @@ public abstract class AbstractHttpServiceRegistrar implements
 	@Override
 	public final void registerBeanDefinitions(AnnotationMetadata metadata, BeanDefinitionRegistry beanRegistry) {
 
-		registerHttpServices(new DefaultGroupRegistry(), metadata);
+		registerHttpServices(DefaultGroupSpec::new, metadata);
 
 		RootBeanDefinition proxyRegistryBeanDef = createOrGetRegistry(beanRegistry);
 
@@ -225,7 +231,16 @@ public abstract class AbstractHttpServiceRegistrar implements
 		/**
 		 * Variant of {@link #forGroup(String)} with a client type.
 		 */
-		GroupSpec forGroup(String name, HttpServiceGroup.ClientType clientType);
+		default GroupSpec forGroup(String name, HttpServiceGroup.ClientType clientType) {
+			return forGroup(serviceType -> name, serviceType -> clientType);
+		}
+
+		/**
+		 * Variant of {@link #forGroup(String, HttpServiceGroup.ClientType)} using
+		 * functions that provider values for a given HTTP Service type.
+		 */
+		GroupSpec forGroup(Function<Class<?>, @Nullable String> nameProvider,
+				Function<Class<?>, HttpServiceGroup.ClientType> clientTypeProvider);
 
 		/**
 		 * Perform HTTP Service registrations for the
@@ -261,57 +276,54 @@ public abstract class AbstractHttpServiceRegistrar implements
 
 
 	/**
-	 * Default implementation of {@link GroupRegistry}.
+	 * Default implementation of {@link GroupSpec}.
 	 */
-	private class DefaultGroupRegistry implements GroupRegistry {
+	private class DefaultGroupSpec implements GroupRegistry.GroupSpec {
 
-		@Override
-		public GroupSpec forGroup(String name, HttpServiceGroup.ClientType clientType) {
-			return new DefaultGroupSpec(name, clientType);
+		private final Function<Class<?>, @Nullable String> nameProvider;
+
+		private final Function<Class<?>, HttpServiceGroup.ClientType> clientTypeProvider;
+
+
+		DefaultGroupSpec(Function<Class<?>, @Nullable String> nameProvider, Function<Class<?>, ClientType> clientTypeProvider) {
+			this.nameProvider = nameProvider;
+			this.clientTypeProvider = clientTypeProvider;
 		}
 
-		/**
-		 * Default implementation of {@link GroupSpec}.
-		 */
-		private class DefaultGroupSpec implements GroupSpec {
 
-			private final GroupsMetadata.Registration registration;
+		@Override
+		public GroupRegistry.GroupSpec register(Class<?>... serviceTypes) {
+			Arrays.stream(serviceTypes).forEach(this::register);
+			return this;
+		}
 
-			public DefaultGroupSpec(String groupName, HttpServiceGroup.ClientType clientType) {
+		@Override
+		public GroupRegistry.GroupSpec detectInBasePackages(Class<?>... packageClasses) {
+			Arrays.stream(packageClasses).map(Class::getPackageName).forEach(this::detectInBasePackage);
+			return this;
+		}
+
+		@Override
+		public GroupRegistry.GroupSpec detectInBasePackages(String... packageNames) {
+			Arrays.stream(packageNames).forEach(this::detectInBasePackage);
+			return this;
+		}
+
+		private void detectInBasePackage(String packageName) {
+			getScanner().findCandidateComponents(packageName)
+				.stream()
+				.map(BeanDefinition::getBeanClassName)
+				.filter(Objects::nonNull)
+				.map(serviceTypeName -> ClassUtils.resolveClassName(serviceTypeName, beanClassLoader))
+				.forEach(this::register);
+		}
+
+		private void register(Class<?> httpServiceType) {
+			String name = this.nameProvider.apply(httpServiceType);
+			if (name != null) {
+				ClientType clientType = this.clientTypeProvider.apply(httpServiceType);
 				clientType = (clientType != HttpServiceGroup.ClientType.UNSPECIFIED ? clientType : defaultClientType);
-				this.registration = groupsMetadata.getOrCreateGroup(groupName, clientType);
-			}
-
-			@Override
-			public GroupSpec register(Class<?>... serviceTypes) {
-				for (Class<?> serviceType : serviceTypes) {
-					this.registration.httpServiceTypeNames().add(serviceType.getName());
-				}
-				return this;
-			}
-
-			@Override
-			public GroupSpec detectInBasePackages(Class<?>... packageClasses) {
-				for (Class<?> packageClass : packageClasses) {
-					detect(packageClass.getPackageName());
-				}
-				return this;
-			}
-
-			@Override
-			public GroupSpec detectInBasePackages(String... packageNames) {
-				for (String packageName : packageNames) {
-					detect(packageName);
-				}
-				return this;
-			}
-
-			private void detect(String packageName) {
-				for (BeanDefinition definition : getScanner().findCandidateComponents(packageName)) {
-					if (definition.getBeanClassName() != null) {
-						this.registration.httpServiceTypeNames().add(definition.getBeanClassName());
-					}
-				}
+				groupsMetadata.getOrCreateGroup(name, clientType).httpServiceTypeNames().add(httpServiceType.getName());
 			}
 		}
 	}

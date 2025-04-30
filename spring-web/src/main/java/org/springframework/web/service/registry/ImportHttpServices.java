@@ -45,6 +45,7 @@ import org.springframework.web.service.annotation.HttpExchange;
  *
  * @author Olga Maciaszek-Sharma
  * @author Rossen Stoyanchev
+ * @author Phillip Webb
  * @since 7.0
  * @see Container
  * @see AbstractHttpServiceRegistrar
@@ -70,10 +71,12 @@ public @interface ImportHttpServices {
 
 	/**
 	 * The name of the HTTP Service group.
-	 * <p>If not specified, declared HTTP Services are grouped under the
-	 * {@link HttpServiceGroup#DEFAULT_GROUP_NAME}.
+	 * <p>If not specified, the {@link HttpServiceClient @HttpServiceClient} annotation
+	 * may be used on the HTTP service type to provide a name. If
+	 * {@link HttpServiceClient @HttpServiceClient} is missing, or does not declare a
+	 * name, then {@link HttpServiceGroup#DEFAULT_GROUP_NAME} is used.
 	 */
-	String group() default HttpServiceGroup.DEFAULT_GROUP_NAME;
+	String group() default "";
 
 	/**
 	 * Detect HTTP Services in the packages of the specified classes by looking
@@ -92,10 +95,36 @@ public @interface ImportHttpServices {
 	/**
 	 * Specify the type of client to use for the group.
 	 * <p>By default, this is {@link HttpServiceGroup.ClientType#UNSPECIFIED}
-	 * in which case {@code RestClient} is used, but this default can be changed
-	 * via {@link AbstractHttpServiceRegistrar#setDefaultClientType}.
+	 * in which case the {@link HttpServiceClient @HttpServiceClient} annotation
+	 * may be used on the HTTP service type to provide a client type. If
+	 * {@link HttpServiceClient @HttpServiceClient} is missing, or does not specify
+	 * a client type, then the default client type is used.
+	 * @see AbstractHttpServiceRegistrar#setDefaultClientType
 	 */
 	HttpServiceGroup.ClientType clientType() default HttpServiceGroup.ClientType.UNSPECIFIED;
+
+	/**
+	 * The types that should be included when detecting HTTP Services in packages. By
+	 * default, all types that have at least one {@link HttpExchange @HttpExchange}
+	 * annotated method are considered.
+	 */
+	Include include() default Include.ALL;
+
+	public enum Include {
+
+		/**
+		 * Consider all types that have at least one {@link HttpExchange @HttpExchange}
+		 * annotated method.
+		 */
+		ALL,
+
+		/**
+		 * Consider only types that are annotated with
+		 * {@link HttpServiceClient @HttpServiceClient} and have at least one
+		 * {@link HttpExchange @HttpExchange} annotated method..
+		 */
+		ANNOTATED_CLIENTS
+	}
 
 
 	/**

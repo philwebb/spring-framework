@@ -23,6 +23,7 @@ import okhttp3.mockwebserver.MockWebServer;
 import okhttp3.mockwebserver.RecordedRequest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
@@ -32,14 +33,23 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.web.service.registry.AbstractHttpServiceRegistrar;
+import org.springframework.web.service.registry.HttpServiceGroup;
 import org.springframework.web.service.registry.HttpServiceProxyRegistry;
 import org.springframework.web.service.registry.ImportHttpServices;
+import org.springframework.web.service.registry.ImportHttpServices.Include;
+import org.springframework.web.service.registry.annotated.AnnotatedA;
+import org.springframework.web.service.registry.annotated.AnnotatedB;
+import org.springframework.web.service.registry.annotated.Unannotated;
+import org.springframework.web.service.registry.annotatedgreeting.AnnotatedGreetingA;
+import org.springframework.web.service.registry.annotatedgreeting.AnnotatedGreetingB;
+import org.springframework.web.service.registry.annotatedgreeting.UnannotatedGreeting;
 import org.springframework.web.service.registry.echo.EchoA;
 import org.springframework.web.service.registry.echo.EchoB;
 import org.springframework.web.service.registry.greeting.GreetingA;
 import org.springframework.web.service.registry.greeting.GreetingB;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 
 /**
  * Integration tests for {@link HttpServiceProxyRegistry} with a
@@ -112,6 +122,78 @@ public class RestClientProxyRegistryIntegrationTests {
 		assertThat(request.getPath()).isEqualTo("/greetingB?input=b");
 	}
 
+	@Test
+	void includeAnnotatedConfig() {
+		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(IncludeAnnotatedConfig.class);
+		HttpServiceProxyRegistry registry = context.getBean(HttpServiceProxyRegistry.class);
+		assertThat(registry.getClientTypesInGroup(HttpServiceGroup.DEFAULT_GROUP_NAME))
+				.containsOnly(AnnotatedA.class, AnnotatedB.class);
+	}
+
+	@Test
+	void includeAllConfig() {
+		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(IncludeAllConfig.class);
+		HttpServiceProxyRegistry registry = context.getBean(HttpServiceProxyRegistry.class);
+		assertThat(registry.getClientTypesInGroup(HttpServiceGroup.DEFAULT_GROUP_NAME))
+				.containsOnly(AnnotatedA.class, AnnotatedB.class, Unannotated.class);
+	}
+
+	@Test
+	void includeAnnotatedConfigInGroup() {
+		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(IncludeAnnotatedConfigInGroup.class);
+		HttpServiceProxyRegistry registry = context.getBean(HttpServiceProxyRegistry.class);
+		assertThat(registry.getGroupNames()).containsOnly("test");
+		assertThat(registry.getClientTypesInGroup("test")).containsOnly(AnnotatedA.class, AnnotatedB.class);
+	}
+
+	@Test
+	void includeAnnotatedWithGroupOnHttpServiceType() {
+		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(IncludeAnnotatedWithGroupOnHttpServiceType.class);
+		HttpServiceProxyRegistry registry = context.getBean(HttpServiceProxyRegistry.class);
+		assertThat(registry.getGroupNames()).containsOnly("greeting");
+		assertThat(registry.getClientTypesInGroup("greeting")).containsOnly(AnnotatedGreetingA.class, AnnotatedGreetingB.class);
+	}
+
+	@Test
+	void includeAllWithGroupOnHttpServiceType() {
+		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(IncludeAllWithGroupOnHttpServiceType.class);
+		HttpServiceProxyRegistry registry = context.getBean(HttpServiceProxyRegistry.class);
+		assertThat(registry.getGroupNames()).containsOnly("greeting", "default");
+		assertThat(registry.getClientTypesInGroup("greeting")).containsOnly(AnnotatedGreetingA.class, AnnotatedGreetingB.class);
+		assertThat(registry.getClientTypesInGroup("default")).containsOnly(UnannotatedGreeting.class);
+	}
+
+	@Test
+	void includeAnnotatedWithGroupOnHttpServiceTypeAndMatchingGroup() {
+		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(IncludeAnnotatedWithGroupOnHttpServiceTypeAndMatchingGroup.class);
+		HttpServiceProxyRegistry registry = context.getBean(HttpServiceProxyRegistry.class);
+		assertThat(registry.getGroupNames()).containsOnly("greeting");
+		assertThat(registry.getClientTypesInGroup("greeting")).containsOnly(AnnotatedGreetingA.class, AnnotatedGreetingB.class);
+	}
+
+	@Test
+	void includeAnnotatedWithGroupOnHttpServiceTypeAndNonMatchingGroup() {
+		assertThatIllegalStateException()
+			.isThrownBy(() -> new AnnotationConfigApplicationContext(IncludeAnnotatedWithGroupOnHttpServiceTypeAndNonMatchingGroup.class))
+			.withMessage("HTTP Service 'group' attributes cannot be specified on both @HttpServiceClient and @ImportHttpServices annotations");
+	}
+
+	@Test
+	void includeAllWithGroupOnHttpServiceTypeAndNonMatchingGroup() {
+		assertThatIllegalStateException()
+			.isThrownBy(() -> new AnnotationConfigApplicationContext(IncludeAllWithGroupOnHttpServiceTypeAndNonMatchingGroup.class))
+			.withMessage("HTTP Service 'group' attributes cannot be specified on both @HttpServiceClient and @ImportHttpServices annotations");
+	}
+
+	@Test
+	void includeAllWithGroupOnHttpServiceTypeAndMatchingGroup() {
+		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(IncludeAllWithGroupOnHttpServiceTypeAndMatchingGroup.class);
+		HttpServiceProxyRegistry registry = context.getBean(HttpServiceProxyRegistry.class);
+		assertThat(registry.getGroupNames()).containsOnly("greeting");
+		assertThat(registry.getClientTypesInGroup("greeting")).containsOnly(AnnotatedGreetingA.class,
+				AnnotatedGreetingB.class, UnannotatedGreeting.class);
+	}
+
 
 	private static class ClientConfig {
 
@@ -166,4 +248,54 @@ public class RestClientProxyRegistryIntegrationTests {
 		}
 	}
 
+	@Configuration(proxyBeanMethods = false)
+	@ImportHttpServices(include = Include.ANNOTATED_CLIENTS, basePackageClasses = AnnotatedA.class)
+	private static class IncludeAnnotatedConfig extends ClientConfig {
+	}
+
+	@Configuration(proxyBeanMethods = false)
+	@ImportHttpServices(include = Include.ALL, basePackageClasses = AnnotatedA.class)
+	private static class IncludeAllConfig extends ClientConfig {
+	}
+
+	@Configuration(proxyBeanMethods = false)
+	@ImportHttpServices(include = Include.ANNOTATED_CLIENTS, group = "test",
+			basePackageClasses = AnnotatedA.class)
+	private static class IncludeAnnotatedConfigInGroup extends ClientConfig {
+	}
+
+	@Configuration(proxyBeanMethods = false)
+	@ImportHttpServices(include = Include.ANNOTATED_CLIENTS,
+			basePackageClasses = AnnotatedGreetingA.class)
+	private static class IncludeAnnotatedWithGroupOnHttpServiceType extends ClientConfig {
+	}
+
+	@Configuration(proxyBeanMethods = false)
+	@ImportHttpServices(basePackageClasses = AnnotatedGreetingA.class)
+	private static class IncludeAllWithGroupOnHttpServiceType extends ClientConfig {
+	}
+
+	@Configuration(proxyBeanMethods = false)
+	@ImportHttpServices(include = Include.ANNOTATED_CLIENTS, group = "greeting",
+			basePackageClasses = AnnotatedGreetingA.class)
+	private static class IncludeAnnotatedWithGroupOnHttpServiceTypeAndMatchingGroup extends ClientConfig {
+	}
+
+	@Configuration(proxyBeanMethods = false)
+	@ImportHttpServices(include = Include.ANNOTATED_CLIENTS, group = "bad",
+			basePackageClasses = AnnotatedGreetingA.class)
+	private static class IncludeAnnotatedWithGroupOnHttpServiceTypeAndNonMatchingGroup extends ClientConfig {
+	}
+
+	@Configuration(proxyBeanMethods = false)
+	@ImportHttpServices(include = Include.ALL, group = "bad",
+			basePackageClasses = AnnotatedGreetingA.class)
+	private static class IncludeAllWithGroupOnHttpServiceTypeAndNonMatchingGroup extends ClientConfig {
+	}
+
+	@Configuration(proxyBeanMethods = false)
+	@ImportHttpServices(include = Include.ALL, group = "greeting",
+			basePackageClasses = AnnotatedGreetingA.class)
+	private static class IncludeAllWithGroupOnHttpServiceTypeAndMatchingGroup extends ClientConfig {
+	}
 }

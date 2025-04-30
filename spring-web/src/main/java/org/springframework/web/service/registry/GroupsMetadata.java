@@ -37,6 +37,7 @@ import org.springframework.util.ClassUtils;
  * registrations as {@link HttpServiceGroup}s via {@link #groups()}.
  *
  * @author Rossen Stoyanchev
+ * @author Phillip Webb
  * @since 7.0
  */
 final class GroupsMetadata {
@@ -105,6 +106,9 @@ final class GroupsMetadata {
 
 	/**
 	 * Registration metadata for an {@link HttpServiceGroup}.
+	 * @param name the group name
+	 * @param clientType the client type
+	 * @param httpServiceTypeNames the HTTP Service names
 	 */
 	record Registration(String name, HttpServiceGroup.ClientType clientType, Set<String> httpServiceTypeNames) {
 
