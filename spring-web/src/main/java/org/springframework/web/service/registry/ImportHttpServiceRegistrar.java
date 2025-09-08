@@ -16,9 +16,13 @@
 
 package org.springframework.web.service.registry;
 
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.util.Arrays;
-import java.util.stream.Stream;
 
+import org.jspecify.annotations.Nullable;
+
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.AnnotatedBeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.core.annotation.MergedAnnotation;
@@ -27,6 +31,8 @@ import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.core.type.classreading.CachingMetadataReaderFactory;
 import org.springframework.core.type.classreading.MetadataReaderFactory;
 import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
+import org.springframework.web.service.registry.AbstractHttpServiceRegistrar.GroupRegistry.GroupSpec;
 import org.springframework.web.service.registry.HttpServiceGroup.ClientType;
 import org.springframework.web.service.registry.ImportHttpServices.GroupProvider;
 
@@ -42,7 +48,7 @@ import org.springframework.web.service.registry.ImportHttpServices.GroupProvider
  */
 class ImportHttpServiceRegistrar extends AbstractHttpServiceRegistrar {
 
-	private MetadataReaderFactory metadataReaderFactory;
+	private @Nullable MetadataReaderFactory metadataReaderFactory;
 
 	@Override
 	public void setResourceLoader(ResourceLoader resourceLoader) {
@@ -63,92 +69,120 @@ class ImportHttpServiceRegistrar extends AbstractHttpServiceRegistrar {
 				.forEach(annot -> processImportAnnotation(annot, registry));
 	}
 
-	private void processImportAnnotation(MergedAnnotation<?> importHttpServices, GroupRegistry groupRegistry) {
+	private void processImportAnnotation(MergedAnnotation<?> annotation, GroupRegistry groupRegistry) {
 
-		String group = importHttpServices.getString("group");
-		Class<?> groupProvider = importHttpServices.getClass("groupProvider");
-		HttpServiceGroup.ClientType clientType = importHttpServices.getEnum("clientType", HttpServiceGroup.ClientType.class);
+		String group = annotation.getString("group");
+		Class<?> groupProvider = annotation.getClass("groupProvider");
+		HttpServiceGroup.ClientType clientType = annotation.getEnum("clientType", HttpServiceGroup.ClientType.class);
 
 		ImportProcessor importProcessor = new ImportProcessor(groupRegistry, group, groupProvider, clientType);
 
-		importProcessor.processTypes(importHttpServices.getClassArray("types"));
-		importProcessor.processBasePackages(importHttpServices.getStringArray("basePackages"));
-		importProcessor.processBasePackages(importHttpServices.getClassArray("basePackageClasses"));
+		importProcessor.processBasePackages(annotation.getStringArray("basePackages"));
+		importProcessor.processBasePackages(annotation.getClassArray("basePackageClasses"));
+		importProcessor.processTypes(annotation.getClassArray("types"));
 	}
 
-	class ImportProcessor {
 
-		private GroupRegistry groupRegistry;
+	private class ImportProcessor {
 
-		private String group;
+		private final MetadataReaderFactory metadataReaderFactory;
 
-		GroupProvider groupProvider;
+		private final GroupRegistry groupRegistry;
+
+		private final GroupProvider groupProvider;
 
 		private ClientType clientType;
 
 		ImportProcessor(GroupRegistry groupRegistry, String group, Class<?> groupProviderClass, ClientType clientType) {
+			this.metadataReaderFactory = (ImportHttpServiceRegistrar.this.metadataReaderFactory != null)
+					? ImportHttpServiceRegistrar.this.metadataReaderFactory : new CachingMetadataReaderFactory();
 			this.groupRegistry = groupRegistry;
+			this.groupProvider = getGroupProvider(group, groupProviderClass);
 			this.clientType = clientType;
 		}
 
-		void processTypes(Class<?>[] classArray) {
-			if (this.groupProvider == null) {
-				this.groupRegistry.forGroup(this.group, this.clientType).register(classArray);
+		private GroupProvider getGroupProvider(String group, Class<?> groupProviderClass) {
+			if (groupProviderClass == GroupProvider.class) {
+				return new FixedGroupProvider(StringUtils.hasText(group) ? group : HttpServiceGroup.DEFAULT_GROUP_NAME);
 			}
-			else {
-//				Arrays.stream(classArray).map(Class::getName).forEach(this::dunno);
-//				metadataReaderFactory.getMetadataReader();
-				// FIXME dance
-			}
+			Assert.state(!StringUtils.hasText(group), "'group' attribute cannot be used when a 'groupProvider' is specified");
+			return (GroupProvider) BeanUtils.instantiateClass(groupProviderClass);
 		}
-
-
 
 		void processBasePackages(String[] basePackages) {
-			processBasePackages(Arrays.stream(basePackages));
-		}
-
-		void processBasePackages(Class<?>[] basePackages) {
-			processBasePackages(Arrays.stream(basePackages).map(Class::getPackageName));
-		}
-
-		private void processBasePackages(Stream<String> basePackages) {
-			basePackages.flatMap(ImportHttpServiceRegistrar.this::findHttpServices)
-				.map(this::getRegistration)
+			if (this.groupProvider instanceof FixedGroupProvider fixedGroupProvider) {
+				forGroup(fixedGroupProvider.group()).detectInBasePackages(basePackages);
+				return;
+			}
+			Arrays.stream(basePackages)
+				.flatMap(ImportHttpServiceRegistrar.this::findHttpServices)
 				.forEach(this::register);
 		}
 
-		private Registration getRegistration(BeanDefinition beanDefinition) {
-			String group = getGroup(beanDefinition);
-			return (group != null) ? new Registration(group, beanDefinition.getBeanClassName()) : null;
+		void processBasePackages(Class<?>[] basePackages) {
+			if (this.groupProvider instanceof FixedGroupProvider fixedGroupProvider) {
+				forGroup(fixedGroupProvider.group()).detectInBasePackages(basePackages);
+				return;
+			}
+			Arrays.stream(basePackages)
+				.map(Class::getPackageName)
+				.flatMap(ImportHttpServiceRegistrar.this::findHttpServices)
+				.forEach(this::register);
 		}
 
-		private String getGroup(BeanDefinition beanDefinition) {
-			if (this.groupProvider == null) {
-				return this.group;
+		void processTypes(Class<?>[] classArray) {
+			if (this.groupProvider instanceof FixedGroupProvider fixedGroupProvider) {
+				forGroup(fixedGroupProvider.group()).register(classArray);
+				return;
 			}
+			Arrays.stream(classArray).map(this::getMetadata).forEach(this::register);
+		}
+
+		private AnnotationMetadata getMetadata(Class<?> type) {
+			try {
+				return metadataReaderFactory.getMetadataReader(type.getName()).getAnnotationMetadata();
+			}
+			catch (IOException ex) {
+				throw new UncheckedIOException(ex);
+			}
+		}
+
+		private void register(BeanDefinition beanDefinition) {
 			Assert.state(beanDefinition instanceof AnnotatedBeanDefinition,
 					"AnnotatedBeanDefinition required when using 'groupProvider'");
-			return this.groupProvider.group(((AnnotatedBeanDefinition) beanDefinition).getMetadata());
+			register(((AnnotatedBeanDefinition) beanDefinition).getMetadata());
 		}
 
-
-		private void register(AnnotationMetadata annotationMetadata) {
-			annotationMetadata.getClassName();
-		}
-
-
-		private void register(Registration registration) {
-			if (registration != null) {
-				this.groupRegistry.forGroup(registration.group(), this.clientType)
-					.registerTypeNames(registration.typeName());
+		private void register(AnnotationMetadata metadata) {
+			String group = this.groupProvider.group(metadata);
+			if (group != null) {
+				forGroup(group).registerTypeNames(metadata.getClassName());
 			}
 		}
 
-		record Registration(String group, String typeName) {
-
+		private GroupSpec forGroup(String group) {
+			return this.groupRegistry.forGroup(group, this.clientType);
 		}
-
 	}
 
+
+	private static class FixedGroupProvider implements GroupProvider {
+
+		private final String group;
+
+		FixedGroupProvider(String group) {
+			this.group =group;
+		}
+
+		@Override
+		public @Nullable String group(AnnotationMetadata metadata) {
+			return group();
+		}
+
+		String group() {
+			return this.group;
+		}
+
+
+	}
 }
