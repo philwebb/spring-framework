@@ -123,22 +123,19 @@ public @interface ImportHttpServices {
 	}
 
 	/**
-	 * Strategy interface to provide the group name for HTTP Service interface bean
-	 * definitions.
+	 * Strategy interface to provide the group name for HTTP Service interface.
 	 */
 	@FunctionalInterface
 	interface GroupProvider {
 
 		/**
-		 * Provide the group name that should be used for the given annotated bean
-		 * definition,
-		 * @param definition the annotated bean definition to provide a group for
+		 * Provide the group name that should be used for the given HTTP Service interface
+		 * metadata.
+		 * @param metadata the HTTP Service interface metadata
 		 * @return the provided group name or {@code null} if the HTTP Service client
 		 * should not be registered
 		 */
 		@Nullable String group(AnnotationMetadata metadata);
-		// FIXME AnnotationMetadata better?
-		// FIXME What about direct types
 
 	}
 

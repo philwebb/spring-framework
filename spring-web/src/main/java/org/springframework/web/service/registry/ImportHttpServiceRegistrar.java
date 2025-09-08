@@ -52,6 +52,7 @@ class ImportHttpServiceRegistrar extends AbstractHttpServiceRegistrar {
 
 	@Override
 	public void setResourceLoader(ResourceLoader resourceLoader) {
+		super.setResourceLoader(resourceLoader);
 		this.metadataReaderFactory = new CachingMetadataReaderFactory(resourceLoader);
 	}
 
@@ -94,8 +95,8 @@ class ImportHttpServiceRegistrar extends AbstractHttpServiceRegistrar {
 		private ClientType clientType;
 
 		ImportProcessor(GroupRegistry groupRegistry, String group, Class<?> groupProviderClass, ClientType clientType) {
-			this.metadataReaderFactory = (ImportHttpServiceRegistrar.this.metadataReaderFactory != null)
-					? ImportHttpServiceRegistrar.this.metadataReaderFactory : new CachingMetadataReaderFactory();
+			this.metadataReaderFactory = (ImportHttpServiceRegistrar.this.metadataReaderFactory != null) ?
+					ImportHttpServiceRegistrar.this.metadataReaderFactory : new CachingMetadataReaderFactory();
 			this.groupRegistry = groupRegistry;
 			this.groupProvider = getGroupProvider(group, groupProviderClass);
 			this.clientType = clientType;
@@ -140,7 +141,7 @@ class ImportHttpServiceRegistrar extends AbstractHttpServiceRegistrar {
 
 		private AnnotationMetadata getMetadata(Class<?> type) {
 			try {
-				return metadataReaderFactory.getMetadataReader(type.getName()).getAnnotationMetadata();
+				return this.metadataReaderFactory.getMetadataReader(type.getName()).getAnnotationMetadata();
 			}
 			catch (IOException ex) {
 				throw new UncheckedIOException(ex);
