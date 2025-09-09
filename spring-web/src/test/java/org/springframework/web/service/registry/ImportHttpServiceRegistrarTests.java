@@ -26,10 +26,12 @@ import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.aot.ApplicationContextAotGenerator;
 import org.springframework.context.support.GenericApplicationContext;
+import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.test.tools.CompileWithForkedClassLoader;
 import org.springframework.core.test.tools.Compiled;
 import org.springframework.core.test.tools.TestCompiler;
 import org.springframework.core.type.AnnotationMetadata;
+import org.springframework.mock.env.MockEnvironment;
 import org.springframework.web.service.registry.HttpServiceGroup.ClientType;
 import org.springframework.web.service.registry.echo.EchoA;
 import org.springframework.web.service.registry.echo.EchoB;
@@ -53,7 +55,14 @@ public class ImportHttpServiceRegistrarTests {
 
 	private final TestGroupRegistry groupRegistry = new TestGroupRegistry();
 
-	private final ImportHttpServiceRegistrar registrar = new ImportHttpServiceRegistrar();
+	private final ImportHttpServiceRegistrar registrar;
+
+
+	ImportHttpServiceRegistrarTests() {
+		this.registrar = new ImportHttpServiceRegistrar();
+		this.registrar.setEnvironment(new MockEnvironment());
+		this.registrar.setResourceLoader(new DefaultResourceLoader());
+	}
 
 
 	@Test
