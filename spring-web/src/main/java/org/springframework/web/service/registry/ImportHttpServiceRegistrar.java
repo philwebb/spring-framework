@@ -16,11 +16,8 @@
 
 package org.springframework.web.service.registry;
 
-import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.util.Arrays;
 import java.util.function.Consumer;
-import java.util.stream.Stream;
 
 import org.jspecify.annotations.Nullable;
 
@@ -31,11 +28,14 @@ import org.springframework.core.annotation.MergedAnnotation;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.core.type.classreading.CachingMetadataReaderFactory;
+import org.springframework.core.type.classreading.MetadataReader;
 import org.springframework.core.type.classreading.MetadataReaderFactory;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
+import org.springframework.util.function.ThrowingFunction;
+import org.springframework.web.service.registry.AbstractHttpServiceRegistrar.GroupRegistry.GroupSpec;
 import org.springframework.web.service.registry.HttpServiceGroup.ClientType;
 import org.springframework.web.service.registry.ImportHttpServices.GroupProvider;
 
@@ -51,6 +51,8 @@ import org.springframework.web.service.registry.ImportHttpServices.GroupProvider
  */
 public class ImportHttpServiceRegistrar extends AbstractHttpServiceRegistrar {
 
+	protected static final Class<?>[] NO_CLASSES = {};
+
 	private @Nullable MetadataReaderFactory metadataReaderFactory;
 
 	@Override
@@ -60,48 +62,39 @@ public class ImportHttpServiceRegistrar extends AbstractHttpServiceRegistrar {
 	}
 
 	@Override
-	protected void registerHttpServices(GroupRegistry registry, AnnotationMetadata metadata) {
+	protected void registerHttpServices(GroupRegistry registry, AnnotationMetadata importingClassMetadata) {
 
 		Consumer<MergedAnnotation<?>> processImportAnnotation = annotation ->
-				processImportAnnotation(annotation, registry, metadata);
-
-				MergedAnnotation<?> container = metadata.getAnnotations().get(ImportHttpServices.Container.class);
+				processImportAnnotation(annotation, registry, importingClassMetadata);
+		MergedAnnotation<?> container = importingClassMetadata.getAnnotations().get(ImportHttpServices.Container.class);
 		if (container.isPresent()) {
 			Arrays.stream(container.getAnnotationArray(MergedAnnotation.VALUE, ImportHttpServices.class))
 				.forEach(processImportAnnotation);
 		}
-
-		metadata.getAnnotations().stream(ImportHttpServices.class).forEach(processImportAnnotation);
+		importingClassMetadata.getAnnotations().stream(ImportHttpServices.class).forEach(processImportAnnotation);
 	}
 
-	private void processImportAnnotation(MergedAnnotation<?> annotation, GroupRegistry registry,
+	private void processImportAnnotation(MergedAnnotation<?> importHttpServices, GroupRegistry registry,
 			AnnotationMetadata metadata) {
 
-		GroupProvider groupProvider = getGroupProvider(annotation, metadata);
-
-		HttpServiceGroup.ClientType clientType = annotation.getEnum("clientType", HttpServiceGroup.ClientType.class);
-		Class<?>[] types = annotation.getClassArray("types");
-		String[] basePackages = annotation.getStringArray("basePackages");
-		Class<?>[] basePackageClasses = annotation.getClassArray("basePackageClasses");
-
+		GroupProvider groupProvider = getGroupProvider(importHttpServices);
+		HttpServiceGroup.ClientType clientType = importHttpServices.getEnum("clientType", HttpServiceGroup.ClientType.class);
+		Class<?>[] types = importHttpServices.getClassArray("types");
+		Class<?>[] basePackageClasses = importHttpServices.getClassArray("basePackageClasses");
+		String[] basePackages = importHttpServices.getStringArray("basePackages");
 		if (ObjectUtils.isEmpty(types) && ObjectUtils.isEmpty(basePackages) && ObjectUtils.isEmpty(basePackageClasses)) {
-			Stream<String> basePackagesStream = Stream.of(ClassUtils.getPackageName(metadata.getClassName()));
-			registerHttpServices(registry, groupProvider, clientType, basePackagesStream);
+			basePackages = new String[] { ClassUtils.getPackageName(metadata.getClassName()) };
 		}
-		else {
-			Stream<String> basePackagesStream = Stream.concat(Arrays.stream(basePackages), Arrays.stream(basePackageClasses).map(Class::getPackageName));
-			registerHttpServices(registry, groupProvider, clientType, basePackagesStream, types);
-		}
+		registerHttpServices(registry, groupProvider, clientType, types, basePackageClasses, basePackages);
 	}
 
-	private GroupProvider getGroupProvider(MergedAnnotation<?> annotation, AnnotationMetadata importingClassMetadata) {
+	private GroupProvider getGroupProvider(MergedAnnotation<?> annotation) {
 		String group = annotation.getString("group");
 		Class<?> groupProvider = annotation.getClass("groupProvider");
 		if (groupProvider == GroupProvider.class) {
-			return GroupProvider.of(StringUtils.hasText(group) ? group : HttpServiceGroup.DEFAULT_GROUP_NAME);
+			return new FixedGroupProvider(StringUtils.hasText(group) ? group : HttpServiceGroup.DEFAULT_GROUP_NAME);
 		}
-		Assert.state(!StringUtils.hasText(group),
-				"'group' attribute cannot be used when a 'groupProvider' is specified");
+		Assert.state(!StringUtils.hasText(group), "'group' cannot be mixed with 'groupProvider'");
 		return (GroupProvider) BeanUtils.instantiateClass(groupProvider);
 	}
 
@@ -110,24 +103,41 @@ public class ImportHttpServiceRegistrar extends AbstractHttpServiceRegistrar {
 	 * @param registry the group registry
 	 * @param groupProvider the group provider to use
 	 * @param clientType the client type to use
-	 * @param basePackages the base packages to register
 	 * @param types the types to register
+	 * @param basePackages the base packages to register
 	 */
 	protected final void registerHttpServices(GroupRegistry registry, GroupProvider groupProvider,
-			ClientType clientType, Stream<String> basePackages, Class<?>... types) {
+			ClientType clientType, Class<?>[] types, Class<?>[] basePackageClasses, String[] basePackages) {
 
+		if (groupProvider instanceof FixedGroupProvider fixedGroupProvider) {
+			GroupSpec groupSpec = registry.forGroup(fixedGroupProvider.group(), clientType);
+			groupSpec.register(types);
+			groupSpec.detectInBasePackages(basePackageClasses);
+			groupSpec.detectInBasePackages(basePackages);
+			return;
+		}
 		MetadataReaderFactory metadataReaderFactory = (this.metadataReaderFactory != null) ?
 				this.metadataReaderFactory : new CachingMetadataReaderFactory();
-
 		Consumer<AnnotationMetadata> register = metadata -> {
 			String group = groupProvider.group(metadata);
 			if (group != null) {
 				registry.forGroup(group, clientType).registerTypeNames(metadata.getClassName());
 			}
 		};
-
-		basePackages.flatMap(this::findHttpServices).map(this::getMetadata).forEach(register);
-		Arrays.stream(types).map(type -> getMetadata(metadataReaderFactory, type)).forEach(register);
+		Arrays.stream(types)
+			.map(Class::getName)
+			.map(ThrowingFunction.of(metadataReaderFactory::getMetadataReader))
+			.map(MetadataReader::getAnnotationMetadata)
+			.forEach(register);
+		Arrays.stream(basePackageClasses)
+			.map(Class::getPackageName)
+			.flatMap(this::findHttpServices)
+			.map(this::getMetadata)
+			.forEach(register);
+		Arrays.stream(basePackages)
+			.flatMap(this::findHttpServices)
+			.map(this::getMetadata)
+			.forEach(register);
 	}
 
 	private AnnotationMetadata getMetadata(BeanDefinition beanDefinition) {
@@ -136,12 +146,11 @@ public class ImportHttpServiceRegistrar extends AbstractHttpServiceRegistrar {
 		return ((AnnotatedBeanDefinition) beanDefinition).getMetadata();
 	}
 
-	private AnnotationMetadata getMetadata(MetadataReaderFactory metadataReaderFactory, Class<?> type) {
-		try {
-			return metadataReaderFactory.getMetadataReader(type.getName()).getAnnotationMetadata();
-		}
-		catch (IOException ex) {
-			throw new UncheckedIOException(ex);
+	private static record FixedGroupProvider(String group) implements GroupProvider {
+
+		@Override
+		public String group(AnnotationMetadata metadata) {
+			return this.group;
 		}
 	}
 }

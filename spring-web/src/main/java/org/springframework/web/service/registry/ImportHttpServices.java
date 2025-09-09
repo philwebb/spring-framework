@@ -28,7 +28,6 @@ import org.jspecify.annotations.Nullable;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.annotation.AliasFor;
 import org.springframework.core.type.AnnotationMetadata;
-import org.springframework.util.Assert;
 import org.springframework.web.service.annotation.HttpExchange;
 
 /**
@@ -137,17 +136,5 @@ public @interface ImportHttpServices {
 		 * should not be registered
 		 */
 		@Nullable String group(AnnotationMetadata metadata);
-
-		/**
-		 * Create a {@link GroupProvider} that always returns the same group.
-		 * @param group the group to return
-		 * @return a new group provider
-		 */
-		static GroupProvider of(String group) {
-			Assert.hasText(group, "'group' must not be empty");
-			return metadata -> group;
-		}
-
 	}
-
 }
